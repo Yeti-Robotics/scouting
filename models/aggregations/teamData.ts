@@ -213,7 +213,7 @@ export interface TeamData {
 	avgLowerTeleop: number;
 	avgPenalties: number;
 	avgDefense: number;
-	endPosition: string;
+	endPosition: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition'> {

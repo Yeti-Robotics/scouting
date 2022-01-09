@@ -21,7 +21,7 @@ const NavBar = () => {
 			<h1 style={{ flexGrow: 1 }}>Scouting</h1>
 			<Button
 				variant='outlined'
-				sx={{ color: 'white', borderColor: 'white', padding: '1rem' }}
+				sx={{ color: 'text.primary', borderColor: 'text.primary', padding: '1rem' }}
 				onClick={() => setMenuOpened((prev) => !prev)}
 			>
 				<Menu />

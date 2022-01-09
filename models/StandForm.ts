@@ -1,6 +1,6 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
-const standFormSchema = new Schema<StandForm>(
+const standFormSchema = new Schema<StandFormI>(
 	{
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
@@ -21,7 +21,8 @@ const standFormSchema = new Schema<StandForm>(
 	{ timestamps: true, collection: 'standForms' },
 );
 
-export interface StandForm {
+// i stands for interface
+export interface StandFormI {
 	teamNumber: number;
 	matchNumber: number;
 	scouter: string; // username
@@ -39,6 +40,6 @@ export interface StandForm {
 	notes: string;
 }
 
-const StandForm = models.standForm || model('standForm', standFormSchema);
+const StandForm = (models.standForm as Model<StandFormI>) || model('standForm', standFormSchema);
 
 export default StandForm;
