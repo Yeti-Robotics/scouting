@@ -17,6 +17,7 @@ export interface UserI {
 	firstName: string;
 	lastName: string;
 	teamNumber: number;
+	administrator: boolean;
 }
 
 const User = (models.user as Model<UserI>) || model('user', userSchema);
