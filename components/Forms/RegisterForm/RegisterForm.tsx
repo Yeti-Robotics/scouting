@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -41,7 +40,7 @@ const RegisterForm = () => {
 	};
 
 	return (
-		<Box>
+		<>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Register'>
 					<TextInput
@@ -103,7 +102,7 @@ const RegisterForm = () => {
 					<SubmitButton>Submit</SubmitButton>
 				</FormSection>
 			</form>
-		</Box>
+		</>
 	);
 };
 

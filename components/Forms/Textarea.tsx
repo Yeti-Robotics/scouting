@@ -9,7 +9,6 @@ interface Props {
 	rules?: ControllerProps['rules'];
 	label?: string;
 	placeholder?: string;
-	type?: JSX.IntrinsicElements['input']['type'];
 	defaultValue?: any;
 	sx?: SxProps<Theme>;
 	disabled?: boolean;
@@ -19,14 +18,13 @@ const defaultSx: SxProps<Theme> = {
 	color: 'text.primary',
 };
 
-const TextInput: React.VFC<Props> = ({
+const Textarea: React.VFC<Props> = ({
 	name,
 	control,
 	rules,
 	onChange = (e) => {},
 	placeholder,
 	label,
-	type,
 	defaultValue,
 	sx,
 	disabled,
@@ -35,12 +33,12 @@ const TextInput: React.VFC<Props> = ({
 		<Box sx={{ m: 1 }}>
 			<Controller
 				name={name}
-				defaultValue={defaultValue || ''}
+				defaultValue={defaultValue}
 				control={control}
-				rules={{ validate: (v) => v !== '', ...rules }}
+				rules={rules}
 				render={({ field, fieldState: { error } }) => (
 					<TextField
-						type={type}
+						multiline
 						sx={{ ...defaultSx, ...sx }}
 						InputLabelProps={{ sx: defaultSx }}
 						label={label || placeholder || name}
@@ -62,4 +60,4 @@ const TextInput: React.VFC<Props> = ({
 	);
 };
 
-export default TextInput;
+export default Textarea;

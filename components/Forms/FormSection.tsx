@@ -11,10 +11,12 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
+				justifyContent: 'center',
 				border: '0.25rem solid #fff',
 				borderColor: 'primary.main',
 				borderRadius: '8px',
-				padding: 0,
+				width: '95%',
+				m: 2,
 				borderSpacing: 0,
 			}}
 		>
@@ -23,11 +25,13 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 					sx={{
 						width: '100%',
 						fontSize: '2.5rem',
+						height: 'auto',
 						fontWeight: 'bold',
 						backgroundColor: 'primary.main',
-						padding: 2,
+						padding: 1,
 						alignSelf: 'flex-start',
-						border: 0,
+						border: '0.25rem solid #fff',
+						borderColor: 'primary.main',
 					}}
 				>
 					{title}
