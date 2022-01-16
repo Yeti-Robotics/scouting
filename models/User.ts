@@ -13,6 +13,7 @@ const userSchema = new Schema<UserI>(
 );
 
 export interface UserI {
+	_id: string;
 	username: string;
 	password: string;
 	firstName: string;

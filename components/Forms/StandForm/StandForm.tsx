@@ -1,5 +1,6 @@
+import { useUser } from '@/lib/useUser';
 import { StandFormI } from '@/models/StandForm';
-import { MenuItem } from '@mui/material';
+import { CircularProgress, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
@@ -16,10 +17,15 @@ interface Props {
 }
 
 const StandForm: React.VFC<Props> = ({ create }) => {
+	const { user } = useUser();
 	const { control, handleSubmit } = useForm<StandFormI>();
 
+	if (!user) {
+		return <CircularProgress />;
+	}
+
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create))}>
+		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
 			<h1 style={{ textAlign: 'center' }}>ALL FIELDS ARE REQUIRED</h1>
 			<FormSection title='Match Info'>
 				<TextInput

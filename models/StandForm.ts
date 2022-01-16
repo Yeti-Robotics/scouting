@@ -23,6 +23,7 @@ const standFormSchema = new Schema<StandFormI>(
 
 // i stands for interface
 export interface StandFormI {
+	_id: string;
 	teamNumber: number;
 	matchNumber: number;
 	scouter: string; // username

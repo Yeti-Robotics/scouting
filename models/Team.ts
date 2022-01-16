@@ -6,6 +6,7 @@ const teamSchema = new Schema<TeamI>({
 });
 
 export interface TeamI {
+	_id: string;
 	teamNumber: number;
 	teamName: string;
 }

@@ -1,3 +1,4 @@
+import { middleware } from '@/middleware/middleware';
 import User from '@/models/User';
 import { verify } from 'jsonwebtoken';
 import { NextApiHandler } from 'next';
@@ -24,4 +25,4 @@ const handler: NextApiHandler = async (req, res) => {
 	}
 };
 
-export default handler;
+export default middleware(handler);

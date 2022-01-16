@@ -1,9 +1,11 @@
+import { useUser } from '@/lib/useUser';
 import { AccountCircle, Menu, NoteAdd } from '@mui/icons-material';
-import { Box, Button, Divider, Drawer, Link as MuiLink } from '@mui/material';
+import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 
 const NavBar = () => {
+	const { user } = useUser({ redirectIfNotFound: false, redirectOnError: false });
 	const [menuOpened, setMenuOpened] = useState(false);
 
 	return (
@@ -18,7 +20,11 @@ const NavBar = () => {
 				padding: '0.5rem 2rem 0.5rem 2rem',
 			}}
 		>
-			<h1 style={{ flexGrow: 1 }}>Scouting</h1>
+			<Link href='/' passHref={true}>
+				<h1 style={{ flexGrow: 1, textDecoration: 'underline', cursor: 'pointer' }}>
+					Scouting
+				</h1>
+			</Link>
 			<Button
 				variant='outlined'
 				sx={{ color: 'text.primary', borderColor: 'text.primary', padding: '1rem' }}
@@ -27,7 +33,7 @@ const NavBar = () => {
 				<Menu />
 			</Button>
 			<Drawer open={menuOpened} anchor='top' onClose={() => setMenuOpened(false)}>
-				<Link href='/login' passHref={true}>
+				<Link href={user ? '/logout' : '/login'} passHref={true}>
 					<Box
 						component='a'
 						sx={{
@@ -39,7 +45,7 @@ const NavBar = () => {
 						}}
 					>
 						<AccountCircle sx={{ margin: 1 }} />
-						Login
+						{user ? 'Logout' : 'Login'}
 					</Box>
 				</Link>
 				<Divider />

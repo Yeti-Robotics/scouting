@@ -1,14 +1,15 @@
 import { UserI } from '@/models/User';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+import fetcher from './fetch';
 
-type UseUserParams = {
+type UseUserParams = Partial<{
 	redirectIfNotFound: boolean;
 	redirectIfFound: boolean;
 	redirectIfNotAdmin: boolean;
 	redirectOnError: boolean;
 	redirectTo: string;
-};
+}>;
 
 export const useUser = ({
 	redirectIfNotFound = true,
@@ -16,9 +17,9 @@ export const useUser = ({
 	redirectIfNotAdmin = false,
 	redirectOnError = true,
 	redirectTo = '/login',
-}: UseUserParams) => {
+}: UseUserParams = {}) => {
 	const router = useRouter();
-	const { data: user, error, isValidating, mutate } = useSWR<UserI>('/api/auth/decode');
+	const { data: user, error, isValidating, mutate } = useSWR<UserI>('/api/auth/decode', fetcher);
 	const redirectUrl = `${redirectTo}?from=${router.pathname || '/'}`;
 
 	if (!user) {
