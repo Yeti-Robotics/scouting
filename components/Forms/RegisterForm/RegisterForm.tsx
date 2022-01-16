@@ -41,7 +41,7 @@ const RegisterForm = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Register'>
 					<TextInput
 						control={control}

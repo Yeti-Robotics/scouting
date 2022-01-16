@@ -61,7 +61,7 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					flexDirection: 'column',
 					alignItems: 'center',
 					border: 0,
-					padding: 1,
+					padding: 2,
 					flexGrow: 1,
 				}}
 				style={{

@@ -21,7 +21,7 @@ const LoginForm = () => {
 
 	return (
 		<Box>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Login'>
 					<TextInput
 						control={control}
