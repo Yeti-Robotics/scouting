@@ -27,17 +27,18 @@ export const useUser = ({
 	}
 
 	if (!user && !isValidating) {
-		if (redirectIfNotFound) router.push(redirectUrl);
+		if (redirectIfNotFound && router.pathname !== redirectTo) router.push(redirectUrl);
 		return { user, error, loading: false, mutate };
 	}
 
 	if (error) {
-		if (redirectOnError) router.push(redirectUrl);
+		if (redirectOnError && router.pathname !== redirectTo) router.push(redirectUrl);
 		return { user: undefined, error, loading: false, mutate };
 	}
 
-	if (!user.administrator && redirectIfNotAdmin) router.push(redirectUrl);
-	if (redirectIfFound) router.push(redirectUrl);
+	if (!user.administrator && redirectIfNotAdmin && router.pathname !== redirectTo)
+		router.push(redirectUrl);
+	if (redirectIfFound && router.pathname !== redirectTo) router.push(redirectUrl);
 
 	return { user, error, loading: false, mutate };
 };

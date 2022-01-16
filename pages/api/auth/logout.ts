@@ -1,7 +1,10 @@
 import { NextApiHandler } from 'next';
 
 const handler: NextApiHandler = async (req, res) => {
-	res.setHeader('set-cookie', 'access_token=');
+	res.setHeader(
+		'set-cookie',
+		`access_token=; Secure; HttpOnly; Path=/; Expires=${new Date().toUTCString()}`,
+	);
 	return res.status(200).json({ message: 'Logged out.' });
 };
 

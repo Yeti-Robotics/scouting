@@ -15,7 +15,9 @@ const handler: NextApiHandler = async (req, res) => {
 
 			res.setHeader(
 				'set-cookie',
-				`access_token=${token}; HttpOnly; Secure; Path=/; Expires=${Date.now() + 43200000}`, // expires in 12 hours from browser
+				`access_token=${token}; HttpOnly; Secure; Path=/; Expires=${new Date(
+					Date.now() + 43200000,
+				).toUTCString()}`, // expires in 12 hours from browser
 			);
 
 			return res.status(200).json({ message: 'Logged in!' });
