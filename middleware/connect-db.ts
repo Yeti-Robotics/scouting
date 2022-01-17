@@ -14,7 +14,7 @@ const connectDB =
 		}
 		//use a new connection
 		await mongoose
-			.connect(uri, { dbName: 'scouting' })
+			.connect(uri, { dbName: process.env.DEFAULT_DB })
 			.catch((err: unknown) => console.error(err));
 		return handler(req, res);
 	};
