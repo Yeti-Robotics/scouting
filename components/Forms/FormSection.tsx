@@ -24,7 +24,7 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 				<Box
 					sx={{
 						width: '100%',
-						fontSize: '2.5rem',
+						fontSize: '1.75rem',
 						height: 'auto',
 						fontWeight: 'bold',
 						backgroundColor: 'primary.main',

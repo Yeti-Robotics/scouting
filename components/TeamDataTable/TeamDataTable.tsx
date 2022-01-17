@@ -9,7 +9,7 @@ interface Props {
 
 const TeamDataTable: React.VFC<Props> = ({ data }) => {
 	return (
-		<Box sx={{ maxWidth: '100%', width: 1420, height: 1000, margin: 2 }}>
+		<Box sx={{ maxWidth: '100%', width: 1430, height: 1000, margin: 2 }}>
 			<DataGrid getRowId={(row) => row.teamNumber} columns={tableColumns} rows={data} />
 		</Box>
 	);

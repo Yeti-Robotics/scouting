@@ -1,6 +1,6 @@
 import { useUser } from '@/lib/useUser';
 import { StandFormI } from '@/models/StandForm';
-import { CircularProgress, MenuItem } from '@mui/material';
+import { Box, CircularProgress, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
@@ -44,20 +44,27 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 				/>
 			</FormSection>
 			<FormSection title='Autonomous'>
-				<Checkbox
-					control={control}
-					name='preload'
-					label='Preloaded?'
-					rules={{ required: true }}
-					size='medium'
-				/>
-				<Checkbox
-					control={control}
-					name='initiationLine'
-					label='Did they cross the line?'
-					rules={{ required: true }}
-					size='medium'
-				/>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+					}}
+				>
+					<Checkbox
+						control={control}
+						name='preload'
+						label='Preloaded?'
+						rules={{ required: true }}
+						size='medium'
+					/>
+					<Checkbox
+						control={control}
+						name='initiationLine'
+						label='Did they cross the line?'
+						rules={{ required: true }}
+						size='medium'
+					/>
+				</Box>
 				<ScoreInput
 					control={control}
 					name='autoUpperBallsScored'
