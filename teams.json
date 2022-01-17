@@ -1,0 +1,1477 @@
+[{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eec8"
+  },
+  "team_number": 1,
+  "team_name": "The Juggernauts"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eec9"
+  },
+  "team_number": 8,
+  "team_name": "Team 8"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeca"
+  },
+  "team_number": 25,
+  "team_name": "Raider Robotix"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eecb"
+  },
+  "team_number": 59,
+  "team_name": "RamTech"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eecc"
+  },
+  "team_number": 148,
+  "team_name": "Robowranglers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eecd"
+  },
+  "team_number": 166,
+  "team_name": "Chop Shop"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eece"
+  },
+  "team_number": 180,
+  "team_name": "S.P.A.M."
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eecf"
+  },
+  "team_number": 191,
+  "team_name": "X-CATS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed0"
+  },
+  "team_number": 238,
+  "team_name": "Cruisin' Crusaders"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed1"
+  },
+  "team_number": 254,
+  "team_name": "The Cheesy Poofs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed2"
+  },
+  "team_number": 281,
+  "team_name": "The GreenVillains"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed3"
+  },
+  "team_number": 283,
+  "team_name": "The Generals"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed4"
+  },
+  "team_number": 287,
+  "team_name": "Floyd"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed5"
+  },
+  "team_number": 294,
+  "team_name": "Beach Cities Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed6"
+  },
+  "team_number": 321,
+  "team_name": "RoboLancers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed7"
+  },
+  "team_number": 339,
+  "team_name": "Kilroy Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed8"
+  },
+  "team_number": 342,
+  "team_name": "Burning Magnetos"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eed9"
+  },
+  "team_number": 359,
+  "team_name": "Hawaiian Kids"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeda"
+  },
+  "team_number": 379,
+  "team_name": "RoboCats"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eedb"
+  },
+  "team_number": 399,
+  "team_name": "Eagle Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eedc"
+  },
+  "team_number": 422,
+  "team_name": "Mech Tech Dragons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eedd"
+  },
+  "team_number": 435,
+  "team_name": "Robodogs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eede"
+  },
+  "team_number": 456,
+  "team_name": "Siege Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eedf"
+  },
+  "team_number": 585,
+  "team_name": "Cyber Penguins"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee0"
+  },
+  "team_number": 587,
+  "team_name": "Hedgehogs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee1"
+  },
+  "team_number": 639,
+  "team_name": "Code Red Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee2"
+  },
+  "team_number": 694,
+  "team_name": "StuyPulse"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee3"
+  },
+  "team_number": 836,
+  "team_name": "The RoboBees"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee4"
+  },
+  "team_number": 858,
+  "team_name": "Demons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee5"
+  },
+  "team_number": 876,
+  "team_name": "Thunder Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee6"
+  },
+  "team_number": 900,
+  "team_name": "The Zebracorns"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee7"
+  },
+  "team_number": 955,
+  "team_name": "CV Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee8"
+  },
+  "team_number": 957,
+  "team_name": "SWARM"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eee9"
+  },
+  "team_number": 973,
+  "team_name": "Greybots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeea"
+  },
+  "team_number": 980,
+  "team_name": "ThunderBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeeb"
+  },
+  "team_number": 987,
+  "team_name": "HIGHROLLERS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeec"
+  },
+  "team_number": 1073,
+  "team_name": "The Force Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeed"
+  },
+  "team_number": 1089,
+  "team_name": "Team Mercury"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeee"
+  },
+  "team_number": 1102,
+  "team_name": "M'Aiken Magic "
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeef"
+  },
+  "team_number": 1123,
+  "team_name": "AIM Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef0"
+  },
+  "team_number": 1156,
+  "team_name": "Under Control"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef1"
+  },
+  "team_number": 1225,
+  "team_name": "Gorillas"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef2"
+  },
+  "team_number": 1261,
+  "team_name": "Robo  Lions"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef3"
+  },
+  "team_number": 1389,
+  "team_name": "The Body Electric"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef4"
+  },
+  "team_number": 1511,
+  "team_name": "Rolling Thunder"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef5"
+  },
+  "team_number": 1533,
+  "team_name": "Triple Strange"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef6"
+  },
+  "team_number": 1553,
+  "team_name": "KC Robotics Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef7"
+  },
+  "team_number": 1600,
+  "team_name": "ROBO KINGS AND QUEENS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef8"
+  },
+  "team_number": 1662,
+  "team_name": "Raptor Force Engineering"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eef9"
+  },
+  "team_number": 1706,
+  "team_name": "Ratchet Rockers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eefa"
+  },
+  "team_number": 1810,
+  "team_name": "Jaguar Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eefb"
+  },
+  "team_number": 1828,
+  "team_name": "BoxerBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eefc"
+  },
+  "team_number": 1868,
+  "team_name": "Space Cookies"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eefd"
+  },
+  "team_number": 1885,
+  "team_name": "ILITE Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eefe"
+  },
+  "team_number": 1902,
+  "team_name": "Exploding Bacon"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419eeff"
+  },
+  "team_number": 1983,
+  "team_name": "Skunk Works Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef00"
+  },
+  "team_number": 1984,
+  "team_name": "Jawas"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef01"
+  },
+  "team_number": 1991,
+  "team_name": "Dragons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef02"
+  },
+  "team_number": 2059,
+  "team_name": "The Hitchhikers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef03"
+  },
+  "team_number": 2080,
+  "team_name": "Torbotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef04"
+  },
+  "team_number": 2096,
+  "team_name": "RoboActive"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef05"
+  },
+  "team_number": 2168,
+  "team_name": "Aluminum Falcons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef06"
+  },
+  "team_number": 2175,
+  "team_name": "The Fighting Calculators"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef07"
+  },
+  "team_number": 2219,
+  "team_name": "Megahurts"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef08"
+  },
+  "team_number": 2220,
+  "team_name": "Blue Twilight"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef09"
+  },
+  "team_number": 2283,
+  "team_name": "Panteras"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0a"
+  },
+  "team_number": 2557,
+  "team_name": "SOTAbots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0b"
+  },
+  "team_number": 2583,
+  "team_name": "RoboWarriors"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0c"
+  },
+  "team_number": 2640,
+  "team_name": "HOTBOTZ"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0d"
+  },
+  "team_number": 2642,
+  "team_name": "Pitt Pirates"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0e"
+  },
+  "team_number": 2655,
+  "team_name": "The Flying Platypi"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef0f"
+  },
+  "team_number": 2682,
+  "team_name": "Boneyard Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef10"
+  },
+  "team_number": 2815,
+  "team_name": "Blue Devil Mechanics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef11"
+  },
+  "team_number": 2848,
+  "team_name": "The All Sparks"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef12"
+  },
+  "team_number": 2854,
+  "team_name": "The Prototypes"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef13"
+  },
+  "team_number": 2883,
+  "team_name": "F.R.E.D (Fighting Rednecks Engineering and Design)"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef14"
+  },
+  "team_number": 2974,
+  "team_name": "Walton Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef15"
+  },
+  "team_number": 2976,
+  "team_name": "Spartabots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef16"
+  },
+  "team_number": 2980,
+  "team_name": "The Whidbey Island Wild Cats"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef17"
+  },
+  "team_number": 2990,
+  "team_name": "Hotwire"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef18"
+  },
+  "team_number": 2992,
+  "team_name": "The S.S. Prometheus"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef19"
+  },
+  "team_number": 3005,
+  "team_name": "RoboChargers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1a"
+  },
+  "team_number": 3019,
+  "team_name": "Firebirds"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1b"
+  },
+  "team_number": 3075,
+  "team_name": "Ha-Dream Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1c"
+  },
+  "team_number": 3147,
+  "team_name": "Munster HorsePower"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1d"
+  },
+  "team_number": 3196,
+  "team_name": "Team SPORK"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1e"
+  },
+  "team_number": 3197,
+  "team_name": "HexHounds"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef1f"
+  },
+  "team_number": 3215,
+  "team_name": "Apollo"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef20"
+  },
+  "team_number": 3223,
+  "team_name": "Robotics Of Central Kitsap"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef21"
+  },
+  "team_number": 3229,
+  "team_name": "Hawktimus Prime"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef22"
+  },
+  "team_number": 3230,
+  "team_name": "PrototypeX"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef23"
+  },
+  "team_number": 3234,
+  "team_name": "Red Arrows"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef24"
+  },
+  "team_number": 3284,
+  "team_name": "Camdenton 4H LASER 3284"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef25"
+  },
+  "team_number": 3310,
+  "team_name": "Black Hawk Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef26"
+  },
+  "team_number": 3336,
+  "team_name": "Zimanators"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef27"
+  },
+  "team_number": 3339,
+  "team_name": "BumbleB"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef28"
+  },
+  "team_number": 3374,
+  "team_name": "RoboBroncs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef29"
+  },
+  "team_number": 3397,
+  "team_name": "Robolions"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2a"
+  },
+  "team_number": 3402,
+  "team_name": "ROBOMonkeys"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2b"
+  },
+  "team_number": 3459,
+  "team_name": "Team PyroTech"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2c"
+  },
+  "team_number": 3489,
+  "team_name": "Category 5"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2d"
+  },
+  "team_number": 3490,
+  "team_name": "Viper Drive"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2e"
+  },
+  "team_number": 3495,
+  "team_name": "MindCraft Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef2f"
+  },
+  "team_number": 3506,
+  "team_name": "YETI Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef30"
+  },
+  "team_number": 3546,
+  "team_name": "Buc'n'Gears"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef31"
+  },
+  "team_number": 3618,
+  "team_name": "Petoskey Paladins"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef32"
+  },
+  "team_number": 3641,
+  "team_name": "The Flying Toasters"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef33"
+  },
+  "team_number": 3656,
+  "team_name": "Dreadbots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef34"
+  },
+  "team_number": 3661,
+  "team_name": "RoboWolves"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef35"
+  },
+  "team_number": 3680,
+  "team_name": "Elemental Dragons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef36"
+  },
+  "team_number": 3711,
+  "team_name": "Iron Mustang"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef37"
+  },
+  "team_number": 3737,
+  "team_name": "Roto-Raptors"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef38"
+  },
+  "team_number": 3763,
+  "team_name": "4-H WildCards"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef39"
+  },
+  "team_number": 3770,
+  "team_name": "BlitzCreek"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3a"
+  },
+  "team_number": 3822,
+  "team_name": "Neon Kraken"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3b"
+  },
+  "team_number": 3845,
+  "team_name": "Yellow Jackets"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3c"
+  },
+  "team_number": 3925,
+  "team_name": "Circuit of Life"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3d"
+  },
+  "team_number": 3930,
+  "team_name": "SMART  Spruce Mountain Area Robotics Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3e"
+  },
+  "team_number": 3965,
+  "team_name": "Sultans"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef3f"
+  },
+  "team_number": 3970,
+  "team_name": "Duncan Dynamics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef40"
+  },
+  "team_number": 3971,
+  "team_name": "Kai Orbus"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef41"
+  },
+  "team_number": 3990,
+  "team_name": "Tech for Kids"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef42"
+  },
+  "team_number": 4010,
+  "team_name": "Nautilus"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef43"
+  },
+  "team_number": 4061,
+  "team_name": "SciBorgs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef44"
+  },
+  "team_number": 4083,
+  "team_name": "The Iron Wolverines"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef45"
+  },
+  "team_number": 4087,
+  "team_name": "Falcon Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef46"
+  },
+  "team_number": 4180,
+  "team_name": "Iron Riders"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef47"
+  },
+  "team_number": 4188,
+  "team_name": "Columbus Space Program"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef48"
+  },
+  "team_number": 4290,
+  "team_name": "Bots on Wheels"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef49"
+  },
+  "team_number": 4291,
+  "team_name": "AstroBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4a"
+  },
+  "team_number": 4329,
+  "team_name": "Lutheran Roboteers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4b"
+  },
+  "team_number": 4335,
+  "team_name": "Metallic Clouds"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4c"
+  },
+  "team_number": 4400,
+  "team_name": "CERBOTICS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4d"
+  },
+  "team_number": 4451,
+  "team_name": "ROBOTZ Garage"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4e"
+  },
+  "team_number": 4455,
+  "team_name": "The Burger Bots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef4f"
+  },
+  "team_number": 4469,
+  "team_name": "R.A.I.D. (Raider Artificial Intelligence DIvision)"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef50"
+  },
+  "team_number": 4534,
+  "team_name": "Wired Wizards"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef51"
+  },
+  "team_number": 4561,
+  "team_name": "TerrorBytes"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef52"
+  },
+  "team_number": 4646,
+  "team_name": "Team ASAP"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef53"
+  },
+  "team_number": 4733,
+  "team_name": "Scarlett Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef54"
+  },
+  "team_number": 4762,
+  "team_name": "Robo-Saints"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef55"
+  },
+  "team_number": 4767,
+  "team_name": "C4"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef56"
+  },
+  "team_number": 4775,
+  "team_name": "Aztech Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef57"
+  },
+  "team_number": 4795,
+  "team_name": "EastBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef58"
+  },
+  "team_number": 4816,
+  "team_name": "Gadget Girls"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef59"
+  },
+  "team_number": 4828,
+  "team_name": "RoboEagles"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5a"
+  },
+  "team_number": 4829,
+  "team_name": "Titanium Tigers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5b"
+  },
+  "team_number": 4910,
+  "team_name": "East Cobb Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5c"
+  },
+  "team_number": 4929,
+  "team_name": "Maroon Monsoon"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5d"
+  },
+  "team_number": 4935,
+  "team_name": "T-Rex"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5e"
+  },
+  "team_number": 5160,
+  "team_name": "Chargers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef5f"
+  },
+  "team_number": 5190,
+  "team_name": "Green Hope Falcons"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef60"
+  },
+  "team_number": 5199,
+  "team_name": "Robot Dolphins From Outer Space"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef61"
+  },
+  "team_number": 5242,
+  "team_name": "âš™ï¸ RoboCats âš™ï¸"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef62"
+  },
+  "team_number": 5279,
+  "team_name": "Bionic Eagles"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef63"
+  },
+  "team_number": 5291,
+  "team_name": "Emperius"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef64"
+  },
+  "team_number": 5327,
+  "team_name": "Griffin Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef65"
+  },
+  "team_number": 5406,
+  "team_name": "Celt-X"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef66"
+  },
+  "team_number": 5414,
+  "team_name": "Pearadox"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef67"
+  },
+  "team_number": 5446,
+  "team_name": "Pink Detectives"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef68"
+  },
+  "team_number": 5496,
+  "team_name": "Robo Knights"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef69"
+  },
+  "team_number": 5511,
+  "team_name": "Cortechs Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6a"
+  },
+  "team_number": 5518,
+  "team_name": "Techno Wolves"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6b"
+  },
+  "team_number": 5544,
+  "team_name": "SWIFT Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6c"
+  },
+  "team_number": 5572,
+  "team_name": "ROSBOTS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6d"
+  },
+  "team_number": 5607,
+  "team_name": "Team Firewall"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6e"
+  },
+  "team_number": 5679,
+  "team_name": "Girls on Fire"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef6f"
+  },
+  "team_number": 5724,
+  "team_name": "Spartan Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef70"
+  },
+  "team_number": 5727,
+  "team_name": "REaCH Omegabytes"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef71"
+  },
+  "team_number": 5762,
+  "team_name": "Franklinbots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef72"
+  },
+  "team_number": 5801,
+  "team_name": "CTC Inspire"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef73"
+  },
+  "team_number": 5803,
+  "team_name": "Apex Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef74"
+  },
+  "team_number": 5809,
+  "team_name": "The Jesubots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef75"
+  },
+  "team_number": 5834,
+  "team_name": "R3P2"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef76"
+  },
+  "team_number": 5837,
+  "team_name": "Unity4Tech"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef77"
+  },
+  "team_number": 5839,
+  "team_name": "Blue Whales"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef78"
+  },
+  "team_number": 5854,
+  "team_name": "GLITCH"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef79"
+  },
+  "team_number": 5892,
+  "team_name": "High Energy"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7a"
+  },
+  "team_number": 5919,
+  "team_name": "JoCo RoBos"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7b"
+  },
+  "team_number": 5933,
+  "team_name": "JudgeMent Call"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7c"
+  },
+  "team_number": 5940,
+  "team_name": "B.R.E.A.D."
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7d"
+  },
+  "team_number": 5976,
+  "team_name": "CyberSaders"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7e"
+  },
+  "team_number": 5979,
+  "team_name": "Apex"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef7f"
+  },
+  "team_number": 6003,
+  "team_name": "S.U.M. (Singularly Unified Madness)"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef80"
+  },
+  "team_number": 6004,
+  "team_name": "f(x) Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef81"
+  },
+  "team_number": 6014,
+  "team_name": "ARC"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef82"
+  },
+  "team_number": 6016,
+  "team_name": "Tiger Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef83"
+  },
+  "team_number": 6025,
+  "team_name": "Adroit Androids"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef84"
+  },
+  "team_number": 6034,
+  "team_name": "Eagle Storms"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef85"
+  },
+  "team_number": 6050,
+  "team_name": "Wee Waa Bush Bots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef86"
+  },
+  "team_number": 6060,
+  "team_name": "Circuit Serpents"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef87"
+  },
+  "team_number": 6214,
+  "team_name": "Los Creadores"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef88"
+  },
+  "team_number": 6215,
+  "team_name": "Armored Eagles"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef89"
+  },
+  "team_number": 6332,
+  "team_name": "Bull City Botics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8a"
+  },
+  "team_number": 6353,
+  "team_name": "Zodiac"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8b"
+  },
+  "team_number": 6366,
+  "team_name": "RAM Rodz Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8c"
+  },
+  "team_number": 6426,
+  "team_name": "Robo Gladiators"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8d"
+  },
+  "team_number": 6500,
+  "team_name": "GearCats"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8e"
+  },
+  "team_number": 6502,
+  "team_name": "DARC SIDE"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef8f"
+  },
+  "team_number": 6565,
+  "team_name": "Team Bobcat"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef90"
+  },
+  "team_number": 6639,
+  "team_name": "Mechanical Minds"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef91"
+  },
+  "team_number": 6672,
+  "team_name": "Fusion Corps"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef92"
+  },
+  "team_number": 6702,
+  "team_name": "StingBots Santa Anita"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef93"
+  },
+  "team_number": 6705,
+  "team_name": "WildCat 5e"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef94"
+  },
+  "team_number": 6729,
+  "team_name": "RobCoBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef95"
+  },
+  "team_number": 6803,
+  "team_name": "HAI-Panda"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef96"
+  },
+  "team_number": 6885,
+  "team_name": "The Pilots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef97"
+  },
+  "team_number": 6888,
+  "team_name": "BC Breakouts"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef98"
+  },
+  "team_number": 6894,
+  "team_name": "Iced Java"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef99"
+  },
+  "team_number": 6907,
+  "team_name": "The G.O.A.T"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9a"
+  },
+  "team_number": 6908,
+  "team_name": "Infuzed"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9b"
+  },
+  "team_number": 6919,
+  "team_name": "The Commodores"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9c"
+  },
+  "team_number": 6932,
+  "team_name": "S.M.A.R.T."
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9d"
+  },
+  "team_number": 7029,
+  "team_name": "Scotbotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9e"
+  },
+  "team_number": 7034,
+  "team_name": "2B Determined"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419ef9f"
+  },
+  "team_number": 7039,
+  "team_name": "âŒâ­•"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa0"
+  },
+  "team_number": 7140,
+  "team_name": "OKSEF ROBOTICS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa1"
+  },
+  "team_number": 7157,
+  "team_name": " Î¼Botics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa2"
+  },
+  "team_number": 7173,
+  "team_name": "Iris Robotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa3"
+  },
+  "team_number": 7293,
+  "team_name": "COTANAK ROBOTICS"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa4"
+  },
+  "team_number": 9996,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa5"
+  },
+  "team_number": 9997,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa6"
+  },
+  "team_number": 9998,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa7"
+  },
+  "team_number": 9999,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa8"
+  },
+  "team_number": 6899,
+  "team_name": "Macon Bots FRC"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efa9"
+  },
+  "team_number": 7443,
+  "team_name": "Overhills Jag-Wires"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efaa"
+  },
+  "team_number": 7815,
+  "team_name": "CavBots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efab"
+  },
+  "team_number": 7890,
+  "team_name": "SeQuEnCe"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efac"
+  },
+  "team_number": 7270,
+  "team_name": "The Bandits"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efad"
+  },
+  "team_number": 7265,
+  "team_name": "Skeleton Crew"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efae"
+  },
+  "team_number": 7671,
+  "team_name": "Fire Hazard"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efaf"
+  },
+  "team_number": 7763,
+  "team_name": "Carrborobotics"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb0"
+  },
+  "team_number": 1746,
+  "team_name": "OTTO"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb1"
+  },
+  "team_number": 7463,
+  "team_name": "Incandescent Mice"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb2"
+  },
+  "team_number": 6340,
+  "team_name": " The Marist Manatees"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb3"
+  },
+  "team_number": 1293,
+  "team_name": "Pandamaniacs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb4"
+  },
+  "team_number": 9985,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb5"
+  },
+  "team_number": 9990,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb6"
+  },
+  "team_number": 9995,
+  "team_name": "Off-Season Demo Team"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb7"
+  },
+  "team_number": 7715,
+  "team_name": "Robo-Banditos"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb8"
+  },
+  "team_number": 8315,
+  "team_name": "Spartan Robots"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efb9"
+  },
+  "team_number": 6512,
+  "team_name": "Coastal CATastrophe"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efba"
+  },
+  "team_number": 8030,
+  "team_name": "East Lincoln Iron Stangs"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efbb"
+  },
+  "team_number": 8304,
+  "team_name": "MaST"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efbc"
+  },
+  "team_number": 4541,
+  "team_name": "CAV-ineers"
+},{
+  "_id": {
+    "$oid": "61215d1d167d81a2f419efbd"
+  },
+  "team_number": 6177,
+  "team_name": "Atomic-Robotics Dogs"
+}]
