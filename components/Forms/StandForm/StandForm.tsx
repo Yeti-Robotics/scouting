@@ -48,6 +48,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
+						alignItems: 'flex-start',
 					}}
 				>
 					<Checkbox
