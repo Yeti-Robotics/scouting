@@ -45,7 +45,8 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 					border: '1px solid #fff',
 					borderTop: '0px',
 					borderColor: 'primary.main',
-					borderRadius: '8px',
+					borderBottomLeftRadius: '8px',
+					borderBottomRightRadius: '8px',
 				}}
 			>
 				{children}

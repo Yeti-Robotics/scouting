@@ -1,5 +1,6 @@
 import { useUser } from '@/lib/useUser';
 import { PitFormI } from '@/models/PitForm';
+import { PitImageI } from '@/models/PitImage';
 import { CircularProgress, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,12 +15,12 @@ import { onSubmit } from './onSubmit';
 
 interface Props {
 	create: boolean;
-	defaultForm?: PitFormI & { images: Buffer[] };
+	defaultForm?: PitFormI & { images: PitImageI[] };
 }
 
 const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 	const { user } = useUser();
-	const [images, setImages] = useState<Buffer[]>(defaultForm?.images || []);
+	const [images, setImages] = useState<Partial<PitImageI>[]>(defaultForm?.images || []);
 	const { control, handleSubmit } = useForm<PitFormI>({ defaultValues: defaultForm });
 
 	if (!user) {

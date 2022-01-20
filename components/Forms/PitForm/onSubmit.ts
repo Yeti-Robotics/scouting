@@ -1,3 +1,4 @@
+import { PitImageI } from '@/models/PitImage';
 import { StandFormI } from '@/models/StandForm';
 import { UserI } from '@/models/User';
 import { SubmitHandler } from 'react-hook-form';
@@ -6,7 +7,7 @@ import { SubmitHandler } from 'react-hook-form';
 export const onSubmit: (
 	create: boolean,
 	user: UserI,
-	images: Buffer[],
+	images: Partial<PitImageI>[],
 ) => SubmitHandler<StandFormI> = (create, user, images) => {
 	const onCreate: SubmitHandler<StandFormI> = (data, e) => {
 		console.log(data);
