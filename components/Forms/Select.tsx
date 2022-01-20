@@ -1,6 +1,7 @@
-import { Box, MenuItem, TextField } from '@mui/material';
+import { Box, MenuItem, SxProps, TextField, Theme } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
+import { addRequired } from './formHelpers';
 
 interface Props {
 	control: Control<any>;
@@ -11,6 +12,10 @@ interface Props {
 	defaultValue?: any;
 	disabled?: boolean;
 }
+
+const defaultInputSx: SxProps<Theme> = {
+	width: '100%',
+};
 
 const Select: React.FC<Props> = ({
 	children,
@@ -23,7 +28,15 @@ const Select: React.FC<Props> = ({
 	disabled,
 }) => {
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 1 }}>
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				m: 1,
+				width: '100%',
+			}}
+		>
 			<Controller
 				name={name}
 				defaultValue={defaultValue || ''}
@@ -34,13 +47,17 @@ const Select: React.FC<Props> = ({
 						<TextField
 							select
 							InputLabelProps={{ sx: { color: 'palette.text.primary' } }}
-							label={label || name}
+							label={
+								label
+									? addRequired(rules?.required, label)
+									: addRequired(rules?.required, name)
+							}
 							name={field.name}
 							onChange={(e) => {
 								field.onChange(e);
 								onChange(e); // from props
 							}}
-							sx={{ minWidth: 160 }}
+							sx={{ minWidth: 160, ...defaultInputSx }}
 							onBlur={field.onBlur}
 							value={field.value}
 							error={Boolean(error)}

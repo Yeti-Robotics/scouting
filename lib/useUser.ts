@@ -22,11 +22,11 @@ export const useUser = ({
 	const { data: user, error, isValidating, mutate } = useSWR<UserI>('/api/auth/decode', fetcher);
 	const redirectUrl = `${redirectTo}?from=${router.pathname || '/'}`;
 
-	if (!user) {
+	if (!user && isValidating) {
 		return { user, error, loading: true, mutate };
 	}
 
-	if (!user && !isValidating) {
+	if (!user) {
 		if (redirectIfNotFound && router.pathname !== redirectTo) router.push(redirectUrl);
 		return { user, error, loading: false, mutate };
 	}

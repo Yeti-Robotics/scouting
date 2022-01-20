@@ -17,7 +17,7 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 				borderRadius: '8px',
 				width: '95%',
 				m: 2,
-				borderSpacing: 0,
+				borderBlockStartWidth: 1,
 			}}
 		>
 			{title && (
@@ -32,6 +32,8 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 						alignSelf: 'flex-start',
 						border: '0.25rem solid #fff',
 						borderColor: 'primary.main',
+						borderTopLeftRadius: '-8px',
+						borderTopRightRadius: '-8px',
 					}}
 				>
 					{title}

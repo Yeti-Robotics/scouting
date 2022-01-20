@@ -70,35 +70,51 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					control={control}
 					name='autoUpperBallsScored'
 					label='Upper Balls Scored'
+					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='autoUpperBallsMissed'
 					label='Upper Balls Missed'
+					rules={{ required: true }}
 				/>
-				<ScoreInput control={control} name='autoLowBallsScored' label='Low Balls Scored' />
-				<ScoreInput control={control} name='autoLowBallsMissed' label='Low Balls Missed' />
+				<ScoreInput
+					control={control}
+					name='autoLowBallsScored'
+					label='Low Balls Scored'
+					rules={{ required: true }}
+				/>
+				<ScoreInput
+					control={control}
+					name='autoLowBallsMissed'
+					label='Low Balls Missed'
+					rules={{ required: true }}
+				/>
 			</FormSection>
 			<FormSection title='Teleop'>
 				<ScoreInput
 					control={control}
 					name='teleopUpperBallsScored'
 					label='Upper Balls Scored'
+					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopUpperBallsMissed'
 					label='Upper Balls Missed'
+					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopLowBallsScored'
 					label='Low Balls Scored'
+					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopLowBallsMissed'
 					label='Low Balls Missed'
+					rules={{ required: true }}
 				/>
 			</FormSection>
 			<FormSection title='Misc.'>
@@ -129,13 +145,11 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					<MenuItem value={4}>5</MenuItem>
 				</Select>
 				<ScoreInput control={control} name='penalties' label='# of penalties' />
-				<Textarea
-					control={control}
-					name='notes'
-					label='Notes'
-					placeholder="Give some more insight into the match such as: strategy, robot status (disabled, broken), and human players. Don't write too much, be concise!"
-					rules={{ required: true }}
-				/>
+				<Textarea control={control} name='notes' label='Notes' rules={{ required: true }} />
+				<p>
+					Give some more insight into the match such as: strategy, robot status (disabled,
+					broken), and human players. Don't write too much, be concise!
+				</p>
 			</FormSection>
 			<SubmitButton>Submit</SubmitButton>
 		</Form>

@@ -1,6 +1,7 @@
 import { Box, Checkbox as MuiCheckbox, FormControlLabel } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
+import { addRequired } from './formHelpers';
 
 interface Props {
 	control: Control<any>;
@@ -33,7 +34,11 @@ const Checkbox: React.VFC<Props> = ({
 				render={({ field }) => (
 					<FormControlLabel
 						disabled={disabled}
-						label={label || name}
+						label={
+							label
+								? addRequired(rules?.required, label)
+								: addRequired(rules?.required, name)
+						}
 						control={
 							<MuiCheckbox
 								name={field.name}

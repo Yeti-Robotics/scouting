@@ -1,6 +1,7 @@
 import { Box, SxProps, TextField, Theme } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
+import { addRequired } from './formHelpers';
 
 interface Props {
 	control: Control<any>;
@@ -19,6 +20,10 @@ const defaultSx: SxProps<Theme> = {
 	color: 'text.primary',
 };
 
+const defaultInputSx: SxProps<Theme> = {
+	width: '100%',
+};
+
 const TextInput: React.VFC<Props> = ({
 	name,
 	control,
@@ -32,7 +37,7 @@ const TextInput: React.VFC<Props> = ({
 	disabled,
 }) => {
 	return (
-		<Box sx={{ m: 1 }}>
+		<Box sx={{ m: 1, width: '100%' }}>
 			<Controller
 				name={name}
 				defaultValue={defaultValue || ''}
@@ -41,9 +46,15 @@ const TextInput: React.VFC<Props> = ({
 				render={({ field, fieldState: { error } }) => (
 					<TextField
 						type={type}
-						sx={{ ...defaultSx, ...sx }}
+						sx={{ ...defaultSx, ...defaultInputSx, ...sx }}
 						InputLabelProps={{ sx: defaultSx }}
-						label={label || placeholder || name}
+						label={
+							label
+								? placeholder
+									? addRequired(rules?.required, placeholder)
+									: addRequired(rules?.required, label)
+								: addRequired(rules?.required, name)
+						}
 						placeholder={placeholder || label || name}
 						ref={field.ref}
 						name={field.name}
