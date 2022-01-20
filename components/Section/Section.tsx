@@ -19,9 +19,6 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				border: '0.25rem solid #fff',
-				borderColor: 'primary.main',
-				borderRadius: '8px',
 				width: '95%',
 				m: 2,
 				borderSpacing: 0,
@@ -31,7 +28,7 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 			<Box
 				sx={{
 					width: '100%',
-					fontSize: '2.5rem',
+					fontSize: '1.75rem',
 					height: 'auto',
 					fontWeight: 'bold',
 					backgroundColor: 'primary.main',
@@ -39,6 +36,11 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					alignSelf: 'flex-start',
 					border: '1px solid #fff',
 					borderColor: 'primary.main',
+					borderTopLeftRadius: '8px',
+					borderTopRightRadius: '8px',
+					borderBottom: '0px',
+					borderBottomLeftRadius: isExpanded ? undefined : '8px',
+					borderBottomRightRadius: isExpanded ? undefined : '8px',
 				}}
 			>
 				{title}
@@ -60,9 +62,14 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					width: '100%',
 					flexDirection: 'column',
 					alignItems: 'center',
-					border: 0,
 					padding: 2,
 					flexGrow: 1,
+					border: '1px solid #fff',
+					borderTop: '0px',
+					borderBottom: isExpanded ? undefined : '0px',
+					borderColor: 'primary.main',
+					borderBottomLeftRadius: '8px',
+					borderBottomRightRadius: '8px',
 				}}
 				style={{
 					height: isExpanded ? undefined : 0,

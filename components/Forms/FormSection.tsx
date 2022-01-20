@@ -12,12 +12,8 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				border: '0.25rem solid #fff',
-				borderColor: 'primary.main',
-				borderRadius: '8px',
 				width: '95%',
 				m: 2,
-				borderBlockStartWidth: 1,
 			}}
 		>
 			{title && (
@@ -25,15 +21,14 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 					sx={{
 						width: '100%',
 						fontSize: '1.75rem',
-						height: 'auto',
 						fontWeight: 'bold',
 						backgroundColor: 'primary.main',
 						padding: 1,
-						alignSelf: 'flex-start',
-						border: '0.25rem solid #fff',
+						border: '1px solid #fff',
 						borderColor: 'primary.main',
-						borderTopLeftRadius: '-8px',
-						borderTopRightRadius: '-8px',
+						borderTopLeftRadius: '8px',
+						borderTopRightRadius: '8px',
+						borderBottom: '0px',
 					}}
 				>
 					{title}
@@ -45,9 +40,12 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 					width: '100%',
 					flexDirection: 'column',
 					alignItems: 'center',
-					border: 0,
 					flexGrow: 1,
 					padding: 1,
+					border: '1px solid #fff',
+					borderTop: '0px',
+					borderColor: 'primary.main',
+					borderRadius: '8px',
 				}}
 			>
 				{children}
