@@ -1,3 +1,4 @@
+import { Reader } from '@/lib/Reader';
 import { ChangeEvent, RefObject } from 'react';
 
 export const handleFileChange =
@@ -16,11 +17,8 @@ export const handleFileChange =
 		}
 		const img = imageRef.current;
 		const imageFile = input.files[0];
-		const fileReader = new FileReader();
-		fileReader.onload = async () => {
-			img.src = fileReader.result as string;
-			img.width = 300;
-			await setImage(i, imageFile);
-		};
-		fileReader.readAsDataURL(imageFile);
+		const reader = new Reader();
+		img.src = await reader.readAsDataURL(imageFile);
+		img.width = 300;
+		await setImage(i, imageFile);
 	};
