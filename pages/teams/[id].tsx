@@ -80,25 +80,27 @@ const TeamPage = () => {
 				</Box>
 			</Section>
 			<Section title='Pit Images' expanded={Boolean(images ? images[0] : images)}>
-				{images === undefined && <CircularProgress />}
-				{images === null && <h2>There was an error getting images.</h2>}
-				{images ? (
-					!images[0] ? (
-						<h2>No images found for this team.</h2>
-					) : (
-						images.map((image) => {
-							return (
-								// eslint-disable-next-line @next/next/no-img-element
-								<img
-									key={image._id}
-									src={`data:image/*;base64,${toBase64(image.data.data)}`}
-									alt='Pit Image'
-									width={300}
-								/>
-							);
-						})
-					)
-				) : null}
+				<Box sx={{ display: 'flex', flexFlow: 'row wrap' }}>
+					{images === undefined && <CircularProgress />}
+					{images === null && <h2>There was an error getting images.</h2>}
+					{images ? (
+						!images[0] ? (
+							<h2>No images found for this team.</h2>
+						) : (
+							images.map((image) => {
+								return (
+									// eslint-disable-next-line @next/next/no-img-element
+									<img
+										key={image._id}
+										src={`data:image/*;base64,${toBase64(image.data.data)}`}
+										alt='Pit Image'
+										style={{ flexGrow: 1, maxWidth: '90vw' }}
+									/>
+								);
+							})
+						)
+					) : null}
+				</Box>
 			</Section>
 		</Layout>
 	);
