@@ -16,6 +16,16 @@ export interface PitImageI {
 	data: Buffer;
 }
 
+export interface PitImageRes {
+	_id: string;
+	formId: string;
+	teamNumber: number;
+	data: {
+		data: Uint8ClampedArray;
+		type: string;
+	};
+}
+
 const PitImage = (models.pitImage as Model<PitImageI>) || model('pitImage', pitImageSchema);
 
 export default PitImage;

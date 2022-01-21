@@ -31,7 +31,7 @@ const CardWrapper = styled.a`
 	border-radius: ${({ theme }) => theme.shape.borderRadius}px;
 `;
 
-const StandForms: React.VFC<Props> = ({ team, form }) => {
+const StandFormCard: React.VFC<Props> = ({ team, form }) => {
 	return (
 		<Link href={`/forms/${form._id}`} passHref={true}>
 			<CardWrapper>
@@ -45,4 +45,4 @@ const StandForms: React.VFC<Props> = ({ team, form }) => {
 	);
 };
 
-export default StandForms;
+export default StandFormCard;
