@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (req, res) => {
 		const images = new Formidable.IncomingForm({ multiples: true, keepExtensions: true });
 
 		images
-			.on('file', (name: string, file: { path: string }) => {
+			.on('file', (name, file) => {
 				const data = fs.readFileSync(file.path);
 				const image = new PitImage({
 					data,
