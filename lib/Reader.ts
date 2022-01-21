@@ -2,9 +2,9 @@ export class Reader {
 	private fileReader;
 
 	// ready states
-	public readonly EMPTY = 0;
-	public readonly LOADING = 1;
-	public readonly DONE = 2;
+	static readonly EMPTY = 0;
+	static readonly LOADING = 1;
+	static readonly DONE = 2;
 
 	constructor() {
 		this.fileReader = new FileReader();

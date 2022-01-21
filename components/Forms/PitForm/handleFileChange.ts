@@ -11,11 +11,12 @@ export const handleFileChange =
 	async (e: ChangeEvent<HTMLInputElement>) => {
 		const input = e.target;
 		if (!imageRef.current) return;
+		const img = imageRef.current;
 		if (!input.files || !input.files[0]) {
 			await setImage(i, undefined);
+			img.src = '';
 			return;
 		}
-		const img = imageRef.current;
 		const imageFile = input.files[0];
 		const reader = new Reader();
 		img.src = await reader.readAsDataURL(imageFile);
