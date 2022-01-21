@@ -1,6 +1,5 @@
 import { signJwt } from '@/lib/api/signJwt';
 import { middleware } from '@/middleware/middleware';
-import StandForm from '@/models/StandForm';
 import User, { UserI } from '@/models/User';
 import { hashSync } from 'bcrypt';
 import { NextApiHandler } from 'next';
@@ -29,7 +28,9 @@ const handler: NextApiHandler = async (req, res) => {
 		return res
 			.setHeader(
 				'set-cookie',
-				`access_token=${token}; HttpOnly; Secure; Path=/; Expires=${Date.now() + 43200000}`, // expires in 12 hours from browser
+				`access_token=${token}; HttpOnly; Secure; Path=/; Expires=${new Date(
+					Date.now() + 43200000,
+				).toUTCString()}`, // expires in 12 hours from browser
 			)
 			.status(200)
 			.json({ message: 'Account created!' });

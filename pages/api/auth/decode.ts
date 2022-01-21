@@ -11,9 +11,14 @@ const handler: NextApiHandler = async (req, res) => {
 		const jwtSecret = process.env.JWT_SECRET;
 		if (!jwtSecret) return res.status(500).json({ message: 'Internal server error.' });
 
-		const userToken = verify(accessToken, jwtSecret);
+		let userToken;
+		try {
+			userToken = verify(accessToken, jwtSecret);
+		} catch (err: unknown) {
+			return res.status(403).json({ message: 'You are unauthorized.' });
+		}
 
-		if (typeof userToken === 'string')
+		if (typeof userToken === 'string' || !userToken)
 			return res.status(403).json({ message: 'You are not authorized.' });
 
 		const user = await User.findOne({ username: userToken.username });
@@ -22,6 +27,7 @@ const handler: NextApiHandler = async (req, res) => {
 		return res.status(200).json(user);
 	} catch (err: unknown) {
 		console.error(err);
+		return res.status(500).json({ message: 'Internal server error.' });
 	}
 };
 
