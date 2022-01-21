@@ -26,10 +26,13 @@ export const onSubmit: (
 		filteredImages.forEach((image, i) => {
 			uploadedImages.append(`file${i}`, new Blob([image.data]));
 		});
-		const imagesRes = await fetch(`/api/forms/pit-image?formId=${formData._id}`, {
-			method: 'POST',
-			body: uploadedImages,
-		});
+		const imagesRes = await fetch(
+			`/api/forms/pit-image?formId=${formData._id}&teamNumber=${formData.teamNumber}`,
+			{
+				method: 'POST',
+				body: uploadedImages,
+			},
+		);
 	};
 
 	const onUpdate: SubmitHandler<StandFormI> = async (data, e) => {

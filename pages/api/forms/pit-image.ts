@@ -12,14 +12,18 @@ export const config: NextConfig = {
 const handler: NextApiHandler = async (req, res) => {
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve, reject) => {
-		if (!req.query.formId)
+		if (!req.query.formId || !req.query.teamNumber)
 			return res.status(400).json({ message: 'No form id recieved for image.' });
 		const images = new Formidable.IncomingForm({ multiples: true, keepExtensions: true });
 
 		images
 			.on('file', (name: string, file: { path: string }) => {
 				const data = fs.readFileSync(file.path);
-				const image = new PitImage({ data, formId: req.query.formId });
+				const image = new PitImage({
+					data,
+					formId: req.query.formId,
+					teamNumber: parseInt(String(req.query.teamNumber)),
+				});
 				image.save();
 			})
 			.on('aborted', () => {
