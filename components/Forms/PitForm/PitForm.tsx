@@ -20,7 +20,9 @@ interface Props {
 
 const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 	const { user } = useUser();
-	const [images, setImages] = useState<Partial<PitImageI>[]>(defaultForm?.images || []);
+	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
+		defaultForm?.images || [],
+	);
 	const { control, handleSubmit } = useForm<PitFormI>({ defaultValues: defaultForm });
 
 	if (!user) {
@@ -29,8 +31,10 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit(create, user, images))}>
-			<h1 style={{ textAlign: 'center' }}>ALL FIELDS ARE REQUIRED</h1>
-			<FormSection title='Match Info'>
+			<FormSection title='Images'>
+				<Images state={[images, setImages]} />
+			</FormSection>
+			<FormSection title='Info'>
 				<TextInput
 					control={control}
 					name='teamNumber'
@@ -38,11 +42,6 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 					type='number'
 					rules={{ required: true, min: 1 }}
 				/>
-			</FormSection>
-			<FormSection title='Images'>
-				<Images state={[images, setImages]} />
-			</FormSection>
-			<FormSection title='Info'>
 				<Select
 					control={control}
 					name='endPosition'
@@ -78,13 +77,10 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 					<MenuItem value={2}>High goal</MenuItem>
 					<MenuItem value={3}>Both goals</MenuItem>
 				</Select>
-				<Textarea
-					control={control}
-					name='notes'
-					label='Notes'
-					placeholder='Give some more insight into the team such as cycle times.'
-					rules={{ required: true }}
-				/>
+				<Textarea control={control} name='notes' label='Notes' rules={{ required: true }} />
+				<p style={{ textAlign: 'center', fontSize: '0.8rem' }}>
+					Give some more insight into the team such as cycle times.
+				</p>
 			</FormSection>
 			<SubmitButton>Submit</SubmitButton>
 		</Form>

@@ -1,8 +1,12 @@
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import ImageCard from './ImageCard';
 
 interface Props {
-	state: [Partial<PitImageI>[], React.Dispatch<React.SetStateAction<Partial<PitImageI>[]>>];
+	state: [
+		Partial<PitImageI & { listId: number }>[],
+		React.Dispatch<React.SetStateAction<Partial<PitImageI & { listId: number }>[]>>,
+	];
 }
 
 let id = 0;
@@ -13,7 +17,7 @@ const Images: React.VFC<Props> = ({ state }) => {
 	const addImage = () => {
 		id++;
 		const newImages = [...images];
-		newImages.push({});
+		newImages.push({ listId: id });
 		setImages(newImages);
 	};
 
@@ -21,26 +25,35 @@ const Images: React.VFC<Props> = ({ state }) => {
 		setImages((prev) => prev.filter((_, i) => i !== index));
 	};
 
+	const setImage = async (index: number, imageFile: File | undefined) => {
+		if (!images[index]) throw new Error('Set Image provided index out of bounds.');
+		const newImages = [...images];
+
+		if (!imageFile) {
+			newImages[index].data = undefined;
+			return setImages(newImages);
+		}
+
+		const data = Buffer.from(await imageFile.arrayBuffer());
+		newImages[index].data = data;
+		setImages(newImages);
+	};
+	console.log(images);
+
 	return (
 		<>
-			<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+			<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 				{images.map((image, i) => (
-					<Box key={image._id || id}>
-						<TextField type='file' />
-						<Button
-							variant='contained'
-							sx={{
-								backgroundColor: 'error.main',
-								'&:hover': { backgroundColor: 'error.dark' },
-							}}
-							onClick={() => removeImage(i)}
-						>
-							Delete
-						</Button>
-					</Box>
+					<ImageCard
+						key={image._id || image.listId || Date.now()}
+						image={image}
+						i={i}
+						removeImage={removeImage}
+						setImage={setImage}
+					/>
 				))}
 				<Box display='flex' justifyContent='center'>
-					<Button variant='contained' onClick={addImage}>
+					<Button sx={{ mt: 1 }} variant='contained' onClick={addImage}>
 						Add Image
 					</Button>
 				</Box>

@@ -16,6 +16,8 @@
 		"@mui/styled-engine": "^5.2.6",
 		"@mui/x-data-grid": "^5.2.2",
 		"bcrypt": "^5.0.1",
+		"formidable": "^2.0.1",
+		"formidable-serverless": "^1.1.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.1.5",
 		"next": "12.0.7",
@@ -26,6 +28,7 @@
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
+		"@types/formidable": "^2.0.3",
 		"@types/jsonwebtoken": "^8.5.6",
 		"@types/react": "17.0.34",
 		"@typescript-eslint/eslint-plugin": "^5.3.1",

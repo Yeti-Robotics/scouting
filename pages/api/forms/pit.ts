@@ -7,9 +7,9 @@ const handler: NextApiHandler = async (req, res) => {
 		const form: PitFormI = JSON.parse(req.body);
 
 		const savedForm = new PitForm(form);
-		await savedForm.save();
+		const inserted = await savedForm.save();
 
-		return res.status(200).json({ message: 'Form saved!' });
+		return res.status(200).json(inserted);
 	} catch (err: unknown) {
 		console.error(err);
 		return res.status(500).json({ message: 'Internal server error.' });

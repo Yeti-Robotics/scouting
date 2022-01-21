@@ -1,4 +1,4 @@
-import { model, models, Schema, SchemaTypes } from 'mongoose';
+import { Model, model, models, Schema, SchemaTypes } from 'mongoose';
 
 const pitImageSchema = new Schema<PitImageI>(
 	{
@@ -14,6 +14,6 @@ export interface PitImageI {
 	data: Buffer;
 }
 
-const PitImage = models.pitImage || model('piImage', pitImageSchema);
+const PitImage = (models.pitImage as Model<PitImageI>) || model('pitImage', pitImageSchema);
 
 export default PitImage;
