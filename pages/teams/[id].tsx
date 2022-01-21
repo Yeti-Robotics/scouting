@@ -73,6 +73,7 @@ const TeamPage = () => {
 			</Section>
 			<Section title='Pit Forms' expanded={Boolean(pitForms[0])}>
 				<Box sx={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
+					{!pitForms[0] && <h2>No pit forms for this team.</h2>}
 					{pitForms.map((form) => (
 						<PitFormCard key={form._id} team={team} form={form} />
 					))}
