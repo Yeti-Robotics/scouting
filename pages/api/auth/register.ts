@@ -6,9 +6,8 @@ import { hashSync } from 'bcrypt';
 
 // body should contain a full user minus administrator
 const handler = new RouteHandler();
-handler.use(connectDB);
 
-handler.post = async (req, res) => {
+handler.use(connectDB).post(async (req, res) => {
 	const user: UserI = JSON.parse(req.body);
 
 	if (await User.exists({ username: user.username }))
@@ -36,6 +35,6 @@ handler.post = async (req, res) => {
 		)
 		.status(200)
 		.json({ message: 'Account created!' });
-};
+});
 
 export default handler;

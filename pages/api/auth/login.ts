@@ -6,9 +6,8 @@ import { compareSync } from 'bcrypt';
 
 // should receive username and password
 const handler = new RouteHandler();
-handler.use(connectDB);
 
-handler.post = async (req, res) => {
+handler.use(connectDB).post(async (req, res) => {
 	const user = JSON.parse(req.body) as UserI;
 	const existingUser = await User.findOne({ username: user.username });
 
@@ -26,6 +25,6 @@ handler.post = async (req, res) => {
 	} else {
 		return res.status(401).json({ message: 'Incorrect username or password.' });
 	}
-};
+});
 
 export default handler;

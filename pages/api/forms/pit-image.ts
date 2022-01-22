@@ -12,9 +12,8 @@ export const config: NextConfig = {
 };
 
 const handler = new RouteHandler();
-handler.use(connectDB);
 
-handler.post = async (req, res) => {
+handler.use(connectDB).post(async (req, res) => {
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve, reject) => {
 		if (!req.query.formId || !req.query.teamNumber)
@@ -40,6 +39,6 @@ handler.post = async (req, res) => {
 
 		await images.parse(req);
 	});
-};
+});
 
 export default handler;
