@@ -5,7 +5,7 @@ type Handler<Req, Res> = (req: Req, res: Res) => void | Promise<void>;
 export type Middleware<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
-> = (req: Req, res: Res) => void | Promise<void>;
+> = (req: Req, res: Res, end: (lastRes: (lastRes: Res) => void) => void) => void | Promise<void>;
 
 interface Constructor<
 	Req extends NextApiRequest = NextApiRequest,
@@ -25,7 +25,7 @@ const defaultOnError: Constructor<NextApiRequest, NextApiResponse>['onError'] = 
 	console.error(err);
 	return res.status(500).json({ message: 'Internal server error.' });
 };
-
+const debug = true;
 export class RouteHandler<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
@@ -92,15 +92,30 @@ export class RouteHandler<
 
 		return new Promise<void>((resolve, reject) => {
 			try {
-				const response = this.middlewares[0] // if have middleware run them
+				this.middlewares[0] // if have middleware run them
 					? this.middlewares.map(async (middleware, i, arr) => {
-							await middleware(req, res);
+							// function to end request
+							const end: (lastRes: (lastRes: Res) => void) => void = (lastRes) => {
+								lastRes(res);
+								res.end();
+								resolve();
+							};
+
+							if (res.writableEnded) return resolve();
+							debug && console.log(`middleware ${i} start`);
+							await middleware(req, res, end);
+							debug && console.log(`middleware ${i} end`);
+							console.log(res.writable);
 
 							// call handler at end of middleware chain
-							return i === arr.length - 1 ? this.callHandler(req, res) : undefined;
+							if (i === arr.length - 1 && !res.writableEnded) {
+								debug && console.log(`handler start`);
+								const handlerRes = await this.callHandler(req, res);
+								debug && console.log(`handler end`);
+								resolve(handlerRes);
+							}
 					  })[this.middlewares.length - 1]
-					: this.callHandler(req, res); // if not just call handler
-				resolve(response);
+					: resolve(this.callHandler(req, res)); // if not just call handler
 			} catch (err: unknown) {
 				const errorRes = this.onError(req, res, err);
 				reject(errorRes);
