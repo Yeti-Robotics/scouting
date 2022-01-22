@@ -2,7 +2,7 @@ import StandForm from '@/models/StandForm';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
 import { mostCommonEndPos } from '@/lib/mode';
 import PitForm from '@/models/PitForm';
-import { RouteHandler } from '@/lib/RouteHandler';
+import { RouteHandler } from '@/lib/api/RouteHandler';
 import connectDB from '@/middleware/connect-db';
 
 const handler = new RouteHandler();

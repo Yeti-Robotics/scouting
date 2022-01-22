@@ -2,7 +2,7 @@ import PitImage from '@/models/PitImage';
 import Formidable from 'formidable-serverless';
 import { NextConfig } from 'next';
 import fs from 'fs';
-import { RouteHandler } from '@/lib/RouteHandler';
+import { RouteHandler } from '@/lib/api/RouteHandler';
 import connectDB from '@/middleware/connect-db';
 
 export const config: NextConfig = {

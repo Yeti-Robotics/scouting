@@ -1,4 +1,4 @@
-import { RouteHandler } from '@/lib/RouteHandler';
+import { RouteHandler } from '@/lib/api/RouteHandler';
 
 const handler = new RouteHandler();
 
