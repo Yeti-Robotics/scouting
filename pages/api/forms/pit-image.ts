@@ -1,7 +1,9 @@
 import PitImage from '@/models/PitImage';
 import Formidable from 'formidable-serverless';
-import { NextApiHandler, NextConfig } from 'next';
+import { NextConfig } from 'next';
 import fs from 'fs';
+import { RouteHandler } from '@/lib/RouteHandler';
+import connectDB from '@/middleware/connect-db';
 
 export const config: NextConfig = {
 	api: {
@@ -9,7 +11,10 @@ export const config: NextConfig = {
 	},
 };
 
-const handler: NextApiHandler = async (req, res) => {
+const handler = new RouteHandler();
+handler.use(connectDB);
+
+handler.post = async (req, res) => {
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve, reject) => {
 		if (!req.query.formId || !req.query.teamNumber)

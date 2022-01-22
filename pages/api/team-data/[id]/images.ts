@@ -1,17 +1,15 @@
-import type { NextApiHandler } from 'next';
-import { middleware } from '@/middleware/middleware';
 import PitImage from '@/models/PitImage';
+import { RouteHandler } from '@/lib/RouteHandler';
+import connectDB from '@/middleware/connect-db';
 
-const handler: NextApiHandler = async (req, res) => {
-	try {
-		const filter = String(req.query.id);
+const handler = new RouteHandler();
+handler.use(connectDB);
 
-		const pitImages = await PitImage.find({ teamNumber: parseInt(filter) });
-		return res.status(200).json(pitImages);
-	} catch (err) {
-		//console.error(err);
-		return res.status(500).json({ message: 'Internal server error.' });
-	}
+handler.get = async (req, res) => {
+	const filter = String(req.query.id);
+
+	const pitImages = await PitImage.find({ teamNumber: parseInt(filter) });
+	return res.status(200).json(pitImages);
 };
 
-export default middleware(handler);
+export default handler;

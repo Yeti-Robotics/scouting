@@ -1,7 +1,7 @@
-import { NextApiHandler } from 'next';
+import { RouteHandler } from '@/lib/RouteHandler';
 
-const handler: NextApiHandler = (req, res) => {
-	res.status(200).send('pinged');
-};
+const handler = new RouteHandler();
+
+handler.get = (req, res) => res.status(200).send('pinged');
 
 export default handler;

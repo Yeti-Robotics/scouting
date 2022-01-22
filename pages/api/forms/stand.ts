@@ -1,19 +1,17 @@
-import { middleware } from '@/middleware/middleware';
+import { RouteHandler } from '@/lib/RouteHandler';
+import connectDB from '@/middleware/connect-db';
 import StandForm, { StandFormI } from '@/models/StandForm';
-import { NextApiHandler } from 'next';
 
-const handler: NextApiHandler = async (req, res) => {
-	try {
-		const form: StandFormI = JSON.parse(req.body);
+const handler = new RouteHandler();
+handler.use(connectDB);
 
-		const savedForm = new StandForm(form);
-		await savedForm.save();
+handler.post = async (req, res) => {
+	const form: StandFormI = JSON.parse(req.body);
 
-		return res.status(200).json({ message: 'Form saved!' });
-	} catch (err: unknown) {
-		console.error(err);
-		return res.status(500).json({ message: 'Internal server error.' });
-	}
+	const savedForm = new StandForm(form);
+	await savedForm.save();
+
+	return res.status(200).json({ message: 'Form saved!' });
 };
 
-export default middleware(handler);
+export default handler;

@@ -1,18 +1,17 @@
-import { middleware } from '@/middleware/middleware';
+import { RouteHandler } from '@/lib/RouteHandler';
+import connectDB from '@/middleware/connect-db';
 import User from '@/models/User';
-import { NextApiHandler } from 'next';
 
 // Body should just be a string with the username
-const handler: NextApiHandler = async (req, res) => {
-	try {
-		const username: string = req.body;
-		if (await User.exists({ username }))
-			return res.status(400).json({ message: 'Username is already in use.' });
+const handler = new RouteHandler();
+handler.use(connectDB);
 
-		return res.status(200).json({ message: 'Good username!' });
-	} catch (err: unknown) {
-		console.error(err);
-	}
+handler.post = async (req, res) => {
+	const username: string = req.body;
+	if (await User.exists({ username }))
+		return res.status(400).json({ message: 'Username is already in use.' });
+
+	return res.status(200).json({ message: 'Good username!' });
 };
 
-export default middleware(handler);
+export default handler;

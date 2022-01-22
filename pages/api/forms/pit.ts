@@ -1,19 +1,17 @@
-import { middleware } from '@/middleware/middleware';
+import { RouteHandler } from '@/lib/RouteHandler';
+import connectDB from '@/middleware/connect-db';
 import PitForm, { PitFormI } from '@/models/PitForm';
-import { NextApiHandler } from 'next';
 
-const handler: NextApiHandler = async (req, res) => {
-	try {
-		const form: PitFormI = JSON.parse(req.body);
+const handler = new RouteHandler();
+handler.use(connectDB);
 
-		const savedForm = new PitForm(form);
-		const inserted = await savedForm.save();
+handler.post = async (req, res) => {
+	const form: PitFormI = JSON.parse(req.body);
 
-		return res.status(200).json(inserted);
-	} catch (err: unknown) {
-		console.error(err);
-		return res.status(500).json({ message: 'Internal server error.' });
-	}
+	const savedForm = new PitForm(form);
+	const inserted = await savedForm.save();
+
+	return res.status(200).json(inserted);
 };
 
-export default middleware(handler);
+export default handler;

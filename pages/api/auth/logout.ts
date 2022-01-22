@@ -1,6 +1,8 @@
-import { NextApiHandler } from 'next';
+import { RouteHandler } from '@/lib/RouteHandler';
 
-const handler: NextApiHandler = async (req, res) => {
+const handler = new RouteHandler();
+
+handler.get = (req, res) => {
 	res.setHeader(
 		'set-cookie',
 		`access_token=; Secure; HttpOnly; Path=/; Expires=${new Date().toUTCString()}`,
