@@ -10,12 +10,17 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
-	useEffect(() => setMode(prefersDarkMode ? 'dark' : 'light'), [prefersDarkMode]);
+	useEffect(() => {
+		const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+		const systemPreference = prefersDarkMode ? 'dark' : 'light';
+		setMode(savedTheme ? savedTheme : systemPreference);
+	}, [prefersDarkMode]);
 
-	const toggleTheme = useCallback(
-		() => setMode((prev) => (prev === 'light' ? 'dark' : 'light')),
-		[mode],
-	);
+	const toggleTheme = useCallback(() => {
+		const savedTheme = mode === 'light' ? 'dark' : 'light';
+		localStorage.setItem('theme', savedTheme);
+		setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+	}, [mode]);
 
 	return <ThemeContext.Provider value={{ mode, toggleTheme }}>{children}</ThemeContext.Provider>;
 };
