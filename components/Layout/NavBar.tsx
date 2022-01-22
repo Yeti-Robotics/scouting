@@ -13,7 +13,6 @@ const NavBar = () => {
 			sx={{
 				display: 'flex',
 				backgroundColor: 'primary.main',
-				borderBottom: '2px solid black',
 				width: '100%',
 				alignItems: 'center',
 				opacity: 1,
