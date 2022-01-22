@@ -8,12 +8,14 @@ type Func = (
 
 export const setOnline: Func = (isOffline, setIsOffline) => async () => {
 	const controller = new AbortController();
-	console.log('set online runned');
 
 	const currentForms: StandFormI[] | false = JSON.parse(
 		sessionStorage.getItem('standForms') || 'false',
 	);
-	const pingRes = await fetchTimeout('/api/ping', 3000, { signal: controller.signal })
+	const pingRes = await fetchTimeout('/api/ping', 3000, {
+		signal: controller.signal,
+		method: 'GET',
+	})
 		.then((res) => {
 			return res.status ? false : true;
 		})

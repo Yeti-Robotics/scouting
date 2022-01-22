@@ -92,14 +92,14 @@ export class RouteHandler<
 
 		return new Promise<void>((resolve, reject) => {
 			try {
-				const response = this.middlewares.map((middleware, i, arr) => {
-					middleware(req, res);
-					// call handler at end of middleware chain
-					if (i === arr.length - 1) {
-						const handlerRes = this.callHandler(req, res);
-						return handlerRes;
-					}
-				})[0];
+				const response = this.middlewares[0] // if have middleware run them
+					? this.middlewares.map(async (middleware, i, arr) => {
+							await middleware(req, res);
+
+							// call handler at end of middleware chain
+							return i === arr.length - 1 ? this.callHandler(req, res) : undefined;
+					  })[this.middlewares.length - 1]
+					: this.callHandler(req, res); // if not just call handler
 				resolve(response);
 			} catch (err: unknown) {
 				const errorRes = this.onError(req, res, err);
