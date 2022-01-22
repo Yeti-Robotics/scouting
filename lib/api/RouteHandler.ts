@@ -69,7 +69,7 @@ export class RouteHandler<
 		return this;
 	}
 
-	callHandler(req: Req, res: Res) {
+	async callHandler(req: Req, res: Res) {
 		switch (req.method?.toUpperCase()) {
 			case 'GET':
 				return this.get(req, res);
@@ -86,18 +86,25 @@ export class RouteHandler<
 		}
 	}
 
-	private _call(...args: [Req, Res]) {
+	private async _call(...args: [Req, Res]) {
 		const req = args[0];
 		const res = args[1];
 
-		try {
-			this.middlewares.forEach(async (middleware, i) => {
-				await middleware(req, res);
-				// call handler at end of middleware chain
-				if (i === this.middlewares.length - 1) this.callHandler(req, res);
-			});
-		} catch (err: unknown) {
-			this.onError(req, res, err);
-		}
+		return new Promise<void>((resolve, reject) => {
+			try {
+				const response = this.middlewares.map((middleware, i, arr) => {
+					middleware(req, res);
+					// call handler at end of middleware chain
+					if (i === arr.length - 1) {
+						const handlerRes = this.callHandler(req, res);
+						return handlerRes;
+					}
+				})[0];
+				resolve(response);
+			} catch (err: unknown) {
+				const errorRes = this.onError(req, res, err);
+				reject(errorRes);
+			}
+		});
 	}
 }

@@ -24,4 +24,5 @@ export const auth: Middleware<ReqWUser> = async (req, res) => {
 	if (!user) return res.status(403).json({ message: 'You are not authorized.' });
 
 	req.user = user;
+	return;
 };
