@@ -38,7 +38,7 @@ const Textarea: React.VFC<Props> = ({
 		<Box sx={{ m: 1, width: '100%' }}>
 			<Controller
 				name={name}
-				defaultValue={defaultValue}
+				defaultValue={defaultValue || ''}
 				control={control}
 				rules={rules}
 				render={({ field, fieldState: { error } }) => (
@@ -54,7 +54,7 @@ const Textarea: React.VFC<Props> = ({
 								: addRequired(rules?.required, name)
 						}
 						placeholder={placeholder || label || name}
-						ref={field.ref}
+						inputRef={field.ref}
 						name={field.name}
 						onChange={(e) => {
 							field.onChange(e);

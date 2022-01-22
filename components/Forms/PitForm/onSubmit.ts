@@ -2,16 +2,19 @@ import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { StandFormI } from '@/models/StandForm';
 import { UserI } from '@/models/User';
-import { SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, UseFormReset } from 'react-hook-form';
 
-// returns dif function depending on whether the form is for updating or creation
-export const onSubmit: (
+type PitFormOnSubmit = (
 	create: boolean,
 	user: UserI,
+	reset: UseFormReset<PitFormI>,
 	images: Partial<PitImageI & { listId: number }>[],
-) => SubmitHandler<StandFormI> = (create, user, images) => {
+	setImages: React.Dispatch<React.SetStateAction<Partial<PitImageI & { listId: number }>[]>>,
+) => SubmitHandler<StandFormI>;
+
+// returns dif function depending on whether the form is for updating or creation
+export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages) => {
 	const onCreate: SubmitHandler<StandFormI> = async (data, e) => {
-		console.log(data);
 		const formDataRes = await fetch('/api/forms/pit', {
 			method: 'POST',
 			body: JSON.stringify({ ...data, scouter: user.username }),
@@ -33,6 +36,9 @@ export const onSubmit: (
 				body: uploadedImages,
 			},
 		);
+		if (!imagesRes.ok) return;
+		reset();
+		setImages([]);
 	};
 
 	const onUpdate: SubmitHandler<StandFormI> = async (data, e) => {

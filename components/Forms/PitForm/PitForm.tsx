@@ -23,14 +23,14 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultForm?.images || [],
 	);
-	const { control, handleSubmit } = useForm<PitFormI>({ defaultValues: defaultForm });
+	const { control, handleSubmit, reset } = useForm<PitFormI>({ defaultValues: defaultForm });
 
 	if (!user) {
 		return <CircularProgress />;
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user, images))}>
+		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages))}>
 			<FormSection title='Images'>
 				<Images state={[images, setImages]} />
 			</FormSection>

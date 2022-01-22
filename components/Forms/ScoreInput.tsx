@@ -67,7 +67,7 @@ const ScoreInput: React.VFC<Props> = ({ name, control, rules, onChange = (e) => 
 							<TextField
 								type='number'
 								sx={{ defaultSx, ...defaultInputSx }}
-								ref={field.ref}
+								inputRef={field.ref}
 								name={field.name}
 								onChange={(e) => {
 									field.onChange(e);

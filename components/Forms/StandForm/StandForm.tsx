@@ -18,14 +18,14 @@ interface Props {
 
 const StandForm: React.VFC<Props> = ({ create }) => {
 	const { user } = useUser();
-	const { control, handleSubmit } = useForm<StandFormI>();
+	const { control, handleSubmit, reset } = useForm<StandFormI>();
 
 	if (!user) {
 		return <CircularProgress />;
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Form onSubmit={handleSubmit(onSubmit(create, user, reset))}>
 			<h1 style={{ textAlign: 'center' }}>ALL FIELDS ARE REQUIRED</h1>
 			<FormSection title='Match Info'>
 				<TextInput
@@ -51,18 +51,11 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 						alignItems: 'flex-start',
 					}}
 				>
-					<Checkbox
-						control={control}
-						name='preload'
-						label='Preloaded?'
-						rules={{ required: true }}
-						size='medium'
-					/>
+					<Checkbox control={control} name='preload' label='Preloaded?' size='medium' />
 					<Checkbox
 						control={control}
 						name='initiationLine'
 						label='Did they cross the line?'
-						rules={{ required: true }}
 						size='medium'
 					/>
 				</Box>

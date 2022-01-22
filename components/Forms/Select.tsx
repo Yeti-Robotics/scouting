@@ -62,6 +62,7 @@ const Select: React.FC<Props> = ({
 							value={field.value}
 							error={Boolean(error)}
 							disabled={disabled}
+							inputRef={field.ref}
 						>
 							{rules?.required && (
 								<MenuItem disabled value=''>

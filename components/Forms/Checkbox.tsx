@@ -28,7 +28,7 @@ const Checkbox: React.VFC<Props> = ({
 		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 1 }}>
 			<Controller
 				name={name}
-				defaultValue={defaultValue}
+				defaultValue={defaultValue || false}
 				control={control}
 				rules={rules}
 				render={({ field }) => (
@@ -46,9 +46,10 @@ const Checkbox: React.VFC<Props> = ({
 									field.onChange(e);
 									onChange(e); // from props
 								}}
+								inputRef={field.ref}
 								sx={{ '& .MuiSvgIcon-root': { fontSize: 64 } }}
 								onBlur={field.onBlur}
-								value={field.value}
+								checked={field.value}
 								defaultChecked={defaultValue}
 								size={size}
 							/>

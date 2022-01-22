@@ -38,7 +38,6 @@ const Images: React.VFC<Props> = ({ state }) => {
 		newImages[index].data = data;
 		setImages(newImages);
 	};
-	console.log(images);
 
 	return (
 		<>

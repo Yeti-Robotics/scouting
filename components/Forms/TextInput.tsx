@@ -56,7 +56,6 @@ const TextInput: React.VFC<Props> = ({
 								: addRequired(rules?.required, name)
 						}
 						placeholder={placeholder || label || name}
-						ref={field.ref}
 						name={field.name}
 						onChange={(e) => {
 							field.onChange(e);
