@@ -1,6 +1,7 @@
 import { useUser } from '@/lib/useUser';
 import { StandFormI } from '@/models/StandForm';
 import { Box, CircularProgress, MenuItem } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
@@ -10,7 +11,9 @@ import Select from '../Select';
 import SubmitButton from '../SubmitButton';
 import Textarea from '../Textarea';
 import TextInput from '../TextInput';
+import ConnectionIndicator from './ConnectionIndicator';
 import { onSubmit } from './onSubmit';
+import { setOnline } from './setOnline';
 
 interface Props {
 	create: boolean;
@@ -18,15 +21,31 @@ interface Props {
 
 const StandForm: React.VFC<Props> = ({ create }) => {
 	const { user } = useUser();
+	const [isOffline, setIsOffline] = useState(false);
 	const { control, handleSubmit, reset } = useForm<StandFormI>();
+
+	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
+
+	useEffect(() => {
+		const setOffline = () => {
+			setIsOffline(true);
+		};
+
+		window.addEventListener('offline', setOffline);
+		window.addEventListener('online', handleOnline);
+		return () => {
+			window.removeEventListener('offline', setOffline);
+			window.removeEventListener('online', handleOnline);
+		};
+	}, []);
 
 	if (!user) {
 		return <CircularProgress />;
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user, reset))}>
-			<h1 style={{ textAlign: 'center' }}>ALL FIELDS ARE REQUIRED</h1>
+		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline))}>
+			<ConnectionIndicator isOffline={isOffline} />
 			<FormSection title='Match Info'>
 				<TextInput
 					control={control}
