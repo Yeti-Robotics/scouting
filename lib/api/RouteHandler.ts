@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import CallableClass from '../CallableClass';
 
 export type HandlerData<Req, Res> = {
 	ignoredMiddleware: string[];
@@ -47,8 +48,7 @@ const debug = false;
 export class RouteHandler<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
-> extends Function {
-	private _bound;
+> extends CallableClass {
 	private onError!: RouteHandlerConstructor<Req, Res>['onError'];
 	private middlewares!: RouteHandlerMiddleware<Req, Res>[];
 	private onGet!: HandlerData<Req, Res>;
@@ -64,27 +64,24 @@ export class RouteHandler<
 			defaultMiddlewares: [],
 		},
 	) {
-		super('...args', 'return this._bound._call(...args)');
+		super();
 		// Or without the spread/rest operator:
 		// super('return this._bound._call.apply(this._bound, arguments)')
 
-		const _this = this.bind(this);
-		this._bound = _this;
-
-		_this.onError = onError;
-		_this.middlewares = defaultMiddlewares;
-		_this.onError;
+		this._.onError = onError;
+		this._.middlewares = defaultMiddlewares;
+		this._.onError;
 
 		// default returns 405 with message method not allowed
 		// default ignores all middleware
-		_this.onGet = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		_this.onPost = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		_this.onPatch = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		_this.onPut = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		_this.onDelete = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		_this.onNoMethod = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onGet = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onPost = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onPatch = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onPut = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onDelete = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this._.onNoMethod = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 
-		return _this;
+		return this._;
 	}
 
 	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
@@ -138,7 +135,7 @@ export class RouteHandler<
 		return this;
 	}
 
-	private async _call(req: Req, res: Res) {
+	async _call(req: Req, res: Res) {
 		let selectedHandler: HandlerData<Req, Res>;
 
 		return new Promise<void>((resolve, reject) => {
