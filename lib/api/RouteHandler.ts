@@ -1,14 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 type HandlerData<Req, Res> = {
-	ignoredMiddleware: number[];
+	ignoredMiddleware: string[];
 	handler: (req: Req, res: Res) => void | Promise<void>;
 };
 
 export type Middleware<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
-> = (req: Req, res: Res, end: (lastRes: (lastRes: Res) => void) => void) => void | Promise<void>;
+> = {
+	key: string;
+	middleware: (
+		req: Req,
+		res: Res,
+		end: (lastRes: (lastRes: Res) => void) => void,
+	) => void | Promise<void>;
+};
 
 interface Constructor<
 	Req extends NextApiRequest = NextApiRequest,
@@ -19,16 +26,16 @@ interface Constructor<
 }
 
 const defaultHandler: (req: NextApiRequest, res: NextApiResponse) => void = (req, res) => {
-	res.status(400).send(
-		'This is a default handler. Set it to something on your route handler object',
-	);
+	return res
+		.status(405)
+		.json({ message: `${req.method || 'No method'} is not allowed on this route.` });
 };
 
-const defaultIgnored: number[] = [];
+const defaultIgnored: string[] = ['ALL'];
 
 const defaultOnError: Constructor<NextApiRequest, NextApiResponse>['onError'] = (_, res, err) => {
 	console.error(err);
-	return res.status(500).json({ message: 'Internal server error.' });
+	return res.status(405).json({ message: 'Internal server error.' });
 };
 
 const debug = false;
@@ -45,6 +52,7 @@ export class RouteHandler<
 	private onPatch!: HandlerData<Req, Res>;
 	private onPut!: HandlerData<Req, Res>;
 	private onDelete!: HandlerData<Req, Res>;
+	private onNoMethod!: HandlerData<Req, Res>;
 
 	constructor(
 		{ onError = defaultOnError, defaultMiddlewares = [] }: Constructor<Req, Res> = {
@@ -63,58 +71,78 @@ export class RouteHandler<
 		_this.middlewares = defaultMiddlewares;
 		_this.onError;
 
+		// default returns 405 with message method not allowed
+		// default ignores all middleware
 		_this.onGet = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 		_this.onPost = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 		_this.onPatch = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 		_this.onPut = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 		_this.onDelete = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		_this.onNoMethod = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 
 		return _this;
 	}
 
-	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: number[] = []) {
+	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
 		this.onGet.handler = handler;
 		this.onGet.ignoredMiddleware = ignoreMiddleware;
 		return this;
 	}
 
-	post(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: number[] = []) {
+	post(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
 		this.onPost.handler = handler;
 		this.onPost.ignoredMiddleware = ignoreMiddleware;
 		return this;
 	}
 
-	patch(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: number[] = []) {
+	patch(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
 		this.onPatch.handler = handler;
 		this.onPatch.ignoredMiddleware = ignoreMiddleware;
 		return this;
 	}
 
-	put(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: number[] = []) {
+	put(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
 		this.onPut.handler = handler;
 		this.onPut.ignoredMiddleware = ignoreMiddleware;
 		return this;
 	}
 
-	delete(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: number[] = []) {
+	delete(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
 		this.onDelete.handler = handler;
 		this.onDelete.ignoredMiddleware = ignoreMiddleware;
 		return this;
 	}
 
+	noMethod(
+		handler: (req: Req, res: Res) => void | Promise<void>,
+		ignoreMiddleware: string[] = [],
+	) {
+		this.onNoMethod.handler = handler;
+		this.onNoMethod.ignoredMiddleware = ignoreMiddleware;
+		return this;
+	}
+
 	use(middleware: Middleware<Req, Res>) {
+		if (middleware.key === 'ALL') throw new Error('Middleware key "ALL" is reserved.');
+		if (!middleware.key || !middleware.middleware)
+			throw new Error(
+				'Middleware should have the shape of { key: string, middleware: (req, res, end) => void | Promise<void> }. You are missing the key, middleware, or both.',
+			);
+		if (this.middlewares.find((mid) => mid.key === middleware.key))
+			throw new Error(
+				`A middle ware is already using key: "${middleware.key}". Choose another key.`,
+			);
+
 		this.middlewares.push(middleware);
 		return this;
 	}
 
-	private async _call(...args: [Req, Res]) {
-		const req = args[0];
-		const res = args[1];
+	private async _call(req: Req, res: Res) {
 		let selectedHandler: HandlerData<Req, Res>;
 
 		return new Promise<void>((resolve, reject) => {
 			try {
-				switch (req.method?.toUpperCase()) {
+				switch (req.method) {
 					case 'GET':
 						selectedHandler = this.onGet;
 						break;
@@ -131,34 +159,37 @@ export class RouteHandler<
 						selectedHandler = this.onDelete;
 						break;
 					default:
-						resolve();
+						selectedHandler = this.onNoMethod;
 				}
-				this.middlewares[0] // if have middleware run them
-					? this.middlewares.map(async (middleware, i, arr) => {
-							if (selectedHandler.ignoredMiddleware.includes(i)) return;
-							// function to end request
-							const end: (lastRes: (lastRes: Res) => void) => void = async (
-								lastRes,
-							) => {
-								lastRes(res);
-								res.end();
-								resolve();
-							};
 
-							if (res.writableEnded) return resolve();
-							/* debug log */ debug && console.log(`middleware ${i} called`);
-							await middleware(req, res, end);
-							/* debug log */ debug && console.log(`middleware ${i} end`);
+				if (!selectedHandler.ignoredMiddleware.includes('ALL') && this.middlewares[0]) {
+					// if have middleware and no ALL skip run middleware
+					this.middlewares.map(async (middleware, i, arr) => {
+						// function to end request
+						const end: (lastRes: (lastRes: Res) => void) => void = async (lastRes) => {
+							lastRes(res);
+							res.end();
+							resolve();
+						};
 
-							// call handler at end of middleware chain i res end isn't called
-							if (i === arr.length - 1 && !res.writableEnded) {
-								/* debug log */ debug && console.log(`handler called`);
-								const handlerRes = await selectedHandler.handler(req, res);
-								/* debug log */ debug && console.log(`handler end`);
-								resolve(handlerRes);
-							}
-					  })[this.middlewares.length - 1]
-					: resolve(selectedHandler.handler(req, res)); // if not just call handler
+						if (res.writableEnded) return resolve();
+						/* debug log */ debug && console.log(`middleware ${i} called`);
+						if (!selectedHandler.ignoredMiddleware.includes(middleware.key))
+							await middleware.middleware(req, res, end);
+						/* debug log */ debug && console.log(`middleware ${i} end`);
+
+						// call handler at end of middleware chain and res end isn't called
+						if (i === arr.length - 1 && !res.writableEnded) {
+							/* debug log */ debug && console.log(`handler called`);
+							const handlerRes = await selectedHandler.handler(req, res);
+							/* debug log */ debug && console.log(`handler end`);
+							resolve(handlerRes);
+						}
+					})[this.middlewares.length - 1];
+				} else {
+					// if not just call handler
+					resolve(selectedHandler.handler(req, res));
+				}
 			} catch (err: unknown) {
 				const errorRes = this.onError(req, res, err);
 				reject(errorRes);
