@@ -87,42 +87,39 @@ export class RouteHandler<
 		return _this;
 	}
 
-	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
-		this.onGet.handler = handler;
-		this.onGet.ignoredMiddleware = ignoreMiddleware;
+	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
+		this.onGet = { handler, ignoredMiddleware };
 		return this;
 	}
 
-	post(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
-		this.onPost.handler = handler;
-		this.onPost.ignoredMiddleware = ignoreMiddleware;
+	post(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
+		this.onPost = { handler, ignoredMiddleware };
 		return this;
 	}
 
-	patch(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
-		this.onPatch.handler = handler;
-		this.onPatch.ignoredMiddleware = ignoreMiddleware;
+	patch(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
+		this.onPatch = { handler, ignoredMiddleware };
 		return this;
 	}
 
-	put(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
-		this.onPut.handler = handler;
-		this.onPut.ignoredMiddleware = ignoreMiddleware;
+	put(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
+		this.onPut = { handler, ignoredMiddleware };
 		return this;
 	}
 
-	delete(handler: (req: Req, res: Res) => void | Promise<void>, ignoreMiddleware: string[] = []) {
-		this.onDelete.handler = handler;
-		this.onDelete.ignoredMiddleware = ignoreMiddleware;
+	delete(
+		handler: (req: Req, res: Res) => void | Promise<void>,
+		ignoredMiddleware: string[] = [],
+	) {
+		this.onDelete = { handler, ignoredMiddleware };
 		return this;
 	}
 
 	noMethod(
 		handler: (req: Req, res: Res) => void | Promise<void>,
-		ignoreMiddleware: string[] = [],
+		ignoredMiddleware: string[] = [],
 	) {
-		this.onNoMethod.handler = handler;
-		this.onNoMethod.ignoredMiddleware = ignoreMiddleware;
+		this.onNoMethod = { handler, ignoredMiddleware };
 		return this;
 	}
 
@@ -168,7 +165,7 @@ export class RouteHandler<
 
 				if (!selectedHandler.ignoredMiddleware.includes('ALL') && this.middlewares[0]) {
 					// if have middleware and no ALL skip run middleware
-					this.middlewares.map(async (middleware, i, arr) => {
+					this.middlewares.forEach(async (middleware, i, arr) => {
 						// function to end request
 						const end: (lastRes: (lastRes: Res) => void) => void = async (lastRes) => {
 							lastRes(res);
@@ -189,7 +186,7 @@ export class RouteHandler<
 							/* debug log */ debug && console.log(`handler end`);
 							resolve(handlerRes);
 						}
-					})[this.middlewares.length - 1];
+					});
 				} else {
 					// if not just call handler
 					resolve(selectedHandler.handler(req, res));

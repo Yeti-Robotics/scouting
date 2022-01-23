@@ -3,10 +3,9 @@ import TeamDataTable from '@/components/TeamDataTable';
 import fetcher from '@/lib/fetch';
 import { TeamData } from '@/models/aggregations/teamData';
 import { CircularProgress } from '@mui/material';
-import type { NextPage } from 'next';
 import useSWR from 'swr';
 
-const Home: NextPage = () => {
+const Home = () => {
 	const { data, error } = useSWR<TeamData[]>('/api/team-data', fetcher);
 
 	if (!data) {
