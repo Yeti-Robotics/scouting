@@ -1,11 +1,11 @@
-import { Middleware } from '@/lib/api/RouteHandler';
+import { RouteHandlerMiddleware } from '@/lib/api/RouteHandler';
 import { ReqWUser } from '@/lib/api/types';
 import User from '@/models/User';
 import { verify } from 'jsonwebtoken';
 
 export const AUTH_MIDDLEWARE_KEY = 'auth';
 
-export const auth: Middleware<ReqWUser> = {
+export const auth: RouteHandlerMiddleware<ReqWUser> = {
 	key: AUTH_MIDDLEWARE_KEY,
 	middleware: async (req, res, end) => {
 		const accessToken = req.cookies['access_token'];

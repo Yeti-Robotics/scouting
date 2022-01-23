@@ -1,9 +1,9 @@
-import { Middleware } from '@/lib/api/RouteHandler';
+import { RouteHandlerMiddleware } from '@/lib/api/RouteHandler';
 import mongoose from 'mongoose';
 
 export const CONNECT_DB_MIDDLEWARE_KEY = 'connectDB';
 
-const connectDB: Middleware = {
+const connectDB: RouteHandlerMiddleware = {
 	key: CONNECT_DB_MIDDLEWARE_KEY,
 	middleware: async () => {
 		const uri = process.env.DB_URI;

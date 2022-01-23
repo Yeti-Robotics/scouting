@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type HandlerData<Req, Res> = {
+export type HandlerData<Req, Res> = {
 	ignoredMiddleware: string[];
 	handler: (req: Req, res: Res) => void | Promise<void>;
 };
 
-export type Middleware<
+export type RouteHandlerMiddleware<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
 > = {
@@ -17,11 +17,11 @@ export type Middleware<
 	) => void | Promise<void>;
 };
 
-interface Constructor<
+interface RouteHandlerConstructor<
 	Req extends NextApiRequest = NextApiRequest,
 	Res extends NextApiResponse = NextApiResponse,
 > {
-	defaultMiddlewares: Middleware<Req, Res>[];
+	defaultMiddlewares: RouteHandlerMiddleware<Req, Res>[];
 	onError: (req: Req, res: Res, err: unknown) => void | Promise<void>;
 }
 
@@ -33,7 +33,11 @@ const defaultHandler: (req: NextApiRequest, res: NextApiResponse) => void = (req
 
 const defaultIgnored: string[] = ['ALL'];
 
-const defaultOnError: Constructor<NextApiRequest, NextApiResponse>['onError'] = (_, res, err) => {
+const defaultOnError: RouteHandlerConstructor<NextApiRequest, NextApiResponse>['onError'] = (
+	_,
+	res,
+	err,
+) => {
 	console.error(err);
 	return res.status(405).json({ message: 'Internal server error.' });
 };
@@ -45,8 +49,8 @@ export class RouteHandler<
 	Res extends NextApiResponse = NextApiResponse,
 > extends Function {
 	private _bound;
-	private onError!: Constructor<Req, Res>['onError'];
-	private middlewares!: Middleware<Req, Res>[];
+	private onError!: RouteHandlerConstructor<Req, Res>['onError'];
+	private middlewares!: RouteHandlerMiddleware<Req, Res>[];
 	private onGet!: HandlerData<Req, Res>;
 	private onPost!: HandlerData<Req, Res>;
 	private onPatch!: HandlerData<Req, Res>;
@@ -55,7 +59,7 @@ export class RouteHandler<
 	private onNoMethod!: HandlerData<Req, Res>;
 
 	constructor(
-		{ onError = defaultOnError, defaultMiddlewares = [] }: Constructor<Req, Res> = {
+		{ onError = defaultOnError, defaultMiddlewares = [] }: RouteHandlerConstructor<Req, Res> = {
 			onError: defaultOnError,
 			defaultMiddlewares: [],
 		},
@@ -122,7 +126,7 @@ export class RouteHandler<
 		return this;
 	}
 
-	use(middleware: Middleware<Req, Res>) {
+	use(middleware: RouteHandlerMiddleware<Req, Res>) {
 		if (middleware.key === 'ALL') throw new Error('Middleware key "ALL" is reserved.');
 		if (!middleware.key || !middleware.middleware)
 			throw new Error(
