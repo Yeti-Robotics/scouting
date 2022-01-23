@@ -1,11 +1,11 @@
 export default class CallableClass extends Function {
 	protected _bound;
-	protected _;
 	constructor() {
 		super('...args', 'return this._bound._call(...args)');
 
-		this._ = this.bind(this);
-		this._bound = this._;
+		const _ = this.bind(this);
+		this._bound = _;
+		return _;
 	}
 
 	protected async _call(...args: any[]) {

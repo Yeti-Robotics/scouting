@@ -66,22 +66,22 @@ export class RouteHandler<
 	) {
 		super();
 		// Or without the spread/rest operator:
-		// super('return this._bound._call.apply(this._bound, arguments)')
+		// super('return thisboundcall.apply(thisbound, arguments)')
 
-		this._.onError = onError;
-		this._.middlewares = defaultMiddlewares;
-		this._.onError;
+		this.onError = onError;
+		this.middlewares = defaultMiddlewares;
+		this.onError;
 
 		// default returns 405 with message method not allowed
 		// default ignores all middleware
-		this._.onGet = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		this._.onPost = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		this._.onPatch = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		this._.onPut = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		this._.onDelete = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
-		this._.onNoMethod = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onGet = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onPost = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onPatch = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onPut = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onDelete = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
+		this.onNoMethod = { handler: defaultHandler, ignoredMiddleware: defaultIgnored };
 
-		return this._;
+		return this;
 	}
 
 	get(handler: (req: Req, res: Res) => void | Promise<void>, ignoredMiddleware: string[] = []) {
