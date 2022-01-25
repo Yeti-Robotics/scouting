@@ -77,15 +77,15 @@ export class RouteHandler<
 	Req = {},
 	Res = {},
 > extends CallableClass {
-	private ssr!: boolean;
-	private onError!: RouteHandlerOnError<Type>;
-	private middlewares!: RouteHandlerMiddleware<Type, ReqType<Type> & Req, ResType<Type> & Res>[];
-	private onGet!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
-	private onPost!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
-	private onPatch!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
-	private onPut!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
-	private onDelete!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
-	private onNoMethod!: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private ssr: boolean;
+	private onError: RouteHandlerOnError<Type>;
+	private middlewares: RouteHandlerMiddleware<Type, ReqType<Type> & Req, ResType<Type> & Res>[];
+	private onGet: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private onPost: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private onPatch: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private onPut: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private onDelete: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
+	private onNoMethod: HandlerData<Type, ReqType<Type> & Req, ResType<Type> & Res>;
 
 	constructor(
 		{
