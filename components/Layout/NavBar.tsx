@@ -1,8 +1,34 @@
 import { useUser } from '@/lib/useUser';
-import { AccountCircle, Menu, NoteAdd } from '@mui/icons-material';
+import { AccountCircle, InsertDriveFile, Menu, NoteAdd } from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
+
+interface ButtonProps {
+	href: string;
+	text: string;
+	Icon?: JSX.Element;
+}
+
+const NavBarButton: React.VFC<ButtonProps> = ({ href, text, Icon }) => {
+	return (
+		<Link href={href} passHref={true}>
+			<Box
+				component='a'
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					height: 75,
+					padding: 2,
+					'&:hover': { backgroundColor: 'primary.light' },
+				}}
+			>
+				{Icon}
+				{text}
+			</Box>
+		</Link>
+	);
+};
 
 const NavBar = () => {
 	const { user } = useUser({ redirectIfNotFound: false, redirectOnError: false });
@@ -32,53 +58,29 @@ const NavBar = () => {
 				<Menu />
 			</Button>
 			<Drawer open={menuOpened} anchor='top' onClose={() => setMenuOpened(false)}>
-				<Link href={user ? '/logout' : '/login'} passHref={true}>
-					<Box
-						component='a'
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							height: 75,
-							padding: 2,
-							'&:hover': { backgroundColor: 'primary.light' },
-						}}
-					>
-						<AccountCircle sx={{ margin: 1 }} />
-						{user ? 'Logout' : 'Login'}
-					</Box>
-				</Link>
+				<NavBarButton
+					href={user ? '/logout' : '/login'}
+					text={user ? 'Logout' : 'Login'}
+					Icon={<AccountCircle sx={{ margin: 1 }} />}
+				/>
 				<Divider />
-				<Link href='/stand-scouting' passHref={true}>
-					<Box
-						component='a'
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							height: 75,
-							padding: 2,
-							'&:hover': { backgroundColor: 'primary.light' },
-						}}
-					>
-						<NoteAdd sx={{ margin: 1 }} />
-						Stand Scouting
-					</Box>
-				</Link>
+				<NavBarButton
+					href='/stand-scouting'
+					text='Stand Scouting'
+					Icon={<NoteAdd sx={{ margin: 1 }} />}
+				/>
 				<Divider />
-				<Link href='/pit-scouting' passHref={true}>
-					<Box
-						component='a'
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							height: 75,
-							padding: 2,
-							'&:hover': { backgroundColor: 'primary.light' },
-						}}
-					>
-						<NoteAdd sx={{ margin: 1 }} />
-						Pit Scouting
-					</Box>
-				</Link>
+				<NavBarButton
+					href='/pit-scouting'
+					text='Pit Scouting'
+					Icon={<NoteAdd sx={{ margin: 1 }} />}
+				/>
+				<Divider />
+				<NavBarButton
+					href='/records'
+					text='Records'
+					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
+				/>
 			</Drawer>
 		</Box>
 	);
