@@ -9,7 +9,7 @@ type UseUserParams = Partial<{
 	redirectIfNotAdmin: boolean;
 	redirectOnError: boolean;
 	redirectTo: string;
-	primary: boolean; // this instance can redirect
+	canRedirect: boolean; // this instance can redirect
 }>;
 
 export const useUser = ({
@@ -18,7 +18,7 @@ export const useUser = ({
 	redirectIfNotAdmin = false,
 	redirectOnError = true,
 	redirectTo = '/login',
-	primary = true,
+	canRedirect = true,
 }: UseUserParams = {}) => {
 	const router = useRouter();
 	const { data: user, error, isValidating, mutate } = useSWR<UserI>('/api/auth/decode', fetcher);
@@ -29,19 +29,20 @@ export const useUser = ({
 	}
 
 	if (!user) {
-		if (primary && redirectIfNotFound && router.pathname !== redirectTo)
+		if (canRedirect && redirectIfNotFound && router.pathname !== redirectTo)
 			router.push(redirectUrl);
 		return { user, error, loading: false, mutate };
 	}
 
 	if (error) {
-		if (primary && redirectOnError && router.pathname !== redirectTo) router.push(redirectUrl);
+		if (canRedirect && redirectOnError && router.pathname !== redirectTo)
+			router.push(redirectUrl);
 		return { user: undefined, error, loading: false, mutate };
 	}
 
-	if (primary && !user.administrator && redirectIfNotAdmin && router.pathname !== redirectTo)
+	if (canRedirect && !user.administrator && redirectIfNotAdmin && router.pathname !== redirectTo)
 		router.push(redirectUrl);
-	if (primary && redirectIfFound && router.pathname !== redirectTo) router.push(redirectUrl);
+	if (canRedirect && redirectIfFound && router.pathname !== redirectTo) router.push(redirectUrl);
 
 	return { user, error, loading: false, mutate };
 };
