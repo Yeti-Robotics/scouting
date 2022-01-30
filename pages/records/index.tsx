@@ -1,7 +1,7 @@
 import FlexGrid from '@/components/FlexGrid';
 import Layout from '@/components/Layout';
 import { AccountCircle, InsertDriveFile } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 
 interface MenuCardProps {
@@ -13,9 +13,10 @@ interface MenuCardProps {
 const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 	return (
 		<Link href={href} passHref>
-			<Box
+			<Button
 				component='a'
 				sx={{
+					color: 'text.primary',
 					backgroundColor: 'primary.main',
 					display: 'flex',
 					alignItems: 'center',
@@ -23,9 +24,10 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 					margin: 1,
 					borderRadius: 1,
 				}}
+				variant='contained'
 			>
 				{Icon} {text}
-			</Box>
+			</Button>
 		</Link>
 	);
 };

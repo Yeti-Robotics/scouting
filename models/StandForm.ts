@@ -39,6 +39,8 @@ export interface StandFormI {
 	initiationLine: boolean;
 	endPosition: number;
 	notes: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 const StandForm = (models.standForm as Model<StandFormI>) || model('standForm', standFormSchema);
