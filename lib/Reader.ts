@@ -90,4 +90,13 @@ export class Reader {
 		if ((type as any) === 'load') return;
 		this.fileReader.addEventListener(type, callback, options);
 	}
+
+	removeEventListener<T extends keyof Omit<FileReaderEventMap, 'load'>>(
+		type: T,
+		listener: (ev: Omit<FileReaderEventMap, 'load'>[T]) => void,
+		options?: boolean | AddEventListenerOptions,
+	) {
+		if ((type as any) === 'load') return;
+		this.fileReader.removeEventListener(type, listener, options);
+	}
 }
