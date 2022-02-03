@@ -24,7 +24,7 @@ const PitScouting = () => {
 
 	return (
 		<Layout>
-			<PitForm create={true} />
+			<PitForm create={true} canEdit={true} />
 		</Layout>
 	);
 };

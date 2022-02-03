@@ -7,11 +7,12 @@ interface Props {
 		Partial<PitImageI & { listId: number }>[],
 		React.Dispatch<React.SetStateAction<Partial<PitImageI & { listId: number }>[]>>,
 	];
+	canEdit?: boolean;
 }
 
 let id = 0;
 
-const Images: React.VFC<Props> = ({ state }) => {
+const Images: React.VFC<Props> = ({ state, canEdit }) => {
 	const [images, setImages] = state;
 
 	const addImage = () => {
@@ -52,7 +53,12 @@ const Images: React.VFC<Props> = ({ state }) => {
 					/>
 				))}
 				<Box display='flex' justifyContent='center'>
-					<Button sx={{ mt: 1 }} variant='contained' onClick={addImage}>
+					<Button
+						sx={{ mt: 1 }}
+						variant='contained'
+						disabled={!canEdit}
+						onClick={addImage}
+					>
 						Add Image
 					</Button>
 				</Box>

@@ -30,6 +30,6 @@ export default handler
 			return res.status(401).json({ message: 'You are not authorized to update forms.' });
 		const form: StandFormI = JSON.parse(req.body);
 
-		await StandForm.updateOne({ _id: form._id });
+		await StandForm.updateOne({ _id: form._id }, form);
 		return res.status(200).json({ message: 'Form successfully updated.' });
 	});

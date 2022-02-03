@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 export const DisplayContainer = styled.div`
 	margin: ${({ theme }) => theme.spacing(1)};
-	padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
 	border-radius: ${({ theme }) => theme.shape.borderRadius}px;
 	display: flex;
 	justify-content: center;
@@ -13,11 +12,14 @@ export const DisplayContainer = styled.div`
 `;
 
 export const DisplayWrapper = styled.a`
+	padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	text-transform: none;
 	width: 100%;
+	height: 100%;
 	margin: 1;
 	border-radius: ${({ theme }) => theme.shape.borderRadius}px;
 	h3 {

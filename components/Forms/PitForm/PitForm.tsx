@@ -15,12 +15,13 @@ import { onSubmit } from './onSubmit';
 
 interface Props {
 	create: boolean;
-	defaultForm?: PitFormI & { images: PitImageI[] };
-	defaultImages: PitImageI[];
+	defaultForm?: PitFormI;
+	defaultImages?: PitImageI[];
+	canEdit?: boolean;
 }
 
-const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
-	const { user } = useUser();
+const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages }) => {
+	const { user } = useUser({ canRedirect: false });
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
@@ -33,7 +34,7 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 	return (
 		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages))}>
 			<FormSection title='Images'>
-				<Images state={[images, setImages]} />
+				<Images state={[images, setImages]} canEdit={canEdit} />
 			</FormSection>
 			<FormSection title='Info'>
 				<TextInput
@@ -41,12 +42,14 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 					name='teamNumber'
 					label='Team Number'
 					type='number'
+					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
 				<Select
 					control={control}
 					name='endPosition'
 					label='Where do they end the game?'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				>
 					<MenuItem value={0}>Nothing</MenuItem>
@@ -61,6 +64,7 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 					control={control}
 					name='defense'
 					label='Can they play defense?'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				>
 					<MenuItem value={0}>They can't</MenuItem>
@@ -71,6 +75,7 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 					control={control}
 					name='shooting'
 					label='Where do they shoot?'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				>
 					<MenuItem value={0}>They don't</MenuItem>
@@ -78,12 +83,18 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 					<MenuItem value={2}>High goal</MenuItem>
 					<MenuItem value={3}>Both goals</MenuItem>
 				</Select>
-				<Textarea control={control} name='notes' label='Notes' rules={{ required: true }} />
+				<Textarea
+					control={control}
+					name='notes'
+					label='Notes'
+					disabled={!canEdit}
+					rules={{ required: true }}
+				/>
 				<p style={{ textAlign: 'center', fontSize: '0.8rem' }}>
 					Give some more insight into the team such as cycle times.
 				</p>
 			</FormSection>
-			<SubmitButton>Submit</SubmitButton>
+			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
 		</Form>
 	);
 };

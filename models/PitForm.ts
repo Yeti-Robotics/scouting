@@ -21,6 +21,7 @@ export interface PitFormI {
 	defense: number;
 	shooting: number;
 	notes: string;
+	createdAt: string;
 }
 
 const PitForm = (models.pitForm as Model<PitFormI>) || model('pitForm', pitFormSchema);

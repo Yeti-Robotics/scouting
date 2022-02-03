@@ -24,7 +24,7 @@ const StandScouting = () => {
 
 	return (
 		<Layout>
-			<StandForm create={true} />
+			<StandForm create={true} canEdit={true} />
 		</Layout>
 	);
 };
