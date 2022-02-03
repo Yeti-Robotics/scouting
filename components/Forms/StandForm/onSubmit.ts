@@ -4,7 +4,7 @@ import { SubmitHandler, UseFormReset } from 'react-hook-form';
 
 type StandFormOnSubmit = (
 	create: boolean,
-	user: UserI,
+	user: UserI | undefined,
 	reset: UseFormReset<StandFormI>,
 	isOffline: boolean,
 ) => SubmitHandler<StandFormI>;
@@ -12,6 +12,7 @@ type StandFormOnSubmit = (
 // returns dif function depending on whether the form is for updating or creation
 export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline) => {
 	const onCreate: SubmitHandler<StandFormI> = (data) => {
+		if (!user) return;
 		if (!isOffline) {
 			fetch('/api/forms/stand', {
 				method: 'POST',
@@ -31,7 +32,11 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline) => {
 	};
 
 	const onUpdate: SubmitHandler<StandFormI> = (data) => {
-		console.log(data);
+		if (!user || !user.administrator) return;
+		fetch('/api/forms/stand', {
+			method: 'PATCH',
+			body: JSON.stringify(data),
+		});
 	};
 
 	return create ? onCreate : onUpdate;

@@ -1,7 +1,7 @@
 import Select from '@/components/Forms/Select';
 import SubmitButton from '@/components/Forms/SubmitButton';
 import TextInput from '@/components/Forms/TextInput';
-import { StandFormI } from '@/models/StandForm';
+import { UserI } from '@/models/User';
 import { MenuItem } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FilterForm } from '../Filter.styles';
@@ -10,20 +10,18 @@ import { FilterProps } from '../Paginator';
 
 type Spread<T extends object> = T[keyof T];
 
-const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
+const UserFilter: React.VFC<FilterProps<UserI>> = ({ state }) => {
 	const [query, setQuery] = state;
 	const { control, handleSubmit, watch } = useForm({
 		defaultValues: {
 			...query.filter,
 			sortBy: Object.keys(query.sort)[0],
-			sortFrom: (query.sort as { [key: string]: Spread<StandFormI> })[
-				Object.keys(query.sort)[0]
-			],
+			sortFrom: (query.sort as { [key: string]: Spread<UserI> })[Object.keys(query.sort)[0]],
 		},
 	});
 	const sortBy = watch('sortBy');
 
-	const onSubmit: SubmitHandler<StandFormI> = (data) => {
+	const onSubmit: SubmitHandler<UserI> = (data) => {
 		const { sortBy, sortFrom, ...filter } = sanitizeFilter(data);
 		const newSort: any = {};
 		newSort[sortBy] = sortFrom;
@@ -58,15 +56,9 @@ const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
 				label='Match Number'
 				rules={{ validate: validateIsNumber }}
 			/>
-			<TextInput
-				control={control}
-				name='scouter'
-				label='Scouter Username'
-				rules={{ validate: () => true }}
-			/>
 			<SubmitButton>Update</SubmitButton>
 		</FilterForm>
 	);
 };
 
-export default StandFormFilter;
+export default UserFilter;

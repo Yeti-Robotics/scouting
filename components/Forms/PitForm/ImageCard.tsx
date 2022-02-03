@@ -28,16 +28,18 @@ const ImageCard: React.VFC<Props> = ({ image, setImage, i, removeImage }) => {
 				onChange={handleFileChange(i, imageRef, inputRef, setImage)}
 				inputProps={{ accept: '.png,.jpg,.jpeg' }}
 			/>
-			<Button
-				variant='contained'
-				sx={{
-					backgroundColor: 'error.main',
-					'&:hover': { backgroundColor: 'error.dark' },
-				}}
-				onClick={() => removeImage(i)}
-			>
-				Delete
-			</Button>
+			{!image._id && (
+				<Button
+					variant='contained'
+					sx={{
+						backgroundColor: 'error.main',
+						'&:hover': { backgroundColor: 'error.dark' },
+					}}
+					onClick={() => removeImage(i)}
+				>
+					Delete
+				</Button>
+			)}
 		</Box>
 	);
 };

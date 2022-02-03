@@ -9,6 +9,7 @@ const StandFormDisplay: React.VFC<DisplayProps<StandFormI>> = ({ record }) => {
 			<Link href={`/records/stand-forms/${record._id}`} passHref>
 				<DisplayWrapper>
 					<h3>Match: {record.matchNumber}</h3>
+					<h3>Team: {record.teamNumber}</h3>
 					<h4>Scouter: {record.scouter}</h4>
 				</DisplayWrapper>
 			</Link>

@@ -17,12 +17,14 @@ import { setOnline } from './setOnline';
 
 interface Props {
 	create: boolean;
+	canEdit?: boolean;
+	defaultForm?: Partial<StandFormI>;
 }
 
-const StandForm: React.VFC<Props> = ({ create }) => {
-	const { user } = useUser();
+const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm }) => {
+	const { user } = useUser({ canRedirect: false });
 	const [isOffline, setIsOffline] = useState(false);
-	const { control, handleSubmit, reset } = useForm<StandFormI>();
+	const { control, handleSubmit, reset } = useForm<StandFormI>({ defaultValues: defaultForm });
 
 	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
 
@@ -39,7 +41,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 		};
 	}, []);
 
-	if (!user) {
+	if (!user && create) {
 		return <CircularProgress />;
 	}
 
@@ -52,6 +54,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					name='matchNumber'
 					label='Match Number'
 					type='number'
+					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
 				<TextInput
@@ -59,6 +62,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					name='teamNumber'
 					label='Team Number'
 					type='number'
+					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
 			</FormSection>
@@ -70,36 +74,47 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 						alignItems: 'flex-start',
 					}}
 				>
-					<Checkbox control={control} name='preload' label='Preloaded?' size='medium' />
+					<Checkbox
+						control={control}
+						name='preload'
+						label='Preloaded?'
+						size='medium'
+						disabled={!canEdit}
+					/>
 					<Checkbox
 						control={control}
 						name='initiationLine'
 						label='Did they cross the line?'
 						size='medium'
+						disabled={!canEdit}
 					/>
 				</Box>
 				<ScoreInput
 					control={control}
 					name='autoUpperBallsScored'
 					label='Upper Balls Scored'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='autoUpperBallsMissed'
 					label='Upper Balls Missed'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='autoLowBallsScored'
 					label='Low Balls Scored'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='autoLowBallsMissed'
 					label='Low Balls Missed'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 			</FormSection>
@@ -108,24 +123,28 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					control={control}
 					name='teleopUpperBallsScored'
 					label='Upper Balls Scored'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopUpperBallsMissed'
 					label='Upper Balls Missed'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopLowBallsScored'
 					label='Low Balls Scored'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 				<ScoreInput
 					control={control}
 					name='teleopLowBallsMissed'
 					label='Low Balls Missed'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				/>
 			</FormSection>
@@ -134,6 +153,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					control={control}
 					name='endPosition'
 					label='End Position'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				>
 					<MenuItem value={0}>Nothing</MenuItem>
@@ -148,6 +168,7 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					control={control}
 					name='defense'
 					label='Rate Defense'
+					disabled={!canEdit}
 					rules={{ required: true }}
 				>
 					<MenuItem value={0}>1</MenuItem>
@@ -156,14 +177,25 @@ const StandForm: React.VFC<Props> = ({ create }) => {
 					<MenuItem value={3}>4</MenuItem>
 					<MenuItem value={4}>5</MenuItem>
 				</Select>
-				<ScoreInput control={control} name='penalties' label='# of penalties' />
-				<Textarea control={control} name='notes' label='Notes' rules={{ required: true }} />
+				<ScoreInput
+					control={control}
+					name='penalties'
+					label='# of penalties'
+					disabled={!canEdit}
+				/>
+				<Textarea
+					control={control}
+					name='notes'
+					label='Notes'
+					disabled={!canEdit}
+					rules={{ required: true }}
+				/>
 				<p>
 					Give some more insight into the match such as: strategy, robot status (disabled,
 					broken), and human players. Don't write too much, be concise!
 				</p>
 			</FormSection>
-			<SubmitButton>Submit</SubmitButton>
+			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
 		</Form>
 	);
 };

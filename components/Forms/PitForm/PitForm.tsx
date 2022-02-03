@@ -16,16 +16,17 @@ import { onSubmit } from './onSubmit';
 interface Props {
 	create: boolean;
 	defaultForm?: PitFormI & { images: PitImageI[] };
+	defaultImages: PitImageI[];
 }
 
-const PitForm: React.VFC<Props> = ({ create, defaultForm }) => {
+const PitForm: React.VFC<Props> = ({ create, defaultForm, defaultImages }) => {
 	const { user } = useUser();
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
-		defaultForm?.images || [],
+		defaultImages || [],
 	);
 	const { control, handleSubmit, reset } = useForm<PitFormI>({ defaultValues: defaultForm });
 
-	if (!user) {
+	if (!user && create) {
 		return <CircularProgress />;
 	}
 

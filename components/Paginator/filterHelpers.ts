@@ -18,7 +18,6 @@ export const sanitizeFilter = (data: any) => {
 			return;
 		}
 		newObj[key] = data[key];
-		console.log({ key, newObj, data });
 	});
 	return newObj;
 };

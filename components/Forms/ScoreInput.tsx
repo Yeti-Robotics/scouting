@@ -9,6 +9,7 @@ interface Props {
 	onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	rules?: ControllerProps['rules'];
 	label?: string;
+	disabled?: boolean;
 }
 
 const defaultSx: SxProps<Theme> = {
@@ -28,7 +29,14 @@ const decrement = (field: ControllerRenderProps) => {
 	if (field.value != 0) field.onChange(field.value - 1);
 };
 
-const ScoreInput: React.VFC<Props> = ({ name, control, rules, onChange = (e) => {}, label }) => {
+const ScoreInput: React.VFC<Props> = ({
+	name,
+	control,
+	rules,
+	onChange = (e) => {},
+	label,
+	disabled,
+}) => {
 	return (
 		<Box
 			sx={{
@@ -61,6 +69,7 @@ const ScoreInput: React.VFC<Props> = ({ name, control, rules, onChange = (e) => 
 								}}
 								onClick={() => decrement(field)}
 								variant='contained'
+								disabled={disabled}
 							>
 								-
 							</Button>
@@ -89,6 +98,7 @@ const ScoreInput: React.VFC<Props> = ({ name, control, rules, onChange = (e) => 
 								}}
 								onClick={() => increment(field)}
 								variant='contained'
+								disabled={disabled}
 							>
 								+
 							</Button>
