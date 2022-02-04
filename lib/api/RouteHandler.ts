@@ -239,7 +239,7 @@ export class RouteHandler<
 							resolve();
 						};
 
-						if (resIsSent(res) || !middleware.ssr) return;
+						if (resIsSent(res) || !middleware.ssr) return resolve();
 						/* debug log */ debug && console.log(`middleware ${i} called`);
 						if (!selectedHandler.ignoredMiddleware.includes(middleware.key))
 							await middleware.middleware(
