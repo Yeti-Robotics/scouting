@@ -1,3 +1,4 @@
+import { paginate } from '@/lib/api/paginate';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
@@ -10,11 +11,7 @@ export default handler
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		const filter: Partial<StandFormI> = JSON.parse(String(req.query.filter));
-		const sort = JSON.parse(String(req.query.sort));
-		// if no sort just sort by most recent
-		if (!Object.keys(sort)[0]) sort.createdAt = -1;
-		const forms = await StandForm.aggregate<StandFormI>([{ $match: filter }, { $sort: sort }]);
+		const forms = await paginate(StandForm, req.query);
 		return res.status(200).json(forms);
 	})
 	.post(async (req, res) => {

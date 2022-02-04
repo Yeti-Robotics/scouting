@@ -1,3 +1,4 @@
+import { paginate } from '@/lib/api/paginate';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
@@ -10,7 +11,7 @@ export default handler
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		const forms = await PitForm.find({});
+		const forms = await paginate(PitForm, req.query);
 		return res.status(200).json(forms);
 	})
 	.post(async (req, res) => {

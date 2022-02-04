@@ -50,10 +50,13 @@ const UserFilter: React.VFC<FilterProps<UserI>> = ({ state }) => {
 				</MenuItem>
 			</Select>
 			<h1>Filter</h1>
+			<TextInput control={control} name='firstName' label='First Name' />
+			<TextInput control={control} name='lastName' label='Last Name' />
+			<TextInput control={control} name='username' label='Username' />
 			<TextInput
 				control={control}
-				name='matchNumber'
-				label='Match Number'
+				name='teamNumber'
+				label='Team Number'
 				rules={{ validate: validateIsNumber }}
 			/>
 			<SubmitButton>Update</SubmitButton>

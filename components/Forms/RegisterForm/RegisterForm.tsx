@@ -32,7 +32,7 @@ const RegisterForm = () => {
 	const validateUsername = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setUsernameIsValid(undefined);
 		fetch('/api/auth/validate-username', { method: 'POST', body: e.target.value }).then(
-			async (res) => {
+			(res) => {
 				if (res.ok) setUsernameIsValid(true);
 				else setUsernameIsValid(false);
 			},
@@ -97,7 +97,7 @@ const RegisterForm = () => {
 						name='teamNumber'
 						label='Team Number'
 						type='number'
-						rules={{ required: true }}
+						rules={{ required: true, min: 1 }}
 					/>
 					<SubmitButton>Submit</SubmitButton>
 				</FormSection>

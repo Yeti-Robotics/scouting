@@ -1,7 +1,8 @@
 import FlexGrid from '@/components/FlexGrid';
 import Layout from '@/components/Layout';
+import { useUser } from '@/lib/useUser';
 import { AccountCircle, InsertDriveFile } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import Link from 'next/link';
 
 interface MenuCardProps {
@@ -32,7 +33,9 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 	);
 };
 
-const records = () => {
+const Records = () => {
+	const { user } = useUser({ canRedirect: false });
+
 	return (
 		<Layout>
 			<h1>Records</h1>
@@ -47,14 +50,16 @@ const records = () => {
 					text='Pit Forms'
 					Icon={<InsertDriveFile sx={{ mr: 1 }} />}
 				/>
-				<MenuCard
-					href='/records/users'
-					text='Users'
-					Icon={<AccountCircle sx={{ mr: 1 }} />}
-				/>
+				{user?.administrator && (
+					<MenuCard
+						href='/records/users'
+						text='Users'
+						Icon={<AccountCircle sx={{ mr: 1 }} />}
+					/>
+				)}
 			</FlexGrid>
 		</Layout>
 	);
 };
 
-export default records;
+export default Records;

@@ -22,4 +22,11 @@ export const FilterWrapper = styled.div`
 	height: calc(100vh - 4rem - 107px);
 	padding: ${({ theme }) => theme.spacing(2)};
 	border: 2px solid ${({ theme }) => theme.palette.text.primary};
+	border-right: 0;
+	border-bottom: 2px solid ${({ theme }) => theme.palette.text.primary};
+
+	@media (max-width: 500px) {
+		border-right: 2px solid ${({ theme }) => theme.palette.text.primary};
+		border-bottom: 0;
+	}
 `;
