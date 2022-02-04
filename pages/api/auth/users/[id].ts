@@ -13,4 +13,11 @@ export default new RouteHandler<'api', WAuth>()
 		const id = String(req.query.id);
 		const user = await User.findById(id);
 		return res.status(200).json(user);
+	})
+	.delete(async (req, res) => {
+		if (!req.user.administrator || !req.user)
+			return res.status(401).json({ message: 'You are not authorized to update users.' });
+		const id = String(req.query.id);
+		User.findByIdAndDelete(id);
+		return res.status(200).json({ message: 'Successfully deleted.' });
 	});
