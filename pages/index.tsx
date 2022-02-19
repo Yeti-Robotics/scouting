@@ -27,7 +27,7 @@ const Home: NextPage<{ data: TeamData[] }> = () => {
 
 	return (
 		<Layout>
-			<h1>DATA</h1>
+			<h1>Team Data</h1>
 			<TeamDataTable data={data} />
 		</Layout>
 	);
