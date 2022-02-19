@@ -47,7 +47,7 @@ const NavBar = () => {
 		>
 			<Link href='/' passHref={true}>
 				<h1 style={{ flexGrow: 1, textDecoration: 'underline', cursor: 'pointer' }}>
-					Scouting
+					Yeti Scouting
 				</h1>
 			</Link>
 			<Button
