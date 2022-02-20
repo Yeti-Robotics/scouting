@@ -33,7 +33,7 @@ const CardWrapper = styled.a`
 
 const StandFormCard: React.VFC<Props> = ({ team, form }) => {
 	return (
-		<Link href={`records/stand-forms/${form._id}`} passHref={true}>
+		<Link href={`/records/stand-forms/${form._id}`} passHref={true}>
 			<CardWrapper>
 				<h3>Match #: {form.matchNumber}</h3>
 				<DataWrapper>
