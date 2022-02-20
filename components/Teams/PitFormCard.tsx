@@ -33,7 +33,7 @@ const CardWrapper = styled.a`
 
 const PitFormCard: React.VFC<Props> = ({ team, form }) => {
 	return (
-		<Link href={`/forms/${form._id}`} passHref={true}>
+		<Link href={`records/pit-forms/${form._id}`} passHref={true}>
 			<CardWrapper>
 				<DataWrapper>
 					<h4>scouter: {form.scouter}</h4>
