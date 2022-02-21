@@ -37,7 +37,7 @@ const TeamStats: React.VFC<Props> = ({ team }) => {
 			<DataSection>
 				<h2>Auto Data</h2>
 				<DataWrapper>
-					<h4>Avg. Score*: {team.avgAutoScore.toFixed(2)}</h4>
+					<h4>Avg. Score*: {team.avgAutoScore?.toFixed(2)}</h4>
 					<h4>
 						Avg. Upper Accuracy:{' '}
 						{Number(team.avgUpperAuto / 100).toLocaleString(undefined, percentOptions)}
@@ -49,7 +49,7 @@ const TeamStats: React.VFC<Props> = ({ team }) => {
 				</DataWrapper>
 				<h2>Teleop Data</h2>
 				<DataWrapper>
-					<h4>Avg. Score*: {team.avgTeleopScore.toFixed(2)}</h4>
+					<h4>Avg. Score*: {team.avgTeleopScore?.toFixed(2)}</h4>
 					<h4>
 						Avg. Upper Accuracy:{' '}
 						{Number(team.avgUpperTeleop / 100).toLocaleString(
@@ -67,8 +67,8 @@ const TeamStats: React.VFC<Props> = ({ team }) => {
 				</DataWrapper>
 				<h2>Other Data</h2>
 				<DataWrapper>
-					<h4>Avg. # of Penalties**: {team.avgPenalties.toFixed(2)}</h4>
-					<h4>Avg. Defense Rating (1-5): {team.avgDefense.toFixed(2)}</h4>
+					<h4>Avg. # of Penalties**: {team.avgPenalties?.toFixed(2)}</h4>
+					<h4>Avg. Defense Rating (1-5): {team.avgDefense?.toFixed(2)}</h4>
 					<h4>Most Common End Position: {endPosToString(team.endPosition)}</h4>
 				</DataWrapper>
 			</DataSection>
