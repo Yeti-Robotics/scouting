@@ -1,14 +1,14 @@
 import { model, models, Schema } from 'mongoose';
 
 const teamSchema = new Schema<TeamI>({
-	teamName: { type: String, required: true },
-	teamNumber: { type: Number, required: true },
+	team_name: { type: String, required: true },
+	team_number: { type: Number, required: true },
 });
 
 export interface TeamI {
 	_id: string;
-	teamNumber: number;
-	teamName: string;
+	team_number: number;
+	team_name: string;
 }
 
 const Team = models.team || model('team', teamSchema);
