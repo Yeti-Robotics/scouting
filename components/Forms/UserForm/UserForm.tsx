@@ -108,7 +108,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 					name='newPassword'
 					label='New Password'
 					type='password'
-					rules={{ required: false, minLength: 6 }}
+					rules={{ required: false, validate: undefined, minLength: 6 }}
 				/>
 				<TextInput
 					control={control}
@@ -116,8 +116,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 					label='Confirm Password'
 					type='password'
 					rules={{
-						required:
-							newPassword !== '' || newPassword !== null || newPassword !== undefined,
+						required: newPassword !== '',
 						minLength: 6,
 						validate: (v) => v === newPassword,
 					}}

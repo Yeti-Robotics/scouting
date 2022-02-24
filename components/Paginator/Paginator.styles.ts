@@ -24,6 +24,7 @@ export const FilterWrapper = styled.div`
 	border: 2px solid ${({ theme }) => theme.palette.text.primary};
 	border-right: 0;
 	border-bottom: 2px solid ${({ theme }) => theme.palette.text.primary};
+	overflow: auto;
 
 	@media (max-width: 500px) {
 		border-right: 2px solid ${({ theme }) => theme.palette.text.primary};
