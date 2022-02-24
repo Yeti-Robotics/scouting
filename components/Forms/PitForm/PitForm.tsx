@@ -36,7 +36,7 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 	}
 
 	if (user && create && user.banned) {
-		return <h1>You&&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned you sussy baka.</h1>;
 	}
 
 	return (
