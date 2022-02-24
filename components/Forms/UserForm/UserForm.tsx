@@ -1,6 +1,8 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import { CircularProgress } from '@mui/material';
+import { Delete } from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
@@ -14,9 +16,11 @@ interface Props {
 	create: boolean;
 	defaultUser?: UserI;
 	canEdit?: boolean;
+	id?: string;
 }
 
-const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit }) => {
+const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
+	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
 	const { handleSubmit, control, watch } = useForm<UserI & { newPassword: string }>({
 		defaultValues: defaultUser,
@@ -42,8 +46,26 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit }) => {
 		return <h1>You are not authorized to use this!</h1>;
 	}
 
+	if (user.banned) {
+		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+	}
+
 	return (
 		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+			{user && user.administrator && !create && id && (
+				<Button
+					variant='contained'
+					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
+					color='error'
+					onClick={() => {
+						fetch(`/api/auth/users/${id}`, { method: 'DELETE' }).then((res) => {
+							if (res.ok) router.push('/records/users');
+						});
+					}}
+				>
+					<Delete />
+				</Button>
+			)}
 			<FormSection title='Info'>
 				<TextInput
 					control={control}
@@ -86,7 +108,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit }) => {
 					name='newPassword'
 					label='New Password'
 					type='password'
-					rules={{ required: true, minLength: 6 }}
+					rules={{ required: false, validate: undefined, minLength: 6 }}
 				/>
 				<TextInput
 					control={control}
@@ -94,7 +116,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit }) => {
 					label='Confirm Password'
 					type='password'
 					rules={{
-						required: true,
+						required: newPassword !== '',
 						minLength: 6,
 						validate: (v) => v === newPassword,
 					}}
@@ -107,6 +129,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit }) => {
 					rules={{ required: true, min: 1 }}
 				/>
 				<Checkbox control={control} name='administrator' />
+				<Checkbox control={control} name='banned' />
 			</FormSection>
 			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
 		</Form>

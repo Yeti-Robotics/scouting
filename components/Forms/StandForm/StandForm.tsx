@@ -1,6 +1,8 @@
 import { useUser } from '@/lib/useUser';
 import { StandFormI } from '@/models/StandForm';
-import { Box, CircularProgress, MenuItem } from '@mui/material';
+import { Delete } from '@mui/icons-material';
+import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
@@ -19,9 +21,11 @@ interface Props {
 	create: boolean;
 	canEdit?: boolean;
 	defaultForm?: Partial<StandFormI>;
+	id?: string;
 }
 
-const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm }) => {
+const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
+	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [isOffline, setIsOffline] = useState(false);
 	const { control, handleSubmit, reset } = useForm<StandFormI>({ defaultValues: defaultForm });
@@ -45,8 +49,26 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm }) => {
 		return <CircularProgress />;
 	}
 
+	if (user && create && user.banned) {
+		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+	}
+
 	return (
 		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline))}>
+			{user && user.administrator && !create && id && (
+				<Button
+					variant='contained'
+					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
+					color='error'
+					onClick={() => {
+						fetch(`/api/forms/stand/${id}`, { method: 'delete' }).then((res) => {
+							if (res.ok) router.push('/records/stand-forms');
+						});
+					}}
+				>
+					<Delete />
+				</Button>
+			)}
 			<ConnectionIndicator isOffline={isOffline} />
 			<FormSection title='Match Info'>
 				<TextInput

@@ -1,7 +1,9 @@
 import { useUser } from '@/lib/useUser';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
-import { CircularProgress, MenuItem } from '@mui/material';
+import { Delete } from '@mui/icons-material';
+import { Button, CircularProgress, MenuItem } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
@@ -18,9 +20,11 @@ interface Props {
 	defaultForm?: PitFormI;
 	defaultImages?: PitImageI[];
 	canEdit?: boolean;
+	id?: string;
 }
 
-const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages }) => {
+const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages, id }) => {
+	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
@@ -31,8 +35,26 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 		return <CircularProgress />;
 	}
 
+	if (user && create && user.banned) {
+		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+	}
+
 	return (
 		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages))}>
+			{user && user.administrator && !create && id && (
+				<Button
+					variant='contained'
+					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
+					color='error'
+					onClick={() => {
+						fetch(`/api/forms/pit/${id}`, { method: 'DELETE' }).then((res) => {
+							if (res.ok) router.push('/records/pit-forms');
+						});
+					}}
+				>
+					<Delete />
+				</Button>
+			)}
 			<FormSection title='Images'>
 				<Images state={[images, setImages]} canEdit={canEdit} />
 			</FormSection>

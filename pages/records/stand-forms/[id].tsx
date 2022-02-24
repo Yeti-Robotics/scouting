@@ -41,7 +41,12 @@ const StandFormPage = () => {
 
 	return (
 		<Layout>
-			<StandForm create={false} canEdit={user?.administrator} defaultForm={data} />
+			<StandForm
+				create={false}
+				canEdit={user?.administrator}
+				defaultForm={data}
+				id={String(router.query.id)}
+			/>
 		</Layout>
 	);
 };

@@ -16,7 +16,7 @@ type PitFormOnSubmit = (
 export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages) => {
 	const onCreate: SubmitHandler<StandFormI> = async (data) => {
 		// we need a user to create a form
-		if (!user) return;
+		if (!user || user.banned) return;
 
 		const formDataRes = await fetch('/api/forms/pit', {
 			method: 'POST',
@@ -50,7 +50,7 @@ export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages
 
 	const onUpdate: SubmitHandler<StandFormI> = async (data) => {
 		// must be admin to update
-		if (!user?.administrator || !user) return;
+		if (!user?.administrator || !user || user.banned) return;
 
 		const formDataRes = await fetch('/api/forms/pit', {
 			method: 'PATCH',

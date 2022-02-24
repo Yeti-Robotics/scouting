@@ -9,6 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<>
 			<Head>
 				<title>Yeti Scouting</title>
+				<link rel='icon' href='/icon.png' />
 			</Head>
 			<ThemeContextProvider>
 				<Theme>

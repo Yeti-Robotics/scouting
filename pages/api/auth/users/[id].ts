@@ -8,16 +8,16 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		if (!req.user.administrator || !req.user)
+		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update users.' });
 		const id = String(req.query.id);
 		const user = await User.findById(id);
 		return res.status(200).json(user);
 	})
 	.delete(async (req, res) => {
-		if (!req.user.administrator || !req.user)
-			return res.status(401).json({ message: 'You are not authorized to update users.' });
+		if (!req.user.administrator || !req.user || req.user.banned)
+			return res.status(401).json({ message: 'You are not authorized to delete users.' });
 		const id = String(req.query.id);
-		User.findByIdAndDelete(id);
+		await User.findByIdAndDelete(id);
 		return res.status(200).json({ message: 'Successfully deleted.' });
 	});

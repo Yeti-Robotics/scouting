@@ -12,7 +12,7 @@ type StandFormOnSubmit = (
 // returns dif function depending on whether the form is for updating or creation
 export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline) => {
 	const onCreate: SubmitHandler<StandFormI> = (data) => {
-		if (!user) return;
+		if (!user || user.banned) return;
 		if (!isOffline) {
 			fetch('/api/forms/stand', {
 				method: 'POST',
@@ -32,7 +32,7 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline) => {
 	};
 
 	const onUpdate: SubmitHandler<StandFormI> = (data) => {
-		if (!user || !user.administrator) return;
+		if (!user || user.banned || !user.administrator) return;
 		fetch('/api/forms/stand', {
 			method: 'PATCH',
 			body: JSON.stringify(data),
