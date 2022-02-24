@@ -8,6 +8,8 @@ const userSchema = new Schema<UserI>(
 		firstName: { type: String, required: true },
 		lastName: { type: String, required: true },
 		teamNumber: { type: Number, required: true, min: 1 },
+		banned: { type: Boolean, required: true, default: () => false },
+		bannedBy: { type: String },
 	},
 	{ timestamps: true },
 );
@@ -22,6 +24,8 @@ export interface UserI {
 	administrator: boolean;
 	createdAt: string;
 	updatedAt: string;
+	banned: boolean;
+	bannedBy?: string;
 }
 
 const User = (models.user as Model<UserI>) || model('user', userSchema);

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import { isResSent } from 'next/dist/shared/lib/utils';
 import CallableClass from '../CallableClass';
 import { IncomingMessage, ServerResponse } from './types';
 
@@ -315,7 +316,7 @@ export class RouteHandler<
 							resolve();
 						};
 
-						if (res.writableEnded) return resolve();
+						if (isResSent(res)) return resolve();
 						/* debug log */ debug && console.log(`middleware ${i} called`);
 						if (!selectedHandler.ignoredMiddleware.includes(middleware.key))
 							await middleware.middleware(
@@ -327,7 +328,7 @@ export class RouteHandler<
 						/* debug log */ debug && console.log(`middleware ${i} end`);
 
 						// call handler at end of middleware chain and res end isn't called
-						if (i === arr.length - 1 && !res.writableEnded) {
+						if (i === arr.length - 1 && !isResSent(res)) {
 							/* debug log */ debug && console.log(`handler called`);
 							const handlerRes = await selectedHandler.handler(
 								req as ReqType<Type> & Req,

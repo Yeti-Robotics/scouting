@@ -32,7 +32,7 @@ const PitFormPage = () => {
 		);
 	}
 
-	if (!data.form._id) {
+	if (!data.form || !data.form._id) {
 		return (
 			<Layout>
 				<h1>No form was found with this id.</h1>
@@ -54,6 +54,7 @@ const PitFormPage = () => {
 				canEdit={user?.administrator}
 				defaultForm={formattedData.form}
 				defaultImages={formattedData.images as any}
+				id={String(router.query.id)}
 			/>
 		</Layout>
 	);

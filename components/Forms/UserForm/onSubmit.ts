@@ -13,7 +13,7 @@ export const onSubmit: UserFormOnSubmit = (create, user) => {
 	};
 
 	const onUpdate: SubmitHandler<UserI & { newPassword: string }> = (data) => {
-		if (!user || !user.administrator) return;
+		if (!user || user.banned || !user.administrator) return;
 		const { password, ...withoutPass } = data;
 		fetch('/api/auth/users', {
 			method: 'PATCH',

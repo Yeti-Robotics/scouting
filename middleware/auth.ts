@@ -6,10 +6,10 @@ import { verify } from 'jsonwebtoken';
 
 export const AUTH_MIDDLEWARE_KEY = 'auth';
 
-export const auth: RouteHandlerMiddleware<'both', WAuth> = {
+export const auth: RouteHandlerMiddleware<'api', WAuth> = {
 	key: AUTH_MIDDLEWARE_KEY,
 	ssr: true,
-	middleware: async (req) => {
+	middleware: async (req, res, end) => {
 		const cookies = cookieParser(req.headers.cookie);
 		const accessToken = cookies['access_token'];
 		if (!accessToken) return;
@@ -28,6 +28,8 @@ export const auth: RouteHandlerMiddleware<'both', WAuth> = {
 
 		const user = await User.findOne({ username: userToken.username });
 		if (!user) return;
+
+		if (user.banned) return;
 
 		req.user = user;
 		return;

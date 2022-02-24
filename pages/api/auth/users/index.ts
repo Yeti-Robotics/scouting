@@ -10,13 +10,13 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		if (!req.user.administrator || !req.user)
+		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update users.' });
 		const forms = await paginate(User, req.query);
 		return res.status(200).json(forms);
 	})
 	.patch(async (req, res) => {
-		if (!req.user.administrator || !req.user)
+		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update users.' });
 		const { newPassword, ...user }: Omit<UserI, 'password'> & { newPassword: string } =
 			JSON.parse(req.body);
@@ -25,7 +25,10 @@ export default new RouteHandler<'api', WAuth>()
 			const hashedPass = hashSync(newPassword, 11);
 			await User.updateOne({ _id: user._id }, { ...user, password: hashedPass });
 		} else {
-			await User.updateOne({ _id: user._id }, user);
+			await User.updateOne(
+				{ _id: user._id },
+				{ ...user, bannedBy: user.banned ? req.user.username : null },
+			);
 		}
 
 		return res.status(200).json({ message: 'User successfully updated.' });

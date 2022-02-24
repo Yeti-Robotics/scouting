@@ -15,7 +15,8 @@ export default handler
 		return res.status(200).json(forms);
 	})
 	.post(async (req, res) => {
-		if (!req.user) return res.status(401).json({ message: 'You are not authorized.' });
+		if (!req.user || req.user.banned)
+			return res.status(401).json({ message: 'You are not authorized.' });
 		const form: StandFormI = JSON.parse(req.body);
 
 		const savedForm = new StandForm(form);
@@ -24,7 +25,7 @@ export default handler
 		return res.status(200).json({ message: 'Form saved!' });
 	})
 	.patch(async (req, res) => {
-		if (!req.user.administrator || !req.user)
+		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update forms.' });
 		const form: StandFormI = JSON.parse(req.body);
 
