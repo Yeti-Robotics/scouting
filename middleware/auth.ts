@@ -29,8 +29,6 @@ export const auth: RouteHandlerMiddleware<'api', WAuth> = {
 		const user = await User.findOne({ username: userToken.username });
 		if (!user) return;
 
-		if (user.banned) return;
-
 		req.user = user;
 		return;
 	},
