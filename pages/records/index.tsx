@@ -2,7 +2,7 @@ import FlexGrid from '@/components/FlexGrid';
 import Layout from '@/components/Layout';
 import { useUser } from '@/lib/useUser';
 import { AccountCircle, InsertDriveFile } from '@mui/icons-material';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 
 interface MenuCardProps {
@@ -24,6 +24,7 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 					padding: 2,
 					margin: 1,
 					borderRadius: 1,
+					textTransform: 'none',
 				}}
 				variant='contained'
 			>
