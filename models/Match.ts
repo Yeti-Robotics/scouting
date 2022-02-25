@@ -1,6 +1,34 @@
-import { Model, model, models, Schema } from 'mongoose';
+/* eslint-disable @typescript-eslint/ban-types */
+import { Subdocument } from '@/lib/api/types';
+import { Model, model, models, Schema, Types } from 'mongoose';
 
-const matchSchema = new Schema<MatchI>(
+const betSchema = new Schema<Bet>(
+	{
+		username: { type: String, required: true },
+		winner: {
+			bet: { type: String, required: true },
+			amount: { type: Number, required: true },
+			required: false,
+		},
+		topScorer: {
+			bet: { type: Number, required: true },
+			amount: { type: Number, required: true },
+			required: false,
+		},
+		bottomScorer: {
+			bet: { type: Number, required: true },
+			amount: { type: Number, required: true },
+			required: false,
+		},
+	},
+	{ timestamps: true, collection: 'bets' },
+);
+
+type MatchDocumentProps = {
+	bets: Types.DocumentArray<Bet> & Subdocument<Bet, MatchI>[];
+};
+type MatchModelType = Model<MatchI, {}, MatchDocumentProps>;
+const matchSchema = new Schema<MatchI, MatchModelType>(
 	{
 		blue1: { type: Number, required: true },
 		blue2: { type: Number, required: true },
@@ -12,30 +40,7 @@ const matchSchema = new Schema<MatchI>(
 		topScorer: { type: Number, required: false },
 		bottomScorer: { type: Number, required: false },
 		open: { type: Boolean, required: true },
-		bets: [
-			{
-				type: new Schema<Bet>(
-					{
-						username: { type: String, required: true },
-						winner: {
-							bet: { type: String, required: false },
-							amount: { type: Number, required: false },
-						},
-						topScorer: {
-							bet: { type: Number, required: false },
-							amount: { type: Number, required: false },
-						},
-						bottomScorer: {
-							bet: { type: String, required: false },
-							amount: { type: Number, required: false },
-						},
-					},
-					{ timestamps: true, collection: 'bets' },
-				),
-				required: true,
-				default: () => [],
-			},
-		],
+		bets: [betSchema],
 	},
 	{ timestamps: true, collection: 'matches' },
 );
@@ -60,23 +65,24 @@ export interface Bet {
 	username: string;
 	/** number used to identify the competition */
 	competition: number;
-	winner: {
+	winner?: {
 		/** what they bet on, red or blue win */
-		bet?: 'red' | 'blue';
-		amount?: number;
+		bet: 'red' | 'blue';
+		amount: number;
 	};
 	topScorer?: {
 		/** who they bet on, team number */
-		bet?: number;
-		amount?: number;
+		bet: number;
+		amount: number;
 	};
 	bottomScorer?: {
 		/** who they bet on, team number */
-		bet?: number;
-		amount?: number;
+		bet: number;
+		amount: number;
 	};
 }
 
-const Match = (models.match as Model<MatchI>) || model('match', matchSchema);
+const Match =
+	(models.match as MatchModelType) || model<MatchI, MatchModelType>('match', matchSchema);
 
 export default Match;
