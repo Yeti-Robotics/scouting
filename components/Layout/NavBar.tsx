@@ -1,8 +1,8 @@
 import { useUser } from '@/lib/useUser';
-import { AccountCircle, InsertDriveFile, Menu, NoteAdd } from '@mui/icons-material';
+import { AccountCircle, InsertDriveFile, Menu, NoteAdd, Paid } from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ButtonProps {
 	href: string;
@@ -25,6 +25,49 @@ const NavBarButton: React.VFC<ButtonProps> = ({ href, text, Icon }) => {
 			>
 				{Icon}
 				{text}
+			</Box>
+		</Link>
+	);
+};
+
+const getRandomColorValue = () => Math.ceil(Math.random() * 255);
+
+const CasinoButton: React.VFC = () => {
+	const [colorValue, setColorValue] = useState({
+		r: getRandomColorValue(),
+		g: getRandomColorValue(),
+		b: getRandomColorValue(),
+	});
+	const avgColorDark = (colorValue.r + colorValue.g + colorValue.b) / 3 <= 127.5;
+
+	useEffect(() => {
+		const interval = setInterval(
+			() =>
+				setColorValue({
+					r: getRandomColorValue(),
+					g: getRandomColorValue(),
+					b: getRandomColorValue(),
+				}),
+			300,
+		);
+		return () => clearInterval(interval);
+	}, []);
+
+	return (
+		<Link href='/casino' passHref={true}>
+			<Box
+				component='a'
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					height: 75,
+					padding: 2,
+					backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
+					color: avgColorDark ? 'white' : 'black',
+				}}
+			>
+				<Paid sx={{ margin: 1, color: avgColorDark ? 'white' : 'black' }} />
+				Casino
 			</Box>
 		</Link>
 	);
@@ -81,6 +124,8 @@ const NavBar = () => {
 					text='Records'
 					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
 				/>
+				<Divider />
+				<CasinoButton />
 			</Drawer>
 		</Box>
 	);
