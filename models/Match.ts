@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Subdocument } from '@/lib/api/types';
-import { Model, model, models, Schema, Types } from 'mongoose';
+import { Model, model, models, Schema, SchemaTypes, Types } from 'mongoose';
 
 const betSchema = new Schema<Bet>(
 	{
@@ -30,16 +30,19 @@ type MatchDocumentProps = {
 type MatchModelType = Model<MatchI, {}, MatchDocumentProps>;
 const matchSchema = new Schema<MatchI, MatchModelType>(
 	{
-		blue1: { type: Number, required: true },
-		blue2: { type: Number, required: true },
-		blue3: { type: Number, required: true },
-		red1: { type: Number, required: true },
-		red2: { type: Number, required: true },
-		red3: { type: Number, required: true },
+		blue1: { type: Number, required: false },
+		blue2: { type: Number, required: false },
+		blue3: { type: Number, required: false },
+		red1: { type: Number, required: false },
+		red2: { type: Number, required: false },
+		red3: { type: Number, required: false },
 		winner: { type: String, required: false },
 		topScorer: { type: Number, required: false },
 		bottomScorer: { type: Number, required: false },
 		open: { type: Boolean, required: true },
+		startTime: { type: Number, required: true },
+		matchNumber: { type: Number, required: true },
+		setNumber: { type: Number, required: true },
 		bets: [betSchema],
 	},
 	{ timestamps: true, collection: 'matches' },
@@ -47,17 +50,22 @@ const matchSchema = new Schema<MatchI, MatchModelType>(
 
 export interface MatchI {
 	_id: string;
-	blue1: number;
-	blue2: number;
-	blue3: number;
-	red1: number;
-	red2: number;
-	red3: number;
+	blue1?: number;
+	blue2?: number;
+	blue3?: number;
+	red1?: number;
+	red2?: number;
+	red3?: number;
 	bets: Bet[];
 	open: boolean;
 	winner: 'red' | 'blue';
-	topScorer: number;
-	bottomScorer: number;
+	topScorer?: number;
+	bottomScorer?: number;
+	startTime: number;
+	matchNumber: number;
+	setNumber: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Bet {

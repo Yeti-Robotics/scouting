@@ -17,6 +17,7 @@ const standFormSchema = new Schema<StandFormI>(
 		initiationLine: { type: Boolean, required: true },
 		endPosition: { type: Number, required: true },
 		defense: { type: Number, required: true },
+		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
@@ -40,6 +41,7 @@ export interface StandFormI {
 	initiationLine: boolean;
 	endPosition: number;
 	defense: number;
+	approved: boolean;
 	notes: string;
 	createdAt: string;
 	updatedAt: string;

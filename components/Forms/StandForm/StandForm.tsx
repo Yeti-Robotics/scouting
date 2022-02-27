@@ -1,6 +1,6 @@
 import { useUser } from '@/lib/useUser';
 import { StandFormI } from '@/models/StandForm';
-import { Delete } from '@mui/icons-material';
+import { Check, Delete } from '@mui/icons-material';
 import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,6 +28,8 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [isOffline, setIsOffline] = useState(false);
+	const [approving, setApproving] = useState<'' | 'fetching' | 'done'>('');
+	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const { control, handleSubmit, reset } = useForm<StandFormI>({ defaultValues: defaultForm });
 
 	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
@@ -54,7 +56,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline))}>
+		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -217,7 +219,33 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					broken), and human players. Don't write too much, be concise!
 				</p>
 			</FormSection>
-			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
+			{Boolean(canEdit) && !create && !defaultForm?.approved && (
+				<Button
+					type='button'
+					color='success'
+					variant='contained'
+					sx={{ m: 2 }}
+					onClick={() => {
+						setApproving('fetching');
+						fetch(`/api/forms/stand/${id}/approve`).then(() => setApproving('done'));
+					}}
+				>
+					{approving === 'fetching' ? (
+						<CircularProgress color='inherit' sx={{ margin: 1, ml: 0 }} size='1rem' />
+					) : (
+						<Check sx={{ margin: 1, ml: 0 }} />
+					)}{' '}
+					Approve
+				</Button>
+			)}
+			{Boolean(canEdit) && (
+				<SubmitButton disabled={submitting === 'fetching'}>
+					{submitting === 'fetching' ? (
+						<CircularProgress sx={{ m: 1, ml: 0 }} size='1rem' color='inherit' />
+					) : null}{' '}
+					{create ? 'Submit' : 'Update'}
+				</SubmitButton>
+			)}
 		</Form>
 	);
 };

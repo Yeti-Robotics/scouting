@@ -2,9 +2,10 @@ import { Box } from '@mui/material';
 
 interface Props {
 	title?: string;
+	color?: string;
 }
 
-const FormSection: React.FC<Props> = ({ title, children }) => {
+const FormSection: React.FC<Props> = ({ title, color, children }) => {
 	return (
 		<Box
 			sx={{
@@ -22,10 +23,10 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 						width: '100%',
 						fontSize: '1.75rem',
 						fontWeight: 'bold',
-						backgroundColor: 'primary.main',
+						backgroundColor: color || 'primary.main',
 						padding: 1,
 						border: '1px solid #fff',
-						borderColor: 'primary.main',
+						borderColor: color || 'primary.main',
 						borderTopLeftRadius: '8px',
 						borderTopRightRadius: '8px',
 						borderBottom: '0px',
@@ -44,7 +45,7 @@ const FormSection: React.FC<Props> = ({ title, children }) => {
 					padding: 1,
 					border: '1px solid #fff',
 					borderTop: '0px',
-					borderColor: 'primary.main',
+					borderColor: color || 'primary.main',
 					borderBottomLeftRadius: '8px',
 					borderBottomRightRadius: '8px',
 				}}

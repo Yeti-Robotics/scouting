@@ -18,7 +18,14 @@ export default new RouteHandler<'api', WAuth>()
 			return res.status(401).json({ message: 'You are not authorized.' });
 		const match: MatchI = JSON.parse(req.body);
 
-		const savedMatch = new Match(match);
+		const savedMatch = new Match({
+			...match,
+			startTime: new Date(match.startTime).valueOf(),
+			bets: [],
+			bottomScorer: undefined,
+			topScorer: undefined,
+			open: true,
+		});
 		await savedMatch.save();
 
 		return res.status(200).json({ message: 'Match successfully created.' });
