@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Subdocument } from '@/lib/api/types';
-import { Model, model, models, Schema, SchemaTypes, Types } from 'mongoose';
+import { Model, model, models, Schema, Types } from 'mongoose';
 
 const betSchema = new Schema<Bet>(
 	{
 		username: { type: String, required: true },
 		winner: {
-			bet: { type: String, required: true },
-			amount: { type: Number, required: true },
+			bet: { type: String, required: false },
+			amount: { type: Number, required: false },
 			required: false,
 		},
 		topScorer: {
-			bet: { type: Number, required: true },
-			amount: { type: Number, required: true },
+			bet: { type: Number, required: false },
+			amount: { type: Number, required: false },
 			required: false,
 		},
 		bottomScorer: {
-			bet: { type: Number, required: true },
-			amount: { type: Number, required: true },
+			bet: { type: Number, required: false },
+			amount: { type: Number, required: false },
 			required: false,
 		},
 	},

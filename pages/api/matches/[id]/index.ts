@@ -12,7 +12,14 @@ export default new RouteHandler<'api', WAuth>()
 			return res.status(401).json({ message: 'You are not authorized.' });
 		const id = String(req.query.id);
 		const match = await Match.findById(id);
-		return res.status(200).json(match);
+
+		// must be admin to see bets
+		const withoutBets = (match: MatchI | null) => {
+			if (match) (match as any).bets = undefined;
+			return match;
+		};
+
+		return res.status(200).json(req.user.administrator ? match : withoutBets(match));
 	})
 	.patch(async (req, res) => {
 		if (!req.user.administrator || !req.user || req.user.banned)

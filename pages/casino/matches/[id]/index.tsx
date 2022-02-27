@@ -113,7 +113,11 @@ const Match = () => {
 			<p style={{ fontSize: 14 }}>
 				Click the team numbers above to see team data and inform your bets.
 			</p>
-			{/*!betsClosed && */ !userHasBetOn(data, user) && <BetsForm match={data} user={user} />}
+			{
+				/*!betsClosed && */ !userHasBetOn(data, user) && (
+					<BetsForm match={data} user={user} id={String(router.query.id)} />
+				)
+			}
 		</Layout>
 	);
 };

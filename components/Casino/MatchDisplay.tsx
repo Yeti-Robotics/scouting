@@ -100,7 +100,6 @@ const MatchDisplay: React.VFC<Props> = ({ matches }) => {
 							onChange={(e) => setShowHasBetOn(e.target.checked)}
 							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 							checked={showHasBetOn}
-							defaultChecked={false}
 						/>
 					}
 				/>
@@ -111,7 +110,6 @@ const MatchDisplay: React.VFC<Props> = ({ matches }) => {
 							onChange={(e) => setShowPastMatches(e.target.checked)}
 							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 							checked={showPastMatches}
-							defaultChecked={false}
 						/>
 					}
 				/>

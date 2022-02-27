@@ -4,7 +4,7 @@ import LoadingLayout from '@/components/Layout/LoadingLayout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { Button, Input } from '@mui/material';
+import { Button, Input, TextField } from '@mui/material';
 import Link from 'next/link';
 import { useRef } from 'react';
 import useSWR from 'swr';
@@ -34,7 +34,12 @@ const Matches = () => {
 			)}
 			{user.administrator && (
 				<>
-					<Input inputProps={{ ref: eventKeyRef }} sx={{ margin: 2 }} />
+					<TextField
+						label='TBA Event Key'
+						placeholder='<year><event key>'
+						inputProps={{ ref: eventKeyRef }}
+						sx={{ margin: 2 }}
+					/>
 					<Button
 						color='success'
 						variant='contained'
