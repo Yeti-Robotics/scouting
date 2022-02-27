@@ -21,6 +21,8 @@ const TeamWrapper: React.VFC<{ teamNumber: number; col: 'red' | 'blue' }> = ({
 		<Link href={`/teams/${teamNumber}`} passHref>
 			<Button
 				component='a'
+				target='_blank'
+				rel='noopener noreferrer'
 				sx={{
 					padding: 1,
 					margin: 1,
