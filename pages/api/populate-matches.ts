@@ -79,7 +79,7 @@ export default new RouteHandler<'api', WAuth>()
 						break;
 				}
 			});
-			savedMatch.startTime = match.predicted_time;
+			savedMatch.startTime = match.time;
 			savedMatch.matchNumber = match.match_number;
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;

@@ -68,6 +68,13 @@ const Match = () => {
 
 	return (
 		<Layout>
+			{user.administrator && (
+				<Link href={`/casino/matches/${router.query.id}/edit`} passHref>
+					<Button component='a' variant='contained'>
+						Edit Match
+					</Button>
+				</Link>
+			)}
 			<h1 style={{ marginBottom: 0 }}>Match Number: {data.matchNumber}</h1>
 			<h2 style={{ marginTop: 0 }}>Set Number: {data.setNumber}</h2>
 			<Box sx={{ display: 'flex', alignItems: 'center' }}>

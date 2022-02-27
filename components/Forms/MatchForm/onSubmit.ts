@@ -8,10 +8,10 @@ type MatchFormOnSubmit = (create: boolean, user: UserI) => SubmitHandler<MatchI>
 export const onSubmit: MatchFormOnSubmit = (create, user) => {
 	const onCreate: SubmitHandler<MatchI> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
-		const { bets, ...withoutBets } = data;
+		const { bets, winner, ...filtered } = data;
 		fetch('/api/matches', {
 			method: 'POST',
-			body: JSON.stringify(withoutBets),
+			body: JSON.stringify(filtered),
 		});
 	};
 

@@ -58,7 +58,7 @@ export interface MatchI {
 	red3?: number;
 	bets: Bet[];
 	open: boolean;
-	winner: 'red' | 'blue';
+	winner: 'red' | 'blue' | 'tie';
 	topScorer?: number;
 	bottomScorer?: number;
 	startTime: number;

@@ -8,6 +8,13 @@ const CreateMatch = () => {
 
 	if (!user) return <LoadingLayout />;
 
+	if (user.banned)
+		return (
+			<Layout>
+				<h1>You&#39;re banned you sussy baka.</h1>
+			</Layout>
+		);
+
 	return (
 		<Layout>
 			<MatchForm create={true} canEdit={user.administrator} />
