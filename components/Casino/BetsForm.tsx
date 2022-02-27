@@ -62,6 +62,7 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 			>
 				<FormSection title='Who Wins' color={notBetting.winner ? 'dimgrey' : undefined}>
 					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
+					<h3 style={{ margin: 0 }}>1.5x return</h3>
 					<h3>You are not required to bet on every section.</h3>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
@@ -110,6 +111,7 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 					color={notBetting.topScorer ? 'dimgrey' : undefined}
 				>
 					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
+					<h3 style={{ margin: 0 }}>2x return</h3>
 					<h3>You are not required to bet on every section.</h3>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
@@ -166,6 +168,7 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 					color={notBetting.bottomScorer ? 'dimgrey' : undefined}
 				>
 					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
+					<h3 style={{ margin: 0 }}>2x return</h3>
 					<h3>You are not required to bet on every section.</h3>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
