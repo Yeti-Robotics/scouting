@@ -87,7 +87,6 @@ export default new RouteHandler<'api', WAuth>()
 			{ team: 'red2', score: scores.red2 },
 			{ team: 'red3', score: scores.red3 },
 		];
-		console.log(mappedArr);
 
 		const bottomScorer = mappedArr.sort((a, b) => a.score - b.score)[0].team;
 		const topScorer = mappedArr.sort((a, b) => b.score - a.score)[0].team;
@@ -101,8 +100,6 @@ export default new RouteHandler<'api', WAuth>()
 			mappedArr.filter(
 				(score) => score.score === mappedArr.sort((a, b) => b.score - a.score)[0].score,
 			).length > 1;
-		console.log(bottomScorerTie);
-		console.log(topScorerTie);
 
 		// paying out bets
 		const saves = await match.bets.map(async (bet) => {
