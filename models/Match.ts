@@ -5,6 +5,7 @@ import { Model, model, models, Schema, Types } from 'mongoose';
 const betSchema = new Schema<Bet>(
 	{
 		username: { type: String, required: true },
+		paid: { type: Boolean, default: () => false },
 		winner: {
 			bet: { type: String, required: false },
 			amount: { type: Number, required: false },
@@ -69,10 +70,10 @@ export interface MatchI {
 }
 
 export interface Bet {
+	_id: string;
 	/** username of better */
 	username: string;
-	/** number used to identify the competition */
-	competition: number;
+	paid: boolean;
 	winner?: {
 		/** what they bet on, red or blue win */
 		bet: 'red' | 'blue';
@@ -88,6 +89,8 @@ export interface Bet {
 		bet: number;
 		amount: number;
 	};
+	createdAt: string;
+	updatedAt: string;
 }
 
 const Match =

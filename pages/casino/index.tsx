@@ -1,7 +1,8 @@
 import FlexGrid from '@/components/FlexGrid';
 import Layout from '@/components/Layout';
+import LoadingLayout from '@/components/Layout/LoadingLayout';
 import { useUser } from '@/lib/useUser';
-import { Paid, SportsKabaddi } from '@mui/icons-material';
+import { Paid, ShowChart, SportsKabaddi } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Link from 'next/link';
 
@@ -35,7 +36,9 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 };
 
 const Casino = () => {
-	const { user } = useUser({ canRedirect: false });
+	const { user } = useUser({ canRedirect: true });
+
+	if (!user) return <LoadingLayout />;
 
 	return (
 		<Layout>
@@ -47,8 +50,13 @@ const Casino = () => {
 					Icon={<SportsKabaddi sx={{ mr: 1 }} />}
 				/>
 				<MenuCard
-					href='/casino/your-bets'
-					text='Your Bets'
+					href='/casino/leaderboard'
+					text='Leaderboard'
+					Icon={<ShowChart sx={{ mr: 1 }} />}
+				/>
+				<MenuCard
+					href={`/casino/users/${user._id}/bets`}
+					text='My Bets'
 					Icon={<Paid sx={{ mr: 1 }} />}
 				/>
 			</FlexGrid>

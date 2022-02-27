@@ -121,7 +121,9 @@ export default new RouteHandler<'api', WAuth>()
 				console.log('win');
 				better.coins = better.coins + bet.winner.amount * 1.5;
 			}
-			return better.save();
+
+			bet.paid = true;
+			return better.validate();
 		});
 
 		await Promise.all(saves);
