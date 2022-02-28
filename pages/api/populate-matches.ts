@@ -24,6 +24,8 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
+		if (!req.user.administrator || !req.user || req.user.banned)
+			return res.status(401).json({ message: 'You are not authorized to populate matches.' });
 		const eventKey = String(req.query.evKey);
 		const headers = new Headers();
 		headers.append('X-TBA-Auth-Key', String(process.env.TBA_SECRET));
