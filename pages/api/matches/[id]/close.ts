@@ -105,27 +105,27 @@ export default new RouteHandler<'api', WAuth>()
 		const saves = await match.bets.map(async (bet) => {
 			const better = await User.findOne({ username: bet.username });
 			if (!better) return Promise.resolve();
-			if (!bottomScorerTie && bet.bottomScorer) {
+			if (bet.bottomScorer) {
 				console.log('bottom');
-				if (bet.bottomScorer.bet === match[bottomScorer]) {
+				if (bet.bottomScorer.bet === match[bottomScorer] && !bottomScorerTie) {
 					better.coins = better.coins + bet.bottomScorer.amount * 2;
 					bet.bottomScorer.won = true;
 				} else {
 					bet.bottomScorer.won = false;
 				}
 			}
-			if (!topScorerTie && bet.topScorer) {
+			if (bet.topScorer) {
 				console.log('top');
-				if (bet.topScorer.bet === match[topScorer]) {
+				if (bet.topScorer.bet === match[topScorer] && !topScorerTie) {
 					better.coins = better.coins + bet.topScorer.amount * 2;
 					bet.topScorer.won = true;
 				} else {
 					bet.topScorer.won = false;
 				}
 			}
-			if (match.winner !== 'tie' && bet.winner) {
+			if (bet.winner) {
 				console.log('win');
-				if (bet.winner.bet === match.winner) {
+				if (bet.winner.bet === match.winner && match.winner !== 'tie') {
 					better.coins = better.coins + bet.winner.amount * 1.5;
 					bet.winner.won = true;
 				} else {
