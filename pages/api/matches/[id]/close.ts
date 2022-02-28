@@ -43,7 +43,7 @@ export default new RouteHandler<'api', WAuth>()
 		const match = await Match.findById(matchId);
 		if (!match) return res.status(400).json({ message: 'No match with this id.' });
 		if (!match.open) return res.status(400).json({ message: 'Match already closed.' });
-		match.winner = req.query.winner as 'red' | 'blue' | 'tie';
+		match.winner = String(req.query.winner) as 'red' | 'blue' | 'tie';
 
 		const forms = await StandForm.find({ matchNumber: match.matchNumber });
 		if (!forms) return res.status(400).json({ message: 'There were no forms for this match.' });
@@ -125,6 +125,9 @@ export default new RouteHandler<'api', WAuth>()
 			}
 			if (bet.winner) {
 				console.log('win');
+				// I had to do it ts is wrong :pensive:
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
 				if (bet.winner.bet === match.winner && match.winner !== 'tie') {
 					better.coins = better.coins + bet.winner.amount * 1.5;
 					bet.winner.won = true;
