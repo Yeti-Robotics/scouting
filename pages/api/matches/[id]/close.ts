@@ -137,7 +137,8 @@ export default new RouteHandler<'api', WAuth>()
 			}
 
 			bet.paid = true;
-			return better.validate();
+			better.validateSync();
+			return better.save();
 		});
 
 		await Promise.all(saves);
