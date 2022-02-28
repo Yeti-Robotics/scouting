@@ -77,7 +77,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					control={control}
 					name='matchNumber'
 					label='Match Number'
-					type='number'
+					valueAsNumber
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
@@ -85,7 +85,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					control={control}
 					name='teamNumber'
 					label='Team Number'
-					type='number'
+					valueAsNumber
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>

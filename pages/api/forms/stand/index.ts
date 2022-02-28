@@ -4,6 +4,17 @@ import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
 import StandForm, { StandFormI } from '@/models/StandForm';
+import Team from '@/models/Team';
+
+interface TBATeamSimple {
+	city: string;
+	country: string;
+	key: string;
+	name: string;
+	nickname: string;
+	state_prov: string;
+	team_number: number;
+}
 
 const handler = new RouteHandler<'api', WAuth>();
 
@@ -22,7 +33,29 @@ export default handler
 		const savedForm = new StandForm(form);
 		await savedForm.save();
 
-		return res.status(200).json({ message: 'Form saved!' });
+		res.status(200).json({ message: 'Form saved!' });
+
+		const team = await Team.findOne().where({ team_number: form.teamNumber });
+
+		if (!team) {
+			const headers = new Headers();
+			headers.append('X-TBA-Auth-Key', String(process.env.TBA_SECRET));
+			headers.append('accept', 'application/json');
+			const apiRes = await fetch(
+				`https://www.thebluealliance.com/api/v3/team/frc${form.teamNumber}`,
+				{ headers },
+			);
+			if (!apiRes.ok) return;
+			const teamData: TBATeamSimple = await apiRes.json();
+
+			if (teamData.nickname) {
+				const newTeam = new Team({
+					team_name: teamData.nickname,
+					team_number: form.teamNumber,
+				});
+				await newTeam.save();
+			}
+		}
 	})
 	.patch(async (req, res) => {
 		if (!req.user.administrator || !req.user || req.user.banned)
