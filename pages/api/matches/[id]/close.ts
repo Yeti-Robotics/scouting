@@ -105,21 +105,32 @@ export default new RouteHandler<'api', WAuth>()
 		const saves = await match.bets.map(async (bet) => {
 			const better = await User.findOne({ username: bet.username });
 			if (!better) return Promise.resolve();
-			if (
-				!bottomScorerTie &&
-				bet.bottomScorer &&
-				bet.bottomScorer.bet === match[bottomScorer]
-			) {
+			if (!bottomScorerTie && bet.bottomScorer) {
 				console.log('bottom');
-				better.coins = better.coins + bet.bottomScorer.amount * 2;
+				if (bet.bottomScorer.bet === match[bottomScorer]) {
+					better.coins = better.coins + bet.bottomScorer.amount * 2;
+					bet.bottomScorer.won = true;
+				} else {
+					bet.bottomScorer.won = false;
+				}
 			}
-			if (!topScorerTie && bet.topScorer && bet.topScorer.bet === match[topScorer]) {
+			if (!topScorerTie && bet.topScorer) {
 				console.log('top');
-				better.coins = better.coins + bet.topScorer.amount * 2;
+				if (bet.topScorer.bet === match[topScorer]) {
+					better.coins = better.coins + bet.topScorer.amount * 2;
+					bet.topScorer.won = true;
+				} else {
+					bet.topScorer.won = false;
+				}
 			}
-			if (match.winner !== 'tie' && bet.winner && bet.winner.bet === match.winner) {
+			if (match.winner !== 'tie' && bet.winner) {
 				console.log('win');
-				better.coins = better.coins + bet.winner.amount * 1.5;
+				if (bet.winner.bet === match.winner) {
+					better.coins = better.coins + bet.winner.amount * 1.5;
+					bet.winner.won = true;
+				} else {
+					bet.winner.won = false;
+				}
 			}
 
 			bet.paid = true;

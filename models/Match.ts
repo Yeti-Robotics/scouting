@@ -9,16 +9,19 @@ const betSchema = new Schema<Bet>(
 		winner: {
 			bet: { type: String, required: false },
 			amount: { type: Number, required: false },
+			won: { type: Boolean, required: false },
 			required: false,
 		},
 		topScorer: {
 			bet: { type: Number, required: false },
 			amount: { type: Number, required: false },
+			won: { type: Boolean, required: false },
 			required: false,
 		},
 		bottomScorer: {
 			bet: { type: Number, required: false },
 			amount: { type: Number, required: false },
+			won: { type: Boolean, required: false },
 			required: false,
 		},
 	},
@@ -78,16 +81,19 @@ export interface Bet {
 		/** what they bet on, red or blue win */
 		bet: 'red' | 'blue';
 		amount: number;
+		won: boolean;
 	};
 	topScorer?: {
 		/** who they bet on, team number */
 		bet: number;
 		amount: number;
+		won: boolean;
 	};
 	bottomScorer?: {
 		/** who they bet on, team number */
 		bet: number;
 		amount: number;
+		won: boolean;
 	};
 	createdAt: string;
 	updatedAt: string;
