@@ -4,6 +4,7 @@ const standFormSchema = new Schema<StandFormI>(
 	{
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
+		setNumber: { type: Number, default: () => 1 },
 		scouter: { type: String, required: true }, // username
 		autoUpperBallsScored: { type: Number, required: true },
 		autoUpperBallsMissed: { type: Number, required: true },
@@ -28,6 +29,7 @@ export interface StandFormI {
 	_id: string;
 	teamNumber: number;
 	matchNumber: number;
+	setNumber: number;
 	scouter: string; // username
 	autoUpperBallsScored: number;
 	autoUpperBallsMissed: number;

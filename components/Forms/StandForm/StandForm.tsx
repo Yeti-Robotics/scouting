@@ -83,6 +83,14 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 				/>
 				<TextInput
 					control={control}
+					name='setNumber'
+					label='Set Number'
+					valueAsNumber
+					disabled={!canEdit}
+					rules={{ required: false, min: 1 }}
+				/>
+				<TextInput
+					control={control}
 					name='teamNumber'
 					label='Team Number'
 					valueAsNumber
