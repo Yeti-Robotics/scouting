@@ -127,8 +127,8 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 						}}
 					>
 						{match.blue1 && <MenuItem value={match.blue1}>{match.blue1}</MenuItem>}
-						{match.blue2 && <MenuItem value={match.blue1}>{match.blue2}</MenuItem>}
-						{match.blue3 && <MenuItem value={match.blue1}>{match.blue3}</MenuItem>}
+						{match.blue2 && <MenuItem value={match.blue2}>{match.blue2}</MenuItem>}
+						{match.blue3 && <MenuItem value={match.blue3}>{match.blue3}</MenuItem>}
 						{match.red1 && <MenuItem value={match.red1}>{match.red1}</MenuItem>}
 						{match.red2 && <MenuItem value={match.red2}>{match.red2}</MenuItem>}
 						{match.red3 && <MenuItem value={match.red3}>{match.red3}</MenuItem>}
@@ -184,8 +184,8 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 						}}
 					>
 						{match.blue1 && <MenuItem value={match.blue1}>{match.blue1}</MenuItem>}
-						{match.blue2 && <MenuItem value={match.blue1}>{match.blue2}</MenuItem>}
-						{match.blue3 && <MenuItem value={match.blue1}>{match.blue3}</MenuItem>}
+						{match.blue2 && <MenuItem value={match.blue2}>{match.blue2}</MenuItem>}
+						{match.blue3 && <MenuItem value={match.blue3}>{match.blue3}</MenuItem>}
 						{match.red1 && <MenuItem value={match.red1}>{match.red1}</MenuItem>}
 						{match.red2 && <MenuItem value={match.red2}>{match.red2}</MenuItem>}
 						{match.red3 && <MenuItem value={match.red3}>{match.red3}</MenuItem>}
