@@ -11,6 +11,7 @@ const userSchema = new Schema<UserI>(
 		banned: { type: Boolean, default: () => false },
 		bannedBy: { type: String },
 		coins: { type: Number, default: () => 100 },
+		canScout: { type: Boolean, default: () => false },
 	},
 	{ timestamps: true },
 );
@@ -28,6 +29,7 @@ export interface UserI {
 	banned: boolean;
 	bannedBy?: string;
 	coins: number;
+	canScout: boolean;
 }
 
 const User = (models.user as Model<UserI>) || model('user', userSchema);

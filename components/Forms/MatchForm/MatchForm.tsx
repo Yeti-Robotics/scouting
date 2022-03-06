@@ -1,12 +1,15 @@
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
+import { UserI } from '@/models/User';
 import { Delete } from '@mui/icons-material';
 import { Button, CircularProgress, MenuItem } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useSWR from 'swr';
+import Autocomplete from '../Autocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
 import Select from '../Select';
@@ -21,33 +24,24 @@ interface Props {
 	id?: string;
 }
 
-const formatDate = (date: Date) => {
-	return (
-		date.toLocaleString(undefined, { year: 'numeric' }) +
-		'-' +
-		date.toLocaleString(undefined, { month: '2-digit' }) +
-		'-' +
-		date.toLocaleString(undefined, { day: '2-digit' }) +
-		',' +
-		date.toLocaleTimeString()
-	);
-};
-
 const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	const router = useRouter();
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
+	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { handleSubmit, control, watch } = useForm({
 		defaultValues: {
 			...defaultMatch,
-			startTime: defaultMatch ? formatDate(new Date(defaultMatch.startTime)) : undefined,
+			startTime: defaultMatch ? new Date(defaultMatch.startTime) : undefined,
 		},
 	});
 	const winner = watch('winner');
 
-	// console.log(formatDate(new Date(defaultMatch.startTime)));
-
-	if (!user) return <LoadingLayout />;
+	if (!user || !users) return <CircularProgress />;
+	const options = users.map((user) => ({
+		username: user.username,
+		label: `${user.firstName} ${user.lastName} (${user.username})`,
+	}));
 
 	if (!user.administrator) {
 		return <h1>You are not authorized to use this!</h1>;
@@ -74,8 +68,8 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 				</Button>
 			)}
 			<FormSection title='Info'>
-				<Box sx={{ display: 'flex' }}>
-					<div style={{ margin: '0.5rem' }}>
+				<Box sx={{ display: 'flex', width: '100%' }}>
+					<div style={{ width: '100%', margin: '0.5rem' }}>
 						<TextInput
 							control={control}
 							name='blue1'
@@ -101,7 +95,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 							rules={{ required: true, min: 1 }}
 						/>
 					</div>
-					<div style={{ margin: '0.5rem' }}>
+					<div style={{ width: '100%', margin: '0.5rem' }}>
 						<TextInput
 							control={control}
 							name='red1'
@@ -128,6 +122,79 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 						/>
 					</div>
 				</Box>
+				<h2 style={{ marginBottom: 0 }}>Scouters</h2>
+				<Box sx={{ display: 'flex', width: '100%' }}>
+					<div style={{ width: '100%', margin: '0.5rem' }}>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.blue1'
+							label='Blue 1'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.blue2'
+							label='Blue 2'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.blue3'
+							label='Blue 3'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+					</div>
+					<div style={{ width: '100%', margin: '0.5rem' }}>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.red1'
+							label='Red 1'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.red2'
+							label='Red 2'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+						<Autocomplete
+							options={options}
+							control={control}
+							isOptionEqualToValue={(opt, v) =>
+								opt.username === v.username || opt.username === v
+							}
+							name='scouters.red3'
+							label='Red 3'
+							disabled={!canEdit}
+							rules={{ required: true, min: 1 }}
+						/>
+					</div>
+				</Box>
 				<TextInput
 					control={control}
 					name='matchNumber'
@@ -147,7 +214,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 						control={control}
 						name='winner'
 						label='Winner'
-						rules={{ required: false }}
+						rules={{ required: false, validate: undefined }}
 					>
 						<MenuItem value='blue'>Blue Alliance</MenuItem>
 						<MenuItem value='red'>Red Alliance</MenuItem>

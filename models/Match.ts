@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Subdocument } from '@/lib/api/types';
 import { Model, model, models, Schema, Types } from 'mongoose';
+import { UserI } from './User';
 
 const betSchema = new Schema<Bet>(
 	{
@@ -47,6 +48,14 @@ const matchSchema = new Schema<MatchI, MatchModelType>(
 		startTime: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, required: true },
+		scouters: {
+			blue1: { type: String, required: false },
+			blue2: { type: String, required: false },
+			blue3: { type: String, required: false },
+			red1: { type: String, required: false },
+			red2: { type: String, required: false },
+			red3: { type: String, required: false },
+		},
 		bets: [betSchema],
 	},
 	{ timestamps: true, collection: 'matches' },
@@ -68,6 +77,42 @@ export interface MatchI {
 	startTime: number;
 	matchNumber: number;
 	setNumber: number;
+	scouters?: {
+		blue1?: string;
+		blue2?: string;
+		blue3?: string;
+		red1?: string;
+		red2?: string;
+		red3?: string;
+	};
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface MatchSchedule {
+	_id: string;
+	blue1?: number;
+	blue2?: number;
+	blue3?: number;
+	red1?: number;
+	red2?: number;
+	red3?: number;
+	bets: Bet[];
+	open: boolean;
+	winner: 'red' | 'blue' | 'tie';
+	topScorer?: number;
+	bottomScorer?: number;
+	startTime: number;
+	matchNumber: number;
+	setNumber: number;
+	scouters: {
+		blue1?: UserI;
+		blue2?: UserI;
+		blue3?: UserI;
+		red1?: UserI;
+		red2?: UserI;
+		red3?: UserI;
+	};
 	createdAt: string;
 	updatedAt: string;
 }

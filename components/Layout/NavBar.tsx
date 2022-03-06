@@ -1,5 +1,12 @@
 import { useUser } from '@/lib/useUser';
-import { AccountCircle, InsertDriveFile, Menu, NoteAdd, Paid } from '@mui/icons-material';
+import {
+	AccountCircle,
+	CalendarToday,
+	InsertDriveFile,
+	Menu,
+	NoteAdd,
+	Paid,
+} from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -109,14 +116,20 @@ const NavBar = () => {
 				<Divider />
 				<NavBarButton
 					href='/stand-scouting'
-					text='Stand Scouting'
+					text='Stand Scouting Form'
 					Icon={<NoteAdd sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/pit-scouting'
-					text='Pit Scouting'
+					text='Pit Scouting Form'
 					Icon={<NoteAdd sx={{ margin: 1 }} />}
+				/>
+				<Divider />
+				<NavBarButton
+					href='/scouting-schedule'
+					text='Stand Scouting Schedule'
+					Icon={<CalendarToday sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<NavBarButton

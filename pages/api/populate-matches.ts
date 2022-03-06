@@ -14,6 +14,7 @@ interface TBAMatchSimple {
 		blue: TBAMatchAlliance;
 		red: TBAMatchAlliance;
 	};
+	key: string;
 	match_number: number;
 	set_number: number;
 	time: number;
@@ -44,6 +45,7 @@ export default new RouteHandler<'api', WAuth>()
 
 		await Match.deleteMany({});
 		await matches.forEach(async (match) => {
+			if (/_(sf|qf|f)/.test(match.key)) return;
 			const savedMatch = new Match();
 
 			// take keys and map them to team 1, 2, 3
@@ -85,6 +87,7 @@ export default new RouteHandler<'api', WAuth>()
 			savedMatch.matchNumber = match.match_number;
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;
+			savedMatch.scouters = {};
 			await savedMatch.save();
 		});
 
