@@ -32,7 +32,7 @@ export default new RouteHandler<'api', WAuth>()
 				.json({ message: 'You are not authorized to create the schedgy.' });
 		const usersCanScout: Record<string, boolean> = JSON.parse(req.body);
 		const matches = await Match.find({}).sort('matchNumber');
-		const users = await User.find({}).where({ canScout: true });
+		const users = await User.find({});
 
 		const usersSaves = users.map((user) => {
 			user.canScout = usersCanScout[user._id];

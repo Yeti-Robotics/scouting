@@ -49,7 +49,7 @@ const UserDisplay: React.VFC<{
 	);
 };
 
-const resultsDefault = (users: UserI[] | undefined) => {
+const resultsDefaults = (users: UserI[] | undefined) => {
 	const obj: Record<string, boolean> = {};
 	if (!users) return obj;
 
@@ -60,14 +60,14 @@ const resultsDefault = (users: UserI[] | undefined) => {
 const Create = () => {
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { data } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
-	const [results, setResults] = useState<Record<string, boolean>>(resultsDefault(data));
+	const [results, setResults] = useState<Record<string, boolean>>({});
 	const [fetching, setFetching] = useState<'' | 'fetching' | 'done'>('');
 
 	const submitCanScouts = async () => {
 		setFetching('fetching');
 		const res = await fetch('/api/create-schedule', {
 			method: 'POST',
-			body: JSON.stringify(results),
+			body: JSON.stringify({ ...resultsDefaults(data), ...results }),
 		});
 		setFetching('done');
 	};
