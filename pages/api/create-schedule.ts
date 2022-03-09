@@ -40,7 +40,11 @@ export default new RouteHandler<'api', WAuth>()
 		});
 		const userSavesAll = Promise.all(usersSaves);
 
-		let currentUsers = [...users.sort((a, b) => a.firstName.localeCompare(b.firstName))];
+		let currentUsers = [
+			...users
+				.filter((user) => usersCanScout[user._id])
+				.sort((a, b) => a.firstName.localeCompare(b.firstName)),
+		];
 		let usersIndex = 0;
 
 		const saves = matches.map((match) => {
