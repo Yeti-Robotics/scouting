@@ -65,7 +65,7 @@ const Create = () => {
 
 	const submitCanScouts = async () => {
 		setFetching('fetching');
-		const res = await fetch('/api/create-schedule', {
+		await fetch('/api/create-schedule', {
 			method: 'POST',
 			body: JSON.stringify({ ...resultsDefaults(data), ...results }),
 		});

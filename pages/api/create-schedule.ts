@@ -3,7 +3,7 @@ import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
 import Match from '@/models/Match';
-import User, { UserI } from '@/models/User';
+import User from '@/models/User';
 
 const shuffle = <T>(array: T[]): T[] => {
 	let currentIndex = array.length,
