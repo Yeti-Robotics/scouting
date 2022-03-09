@@ -13,7 +13,7 @@ export default new RouteHandler<'api', WAuth>()
 			return res.status(401).json({ message: 'You are not authorized.' });
 
 		const schedule = Boolean(req.query.schedule);
-		const matches = await Match.find({});
+		const matches = await Match.find({}).sort('matchNumber');
 
 		if (schedule) {
 			const users = await User.find({});

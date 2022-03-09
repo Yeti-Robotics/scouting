@@ -31,7 +31,7 @@ export default new RouteHandler<'api', WAuth>()
 				.status(403)
 				.json({ message: 'You are not authorized to create the schedgy.' });
 		const usersCanScout: Record<string, boolean> = JSON.parse(req.body);
-		const matches = await Match.find({});
+		const matches = await Match.find({}).sort('matchNumber');
 		const users = await User.find({});
 
 		const usersSaves = users.map((user) => {
@@ -48,43 +48,51 @@ export default new RouteHandler<'api', WAuth>()
 		let usersIndex = 0;
 
 		const saves = matches.map(async (match) => {
+			let shouldShuffle = false;
 			match.scouters = {};
 			match.scouters.blue1 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
 			match.scouters.blue2 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
 			match.scouters.blue3 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
 			match.scouters.red1 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
 			match.scouters.red2 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
 			match.scouters.red3 = currentUsers[usersIndex].username;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
-				currentUsers = shuffle(currentUsers);
+				shouldShuffle = true;
 				usersIndex = 0;
 			}
+
+			if (shouldShuffle) currentUsers = shuffle(currentUsers);
 			match.validateSync();
 			return match.save();
 		});
