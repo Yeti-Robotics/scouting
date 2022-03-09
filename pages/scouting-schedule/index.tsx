@@ -107,6 +107,13 @@ const ScoutingSchedule = () => {
 
 	return (
 		<Layout>
+			{user.administrator && (
+				<Link href='/scouting-schedule/create' passHref>
+					<Button component='a' variant='contained'>
+						Create Schedule
+					</Button>
+				</Link>
+			)}
 			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 				<FormControlLabel
 					label='Show Only My Matches'

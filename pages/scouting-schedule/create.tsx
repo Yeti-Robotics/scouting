@@ -74,6 +74,13 @@ const Create = () => {
 
 	if (!user || !data) return <LoadingLayout />;
 
+	if (!user.administrator)
+		return (
+			<Layout>
+				<h1>You are not authorized to use this.</h1>
+			</Layout>
+		);
+
 	return (
 		<Layout>
 			<Button onClick={submitCanScouts} variant='contained'>
