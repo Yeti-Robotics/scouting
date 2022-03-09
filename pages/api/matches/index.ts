@@ -19,6 +19,7 @@ export default new RouteHandler<'api', WAuth>()
 			const users = await User.find({});
 			const updatedMatches: MatchSchedule[] = matches.map((matchDoc) => {
 				const match = matchDoc.toObject() as MatchSchedule;
+				match.scouters = match.scouters || {}; // ensure this is defined
 				match.scouters.blue1 = users.find(
 					(user) => user.username === matchDoc.scouters?.blue1,
 				);
