@@ -23,7 +23,7 @@ handler.use(connectDB).post(async (req, res) => {
 
 		images.on('file', async (name, file) => {
 			const data = fs.readFileSync(file.filepath);
-			const optimized = await sharp(data).webp({ quality: 30 }).rotate(90).toBuffer();
+			const optimized = await sharp(data).rotate().webp({ quality: 30 }).toBuffer();
 			const image = new PitImage({
 				data: optimized,
 				formId: req.query.formId,
@@ -31,8 +31,8 @@ handler.use(connectDB).post(async (req, res) => {
 			});
 			image.save();
 		});
-		images.on('aborted', () => {
-			reject(res.status(500).send('Aborted'));
+		images.on('error', () => {
+			reject(res.status(500).json({ message: 'Internal Server Error' }));
 		});
 		images.on('end', () => {
 			resolve(res.status(200).send('done'));
