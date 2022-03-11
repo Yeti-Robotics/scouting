@@ -37,6 +37,6 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 To learn more about React and Next.js, take a look at the following resources:
 
-- []
+- [Learn React](https://beta.reactjs.org/learn) - An official tutorial that covers all the basics of React
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
