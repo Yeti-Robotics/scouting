@@ -103,7 +103,7 @@ const TeamPage = () => {
 									// eslint-disable-next-line @next/next/no-img-element
 									<img
 										key={image._id}
-										src={`data:image/*;base64,${toBase64(image.data.data)}`}
+										src={`data:image/webp;base64,${toBase64(image.data.data)}`}
 										alt='Pit Image'
 										style={{
 											flexGrow: 1,
