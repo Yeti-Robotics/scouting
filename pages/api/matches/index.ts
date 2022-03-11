@@ -10,7 +10,7 @@ export default new RouteHandler<'api', WAuth>()
 	.use(auth)
 	.get(async (req, res) => {
 		if (!req.user || req.user.banned)
-			return res.status(401).json({ message: 'You are not authorized.' });
+			return res.status(403).json({ message: 'You are not authorized.' });
 
 		const schedule = Boolean(req.query.schedule);
 		const matches = await Match.find({}).sort('matchNumber');
