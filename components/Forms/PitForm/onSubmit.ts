@@ -1,6 +1,5 @@
 import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
-import { StandFormI } from '@/models/StandForm';
 import { UserI } from '@/models/User';
 import { SubmitHandler, UseFormReset } from 'react-hook-form';
 
@@ -10,11 +9,11 @@ type PitFormOnSubmit = (
 	reset: UseFormReset<PitFormI>,
 	images: Partial<PitImageI & { listId: number }>[],
 	setImages: React.Dispatch<React.SetStateAction<Partial<PitImageI & { listId: number }>[]>>,
-) => SubmitHandler<StandFormI>;
+) => SubmitHandler<PitFormI>;
 
 // returns dif function depending on whether the form is for updating or creation
 export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages) => {
-	const onCreate: SubmitHandler<StandFormI> = async (data) => {
+	const onCreate: SubmitHandler<PitFormI> = async (data) => {
 		// we need a user to create a form
 		if (!user || user.banned) return;
 
@@ -48,7 +47,7 @@ export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages
 		setImages([]);
 	};
 
-	const onUpdate: SubmitHandler<StandFormI> = async (data) => {
+	const onUpdate: SubmitHandler<PitFormI> = async (data) => {
 		// must be admin to update
 		if (!user?.administrator || !user || user.banned) return;
 

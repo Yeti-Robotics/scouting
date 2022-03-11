@@ -23,7 +23,9 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 	});
 	const sortBy = watch('sortBy');
 
-	const onSubmit: SubmitHandler<PitFormI> = (data) => {
+	const onSubmit: SubmitHandler<
+		Partial<PitFormI> & { sortBy: string; sortFrom: Spread<PitFormI> }
+	> = (data) => {
 		const { sortBy, sortFrom, ...filter } = sanitizeFilter(data);
 		const newSort: any = {};
 		newSort[sortBy] = sortFrom;

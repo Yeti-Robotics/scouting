@@ -2,14 +2,16 @@ import { Model, model, models, Schema } from 'mongoose';
 
 const userSchema = new Schema<UserI>(
 	{
-		username: { type: String, unique: true, required: true, minlength: 3 },
+		username: { type: String, unique: true, required: true, minlength: 3, index: true },
 		administrator: { type: Boolean, required: true, default: false },
 		password: { type: String, required: true, minlength: 6 },
 		firstName: { type: String, required: true },
 		lastName: { type: String, required: true },
 		teamNumber: { type: Number, required: true, min: 1 },
-		banned: { type: Boolean, required: true, default: () => false },
+		banned: { type: Boolean, default: () => false },
 		bannedBy: { type: String },
+		coins: { type: Number, default: () => 100 },
+		canScout: { type: Boolean, default: () => false },
 	},
 	{ timestamps: true },
 );
@@ -26,6 +28,8 @@ export interface UserI {
 	updatedAt: string;
 	banned: boolean;
 	bannedBy?: string;
+	coins: number;
+	canScout: boolean;
 }
 
 const User = (models.user as Model<UserI>) || model('user', userSchema);

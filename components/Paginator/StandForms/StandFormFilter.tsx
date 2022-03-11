@@ -23,7 +23,9 @@ const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
 	});
 	const sortBy = watch('sortBy');
 
-	const onSubmit: SubmitHandler<StandFormI> = (data) => {
+	const onSubmit: SubmitHandler<
+		Partial<StandFormI> & { sortBy: string; sortFrom: Spread<StandFormI> }
+	> = (data) => {
 		const { sortBy, sortFrom, ...filter } = sanitizeFilter(data);
 		const newSort: any = {};
 		newSort[sortBy] = sortFrom;

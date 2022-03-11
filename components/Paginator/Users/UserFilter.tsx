@@ -21,7 +21,9 @@ const UserFilter: React.VFC<FilterProps<UserI>> = ({ state }) => {
 	});
 	const sortBy = watch('sortBy');
 
-	const onSubmit: SubmitHandler<UserI> = (data) => {
+	const onSubmit: SubmitHandler<Partial<UserI> & { sortBy: string; sortFrom: Spread<UserI> }> = (
+		data,
+	) => {
 		const { sortBy, sortFrom, ...filter } = sanitizeFilter(data);
 		const newSort: any = {};
 		newSort[sortBy] = sortFrom;

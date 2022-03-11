@@ -12,7 +12,8 @@ export default new RouteHandler<'api', WAuth>()
 	.get(async (req, res) => {
 		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update users.' });
-		const forms = await paginate(User, req.query);
+		const normal = Boolean(req.query.normal);
+		const forms = normal ? await User.find({}) : await paginate(User, req.query);
 		return res.status(200).json(forms);
 	})
 	.patch(async (req, res) => {

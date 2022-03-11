@@ -128,6 +128,13 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 					type='number'
 					rules={{ required: true, min: 1 }}
 				/>
+				<TextInput
+					control={control}
+					name='coins'
+					label='Coins'
+					type='number'
+					rules={{ required: true }}
+				/>
 				<Checkbox control={control} name='administrator' />
 				<Checkbox control={control} name='banned' />
 			</FormSection>

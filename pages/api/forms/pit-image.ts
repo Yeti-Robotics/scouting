@@ -1,9 +1,10 @@
 import PitImage from '@/models/PitImage';
-import Formidable from 'formidable-serverless';
 import { NextConfig } from 'next';
 import fs from 'fs';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import connectDB from '@/middleware/connect-db';
+import formidable from 'formidable';
+import sharp from 'sharp';
 
 export const config: NextConfig = {
 	api: {
@@ -15,29 +16,29 @@ const handler = new RouteHandler();
 
 handler.use(connectDB).post(async (req, res) => {
 	// eslint-disable-next-line no-async-promise-executor
-	return new Promise(async (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		if (!req.query.formId || !req.query.teamNumber)
 			return res.status(400).json({ message: 'No form id recieved for image.' });
-		const images = new Formidable.IncomingForm({ multiples: true, keepExtensions: true });
+		const images = formidable({ multiples: true, keepExtensions: true });
 
-		images
-			.on('file', (name, file) => {
-				const data = fs.readFileSync(file.path);
-				const image = new PitImage({
-					data,
-					formId: req.query.formId,
-					teamNumber: parseInt(String(req.query.teamNumber)),
-				});
-				image.save();
-			})
-			.on('aborted', () => {
-				reject(res.status(500).send('Aborted'));
-			})
-			.on('end', () => {
-				resolve(res.status(200).send('done'));
+		images.on('file', async (name, file) => {
+			const data = fs.readFileSync(file.filepath);
+			const optimized = await sharp(data).rotate().webp({ quality: 30 }).toBuffer();
+			const image = new PitImage({
+				data: optimized,
+				formId: req.query.formId,
+				teamNumber: parseInt(String(req.query.teamNumber)),
 			});
+			image.save();
+		});
+		images.on('error', () => {
+			reject(res.status(500).json({ message: 'Internal Server Error' }));
+		});
+		images.on('end', () => {
+			resolve(res.status(200).send('done'));
+		});
 
-		await images.parse(req);
+		images.parse(req, () => {});
 	});
 });
 

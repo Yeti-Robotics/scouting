@@ -25,10 +25,20 @@ const TeamPage = () => {
 
 	useEffect(() => {
 		if (!router.isReady) return;
-		fetch(`/api/team-data/${router.query.id}/images`).then(async (res) => {
+		fetch(`/api/team-data/${router.query.id}/image-ids`).then(async (res) => {
 			if (!res.ok) setImages(null);
-			const json = await res.json();
-			setImages(json);
+			try {
+				const ids: { _id: string }[] = await res.json();
+				const images = await Promise.all(
+					ids.map((id) =>
+						fetch(`/api/team-data/${router.query.id}/image?imageId=${id._id}`),
+					),
+				);
+				const imageJson: PitImageRes[] = await Promise.all(images.map((res) => res.json()));
+				setImages(imageJson);
+			} catch (e) {
+				setImages(null);
+			}
 		});
 	}, [router.isReady]);
 
@@ -88,13 +98,19 @@ const TeamPage = () => {
 							<h2>No images found for this team.</h2>
 						) : (
 							images.map((image) => {
+								console.log(image);
 								return (
 									// eslint-disable-next-line @next/next/no-img-element
 									<img
 										key={image._id}
-										src={`data:image/*;base64,${toBase64(image.data.data)}`}
+										src={`data:image/webp;base64,${toBase64(image.data.data)}`}
 										alt='Pit Image'
-										style={{ flexGrow: 1, maxWidth: '90vw' }}
+										style={{
+											flexGrow: 1,
+											maxWidth: '300px',
+											margin: '1rem',
+											border: '2px solid darkGray',
+										}}
 									/>
 								);
 							})
