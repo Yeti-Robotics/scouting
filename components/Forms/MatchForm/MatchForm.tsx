@@ -29,11 +29,8 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
-	const { handleSubmit, control, watch } = useForm({
-		defaultValues: {
-			...defaultMatch,
-			startTime: defaultMatch ? new Date(defaultMatch.startTime) : undefined,
-		},
+	const { handleSubmit, control, watch } = useForm<MatchI>({
+		defaultValues: defaultMatch,
 	});
 	const winner = watch('winner');
 
