@@ -24,15 +24,35 @@ interface Props {
 	id?: string;
 }
 
+export type FormMatch = Omit<MatchI, 'startTime'> & { startTime: string };
+
+const formatStartTime = (time: number) =>
+	`${new Date(time).toLocaleString(undefined, { year: 'numeric' })}-${new Date(
+		time,
+	).toLocaleString(undefined, { month: '2-digit' })}-${new Date(time).toLocaleString(undefined, {
+		day: '2-digit',
+	})}T${new Date(time).toLocaleString(undefined, {
+		hour: '2-digit',
+		minute: '2-digit',
+		hour12: false,
+	})}`;
+
 const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	const router = useRouter();
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
-	const { handleSubmit, control, watch } = useForm<MatchI>({
-		defaultValues: defaultMatch,
+	const { handleSubmit, control, watch } = useForm<FormMatch>({
+		defaultValues: {
+			...defaultMatch,
+			startTime: defaultMatch?.startTime
+				? formatStartTime(defaultMatch.startTime)
+				: undefined,
+		},
 	});
 	const winner = watch('winner');
+	const startTime = watch('startTime');
+	console.log(startTime);
 
 	if (!user || !users) return <CircularProgress />;
 	const options = users.map((user) => ({
