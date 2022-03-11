@@ -18,15 +18,15 @@ const UserDisplay: React.VFC<{
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
-					justifyContent: 'space-around',
+					justifyContent: 'center',
 					width: '100%',
 					padding: '0 0.5rem',
 				}}
 			>
-				<Box>
+				<Box mr={1}>
 					{user.firstName} {user.lastName}
 				</Box>
-				<Box>
+				<Box ml={1}>
 					<FormControlLabel
 						label='Can Scout'
 						control={
@@ -38,7 +38,11 @@ const UserDisplay: React.VFC<{
 									}))
 								}
 								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={results[user._id] || user.canScout}
+								checked={
+									results[user._id] !== undefined
+										? results[user._id]
+										: user.canScout
+								}
 							/>
 						}
 					/>

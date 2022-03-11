@@ -97,7 +97,6 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						getOptionLabel={(o) => `Match ${o.matchNumber}`}
 						value={match}
 						onChange={(e, v) => setMatch(v)}
-						noOptionsText='You Are Not Scouting'
 						isOptionEqualToValue={(o, v) => {
 							/* @ts-expect-error might be sus */ return (
 								o === v || o.matchNumber === parseInt(v)
@@ -113,7 +112,11 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					/>
 				</FormSection>
 			)}
-			{(match || !create) && (
+			{matchOptions.length <= 0 && create && (
+				<h1>You are not Scheduled to scout any matches.</h1>
+			)}
+			{/* if create form and user is scouting hide this */}
+			{((match && matchOptions.length > 0) || !create) && (
 				<>
 					<FormSection title='Match Info'>
 						<TextInput
