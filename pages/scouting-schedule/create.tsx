@@ -4,6 +4,7 @@ import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
 import { Box, Checkbox, Divider, FormControlLabel, Button, CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
 
@@ -62,6 +63,7 @@ const resultsDefaults = (users: UserI[] | undefined) => {
 };
 
 const Create = () => {
+	const router = useRouter();
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { data } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const [results, setResults] = useState<Record<string, boolean>>({});
@@ -69,11 +71,12 @@ const Create = () => {
 
 	const submitCanScouts = async () => {
 		setFetching('fetching');
-		await fetch('/api/create-schedule', {
+		const res = await fetch('/api/create-schedule', {
 			method: 'POST',
 			body: JSON.stringify({ ...resultsDefaults(data), ...results }),
 		});
 		setFetching('done');
+		if (res.ok) router.push('/scouting-schedule');
 	};
 
 	if (!user || !data) return <LoadingLayout />;
