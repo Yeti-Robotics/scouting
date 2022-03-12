@@ -64,7 +64,6 @@ export const onSubmit: PitFormOnSubmit = (create, user, reset, images, setImages
 
 		// only try and upload images if there are any
 		if (filteredImages[0]) {
-			console.log('uploading imags');
 			const uploadedImages = new FormData();
 			filteredImages.forEach((image, i) => {
 				uploadedImages.append(`file${i}`, new Blob([image.data]));
