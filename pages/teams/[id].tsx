@@ -98,7 +98,6 @@ const TeamPage = () => {
 							<h2>No images found for this team.</h2>
 						) : (
 							images.map((image) => {
-								console.log(image);
 								return (
 									// eslint-disable-next-line @next/next/no-img-element
 									<img
