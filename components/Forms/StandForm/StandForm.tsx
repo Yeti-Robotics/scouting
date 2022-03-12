@@ -2,7 +2,16 @@ import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { StandFormI } from '@/models/StandForm';
 import { Check, Delete } from '@mui/icons-material';
-import { Autocomplete, Box, Button, CircularProgress, MenuItem, TextField } from '@mui/material';
+import {
+	Autocomplete,
+	Box,
+	Button,
+	CircularProgress,
+	FormControlLabel,
+	MenuItem,
+	TextField,
+	Checkbox as MuiCheckbox,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,6 +44,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [approving, setApproving] = useState<'' | 'fetching' | 'done'>('');
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
+	const [override, setOverride] = useState(false);
 	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { control, handleSubmit, reset, setValue } = useForm<StandFormI>({
 		defaultValues: defaultForm,
@@ -110,13 +120,23 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 							/>
 						)}
 					/>
+					<FormControlLabel
+						label='Override'
+						control={
+							<MuiCheckbox
+								onChange={(e) => setOverride(e.target.checked)}
+								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+								checked={override}
+							/>
+						}
+					/>
 				</FormSection>
 			)}
 			{matchOptions.length <= 0 && create && (
 				<h1>You are not Scheduled to scout any matches.</h1>
 			)}
 			{/* if create form and user is scouting hide this */}
-			{((match && matchOptions.length > 0) || !create) && (
+			{((match && matchOptions.length > 0) || override || !create) && (
 				<>
 					<FormSection title='Match Info'>
 						<TextInput
@@ -124,7 +144,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 							name='matchNumber'
 							label='Match Number'
 							valueAsNumber
-							disabled
+							disabled={!override || !canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
 						<TextInput
@@ -132,7 +152,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 							name='teamNumber'
 							label='Team Number'
 							valueAsNumber
-							disabled
+							disabled={!override || !canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
 						<p>These are autofilled based on the schedule.</p>
@@ -287,7 +307,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					Approve
 				</Button>
 			)}
-			{(match || !create) && Boolean(canEdit) && (
+			{(match || !create || override) && Boolean(canEdit) && (
 				<SubmitButton disabled={submitting === 'fetching'}>
 					{submitting === 'fetching' ? (
 						<CircularProgress sx={{ m: 1, ml: 0 }} size='1rem' color='inherit' />
