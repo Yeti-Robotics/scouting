@@ -126,12 +126,12 @@ const NavBar = () => {
 					Icon={<NoteAdd sx={{ margin: 1 }} />}
 				/>
 				<Divider />
-				<NavBarButton
+				{/* <NavBarButton
 					href='/scouting-schedule'
 					text='Stand Scouting Schedule'
 					Icon={<CalendarToday sx={{ margin: 1 }} />}
 				/>
-				<Divider />
+				<Divider /> */}
 				<NavBarButton
 					href='/records'
 					text='Records'
