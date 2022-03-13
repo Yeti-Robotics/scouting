@@ -44,7 +44,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [approving, setApproving] = useState<'' | 'fetching' | 'done'>('');
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
-	const [override, setOverride] = useState(false);
+	const [override, setOverride] = useState(true);
 	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { control, handleSubmit, reset, setValue } = useForm<StandFormI>({
 		defaultValues: defaultForm,
@@ -99,7 +99,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 				</Button>
 			)}
 			<ConnectionIndicator isOffline={isOffline} />
-			{create && (
+			{/* {create && (
 				<FormSection title='Select Match'>
 					<Autocomplete
 						options={matchOptions}
@@ -108,7 +108,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						value={match}
 						onChange={(e, v) => setMatch(v)}
 						isOptionEqualToValue={(o, v) => {
-							/* @ts-expect-error might be sus */ return (
+							return (
 								o === v || o.matchNumber === parseInt(v)
 							);
 						}}
@@ -131,10 +131,10 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						}
 					/>
 				</FormSection>
-			)}
-			{matchOptions.length <= 0 && create && (
+			)} */}
+			{/* {matchOptions.length <= 0 && create && (
 				<h1>You are not Scheduled to scout any matches.</h1>
-			)}
+			)} */}
 			{/* if create form and user is scouting hide this */}
 			{((match && matchOptions.length > 0) || override || !create) && (
 				<>
