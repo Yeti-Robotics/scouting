@@ -155,7 +155,6 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 							disabled={!override || !canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
-						<p>These are autofilled based on the schedule.</p>
 					</FormSection>
 					<FormSection title='Autonomous'>
 						<Box
