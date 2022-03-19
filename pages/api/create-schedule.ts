@@ -2,8 +2,9 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import Match from '@/models/Match';
+import ScheduleBlock from '@/models/ScheduleBlock';
 import User from '@/models/User';
+import { ScheduleOptionsForm } from '../scouting-schedule/create';
 
 const shuffle = <T>(array: T[]): T[] => {
 	let currentIndex = array.length,
@@ -22,6 +23,21 @@ const shuffle = <T>(array: T[]): T[] => {
 	return array;
 };
 
+const calcSchedule = (opts: ScheduleOptionsForm) => {
+	const start = new Date(opts.startTime).valueOf();
+	const end = new Date(opts.endTime).valueOf();
+	const lunchStart = new Date(opts.lunchStartTime).valueOf();
+	const lunchEnd = new Date(opts.lunchEndTime).valueOf();
+	const blockLength = parseInt(String(opts.blockLength));
+
+	// lunch included
+	const numBlocks = (end - start) / (blockLength * 60 * 1000);
+
+	for (let i = 0; i < numBlocks; i++) {
+		const block = new ScheduleBlock({});
+	}
+};
+
 export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
@@ -30,8 +46,12 @@ export default new RouteHandler<'api', WAuth>()
 			return res
 				.status(403)
 				.json({ message: 'You are not authorized to create the schedgy.' });
-		const usersCanScout: Record<string, boolean> = JSON.parse(req.body);
-		const matches = await Match.find({}).sort('matchNumber');
+		const {
+			users: usersCanScout,
+			options,
+		}: { users: Record<string, boolean>; options: ScheduleOptionsForm } = JSON.parse(req.body);
+		// placeholder, need to actually calc how many blocks to have
+		const slots = calcSchedule(options);
 		const users = await User.find({});
 
 		const usersSaves = users.map((user) => {
@@ -47,45 +67,45 @@ export default new RouteHandler<'api', WAuth>()
 		];
 		let usersIndex = 0;
 
-		const saves = matches.map((match) => {
+		const saves = slots.map(() => {
+			const block = new ScheduleBlock();
 			let shouldShuffle = false;
-			match.scouters = {};
-			match.scouters.blue1 = currentUsers[usersIndex].username;
+			block.blue1 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
 				usersIndex = 0;
 			}
 
-			match.scouters.blue2 = currentUsers[usersIndex].username;
+			block.blue2 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
 				usersIndex = 0;
 			}
 
-			match.scouters.blue3 = currentUsers[usersIndex].username;
+			block.blue3 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
 				usersIndex = 0;
 			}
 
-			match.scouters.red1 = currentUsers[usersIndex].username;
+			block.red1 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
 				usersIndex = 0;
 			}
 
-			match.scouters.red2 = currentUsers[usersIndex].username;
+			block.red2 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
 				usersIndex = 0;
 			}
 
-			match.scouters.red3 = currentUsers[usersIndex].username;
+			block.red3 = currentUsers[usersIndex]._id;
 			usersIndex++;
 			if (usersIndex >= currentUsers.length) {
 				shouldShuffle = true;
@@ -93,8 +113,8 @@ export default new RouteHandler<'api', WAuth>()
 			}
 
 			if (shouldShuffle) currentUsers = shuffle(currentUsers);
-			match.validateSync();
-			return match.save();
+			block.validateSync();
+			return block.save();
 		});
 
 		await Promise.all(saves);

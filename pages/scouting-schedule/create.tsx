@@ -1,10 +1,21 @@
+import Select from '@/components/Forms/Select';
+import TextInput from '@/components/Forms/TextInput';
 import Layout from '@/components/Layout';
 import LoadingLayout from '@/components/Layout/LoadingLayout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import { Box, Checkbox, Divider, FormControlLabel, Button, CircularProgress } from '@mui/material';
+import {
+	Box,
+	Checkbox,
+	Divider,
+	FormControlLabel,
+	Button,
+	CircularProgress,
+	MenuItem,
+} from '@mui/material';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
 const UserDisplay: React.VFC<{
@@ -61,22 +72,34 @@ const resultsDefaults = (users: UserI[] | undefined) => {
 	return obj;
 };
 
+export interface ScheduleOptionsForm {
+	blockLength: number;
+	startTime: string;
+	endTime: string;
+	lunchStartTime: string;
+	lunchEndTime: string;
+}
+
 const Create = () => {
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
-	const { data } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
+	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const [results, setResults] = useState<Record<string, boolean>>({});
 	const [fetching, setFetching] = useState<'' | 'fetching' | 'done'>('');
+	const { control, handleSubmit } = useForm<ScheduleOptionsForm>();
 
-	const submitCanScouts = async () => {
+	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
 		await fetch('/api/create-schedule', {
 			method: 'POST',
-			body: JSON.stringify({ ...resultsDefaults(data), ...results }),
+			body: JSON.stringify({
+				users: { ...resultsDefaults(users), ...results },
+				options: data,
+			}),
 		});
 		setFetching('done');
 	};
 
-	if (!user || !data) return <LoadingLayout />;
+	if (!user || !users) return <LoadingLayout />;
 
 	if (!user.administrator)
 		return (
@@ -87,14 +110,61 @@ const Create = () => {
 
 	return (
 		<Layout>
-			<Button onClick={submitCanScouts} variant='contained'>
-				{fetching === 'fetching' && <CircularProgress color='inherit' size='1rem' />}Submit
-			</Button>
-			<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-				{data.map((user) => (
-					<UserDisplay key={user._id} user={user} state={[results, setResults]} />
-				))}
-			</Box>
+			<form
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					width: '100%',
+					padding: '1rem',
+				}}
+				onSubmit={handleSubmit(submitCanScouts)}
+			>
+				<Select name='blockLength' label='Block Length' control={control} defaultValue={30}>
+					<MenuItem value={15}>15</MenuItem>
+					<MenuItem value={30}>30</MenuItem>
+					<MenuItem value={45}>45</MenuItem>
+					<MenuItem value={60}>60</MenuItem>
+				</Select>
+				<TextInput
+					name='startTime'
+					label='Start Time'
+					control={control}
+					type='datetime-local'
+				/>
+				<TextInput
+					name='endTime'
+					label='End Time'
+					control={control}
+					type='datetime-local'
+				/>
+				<TextInput
+					name='lunchStartTime'
+					label='Lunch Start Time'
+					control={control}
+					type='datetime-local'
+				/>
+				<TextInput
+					name='lunchEndTime'
+					label='Lunch End Time'
+					control={control}
+					type='datetime-local'
+				/>
+
+				<h2>Select Scouters</h2>
+				<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+					{users.map((user, i) => (
+						<>
+							{i === 0 && <Divider />}
+							<UserDisplay key={user._id} user={user} state={[results, setResults]} />
+						</>
+					))}
+				</Box>
+				<Button type='submit' variant='contained' sx={{ mt: 2 }}>
+					{fetching === 'fetching' && <CircularProgress color='inherit' size='1rem' />}
+					Submit
+				</Button>
+			</form>
 		</Layout>
 	);
 };

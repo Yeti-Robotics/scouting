@@ -1,4 +1,5 @@
 import fetcher from '@/lib/fetch';
+import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
@@ -26,17 +27,6 @@ interface Props {
 
 export type FormMatch = Omit<MatchI, 'startTime'> & { startTime: string };
 
-const formatStartTime = (time: number) =>
-	`${new Date(time).toLocaleString(undefined, { year: 'numeric' })}-${new Date(
-		time,
-	).toLocaleString(undefined, { month: '2-digit' })}-${new Date(time).toLocaleString(undefined, {
-		day: '2-digit',
-	})}T${new Date(time).toLocaleString(undefined, {
-		hour: '2-digit',
-		minute: '2-digit',
-		hour12: false,
-	})}`;
-
 const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	const router = useRouter();
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
@@ -46,7 +36,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 		defaultValues: {
 			...defaultMatch,
 			startTime: defaultMatch?.startTime
-				? formatStartTime(defaultMatch.startTime)
+				? numToDateTimeInput(defaultMatch.startTime)
 				: undefined,
 		},
 	});
