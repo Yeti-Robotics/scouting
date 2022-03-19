@@ -8,7 +8,7 @@ import {
 	CircularProgress,
 	TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@/lib/useUser';
 
@@ -19,7 +19,17 @@ interface Props {
 const userHasBetOn = (match: MatchI, user: UserI) =>
 	match.bets.map((bet) => bet.username).includes(user.username);
 
-const Match: React.VFC<{ match: MatchI; user: UserI }> = ({ match, user }) => {
+const Match: React.VFC<{ match: MatchI; user: UserI; i: number }> = ({ match, user, i }) => {
+	const [time, setTime] = useState(match.startTime - Date.now() / 1000);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (i !== 0) return;
+			setTime(match.startTime - Date.now() / 1000);
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
 	return (
 		<Link href={`/casino/matches/${match._id}`} passHref>
 			<Button
@@ -76,6 +86,14 @@ const Match: React.VFC<{ match: MatchI; user: UserI }> = ({ match, user }) => {
 						<p>Red 3: {match.red3}</p>
 					</Box>
 				</Box>
+				{i === 0 && (
+					<p>
+						Bets close in:{' '}
+						{`${(time / 60).toFixed(0)}:${time % 60 < 9 ? '0' : ''}${(
+							time % 60
+						).toFixed(0)}`}
+					</p>
+				)}
 				{userHasBetOn(match, user) && 'You have bet on this Match.'}
 			</Button>
 		</Link>
@@ -129,12 +147,16 @@ const MatchDisplay: React.VFC<Props> = ({ matches }) => {
 			</Box>
 			<Box sx={{ padding: 2, width: '100%', display: 'flex', flexWrap: 'wrap' }}>
 				{matches
-					// .filter(showPastMatches ? () => true : (match) => match.startTime < Date.now() + 300000) // wont show up is match is in next 5 mins (300000 millisecondss)
+					.filter(
+						showPastMatches
+							? () => true
+							: (match) => match.startTime > Date.now() / 1000,
+					) // wont show up is match after scheduled start time
 					.filter(showHasBetOn ? () => true : (match) => !userHasBetOn(match, user))
 					.sort((a, b) => a.startTime - b.startTime) // closest to starting to farthest
 					.slice(0, amountToShow)
-					.map((match) => (
-						<Match match={match} user={user} key={match._id} />
+					.map((match, i) => (
+						<Match match={match} user={user} i={i} key={match._id} />
 					))}
 			</Box>
 		</>

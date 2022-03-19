@@ -6,7 +6,7 @@ import useSWR from 'swr';
 
 const Logout = () => {
 	const router = useRouter();
-	const { data } = useSWR('/api/auth/logout', fetcher);
+	const { data } = useSWR('/api/auth/logout', fetcher, { onSuccess: () => location.reload() });
 
 	if (data) router.push('/');
 
