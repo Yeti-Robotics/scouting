@@ -13,7 +13,7 @@ const exporter = (route: string): MouseEventHandler<HTMLAnchorElement> => {
 			new Blob(
 				[
 					JSON.stringify(
-						data.map((team) => {
+						data.map((team: any) => {
 							const { __v, ...obj } = team;
 							return obj;
 						}),
