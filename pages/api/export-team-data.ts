@@ -1,5 +1,5 @@
 import { RouteHandler } from '@/lib/api/RouteHandler';
-import { mostCommonEndPos } from '@/lib/mode';
+import { endPosToString, mostCommonEndPos } from '@/lib/mode';
 import { RawTeamData, teamDataAggregation } from '@/models/aggregations/teamData';
 import StandForm from '@/models/StandForm';
 
@@ -8,6 +8,7 @@ export default new RouteHandler().get(async (req, res) => {
 	teams.forEach((team) => {
 		const commonEndPos = mostCommonEndPos(team.endPosition);
 		(team as any).endPosition = commonEndPos;
+		(team as any).bestEndPosition = endPosToString(Math.max(...team.endPosition));
 	});
 	return res.json(teams);
 });
