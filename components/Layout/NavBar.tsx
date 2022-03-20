@@ -6,6 +6,7 @@ import {
 	Menu,
 	NoteAdd,
 	Paid,
+	UploadFile,
 } from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
@@ -136,6 +137,12 @@ const NavBar = () => {
 					href='/records'
 					text='Records'
 					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
+				/>
+				<Divider />
+				<NavBarButton
+					href='/export'
+					text='Export'
+					Icon={<UploadFile sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<CasinoButton />
