@@ -79,6 +79,18 @@ export const tableColumns: GridColumns = [
 		valueFormatter: truncDecimals,
 	},
 	{
+		field: 'upperBallsScored',
+		headerName: 'Total Upper Balls',
+		width: 140,
+		valueFormatter: truncDecimals,
+	},
+	{
+		field: 'lowBallsScored',
+		headerName: 'Total Low Balls',
+		width: 140,
+		valueFormatter: truncDecimals,
+	},
+	{
 		field: 'bestEndPosition',
 		headerName: 'Best End Position',
 		width: 180,
