@@ -60,7 +60,7 @@ export const tableColumns: GridColumns = [
 	},
 	{
 		field: 'avgLowerTeleop',
-		headerName: 'Upper Auto Acc',
+		headerName: 'Lower Teleop Acc',
 		width: 130,
 		valueFormatter: percentageFormatter,
 	},
