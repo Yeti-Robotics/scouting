@@ -31,14 +31,16 @@ export const tableColumns: GridColumns = [
 		width: 105,
 	},
 	{
-		field: 'avgAutoScore',
-		headerName: 'Avg Auto Score',
+		field: 'avgUpperBallsScored',
+		headerName: 'Avg Upper Scored',
 		width: 130,
+		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'avgTeleopScore',
-		headerName: 'Avg Teleop Score',
+		field: 'avgLowBallsScored',
+		headerName: 'Avg Low Scored',
 		width: 140,
+		valueFormatter: truncDecimals,
 	},
 	{
 		field: 'avgUpperAuto',
@@ -77,9 +79,8 @@ export const tableColumns: GridColumns = [
 		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'endPosition',
-		headerName: 'Most Common End Pos',
+		field: 'bestEndPosition',
+		headerName: 'Best End Position',
 		width: 180,
-		valueFormatter: (cell) => endPosToString(Number(cell.value)),
 	},
 ];
