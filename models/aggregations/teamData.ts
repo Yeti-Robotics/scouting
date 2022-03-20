@@ -2,11 +2,6 @@ import { PipelineStage } from 'mongoose';
 
 export const teamDataAggregation: PipelineStage[] = [
 	{
-		$match: {
-			approved: true,
-		},
-	},
-	{
 		$addFields: {
 			autoTotalUpperBalls: {
 				$add: ['$autoUpperBallsScored', '$autoUpperBallsMissed'],
@@ -231,7 +226,7 @@ export interface TeamData {
 	avgPenalties: number;
 	avgDefense: number;
 	endPosition: number;
-	bestEndPosition: string;
+	bestEndPosition: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {

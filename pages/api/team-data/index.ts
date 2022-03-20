@@ -11,9 +11,7 @@ handler.use(connectDB).get(async (_req, res) => {
 		const commonEndPos = mostCommonEndPos(team.endPosition);
 		const ogEndPos = [...team.endPosition];
 		(team as any).endPosition = commonEndPos;
-		(team as any).bestEndPosition = endPosToString(
-			Math.max(...(ogEndPos.length > 0 ? ogEndPos : [0])),
-		);
+		(team as any).bestEndPosition = Math.max(...(ogEndPos.length > 0 ? ogEndPos : [0]));
 	});
 	return res.json(teams);
 });

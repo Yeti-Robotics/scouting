@@ -82,5 +82,6 @@ export const tableColumns: GridColumns = [
 		field: 'bestEndPosition',
 		headerName: 'Best End Position',
 		width: 180,
+		valueFormatter: (cell) => endPosToString(Number(cell.value)),
 	},
 ];
