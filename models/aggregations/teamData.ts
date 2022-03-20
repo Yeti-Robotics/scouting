@@ -2,6 +2,11 @@ import { PipelineStage } from 'mongoose';
 
 export const teamDataAggregation: PipelineStage[] = [
 	{
+		$match: {
+			approved: true,
+		},
+	},
+	{
 		$addFields: {
 			autoTotalUpperBalls: {
 				$add: ['$autoUpperBallsScored', '$autoUpperBallsMissed'],
@@ -142,6 +147,18 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgDefense: {
 				$avg: '$defense',
 			},
+			teleopUpperBallsScoredArr: {
+				$push: '$teleopUpperBallsScored',
+			},
+			teleopLowBallsScoredArr: {
+				$push: '$teleopLowBallsScored',
+			},
+			autoUpperBallsScoredArr: {
+				$push: '$autoUpperBallsScored',
+			},
+			autoLowBallsScoredArr: {
+				$push: '$autoLowBallsScored',
+			},
 		},
 	},
 	{
@@ -169,6 +186,52 @@ export const teamDataAggregation: PipelineStage[] = [
 			},
 			avgTeleopScore: {
 				$round: ['$teleopScore', 1],
+			},
+			teleopUpperBallsScored: {
+				$reduce: {
+					input: '$teleopUpperBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			teleopLowBallsScored: {
+				$reduce: {
+					input: '$teleopLowBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			autoUpperBallsScored: {
+				$reduce: {
+					input: '$autoUpperBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			autoLowBallsScored: {
+				$reduce: {
+					input: '$autoLowBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+		},
+	},
+	{
+		$addFields: {
+			upperBallsScored: {
+				$add: ['$teleopUpperBallsScored', '$autoUpperBallsScored'],
+			},
+			lowBallsScored: {
+				$add: ['$teleopLowBallsScored', '$autoLowBallsScored'],
 			},
 		},
 	},
@@ -227,6 +290,8 @@ export interface TeamData {
 	avgDefense: number;
 	endPosition: number;
 	bestEndPosition: number;
+	upperBallsScored: number;
+	lowBallsScored: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
