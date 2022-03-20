@@ -10,7 +10,17 @@ const exporter = (route: string): MouseEventHandler<HTMLAnchorElement> => {
 		const res = await fetch(route);
 		const data = await res.json();
 		const url = URL.createObjectURL(
-			new Blob([JSON.stringify(data)], { type: 'application/octetstream' }),
+			new Blob(
+				[
+					JSON.stringify(
+						data.map((team) => {
+							const { __v, ...obj } = team;
+							return obj;
+						}),
+					),
+				],
+				{ type: 'application/octetstream' },
+			),
 		);
 		a.href = url;
 		a.download = 'team-data.json';
