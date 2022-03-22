@@ -5,20 +5,15 @@ const scheduleBlockSchema = new Schema<ScheduleBlockI>(
 	{
 		startTime: { type: Number, required: true },
 		endTime: { type: Number, required: true },
-		blue1: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-		blue2: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-		blue3: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-		red1: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-		red2: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-		red3: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+		blue1: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		blue2: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		blue3: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		red1: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		red2: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		red3: { type: Schema.Types.ObjectId, ref: 'user', required: false },
 	},
 	{ timestamps: true, collection: 'scheduleBlocks' },
 );
-
-scheduleBlockSchema.pre('find', function (next) {
-	this.populate({ path: 'blue1 blue2 blue3 red1 red2 red3' });
-	next();
-});
 
 export interface ScheduleBlockI {
 	_id: string;
@@ -34,7 +29,22 @@ export interface ScheduleBlockI {
 	updatedAt: string;
 }
 
+export interface CreateScheduleBlock {
+	_id: string;
+	startTime: number;
+	endTime: number;
+	blue1: string;
+	blue2: string;
+	blue3: string;
+	red1: string;
+	red2: string;
+	red3: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 const User =
-	(models.scheduleBlock as Model<ScheduleBlockI>) || model('scheduleBlock', scheduleBlockSchema);
+	(models.scheduleBlock as Model<CreateScheduleBlock>) ||
+	model('scheduleBlock', scheduleBlockSchema);
 
 export default User;

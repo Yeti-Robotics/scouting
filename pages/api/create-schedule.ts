@@ -1,8 +1,9 @@
+import { Document } from 'mongoose';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import ScheduleBlock from '@/models/ScheduleBlock';
+import ScheduleBlock, { CreateScheduleBlock } from '@/models/ScheduleBlock';
 import User from '@/models/User';
 import { ScheduleOptionsForm } from '../scouting-schedule/create';
 
@@ -24,18 +25,28 @@ const shuffle = <T>(array: T[]): T[] => {
 };
 
 const calcSchedule = (opts: ScheduleOptionsForm) => {
-	const start = new Date(opts.startTime).valueOf();
-	const end = new Date(opts.endTime).valueOf();
-	const lunchStart = new Date(opts.lunchStartTime).valueOf();
-	const lunchEnd = new Date(opts.lunchEndTime).valueOf();
-	const blockLength = parseInt(String(opts.blockLength));
+	const start = new Date(opts.startTime).valueOf(); // ms
+	const end = new Date(opts.endTime).valueOf(); // ms
+	const lunchStart = new Date(opts.lunchStartTime).valueOf(); // ms
+	const lunchEnd = new Date(opts.lunchEndTime).valueOf(); // ms
+	const blockLength = parseInt(String(opts.blockLength)) * 60 * 1000; // ms
 
-	// lunch included
-	const numBlocks = (end - start) / (blockLength * 60 * 1000);
+	const blocks: (Document<unknown, any, any> &
+		CreateScheduleBlock & {
+			_id: string;
+		})[] = [];
 
-	for (let i = 0; i < numBlocks; i++) {
-		const block = new ScheduleBlock({});
+	for (let i = start; i <= end; i += blockLength) {
+		if (i >= lunchStart && i <= lunchEnd) continue;
+		const block = new ScheduleBlock({ startTime: i, endTime: i + blockLength });
+		console.log({
+			start: new Date(i).toLocaleTimeString(),
+			end: new Date(i + blockLength).toLocaleTimeString(),
+		});
+		blocks.push(block);
 	}
+
+	return blocks;
 };
 
 export default new RouteHandler<'api', WAuth>()
@@ -67,8 +78,7 @@ export default new RouteHandler<'api', WAuth>()
 		];
 		let usersIndex = 0;
 
-		const saves = slots.map(() => {
-			const block = new ScheduleBlock();
+		const saves = slots.map((block) => {
 			let shouldShuffle = false;
 			block.blue1 = currentUsers[usersIndex]._id;
 			usersIndex++;

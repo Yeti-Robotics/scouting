@@ -83,7 +83,7 @@ export default new RouteHandler<'api', WAuth>()
 						break;
 				}
 			});
-			savedMatch.startTime = match.time;
+			savedMatch.startTime = match.time * 1000; // needs to be in ms
 			savedMatch.matchNumber = match.match_number;
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;
