@@ -1,7 +1,7 @@
 import fetcher from '@/lib/fetch';
 import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
-import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
+import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { Delete } from '@mui/icons-material';
 import { Button, CircularProgress } from '@mui/material';
@@ -75,6 +75,76 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					}
 					name='blue1'
 					label='Blue 1'
+					disabled={!canEdit}
+					rules={{ required: true, min: 1 }}
+				/>
+				<Autocomplete
+					options={options}
+					control={control}
+					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					getOptionLabel={(opt) =>
+						opt.firstName
+							? `${opt.firstName} ${opt.lastName} (${opt.username})`
+							: opt.label
+					}
+					name='blue2'
+					label='Blue 2'
+					disabled={!canEdit}
+					rules={{ required: true, min: 1 }}
+				/>
+				<Autocomplete
+					options={options}
+					control={control}
+					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					getOptionLabel={(opt) =>
+						opt.firstName
+							? `${opt.firstName} ${opt.lastName} (${opt.username})`
+							: opt.label
+					}
+					name='blue3'
+					label='Blue 3'
+					disabled={!canEdit}
+					rules={{ required: true, min: 1 }}
+				/>
+				<Autocomplete
+					options={options}
+					control={control}
+					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					getOptionLabel={(opt) =>
+						opt.firstName
+							? `${opt.firstName} ${opt.lastName} (${opt.username})`
+							: opt.label
+					}
+					name='red1'
+					label='Red 1'
+					disabled={!canEdit}
+					rules={{ required: true, min: 1 }}
+				/>
+				<Autocomplete
+					options={options}
+					control={control}
+					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					getOptionLabel={(opt) =>
+						opt.firstName
+							? `${opt.firstName} ${opt.lastName} (${opt.username})`
+							: opt.label
+					}
+					name='red2'
+					label='Red 2'
+					disabled={!canEdit}
+					rules={{ required: true, min: 1 }}
+				/>
+				<Autocomplete
+					options={options}
+					control={control}
+					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					getOptionLabel={(opt) =>
+						opt.firstName
+							? `${opt.firstName} ${opt.lastName} (${opt.username})`
+							: opt.label
+					}
+					name='red3'
+					label='Red 3'
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
