@@ -58,13 +58,13 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 				control={control}
 				name='teamNumber'
 				label='Team Number'
-				rules={{ validate: validateIsNumber }}
+				rules={{ validate: validateIsNumber, required: false }}
 			/>
 			<TextInput
 				control={control}
 				name='scouter'
 				label='Scouter Username'
-				rules={{ validate: () => true }}
+				rules={{ validate: () => true, required: false }}
 			/>
 			<SubmitButton>Update</SubmitButton>
 		</FilterForm>

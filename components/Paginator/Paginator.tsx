@@ -56,7 +56,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	// update querystring when queries change
 	useEffect(() => {
 		setLoading(true);
-		router.push(`${router.pathname}${querystring}`, undefined, { shallow: true });
+		//router.push(`${router.pathname}${querystring}`, undefined, { shallow: true });
 	}, [page, query]);
 
 	if (!data || loading) {

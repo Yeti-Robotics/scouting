@@ -2,8 +2,9 @@ import FlexGrid from '@/components/FlexGrid';
 import Layout from '@/components/Layout';
 import { useUser } from '@/lib/useUser';
 import { AccountCircle, InsertDriveFile } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import Link from 'next/link';
+import { useState } from 'react';
 
 interface MenuCardProps {
 	href: string;
@@ -36,6 +37,7 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 
 const Records = () => {
 	const { user } = useUser({ canRedirect: false });
+	const [cleanModal, setCleanModal] = useState(false);
 
 	return (
 		<Layout>
@@ -59,6 +61,49 @@ const Records = () => {
 					/>
 				)}
 			</FlexGrid>
+			<Button variant='contained' onClick={() => setCleanModal(true)}>
+				Clean db
+			</Button>
+			<Modal open={cleanModal} onClose={() => setCleanModal(false)}>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: 400,
+						bgcolor: 'background.paper',
+						border: '2px solid #000',
+						boxShadow: 24,
+						p: 4,
+					}}
+				>
+					<p>
+						Performing this action will remove all forms, matches, and bets currently in
+						the database, are you sure you wish to do this
+					</p>
+					<Button
+						color='error'
+						variant='contained'
+						onClick={() => {
+							fetch(`/api/clean-db`).then((res) => {
+								if (res.ok) {
+									setCleanModal(false);
+								}
+							});
+						}}
+					>
+						Yes, Do It
+					</Button>
+					<Button
+						color='success'
+						variant='contained'
+						onClick={() => setCleanModal(false)}
+					>
+						Nah, Go Back
+					</Button>
+				</Box>
+			</Modal>
 		</Layout>
 	);
 };

@@ -52,14 +52,29 @@ const UserFilter: React.VFC<FilterProps<UserI>> = ({ state }) => {
 				</MenuItem>
 			</Select>
 			<h1>Filter</h1>
-			<TextInput control={control} name='firstName' label='First Name' />
-			<TextInput control={control} name='lastName' label='Last Name' />
-			<TextInput control={control} name='username' label='Username' />
+			<TextInput
+				control={control}
+				name='firstName'
+				label='First Name'
+				rules={{ validate: undefined, required: false }}
+			/>
+			<TextInput
+				control={control}
+				name='lastName'
+				label='Last Name'
+				rules={{ validate: undefined, required: false }}
+			/>
+			<TextInput
+				control={control}
+				name='username'
+				label='Username'
+				rules={{ validate: undefined, required: false }}
+			/>
 			<TextInput
 				control={control}
 				name='teamNumber'
 				label='Team Number'
-				rules={{ validate: validateIsNumber }}
+				rules={{ validate: validateIsNumber, required: false }}
 			/>
 			<SubmitButton>Update</SubmitButton>
 		</FilterForm>

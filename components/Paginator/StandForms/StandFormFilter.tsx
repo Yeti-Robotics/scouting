@@ -1,3 +1,4 @@
+import Checkbox from '@/components/Forms/Checkbox';
 import Select from '@/components/Forms/Select';
 import SubmitButton from '@/components/Forms/SubmitButton';
 import TextInput from '@/components/Forms/TextInput';
@@ -54,17 +55,23 @@ const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
 				</MenuItem>
 			</Select>
 			<h1>Filter</h1>
+			<Checkbox
+				control={control}
+				name='approved'
+				label='Approved'
+				rules={{ validate: undefined }}
+			/>
 			<TextInput
 				control={control}
 				name='matchNumber'
 				label='Match Number'
-				rules={{ validate: validateIsNumber }}
+				rules={{ validate: validateIsNumber, required: false }}
 			/>
 			<TextInput
 				control={control}
 				name='scouter'
 				label='Scouter Username'
-				rules={{ validate: () => true }}
+				rules={{ validate: () => true, required: false }}
 			/>
 			<SubmitButton>Update</SubmitButton>
 		</FilterForm>
