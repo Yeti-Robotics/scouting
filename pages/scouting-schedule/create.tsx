@@ -85,11 +85,12 @@ const Create = () => {
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const [results, setResults] = useState<Record<string, boolean>>({});
 	const [fetching, setFetching] = useState<'' | 'fetching' | 'done'>('');
+	const [auto, setAuto] = useState(false);
 	const { control, handleSubmit } = useForm<ScheduleOptionsForm>();
 
 	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
-		await fetch('/api/create-schedule', {
+		await fetch(`/api/create-schedule?auto=${auto}`, {
 			method: 'POST',
 			body: JSON.stringify({
 				users: { ...resultsDefaults(users), ...results },
@@ -151,15 +152,34 @@ const Create = () => {
 					type='datetime-local'
 				/>
 
-				<h2>Select Scouters</h2>
-				<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-					{users.map((user, i) => (
-						<>
-							{i === 0 && <Divider />}
-							<UserDisplay key={user._id} user={user} state={[results, setResults]} />
-						</>
-					))}
-				</Box>
+				<FormControlLabel
+					label='Auto Generate?'
+					control={
+						<Checkbox
+							onChange={(e) => setAuto(e.target.checked)}
+							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+							checked={auto}
+						/>
+					}
+				/>
+
+				{auto && (
+					<>
+						<h2>Select Scouters</h2>
+						<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+							{users.map((user, i) => (
+								<>
+									{i === 0 && <Divider />}
+									<UserDisplay
+										key={user._id}
+										user={user}
+										state={[results, setResults]}
+									/>
+								</>
+							))}
+						</Box>
+					</>
+				)}
 				<Button type='submit' variant='contained' sx={{ mt: 2 }}>
 					{fetching === 'fetching' && <CircularProgress color='inherit' size='1rem' />}
 					Submit

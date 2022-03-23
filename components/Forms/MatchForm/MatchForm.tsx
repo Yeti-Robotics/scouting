@@ -41,7 +41,6 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 		},
 	});
 	const winner = watch('winner');
-	const startTime = watch('startTime');
 
 	if (!user || !users) return <CircularProgress />;
 	const options = users.map((user) => ({

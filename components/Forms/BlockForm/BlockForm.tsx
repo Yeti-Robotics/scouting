@@ -3,7 +3,7 @@ import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import { Delete } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
 import { Button, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,8 @@ import useSWR from 'swr';
 import Autocomplete from '../Autocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
+import SubmitButton from '../SubmitButton';
+import TextInput from '../TextInput';
 import { onSubmit } from './onSubmit';
 
 interface Props {
@@ -37,7 +39,6 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 		username: user.username,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
 	}));
-	console.log(options);
 
 	if (!user.administrator) {
 		return <h1>You are not authorized to use this!</h1>;
@@ -148,7 +149,24 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
 				/>
+				<TextInput
+					control={control}
+					name='startTime'
+					label='Start Time'
+					type='datetime-local'
+					disabled={!canEdit}
+					rules={{ required: true }}
+				/>
+				<TextInput
+					control={control}
+					name='endTime'
+					label='End Time'
+					type='datetime-local'
+					disabled={!canEdit}
+					rules={{ required: true }}
+				/>
 			</FormSection>
+			<SubmitButton disabled={!canEdit}>{create ? 'Submit' : 'Update'}</SubmitButton>
 		</Form>
 	);
 };

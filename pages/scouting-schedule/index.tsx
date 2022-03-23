@@ -4,7 +4,7 @@ import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Modal } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import useSWR from 'swr';
@@ -106,9 +106,10 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 
 const ScoutingSchedule = () => {
 	const { user } = useUser({ canRedirect: true });
-	const { data } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
+	const { data, mutate } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
 	const [showMyBlocks, setShowMyBlocks] = useState(true);
 	const [showPastBlocks, setShowPastBlocks] = useState(false);
+	const [clearModal, setClearModal] = useState(false);
 
 	if (!user || !data) return <LoadingLayout />;
 
@@ -120,6 +121,11 @@ const ScoutingSchedule = () => {
 						Create Schedule
 					</Button>
 				</Link>
+			)}
+			{user.administrator && (
+				<Button variant='contained' sx={{ mt: 2 }} onClick={() => setClearModal(true)}>
+					Clear Schedule
+				</Button>
 			)}
 			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 				<FormControlLabel
@@ -145,12 +151,53 @@ const ScoutingSchedule = () => {
 			</Box>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
 				{data
-					// .filter(showPastBlocks ? () => true : (match) => match.startTime < Date.now()) // wont show up is match is in next 5 mins (300000 millisecondss)
+					.filter(showPastBlocks ? () => true : (match) => match.startTime > Date.now()) // wont show up is match is in next 5 mins (300000 millisecondss)
 					.filter(showMyBlocks ? (block) => userIsScouting(user, block) : () => true)
 					.map((block) => (
 						<BlockDisplay key={block._id} user={user} block={block} />
 					))}
 			</Box>
+			<Modal open={clearModal} onClose={() => setClearModal(false)}>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: 400,
+						bgcolor: 'background.paper',
+						border: '2px solid #000',
+						boxShadow: 24,
+						p: 4,
+					}}
+				>
+					<p>
+						Performing this action will remove all matches and bets currently in the
+						database, are you sure you wish to do this
+					</p>
+					<Button
+						color='error'
+						variant='contained'
+						onClick={() => {
+							fetch(`/api/schedule/clear`).then((res) => {
+								if (res.ok) {
+									mutate();
+									setClearModal(false);
+								}
+							});
+						}}
+					>
+						Yes, Do It
+					</Button>
+					<Button
+						color='success'
+						variant='contained'
+						onClick={() => setClearModal(false)}
+					>
+						Nah, Go Back
+					</Button>
+				</Box>
+			</Modal>
 		</Layout>
 	);
 };

@@ -19,12 +19,12 @@ export interface ScheduleBlockI {
 	_id: string;
 	startTime: number;
 	endTime: number;
-	blue1: UserI;
-	blue2: UserI;
-	blue3: UserI;
-	red1: UserI;
-	red2: UserI;
-	red3: UserI;
+	blue1?: UserI;
+	blue2?: UserI;
+	blue3?: UserI;
+	red1?: UserI;
+	red2?: UserI;
+	red3?: UserI;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -33,12 +33,12 @@ export interface CreateScheduleBlock {
 	_id: string;
 	startTime: number;
 	endTime: number;
-	blue1: string;
-	blue2: string;
-	blue3: string;
-	red1: string;
-	red2: string;
-	red3: string;
+	blue1?: string;
+	blue2?: string;
+	blue3?: string;
+	red1?: string;
+	red2?: string;
+	red3?: string;
 	createdAt: string;
 	updatedAt: string;
 }

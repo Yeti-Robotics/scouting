@@ -36,8 +36,8 @@ const calcSchedule = (opts: ScheduleOptionsForm) => {
 			_id: string;
 		})[] = [];
 
-	for (let i = start; i <= end; i += blockLength) {
-		if (i >= lunchStart && i <= lunchEnd) continue;
+	for (let i = start; i < end; i += blockLength) {
+		if (i >= lunchStart && i < lunchEnd) continue;
 		const block = new ScheduleBlock({ startTime: i, endTime: i + blockLength });
 		console.log({
 			start: new Date(i).toLocaleTimeString(),
@@ -63,71 +63,77 @@ export default new RouteHandler<'api', WAuth>()
 		}: { users: Record<string, boolean>; options: ScheduleOptionsForm } = JSON.parse(req.body);
 		// placeholder, need to actually calc how many blocks to have
 		const slots = calcSchedule(options);
-		const users = await User.find({});
+		if (JSON.parse(String(req.query.auto))) {
+			const users = await User.find({});
 
-		const usersSaves = users.map((user) => {
-			user.canScout = usersCanScout[user._id];
-			return user.save();
-		});
-		const userSavesAll = Promise.all(usersSaves);
+			const usersSaves = users.map((user) => {
+				user.canScout = usersCanScout[user._id];
+				return user.save();
+			});
+			const userSavesAll = Promise.all(usersSaves);
 
-		let currentUsers = [
-			...users
-				.filter((user) => usersCanScout[user._id])
-				.sort((a, b) => a.firstName.localeCompare(b.firstName)),
-		];
-		let usersIndex = 0;
+			let currentUsers = [
+				...users
+					.filter((user) => usersCanScout[user._id])
+					.sort((a, b) => a.firstName.localeCompare(b.firstName)),
+			];
+			let usersIndex = 0;
 
-		const saves = slots.map((block) => {
-			let shouldShuffle = false;
-			block.blue1 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+			const saves = slots.map((block) => {
+				let shouldShuffle = false;
+				block.blue1 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			block.blue2 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.blue2 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			block.blue3 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.blue3 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			block.red1 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red1 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			block.red2 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red2 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			block.red3 = currentUsers[usersIndex]._id;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red3 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			if (shouldShuffle) currentUsers = shuffle(currentUsers);
-			block.validateSync();
-			return block.save();
-		});
+				if (shouldShuffle) currentUsers = shuffle(currentUsers);
+				block.validateSync();
+				return block.save();
+			});
 
-		await Promise.all(saves);
-		await userSavesAll;
-		return res.status(200).json({ message: 'Schedule created!' });
+			await Promise.all(saves);
+			await userSavesAll;
+			return res.status(200).json({ message: 'Schedule created!' });
+		} else {
+			const slotSaves = slots.map((slot) => slot.save());
+			await Promise.all(slotSaves);
+			return res.status(200).json({ message: 'Schedule created!' });
+		}
 	});

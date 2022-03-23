@@ -38,7 +38,7 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
-		fetch('/api/schedule/', {
+		fetch('/api/schedule', {
 			method: 'PATCH',
 			body: JSON.stringify(data),
 		});
