@@ -87,7 +87,6 @@ export default new RouteHandler<'api', WAuth>()
 			savedMatch.matchNumber = match.match_number;
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;
-			savedMatch.scouters = {};
 			await savedMatch.save();
 		});
 

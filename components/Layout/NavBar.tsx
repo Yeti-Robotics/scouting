@@ -6,6 +6,7 @@ import {
 	Menu,
 	NoteAdd,
 	Paid,
+	SportsKabaddi,
 } from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
@@ -124,6 +125,12 @@ const NavBar = () => {
 					href='/pit-scouting'
 					text='Pit Scouting Form'
 					Icon={<NoteAdd sx={{ margin: 1 }} />}
+				/>
+				<Divider />
+				<NavBarButton
+					href='/matches'
+					text='Match Data'
+					Icon={<SportsKabaddi sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<NavBarButton
