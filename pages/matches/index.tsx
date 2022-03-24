@@ -92,7 +92,7 @@ const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = ({ user, match 
 				{user?.administrator && (
 					<Link href={`/matches/${match.matchNumber}/edit`} passHref>
 						<Button
-							onClick={(e) => e.stopPropagation()}
+							onClick={(e: { stopPropagation: () => void }) => e.stopPropagation()}
 							component='a'
 							variant='contained'
 						>
