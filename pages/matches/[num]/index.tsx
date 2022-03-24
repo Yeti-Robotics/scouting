@@ -19,8 +19,11 @@ const Match = () => {
 
 	return (
 		<Layout>
-			<h1>Match</h1>
-			<ShootingTable match={data} />
+			<h1>Match {router.query.num}</h1>
+			<ShootingTable match={data} auto={false} low={false} />
+			<ShootingTable match={data} auto={false} low />
+			<ShootingTable match={data} auto low={false} />
+			<ShootingTable match={data} auto low />
 		</Layout>
 	);
 };
