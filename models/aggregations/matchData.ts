@@ -60,10 +60,10 @@ export interface MatchData
 		| 'topScorer'
 		| 'bottomScorer'
 	> {
-	blue1: StandFormWithName;
-	blue2: StandFormWithName;
-	blue3: StandFormWithName;
-	red1: StandFormWithName;
-	red2: StandFormWithName;
-	red3: StandFormWithName;
+	blue1?: StandFormWithName;
+	blue2?: StandFormWithName;
+	blue3?: StandFormWithName;
+	red1?: StandFormWithName;
+	red2?: StandFormWithName;
+	red3?: StandFormWithName;
 }
