@@ -1,14 +1,21 @@
 import Layout from '@/components/Layout';
-import fetcher from '@/lib/fetch';
+import { useUser } from '@/lib/useUser';
 import { CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
+import { useEffect } from 'react';
 
 const Logout = () => {
 	const router = useRouter();
-	const { data } = useSWR('/api/auth/logout', fetcher);
+	const { mutate } = useUser({ canRedirect: false });
 
-	if (data) router.push('/');
+	router.prefetch('/');
+
+	useEffect(() => {
+		fetch('/api/auth/logout').then(() => {
+			mutate();
+			router.push('/');
+		});
+	}, []);
 
 	return (
 		<Layout>
