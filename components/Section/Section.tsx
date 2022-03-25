@@ -1,5 +1,5 @@
 import { ArrowDropDown } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Collapse } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -41,6 +41,7 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					borderBottom: '0px',
 					borderBottomLeftRadius: isExpanded ? undefined : '8px',
 					borderBottomRightRadius: isExpanded ? undefined : '8px',
+					transition: 'border-radius 0.15s ease',
 				}}
 			>
 				{title}
@@ -55,6 +56,7 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					/>
 				</Button>
 			</Box>
+
 			<Box
 				sx={{
 					display: 'flex',
@@ -77,7 +79,7 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					overflow: isExpanded ? undefined : 'hidden',
 				}}
 			>
-				{children}
+				<Collapse in={isExpanded}>{children}</Collapse>
 			</Box>
 		</Box>
 	);
