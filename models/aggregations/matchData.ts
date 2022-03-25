@@ -66,4 +66,5 @@ export interface MatchData
 	red1?: StandFormWithName;
 	red2?: StandFormWithName;
 	red3?: StandFormWithName;
+	bets: undefined;
 }

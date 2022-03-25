@@ -1,16 +1,19 @@
 import Layout from '@/components/Layout';
 import LoadingLayout from '@/components/Layout/LoadingLayout';
 import fetcher from '@/lib/fetch';
+import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import Link from 'next/link';
+import { memo, useState } from 'react';
 import useSWR from 'swr';
 
 const Divider = () => <span style={{ backgroundColor: 'white', padding: '1px 0' }} />;
 
-const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = ({ user, match }) => {
+// eslint-disable-next-line react/display-name
+const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = memo(({ user, match }) => {
 	return (
 		<Link href={`/matches/${match.matchNumber}`} passHref>
 			<Button
@@ -103,11 +106,18 @@ const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = ({ user, match 
 			</Button>
 		</Link>
 	);
-};
+});
 
 const MatchData = () => {
 	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { user } = useUser({ canRedirect: true });
+	const [matchNum, setMatchNum] = useState<number | null>(null);
+	const [teamNum, setTeamNum] = useState<number | null>(null);
+
+	const clearFilters = () => {
+		setMatchNum(null);
+		setTeamNum(null);
+	};
 
 	if (!data || !user) return <LoadingLayout />;
 
@@ -121,10 +131,40 @@ const MatchData = () => {
 	return (
 		<Layout>
 			<h1>Match Data</h1>
+			<h2>Filters</h2>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					flexWrap: 'wrap',
+				}}
+			>
+				<TextField
+					value={matchNum}
+					label='Match Number'
+					onChange={(e) => setMatchNum(parseInt(e.target.value) || null)}
+					inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+				/>
+				<TextField
+					value={teamNum}
+					label='Team Number'
+					onChange={(e) => setTeamNum(parseInt(e.target.value) || null)}
+					inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+				/>
+			</Box>
+			<Button variant='contained' onClick={clearFilters}>
+				Clear Filters
+			</Button>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-				{data.map((match) => (
-					<MatchDisplay key={match._id} match={match} user={user} />
-				))}
+				{data
+					.filter(
+						matchNum === null ? () => true : (match) => match.matchNumber === matchNum,
+					)
+					.filter(teamNum === null ? () => true : (match) => hasTeam(match, teamNum))
+					.map((match) => (
+						<MatchDisplay key={match._id} match={match} user={user} />
+					))}
 			</Box>
 		</Layout>
 	);

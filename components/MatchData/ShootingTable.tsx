@@ -42,6 +42,9 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 	const tableRef = useRef<HTMLDivElement>(null);
 	const [tableHeight, setTableHeight] = useState(0);
 	const [loaded, setLoaded] = useState(false); // track when first render happens
+	const [showBars, setShowBars] = useState(false);
+
+	useEffect(() => setShowBars(true), []);
 
 	useEffect(() => {
 		setLoaded(true);
@@ -68,7 +71,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 				ref={tableRef}
 				sx={{
 					display: 'flex',
-					width: '100%',
+					width: '95%',
 					height: '500px',
 				}}
 			>
@@ -95,6 +98,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 						{match.blue2 && (
@@ -106,6 +110,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 						{match.blue3 && (
@@ -117,6 +122,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 						{match.red1 && (
@@ -128,6 +134,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 						{match.red2 && (
@@ -139,6 +146,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 						{match.red3 && (
@@ -150,6 +158,7 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								low={low}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
+								showBars={showBars}
 							/>
 						)}
 					</>

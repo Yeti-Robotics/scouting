@@ -1,6 +1,7 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
-import { Box, SxProps, Tooltip } from '@mui/material';
+import { Box, Collapse, FormControlLabel, Paper, Switch, SxProps, Tooltip } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface Props {
 	table: HTMLDivElement;
@@ -10,6 +11,7 @@ interface Props {
 	low: boolean;
 	maxScored: number;
 	tableHeight: number;
+	showBars: boolean;
 }
 
 const getBalls = ({ auto, low, team }: Pick<Props, 'auto' | 'low' | 'team'>) => {
@@ -29,19 +31,18 @@ const ShootingTableBar: React.VFC<Props> = ({
 	team,
 	maxScored,
 	tableHeight,
+	showBars,
 }) => {
 	const stats = getBalls({ auto, low, team });
-
-	const barHeight = (stats.scored / maxScored) * 100;
-	const fillerHeight = 100 - barHeight;
+	const barHeight = (stats.scored / maxScored) * tableHeight - 25;
 
 	const barStyles: SxProps =
 		maxScored !== 0
 			? {
-					height: `${(stats.scored / maxScored) * 100}%`,
+					height: barHeight,
 					backgroundColor: 'primary.main',
-					width: '90%',
-					transition: 'height 0.3s ease, background-color 0.3s ease',
+					transition: 'background-color 0.3s ease',
+					width: '40px',
 					'&:hover': {
 						backgroundColor: 'primary.light',
 					},
@@ -57,13 +58,23 @@ const ShootingTableBar: React.VFC<Props> = ({
 				flexDirection: 'column',
 				alignItems: 'center',
 				flexGrow: 1,
+				alignSelf: 'flex-end',
 			}}
 		>
-			<div style={{ height: `${fillerHeight}%` }}></div>
-			<Tooltip followCursor title={stats.scored}>
-				<Box sx={barStyles}></Box>
-			</Tooltip>
-			<Box sx={{ width: '100%', borderTop: '1px solid', px: 1, textAlign: 'center' }}>
+			<Collapse in={showBars}>
+				<Tooltip followCursor title={stats.scored}>
+					<Paper sx={barStyles} elevation={1} />
+				</Tooltip>
+			</Collapse>
+			<Box
+				sx={{
+					width: '100%',
+					borderTop: '1px solid',
+					px: 1,
+					textAlign: 'center',
+					position: 'relative',
+				}}
+			>
 				{team.teamNumber} {team.teamName}
 			</Box>
 		</Box>
