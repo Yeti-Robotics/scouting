@@ -5,6 +5,7 @@ import MobileShootingTable from '@/components/MatchData/MobileShootingTable';
 import ShootingTable from '@/components/MatchData/ShootingTable';
 import Taxis from '@/components/MatchData/Taxis';
 import fetcher from '@/lib/fetch';
+import { useUser } from '@/lib/useUser';
 import { MatchData } from '@/models/aggregations/matchData';
 import { Checkbox, FormControlLabel, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -16,6 +17,7 @@ const Match = () => {
 	const router = useRouter();
 	const isDesktop = useMediaQuery('(min-width:1000px)');
 	const [table, setTable] = useState(false);
+	useUser({ canRedirect: true });
 	const { data: id } = useSWRImmutable<string>(
 		router.isReady ? `/api/matches/num-to-id?number=${Number(router.query.num)}` : null,
 		fetcher,
