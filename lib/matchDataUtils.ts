@@ -1,7 +1,9 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { MatchI } from '@/models/Match';
-import { blue, red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
+
+import { blue } from '@mui/material';
 
 export const getAllData = (match: MatchData, key: keyof StandFormWithName, ifUndef: any = 0) => {
 	const keys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;

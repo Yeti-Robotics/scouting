@@ -1,6 +1,6 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box } from '@mui/material';
-import { blue, red } from '@mui/material/colors';
+import { Box, blue } from '@mui/material';
+import { red } from '@mui/material/colors';
 
 interface Props {
 	match: MatchData;
