@@ -17,7 +17,6 @@ import TextInput from '../TextInput';
 import ConnectionIndicator from './ConnectionIndicator';
 import { onSubmit } from './onSubmit';
 import { setOnline } from './setOnline';
-import { userIsScouting } from '@/lib/scoutingUtils';
 
 interface Props {
 	create: boolean;
@@ -54,13 +53,12 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (!create || !match || !user) return;
-		const team = userIsScouting(user, match);
-		if (!team) return setMatch(null);
-		setValue('matchNumber', match.matchNumber);
-		setValue('teamNumber', team);
-	}, [match]);
+	// useEffect(() => {
+	// 	if (!create || !match || !user) return;
+	// 	if (!team) return setMatch(null);
+	// 	setValue('matchNumber', match.matchNumber);
+	// 	setValue('teamNumber', team);
+	// }, [match]);
 
 	if (!user && create) {
 		return <CircularProgress />;
