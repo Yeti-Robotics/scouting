@@ -10,7 +10,9 @@ const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	return (
 		<Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
 			<h4 style={{ marginBottom: 0 }}>{form.notes}</h4>
-			<p style={{ marginTop: 0 }}>- {form.scouter}</p>
+			<p style={{ marginTop: 0 }}>
+				- {form.scouter.firstName} {form.scouter.lastName}
+			</p>
 		</Box>
 	);
 };

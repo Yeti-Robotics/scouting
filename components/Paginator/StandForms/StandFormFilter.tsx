@@ -75,8 +75,14 @@ const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
 			/>
 			<TextInput
 				control={control}
-				name='scouter'
-				label='Scouter Username'
+				name='scouter.firstName'
+				label='Scouter First Name'
+				rules={{ validate: () => true, required: false }}
+			/>
+			<TextInput
+				control={control}
+				name='scouter.lastName'
+				label='Scouter Last Name'
 				rules={{ validate: () => true, required: false }}
 			/>
 			<SubmitButton>Update</SubmitButton>

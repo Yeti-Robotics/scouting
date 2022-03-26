@@ -1,19 +1,10 @@
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { StandFormI } from '@/models/StandForm';
+import { CreateStandForm } from '@/models/StandForm';
 import { Check, Delete } from '@mui/icons-material';
-import {
-	Autocomplete,
-	Box,
-	Button,
-	CircularProgress,
-	FormControlLabel,
-	MenuItem,
-	TextField,
-	Checkbox as MuiCheckbox,
-} from '@mui/material';
+import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
-import { createElement, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
@@ -26,14 +17,12 @@ import TextInput from '../TextInput';
 import ConnectionIndicator from './ConnectionIndicator';
 import { onSubmit } from './onSubmit';
 import { setOnline } from './setOnline';
-import useSWR from 'swr';
-import fetcher from '@/lib/fetch';
 import { userIsScouting } from '@/lib/scoutingUtils';
 
 interface Props {
 	create: boolean;
 	canEdit?: boolean;
-	defaultForm?: Partial<StandFormI>;
+	defaultForm?: Partial<CreateStandForm>;
 	id?: string;
 }
 
@@ -46,7 +35,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [match, setMatch] = useState<MatchI | null>(null);
 	const [override, setOverride] = useState(true);
 	// const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const { control, handleSubmit, reset, setValue } = useForm<StandFormI>({
+	const { control, handleSubmit, reset, setValue } = useForm<CreateStandForm>({
 		defaultValues: defaultForm,
 	});
 

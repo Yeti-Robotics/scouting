@@ -3,7 +3,7 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import StandForm, { StandFormI } from '@/models/StandForm';
+import StandForm, { CreateStandForm } from '@/models/StandForm';
 import Team from '@/models/Team';
 
 interface TBATeamSimple {
@@ -16,21 +16,21 @@ interface TBATeamSimple {
 	team_number: number;
 }
 
-const handler = new RouteHandler<'api', WAuth>();
-
-export default handler
+export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
 		const forms = await paginate(StandForm, req.query);
+		console.log('popilatin');
+		await StandForm.populate(forms, { path: 'scouter' });
 		return res.status(200).json(forms);
 	})
 	.post(async (req, res) => {
 		if (!req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized.' });
-		const form: StandFormI = JSON.parse(req.body);
+		const form: CreateStandForm = JSON.parse(req.body);
 
-		const savedForm = new StandForm(form);
+		const savedForm = new StandForm({ ...form, scouter: req.user._id });
 		await savedForm.save();
 
 		res.status(200).json({ message: 'Form saved!' });
@@ -60,7 +60,7 @@ export default handler
 	.patch(async (req, res) => {
 		if (!req.user.administrator || !req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update forms.' });
-		const form: StandFormI = JSON.parse(req.body);
+		const form: CreateStandForm = JSON.parse(req.body);
 
 		await StandForm.updateOne({ _id: form._id }, form);
 		return res.status(200).json({ message: 'Form successfully updated.' });
