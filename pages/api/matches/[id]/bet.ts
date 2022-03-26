@@ -15,8 +15,8 @@ export default new RouteHandler<'api', WAuth>()
 		const match = await Match.findById(matchId);
 		if (!match) return res.status(400).json({ message: 'No match with this id.' });
 
-		// if (match.startTime < Date.now() + 300000)
-		// 	return res.status(400).json({ message: 'Bets have closed for this match.' });
+		if (match.startTime < Date.now() / 1000)
+			return res.status(400).json({ message: 'Bets have closed for this match.' });
 
 		if (match.bets.map((bet) => bet.username).includes(req.user.username))
 			return res.status(400).json({ message: 'This user has already bet on this match.' });

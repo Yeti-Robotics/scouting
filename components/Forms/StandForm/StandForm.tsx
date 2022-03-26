@@ -13,7 +13,7 @@ import {
 	Checkbox as MuiCheckbox,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { createElement, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
@@ -45,7 +45,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
 	const [override, setOverride] = useState(true);
-	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
+	// const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { control, handleSubmit, reset, setValue } = useForm<StandFormI>({
 		defaultValues: defaultForm,
 	});
@@ -73,12 +73,12 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 		setValue('teamNumber', team);
 	}, [match]);
 
-	if (!user || !matches) {
+	if (!user && create) {
 		return <CircularProgress />;
 	}
-	const matchOptions = matches.filter((match) => userIsScouting(user, match));
+	//const matchOptions = matches.filter((match) => userIsScouting(user, match));
 
-	if (create && user.banned) {
+	if (create && user?.banned) {
 		return <h1>You&#39;ve been banned you sussy baka.</h1>;
 	}
 
@@ -136,157 +136,157 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 				<h1>You are not Scheduled to scout any matches.</h1>
 			)} */}
 			{/* if create form and user is scouting hide this */}
-			{((match && matchOptions.length > 0) || override || !create) && (
-				<>
-					<FormSection title='Match Info'>
-						<TextInput
+
+			<>
+				<FormSection title='Match Info'>
+					<TextInput
+						control={control}
+						name='matchNumber'
+						label='Match Number'
+						valueAsNumber
+						disabled={!override || !canEdit}
+						rules={{ required: true, min: 1 }}
+					/>
+					<TextInput
+						control={control}
+						name='teamNumber'
+						label='Team Number'
+						valueAsNumber
+						disabled={!override || !canEdit}
+						rules={{ required: true, min: 1 }}
+					/>
+				</FormSection>
+				<FormSection title='Autonomous'>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'flex-start',
+						}}
+					>
+						<Checkbox
 							control={control}
-							name='matchNumber'
-							label='Match Number'
-							valueAsNumber
-							disabled={!override || !canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-						<TextInput
-							control={control}
-							name='teamNumber'
-							label='Team Number'
-							valueAsNumber
-							disabled={!override || !canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-					</FormSection>
-					<FormSection title='Autonomous'>
-						<Box
-							sx={{
-								display: 'flex',
-								flexDirection: 'column',
-								alignItems: 'flex-start',
-							}}
-						>
-							<Checkbox
-								control={control}
-								name='preload'
-								label='Preloaded?'
-								size='medium'
-								disabled={!canEdit}
-							/>
-							<Checkbox
-								control={control}
-								name='initiationLine'
-								label='Did they cross the line?'
-								size='medium'
-								disabled={!canEdit}
-							/>
-						</Box>
-						<ScoreInput
-							control={control}
-							name='autoUpperBallsScored'
-							label='Upper Balls Scored'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='autoUpperBallsMissed'
-							label='Upper Balls Missed'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='autoLowBallsScored'
-							label='Low Balls Scored'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='autoLowBallsMissed'
-							label='Low Balls Missed'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-					</FormSection>
-					<FormSection title='Teleop'>
-						<ScoreInput
-							control={control}
-							name='teleopUpperBallsScored'
-							label='Upper Balls Scored'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='teleopUpperBallsMissed'
-							label='Upper Balls Missed'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='teleopLowBallsScored'
-							label='Low Balls Scored'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-						<ScoreInput
-							control={control}
-							name='teleopLowBallsMissed'
-							label='Low Balls Missed'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						/>
-					</FormSection>
-					<FormSection title='Misc.'>
-						<Select
-							control={control}
-							name='endPosition'
-							label='End Position'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						>
-							<MenuItem value={0}>Nothing</MenuItem>
-							<MenuItem value={1}>Defense</MenuItem>
-							<MenuItem value={2}>Shooting</MenuItem>
-							<MenuItem value={3}>Low Climb</MenuItem>
-							<MenuItem value={4}>Middle Climb</MenuItem>
-							<MenuItem value={5}>High Climb</MenuItem>
-							<MenuItem value={6}>Traverse Climb</MenuItem>
-						</Select>
-						<Select
-							control={control}
-							name='defense'
-							label='Rate Defense'
-							disabled={!canEdit}
-							rules={{ required: true }}
-						>
-							<MenuItem value={0}>1</MenuItem>
-							<MenuItem value={1}>2</MenuItem>
-							<MenuItem value={2}>3</MenuItem>
-							<MenuItem value={3}>4</MenuItem>
-							<MenuItem value={4}>5</MenuItem>
-						</Select>
-						<ScoreInput
-							control={control}
-							name='penalties'
-							label='# of penalties'
+							name='preload'
+							label='Preloaded?'
+							size='medium'
 							disabled={!canEdit}
 						/>
-						<Textarea
+						<Checkbox
 							control={control}
-							name='notes'
-							label='Notes'
+							name='initiationLine'
+							label='Did they cross the line?'
+							size='medium'
 							disabled={!canEdit}
-							rules={{ required: true }}
 						/>
-						<p>
-							Give some more insight into the match such as: strategy, robot status
-							(disabled, broken), and human players. Don't write too much, be concise!
-						</p>
-					</FormSection>
-				</>
-			)}
+					</Box>
+					<ScoreInput
+						control={control}
+						name='autoUpperBallsScored'
+						label='Upper Balls Scored'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='autoUpperBallsMissed'
+						label='Upper Balls Missed'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='autoLowBallsScored'
+						label='Low Balls Scored'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='autoLowBallsMissed'
+						label='Low Balls Missed'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+				</FormSection>
+				<FormSection title='Teleop'>
+					<ScoreInput
+						control={control}
+						name='teleopUpperBallsScored'
+						label='Upper Balls Scored'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='teleopUpperBallsMissed'
+						label='Upper Balls Missed'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='teleopLowBallsScored'
+						label='Low Balls Scored'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='teleopLowBallsMissed'
+						label='Low Balls Missed'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+				</FormSection>
+				<FormSection title='Misc.'>
+					<Select
+						control={control}
+						name='endPosition'
+						label='End Position'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					>
+						<MenuItem value={0}>Nothing</MenuItem>
+						<MenuItem value={1}>Defense</MenuItem>
+						<MenuItem value={2}>Shooting</MenuItem>
+						<MenuItem value={3}>Low Climb</MenuItem>
+						<MenuItem value={4}>Middle Climb</MenuItem>
+						<MenuItem value={5}>High Climb</MenuItem>
+						<MenuItem value={6}>Traverse Climb</MenuItem>
+					</Select>
+					<Select
+						control={control}
+						name='defense'
+						label='Rate Defense'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					>
+						<MenuItem value={0}>1</MenuItem>
+						<MenuItem value={1}>2</MenuItem>
+						<MenuItem value={2}>3</MenuItem>
+						<MenuItem value={3}>4</MenuItem>
+						<MenuItem value={4}>5</MenuItem>
+					</Select>
+					<ScoreInput
+						control={control}
+						name='penalties'
+						label='# of penalties'
+						disabled={!canEdit}
+					/>
+					<Textarea
+						control={control}
+						name='notes'
+						label='Notes'
+						disabled={!canEdit}
+						rules={{ required: true }}
+					/>
+					<p>
+						Give some more insight into the match such as: strategy, robot status
+						(disabled, broken), and human players. Don't write too much, be concise!
+					</p>
+				</FormSection>
+			</>
+
 			{Boolean(canEdit) && !create && !defaultForm?.approved && (
 				<Button
 					type='button'

@@ -31,14 +31,16 @@ export const tableColumns: GridColumns = [
 		width: 105,
 	},
 	{
-		field: 'avgAutoScore',
-		headerName: 'Avg Auto Score',
+		field: 'avgUpperBallsScored',
+		headerName: 'Avg Upper Scored',
 		width: 130,
+		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'avgTeleopScore',
-		headerName: 'Avg Teleop Score',
+		field: 'avgLowBallsScored',
+		headerName: 'Avg Low Scored',
 		width: 140,
+		valueFormatter: truncDecimals,
 	},
 	{
 		field: 'avgUpperAuto',
@@ -60,7 +62,7 @@ export const tableColumns: GridColumns = [
 	},
 	{
 		field: 'avgLowerTeleop',
-		headerName: 'Upper Auto Acc',
+		headerName: 'Lower Teleop Acc',
 		width: 130,
 		valueFormatter: percentageFormatter,
 	},
@@ -77,8 +79,20 @@ export const tableColumns: GridColumns = [
 		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'endPosition',
-		headerName: 'Most Common End Pos',
+		field: 'upperBallsScored',
+		headerName: 'Total Upper Balls',
+		width: 140,
+		valueFormatter: truncDecimals,
+	},
+	{
+		field: 'lowBallsScored',
+		headerName: 'Total Low Balls',
+		width: 140,
+		valueFormatter: truncDecimals,
+	},
+	{
+		field: 'bestEndPosition',
+		headerName: 'Best End Position',
 		width: 180,
 		valueFormatter: (cell) => endPosToString(Number(cell.value)),
 	},

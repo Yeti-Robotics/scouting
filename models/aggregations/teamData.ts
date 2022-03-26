@@ -135,17 +135,35 @@ export const teamDataAggregation: PipelineStage[] = [
 			teleopScore: {
 				$avg: '$teleopScore',
 			},
+			avgUpperBallsScored: {
+				$avg: '$teleopUpperBallsScored',
+			},
+			avgLowBallsScored: {
+				$avg: '$teleopLowBallsScored',
+			},
 			avgPenalties: {
 				$avg: '$penalties',
 			},
 			avgDefense: {
 				$avg: '$defense',
 			},
+			teleopUpperBallsScoredArr: {
+				$push: '$teleopUpperBallsScored',
+			},
+			teleopLowBallsScoredArr: {
+				$push: '$teleopLowBallsScored',
+			},
+			autoUpperBallsScoredArr: {
+				$push: '$autoUpperBallsScored',
+			},
+			autoLowBallsScoredArr: {
+				$push: '$autoLowBallsScored',
+			},
 		},
 	},
 	{
 		$sort: {
-			_id: 1 as const,
+			_id: 1,
 		},
 	},
 	{
@@ -159,11 +177,61 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgLowerTeleop: 1,
 			avgPenalties: 1,
 			avgDefense: 1,
+			upperBallsScored: 1,
+			lowBallsScored: 1,
+			avgUpperBallsScored: 1,
+			avgLowBallsScored: 1,
 			avgAutoScore: {
 				$round: ['$autoScore', 1],
 			},
 			avgTeleopScore: {
 				$round: ['$teleopScore', 1],
+			},
+			teleopUpperBallsScored: {
+				$reduce: {
+					input: '$teleopUpperBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			teleopLowBallsScored: {
+				$reduce: {
+					input: '$teleopLowBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			autoUpperBallsScored: {
+				$reduce: {
+					input: '$autoUpperBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+			autoLowBallsScored: {
+				$reduce: {
+					input: '$autoLowBallsScoredArr',
+					initialValue: 0,
+					in: {
+						$add: ['$$value', '$$this'],
+					},
+				},
+			},
+		},
+	},
+	{
+		$addFields: {
+			upperBallsScored: {
+				$add: ['$teleopUpperBallsScored', '$autoUpperBallsScored'],
+			},
+			lowBallsScored: {
+				$add: ['$teleopLowBallsScored', '$autoLowBallsScored'],
 			},
 		},
 	},
@@ -210,6 +278,8 @@ export const teamDataAggregation: PipelineStage[] = [
 export interface TeamData {
 	teamName: string;
 	teamNumber: number;
+	avgUpperBallsScored: number;
+	avgLowBallsScored: number;
 	avgTeleopScore: number;
 	avgAutoScore: number;
 	avgUpperAuto: number;
@@ -219,8 +289,11 @@ export interface TeamData {
 	avgPenalties: number;
 	avgDefense: number;
 	endPosition: number;
+	bestEndPosition: number;
+	upperBallsScored: number;
+	lowBallsScored: number;
 }
 
-export interface RawTeamData extends Omit<TeamData, 'endPosition'> {
+export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
 	endPosition: number[];
 }

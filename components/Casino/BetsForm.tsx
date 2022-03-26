@@ -35,7 +35,7 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 		((!notBetting.winner ? Number(winnerAmount) || 0 : 0) +
 			(!notBetting.topScorer ? Number(topScorerAmount) || 0 : 0) +
 			(!notBetting.bottomScorer ? Number(bottomScorerAmount) || 0 : 0));
-	const betsClosed = false; // match.startTime < Date.now() + 300000; // 5 mins before match is supposed to start
+	const betsClosed = match.startTime < Date.now() / 1000; // 5 mins before match is supposed to start
 
 	return (
 		<>
