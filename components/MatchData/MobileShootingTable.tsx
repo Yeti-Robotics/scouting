@@ -1,6 +1,14 @@
 import { filterTeams, getTeamColor } from '@/lib/matchDataUtils';
 import { MatchData } from '@/models/aggregations/matchData';
-import { Table, TableBody, TableCell, TableHead, TableRow, Link as MuiLink } from '@mui/material';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableRow,
+	Link as MuiLink,
+	Box,
+} from '@mui/material';
 import Link from 'next/link';
 
 interface Column {
@@ -23,50 +31,54 @@ interface Props {
 }
 
 const BodyCell: React.FC = ({ children, ...props }) => (
-	<TableCell sx={{ color: 'white', fontWeight: 600 }} {...props}>
+	<TableCell sx={{ color: 'white', fontWeight: 600 }} align='center' {...props}>
 		{children}
 	</TableCell>
 );
 
 const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 	return (
-		<Table>
-			<TableHead>
-				<TableRow>
-					{columns.map((col) => (
-						<TableCell
-							key={col.label}
-							align={col.align}
-							style={{ minWidth: col.minWidth }}
-						>
-							{col.label}
-						</TableCell>
-					))}
-				</TableRow>
-			</TableHead>
-			<TableBody>
-				{filterTeams(match, (team) => Boolean(team)).map((team) => (
-					<TableRow
-						key={team?._id}
-						sx={{
-							backgroundColor: getTeamColor(match, team),
-							color: 'white',
-							fontWeight: 500,
-						}}
-					>
-						<BodyCell>
-							<Link href={`/teams/${team?.teamNumber}`} passHref>
-								<MuiLink>{team?.teamNumber}</MuiLink>
-							</Link>
-						</BodyCell>
-						<BodyCell>{team?.teleopUpperBallsScored}</BodyCell>
-						<BodyCell>{team?.teleopLowBallsScored}</BodyCell>
-						<BodyCell>{team?.autoUpperBallsScored}</BodyCell>
-						<BodyCell>{team?.autoLowBallsScored}</BodyCell>
+		<Box sx={{ maxWidth: '1000px' }}>
+			<Table>
+				<TableHead>
+					<TableRow>
+						{columns.map((col) => (
+							<TableCell
+								key={col.label}
+								align='center'
+								style={{ minWidth: col.minWidth }}
+							>
+								{col.label}
+							</TableCell>
+						))}
 					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+				</TableHead>
+				<TableBody>
+					{filterTeams(match, (team) => Boolean(team)).map((team) => (
+						<TableRow
+							key={team?._id}
+							sx={{
+								backgroundColor: getTeamColor(match, team),
+								color: 'white',
+								fontWeight: 500,
+							}}
+						>
+							<BodyCell>
+								<Link href={`/teams/${team?.teamNumber}`} passHref>
+									<MuiLink sx={{ color: 'white', textDecoration: 'underline' }}>
+										{team?.teamNumber}
+									</MuiLink>
+								</Link>
+							</BodyCell>
+							<BodyCell>{team?.teleopUpperBallsScored}</BodyCell>
+							<BodyCell>{team?.teleopLowBallsScored}</BodyCell>
+							<BodyCell>{team?.autoUpperBallsScored}</BodyCell>
+							<BodyCell>{team?.autoLowBallsScored}</BodyCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</Box>
 	);
 };
 
