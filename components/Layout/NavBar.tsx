@@ -6,7 +6,7 @@ import {
 	Menu,
 	NoteAdd,
 	Paid,
-	UploadFile,
+	SportsKabaddi,
 } from '@mui/icons-material';
 import { Box, Button, Divider, Drawer } from '@mui/material';
 import Link from 'next/link';
@@ -127,22 +127,22 @@ const NavBar = () => {
 					Icon={<NoteAdd sx={{ margin: 1 }} />}
 				/>
 				<Divider />
-				{/* <NavBarButton
+				<NavBarButton
+					href='/matches'
+					text='Match Data'
+					Icon={<SportsKabaddi sx={{ margin: 1 }} />}
+				/>
+				<Divider />
+				<NavBarButton
 					href='/scouting-schedule'
 					text='Stand Scouting Schedule'
 					Icon={<CalendarToday sx={{ margin: 1 }} />}
 				/>
-				<Divider /> */}
+				<Divider />
 				<NavBarButton
 					href='/records'
 					text='Records'
 					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/export'
-					text='Export'
-					Icon={<UploadFile sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<CasinoButton />

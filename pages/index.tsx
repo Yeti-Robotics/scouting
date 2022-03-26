@@ -28,6 +28,7 @@ const Home: NextPage<{ data: TeamData[] }> = () => {
 	return (
 		<Layout>
 			<h1>Team Data</h1>
+			<button onClick={() => fetch('/api/convert-scouters')}>do it</button>
 			<TeamDataTable data={data} />
 		</Layout>
 	);

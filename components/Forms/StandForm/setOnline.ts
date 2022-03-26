@@ -1,5 +1,5 @@
 import fetchTimeout from '@/lib/fetchTimeout';
-import { StandFormI } from '@/models/StandForm';
+import { CreateStandForm } from '@/models/StandForm';
 
 type Func = (
 	isOffline: boolean,
@@ -9,7 +9,7 @@ type Func = (
 export const setOnline: Func = (isOffline, setIsOffline) => async () => {
 	const controller = new AbortController();
 
-	const currentForms: StandFormI[] | false = JSON.parse(
+	const currentForms: CreateStandForm[] | false = JSON.parse(
 		sessionStorage.getItem('standForms') || 'false',
 	);
 	const pingRes = await fetchTimeout('/api/ping', 3000, {

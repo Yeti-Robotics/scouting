@@ -1,11 +1,12 @@
-import { Model, model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema, SchemaTypes } from 'mongoose';
+import { UserI } from './User';
 
 const standFormSchema = new Schema<StandFormI>(
 	{
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, default: () => 1 },
-		scouter: { type: String, required: true }, // username
+		scouter: { type: String, ref: 'user', required: true }, // username
 		autoUpperBallsScored: { type: Number, required: true },
 		autoUpperBallsMissed: { type: Number, required: true },
 		autoLowBallsScored: { type: Number, required: true },
@@ -24,13 +25,37 @@ const standFormSchema = new Schema<StandFormI>(
 	{ timestamps: true, collection: 'standForms' },
 );
 
+export interface CreateStandForm {
+	_id: string;
+	teamNumber: number;
+	matchNumber: number;
+	setNumber: number;
+	scouter: string;
+	autoUpperBallsScored: number;
+	autoUpperBallsMissed: number;
+	autoLowBallsScored: number;
+	autoLowBallsMissed: number;
+	teleopUpperBallsScored: number;
+	teleopUpperBallsMissed: number;
+	teleopLowBallsScored: number;
+	teleopLowBallsMissed: number;
+	preload: boolean;
+	initiationLine: boolean;
+	endPosition: number;
+	defense: number;
+	approved: boolean;
+	notes: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 // i stands for interface
 export interface StandFormI {
 	_id: string;
 	teamNumber: number;
 	matchNumber: number;
 	setNumber: number;
-	scouter: string; // username
+	scouter: UserI;
 	autoUpperBallsScored: number;
 	autoUpperBallsMissed: number;
 	autoLowBallsScored: number;

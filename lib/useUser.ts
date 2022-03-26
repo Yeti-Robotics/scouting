@@ -22,27 +22,27 @@ export const useUser = ({
 }: UseUserParams = {}) => {
 	const router = useRouter();
 	const { data: user, error, isValidating, mutate } = useSWR<UserI>('/api/auth/decode', fetcher);
-	const redirectUrl = `${redirectTo}?from=${router.pathname || '/'}`;
+	const redirectUrl = `${redirectTo}?from=${router.asPath || '/'}`;
 
 	if (!user && isValidating) {
 		return { user, error, loading: true, mutate };
 	}
 
 	if (!user) {
-		if (canRedirect && redirectIfNotFound && router.pathname !== redirectTo)
+		if (canRedirect && redirectIfNotFound && router.asPath !== redirectTo)
 			router.push(redirectUrl);
 		return { user, error, loading: false, mutate };
 	}
 
 	if (error) {
-		if (canRedirect && redirectOnError && router.pathname !== redirectTo)
+		if (canRedirect && redirectOnError && router.asPath !== redirectTo)
 			router.push(redirectUrl);
 		return { user: undefined, error, loading: false, mutate };
 	}
 
-	if (canRedirect && !user.administrator && redirectIfNotAdmin && router.pathname !== redirectTo)
+	if (canRedirect && !user.administrator && redirectIfNotAdmin && router.asPath !== redirectTo)
 		router.push(redirectUrl);
-	if (canRedirect && redirectIfFound && router.pathname !== redirectTo) router.push(redirectUrl);
+	if (canRedirect && redirectIfFound && router.asPath !== redirectTo) router.push(redirectUrl);
 
 	return { user, error, loading: false, mutate };
 };

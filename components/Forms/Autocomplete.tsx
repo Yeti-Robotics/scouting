@@ -1,4 +1,4 @@
-import { Box, SxProps, TextField, Autocomplete as MuiAutocomplete, Theme } from '@mui/material';
+import { SxProps, Theme, TextField, Autocomplete as MuiAutocomplete, Box } from '@mui/material';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
 import { addRequired } from './formHelpers';
 

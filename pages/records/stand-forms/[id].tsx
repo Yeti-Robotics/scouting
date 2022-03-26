@@ -2,7 +2,7 @@ import StandForm from '@/components/Forms/StandForm';
 import Layout from '@/components/Layout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
-import { StandFormI } from '@/models/StandForm';
+import { CreateStandForm, StandFormI } from '@/models/StandForm';
 import { CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -44,7 +44,7 @@ const StandFormPage = () => {
 			<StandForm
 				create={false}
 				canEdit={user?.administrator}
-				defaultForm={data}
+				defaultForm={data as unknown as CreateStandForm}
 				id={String(router.query.id)}
 			/>
 		</Layout>

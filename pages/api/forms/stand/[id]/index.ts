@@ -11,7 +11,7 @@ export default handler
 	.use(auth)
 	.get(async (req, res) => {
 		const id = String(req.query.id);
-		const form = await StandForm.findById(id);
+		const form = await StandForm.findById(id).populate('user');
 		return res.status(200).json(form);
 	})
 	.delete(async (req, res) => {

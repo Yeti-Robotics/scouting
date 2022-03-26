@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import Section from '@/components/Section';
+import Comments from '@/components/Teams/Comments';
 import PitFormCard from '@/components/Teams/PitFormCard';
 import StandFormCard from '@/components/Teams/StandFormCard';
 import TeamStats from '@/components/Teams/TeamStats';
@@ -73,7 +74,8 @@ const TeamPage = () => {
 			<h1>
 				{team.teamNumber} {team.teamName}
 			</h1>
-			<TeamStats team={team} />
+			<TeamStats team={team} standForms={standForms} />
+			<Comments forms={standForms} />
 			<Section title='Stand Forms' expanded={Boolean(standForms[0])}>
 				<Box sx={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
 					{standForms.map((form) => (

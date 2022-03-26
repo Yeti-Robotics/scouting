@@ -1,9 +1,11 @@
+import { Document } from 'mongoose';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import Match from '@/models/Match';
+import ScheduleBlock, { CreateScheduleBlock } from '@/models/ScheduleBlock';
 import User from '@/models/User';
+import { ScheduleOptionsForm } from '../scouting-schedule/create';
 
 const shuffle = <T>(array: T[]): T[] => {
 	let currentIndex = array.length,
@@ -22,6 +24,31 @@ const shuffle = <T>(array: T[]): T[] => {
 	return array;
 };
 
+const calcSchedule = (opts: ScheduleOptionsForm) => {
+	const start = new Date(opts.startTime).valueOf(); // ms
+	const end = new Date(opts.endTime).valueOf(); // ms
+	const lunchStart = new Date(opts.lunchStartTime).valueOf(); // ms
+	const lunchEnd = new Date(opts.lunchEndTime).valueOf(); // ms
+	const blockLength = parseInt(String(opts.blockLength)) * 60 * 1000; // ms
+
+	const blocks: (Document<unknown, any, any> &
+		CreateScheduleBlock & {
+			_id: string;
+		})[] = [];
+
+	for (let i = start; i < end; i += blockLength) {
+		if (i >= lunchStart && i < lunchEnd) continue;
+		const block = new ScheduleBlock({ startTime: i, endTime: i + blockLength });
+		console.log({
+			start: new Date(i).toLocaleTimeString(),
+			end: new Date(i + blockLength).toLocaleTimeString(),
+		});
+		blocks.push(block);
+	}
+
+	return blocks;
+};
+
 export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
@@ -30,74 +57,83 @@ export default new RouteHandler<'api', WAuth>()
 			return res
 				.status(403)
 				.json({ message: 'You are not authorized to create the schedgy.' });
-		const usersCanScout: Record<string, boolean> = JSON.parse(req.body);
-		const matches = await Match.find({}).sort('matchNumber');
-		const users = await User.find({});
+		const {
+			users: usersCanScout,
+			options,
+		}: { users: Record<string, boolean>; options: ScheduleOptionsForm } = JSON.parse(req.body);
+		// placeholder, need to actually calc how many blocks to have
+		const slots = calcSchedule(options);
+		if (JSON.parse(String(req.query.auto))) {
+			const users = await User.find({});
 
-		const usersSaves = users.map((user) => {
-			user.canScout = usersCanScout[user._id];
-			return user.save();
-		});
-		const userSavesAll = Promise.all(usersSaves);
+			const usersSaves = users.map((user) => {
+				user.canScout = usersCanScout[user._id];
+				return user.save();
+			});
+			const userSavesAll = Promise.all(usersSaves);
 
-		let currentUsers = [
-			...users
-				.filter((user) => usersCanScout[user._id])
-				.sort((a, b) => a.firstName.localeCompare(b.firstName)),
-		];
-		let usersIndex = 0;
+			let currentUsers = [
+				...users
+					.filter((user) => usersCanScout[user._id])
+					.sort((a, b) => a.firstName.localeCompare(b.firstName)),
+			];
+			let usersIndex = 0;
 
-		const saves = matches.map((match) => {
-			let shouldShuffle = false;
-			match.scouters = {};
-			match.scouters.blue1 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+			const saves = slots.map((block) => {
+				let shouldShuffle = false;
+				block.blue1 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			match.scouters.blue2 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.blue2 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			match.scouters.blue3 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.blue3 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			match.scouters.red1 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red1 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			match.scouters.red2 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red2 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			match.scouters.red3 = currentUsers[usersIndex].username;
-			usersIndex++;
-			if (usersIndex >= currentUsers.length) {
-				shouldShuffle = true;
-				usersIndex = 0;
-			}
+				block.red3 = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
 
-			if (shouldShuffle) currentUsers = shuffle(currentUsers);
-			match.validateSync();
-			return match.save();
-		});
+				if (shouldShuffle) currentUsers = shuffle(currentUsers);
+				block.validateSync();
+				return block.save();
+			});
 
-		await Promise.all(saves);
-		await userSavesAll;
-		return res.status(200).json({ message: 'Schedule created!' });
+			await Promise.all(saves);
+			await userSavesAll;
+			return res.status(200).json({ message: 'Schedule created!' });
+		} else {
+			const slotSaves = slots.map((slot) => slot.save());
+			await Promise.all(slotSaves);
+			return res.status(200).json({ message: 'Schedule created!' });
+		}
 	});

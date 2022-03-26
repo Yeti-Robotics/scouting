@@ -2,8 +2,7 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import Match, { MatchI, MatchSchedule } from '@/models/Match';
-import User from '@/models/User';
+import Match, { MatchI } from '@/models/Match';
 
 export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
@@ -12,36 +11,7 @@ export default new RouteHandler<'api', WAuth>()
 		if (!req.user || req.user.banned)
 			return res.status(403).json({ message: 'You are not authorized.' });
 
-		const schedule = Boolean(req.query.schedule);
 		const matches = await Match.find({}).sort('matchNumber');
-
-		if (schedule) {
-			const users = await User.find({});
-			const updatedMatches: MatchSchedule[] = matches.map((matchDoc) => {
-				const match = matchDoc.toObject() as MatchSchedule;
-				match.scouters = match.scouters || {}; // ensure this is defined
-				match.scouters.blue1 = users.find(
-					(user) => user.username === matchDoc.scouters?.blue1,
-				);
-				match.scouters.blue2 = users.find(
-					(user) => user.username === matchDoc.scouters?.blue2,
-				);
-				match.scouters.blue3 = users.find(
-					(user) => user.username === matchDoc.scouters?.blue3,
-				);
-				match.scouters.red1 = users.find(
-					(user) => user.username === matchDoc.scouters?.red1,
-				);
-				match.scouters.red2 = users.find(
-					(user) => user.username === matchDoc.scouters?.red2,
-				);
-				match.scouters.red3 = users.find(
-					(user) => user.username === matchDoc.scouters?.red3,
-				);
-				return match;
-			});
-			return res.status(200).json(updatedMatches);
-		}
 
 		return res.status(200).json(matches);
 	})

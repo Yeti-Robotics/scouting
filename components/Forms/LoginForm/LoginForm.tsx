@@ -1,3 +1,4 @@
+import { useUser } from '@/lib/useUser';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -13,13 +14,17 @@ interface FormSchema {
 
 const LoginForm = () => {
 	const router = useRouter();
+	const { mutate } = useUser({ canRedirect: false });
 	const { handleSubmit, control } = useForm<FormSchema>();
 	const [loginSuccess, setLoginSuccess] = useState<boolean>();
 
 	const onSubmit = async (data: FormSchema) => {
 		setLoginSuccess(undefined);
 		const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) });
-		if (res.ok) router.push(String(router.query.from || '/'));
+		if (res.ok) {
+			mutate();
+			router.push(String(router.query.from || '/'));
+		}
 		setLoginSuccess(false);
 	};
 
