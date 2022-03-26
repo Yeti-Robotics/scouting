@@ -8,8 +8,6 @@ const Logout = () => {
 	const router = useRouter();
 	const { mutate } = useUser({ canRedirect: false });
 
-	router.prefetch('/');
-
 	useEffect(() => {
 		fetch('/api/auth/logout').then(() => {
 			mutate();
