@@ -1,16 +1,22 @@
 import { endPosToString } from '@/lib/mode';
 import { TeamData } from '@/models/aggregations/teamData';
+import { StandFormI } from '@/models/StandForm';
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 import Section from '../Section';
+import { formTableColumns } from './formTableColumns';
 
 interface Props {
 	team: TeamData;
+	standForms: StandFormI[];
 }
 
 const DataSection = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 100%;
 
 	h2 {
 		margin: 0;
@@ -31,49 +37,24 @@ const DataWrapper = styled.div`
 
 const percentOptions = { maximumFractionDigits: 2, style: 'percent' };
 
-const TeamStats: React.VFC<Props> = ({ team }) => {
+const TeamStats: React.VFC<Props> = ({ team, standForms }) => {
+	console.log(standForms);
 	return (
 		<Section title='Team Stats'>
 			<DataSection>
-				<h2>Auto Data</h2>
+				<h2>Total Balls</h2>
 				<DataWrapper>
-					<h4>Avg. Score*: {team.avgAutoScore?.toFixed(2)}</h4>
-					<h4>
-						Avg. Upper Accuracy:{' '}
-						{Number(team.avgUpperAuto / 100).toLocaleString(undefined, percentOptions)}
-					</h4>
-					<h4>
-						Avg. Low Accuracy:{' '}
-						{Number(team.avgLowerAuto / 100).toLocaleString(undefined, percentOptions)}
-					</h4>
+					<h4>Upper: {team.upperBallsScored}</h4>
+					<h4>Low: {team.lowBallsScored}</h4>
 				</DataWrapper>
-				<h2>Teleop Data</h2>
-				<DataWrapper>
-					<h4>Avg. Score*: {team.avgTeleopScore?.toFixed(2)}</h4>
-					<h4>
-						Avg. Upper Accuracy:{' '}
-						{Number(team.avgUpperTeleop / 100).toLocaleString(
-							undefined,
-							percentOptions,
-						)}
-					</h4>
-					<h4>
-						Avg. Low Accuracy:{' '}
-						{Number(team.avgLowerTeleop / 100).toLocaleString(
-							undefined,
-							percentOptions,
-						)}
-					</h4>
-				</DataWrapper>
-				<h2>Other Data</h2>
-				<DataWrapper>
-					<h4>Avg. # of Penalties**: {team.avgPenalties?.toFixed(2)}</h4>
-					<h4>Avg. Defense Rating (1-5): {team.avgDefense?.toFixed(2)}</h4>
-					<h4>Most Common End Position: {endPosToString(team.endPosition)}</h4>
-				</DataWrapper>
+				<Box sx={{ height: 800, maxWidth: 800, width: '100%' }}>
+					<DataGrid
+						getRowId={(row) => row.matchNumber}
+						rows={standForms}
+						columns={formTableColumns}
+					/>
+				</Box>
 			</DataSection>
-			<p>* Assumes data is accurate and does not include climbing points</p>
-			<p>** Assumes data is accurate</p>
 		</Section>
 	);
 };

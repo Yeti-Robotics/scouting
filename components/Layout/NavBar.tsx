@@ -150,3 +150,5 @@ const NavBar = () => {
 		</Box>
 	);
 };
+
+export default NavBar;

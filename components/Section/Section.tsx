@@ -79,7 +79,9 @@ const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
 					overflow: isExpanded ? undefined : 'hidden',
 				}}
 			>
-				<Collapse in={isExpanded}>{children}</Collapse>
+				<Collapse in={isExpanded} sx={{ width: '100%' }}>
+					{children}
+				</Collapse>
 			</Box>
 		</Box>
 	);

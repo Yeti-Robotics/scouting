@@ -54,28 +54,33 @@ const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{filterTeams(match, (team) => Boolean(team)).map((team) => (
-						<TableRow
-							key={team?._id}
-							sx={{
-								backgroundColor: getTeamColor(match, team),
-								color: 'white',
-								fontWeight: 500,
-							}}
-						>
-							<BodyCell>
-								<Link href={`/teams/${team?.teamNumber}`} passHref>
-									<MuiLink sx={{ color: 'white', textDecoration: 'underline' }}>
-										{team?.teamNumber}
-									</MuiLink>
-								</Link>
-							</BodyCell>
-							<BodyCell>{team?.teleopUpperBallsScored}</BodyCell>
-							<BodyCell>{team?.teleopLowBallsScored}</BodyCell>
-							<BodyCell>{team?.autoUpperBallsScored}</BodyCell>
-							<BodyCell>{team?.autoLowBallsScored}</BodyCell>
-						</TableRow>
-					))}
+					{filterTeams(match, (team) => Boolean(team)).map((team) => {
+						if (!team) return <></>;
+						return (
+							<TableRow
+								key={team?._id}
+								sx={{
+									backgroundColor: getTeamColor(match, team),
+									color: 'white',
+									fontWeight: 500,
+								}}
+							>
+								<BodyCell>
+									<Link href={`/teams/${team?.teamNumber}`} passHref>
+										<MuiLink
+											sx={{ color: 'white', textDecoration: 'underline' }}
+										>
+											{team?.teamNumber}
+										</MuiLink>
+									</Link>
+								</BodyCell>
+								<BodyCell>{team?.teleopUpperBallsScored}</BodyCell>
+								<BodyCell>{team?.teleopLowBallsScored}</BodyCell>
+								<BodyCell>{team?.autoUpperBallsScored}</BodyCell>
+								<BodyCell>{team?.autoLowBallsScored}</BodyCell>
+							</TableRow>
+						);
+					})}
 				</TableBody>
 			</Table>
 		</Box>
