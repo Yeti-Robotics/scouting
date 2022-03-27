@@ -1,8 +1,9 @@
+import { Link } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
-import SubmitButton from '../SubmitButton';
 import TextInput from '../TextInput';
 
 interface FormSchema {
@@ -12,11 +13,23 @@ interface FormSchema {
 	password: string;
 	confPassword: string;
 	teamNumber: number;
+	discordId: string;
 }
+
+const REDIRECT_URI =
+	'https://discord.com/api/oauth2/authorize?response_type=token&client_id=957359702335979590&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fregister%2Flink-discord&scope=identify';
 
 const RegisterForm = () => {
 	const router = useRouter();
-	const { handleSubmit, control, watch } = useForm<FormSchema>({ mode: 'all' });
+	const {
+		handleSubmit,
+		control,
+		watch,
+		getValues,
+		formState: { isValid },
+	} = useForm<FormSchema>({
+		mode: 'all',
+	});
 	const [usernameIsValid, setUsernameIsValid] = useState<boolean | null | undefined>(null);
 
 	const password = watch('password');
@@ -99,7 +112,15 @@ const RegisterForm = () => {
 						type='number'
 						rules={{ required: true, min: 1 }}
 					/>
-					<SubmitButton>Submit</SubmitButton>
+					<Button
+						sx={{ m: 2 }}
+						variant='contained'
+						component='a'
+						href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
+						disabled={!isValid}
+					>
+						<Link sx={{ m: 1, ml: 0 }} /> Link Discord
+					</Button>
 				</FormSection>
 			</form>
 		</>
