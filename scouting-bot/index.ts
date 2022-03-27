@@ -2,11 +2,27 @@
 import { EventHandler } from 'create-event-handler';
 import { Client, ClientEvents, Intents } from 'discord.js';
 import { config } from 'dotenv';
+import mongoose from 'mongoose';
 import fs from 'fs';
+import { remind } from './commands/remind';
 config({ path: '.env' });
 config({ path: '.env.local' });
 
 (async () => {
+	// Database Grabber
+	const uri = process.env.DB_URI;
+	if (!uri) {
+		console.log('No URI, could not connect to DB.');
+		return;
+	}
+	if (mongoose.connections[0].readyState) {
+		// use the current connection
+		return;
+	}
+	//use a new connection
+	await mongoose.connect(uri, { dbName: process.env.DEFAULT_DB });
+
+	// CREATE THE BOT
 	// await deployCommands()
 	// 	.then(() => console.log('Successfully registered application commands.'))
 	// 	.catch(console.error);
@@ -32,5 +48,11 @@ config({ path: '.env.local' });
 		}
 	}
 
-	client.login(process.env.TOKEN || 'not here lmao xD');
+	// Login to discord bot and start the sending reminder interval.
+	client.login(process.env.TOKEN || 'not here lmao xD').then(async () => {
+		// Constant Checker
+		setInterval(async () => {
+			await remind(client);
+		}, 30000);
+	});
 })();
