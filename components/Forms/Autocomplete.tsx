@@ -1,6 +1,7 @@
 import { SxProps, Theme, TextField, Autocomplete as MuiAutocomplete, Box } from '@mui/material';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
 import { addRequired } from './formHelpers';
+import { useRef } from 'react';
 
 interface Props {
 	control: Control<any>;
@@ -15,6 +16,8 @@ interface Props {
 	sx?: SxProps<Theme>;
 	type?: JSX.IntrinsicElements['input']['type'];
 	disabled?: boolean;
+	freeSolo?: boolean;
+	valueAsNumber?: boolean;
 	options: string[] | { [key: string]: any; label: string }[];
 }
 
@@ -40,7 +43,11 @@ const TextInput: React.VFC<Props> = ({
 	defaultValue,
 	sx,
 	disabled,
+	freeSolo,
+	valueAsNumber,
 }) => {
+	const lastValue = useRef(defaultValue);
+
 	return (
 		<Box sx={{ m: 1, width: '100%' }}>
 			<Controller
@@ -48,21 +55,40 @@ const TextInput: React.VFC<Props> = ({
 				defaultValue={defaultValue || ''}
 				control={control}
 				rules={{
-					validate: (v) => v !== '',
+					validate: valueAsNumber
+						? (v) => !isNaN(parseFloat(v)) || !isNaN(parseInt(v))
+						: (v) => v !== '',
 					...rules,
 				}}
 				render={({ field, fieldState: { error } }) => (
 					<MuiAutocomplete
+						freeSolo={freeSolo}
 						options={options}
 						sx={{ ...defaultSx, ...defaultInputSx, ...sx }}
 						getOptionLabel={getOptionLabel}
 						onBlur={field.onBlur}
 						value={field.value}
 						isOptionEqualToValue={isOptionEqualToValue}
-						onChange={(e, v) => {
-							field.onChange(v);
-							onChange(e); // from props
-						}}
+						onChange={
+							valueAsNumber
+								? (e, v) => {
+										const parsed = parseFloat(v.value ?? v);
+										if (!isNaN(parsed)) {
+											field.onChange(parsed);
+											lastValue.current = parsed;
+										} else if (v === '') {
+											field.onChange('');
+											lastValue.current = '';
+										} else {
+											field.onChange(lastValue.current);
+										}
+										onChange(e); // from props
+								  }
+								: (e, v) => {
+										field.onChange(v.value ?? v);
+										onChange(e); // from props
+								  }
+						}
 						disabled={disabled}
 						renderInput={(params) => (
 							<TextField
