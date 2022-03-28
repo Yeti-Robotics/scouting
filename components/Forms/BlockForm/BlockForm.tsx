@@ -37,6 +37,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 	if (!user || !users) return <CircularProgress />;
 	const options = users.map((user) => ({
 		username: user.username,
+		_id: user._id,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
 	}));
 
@@ -77,7 +78,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='blue1'
 					label='Blue 1'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
@@ -91,7 +92,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='blue2'
 					label='Blue 2'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
@@ -105,7 +106,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='blue3'
 					label='Blue 3'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
@@ -119,7 +120,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='red1'
 					label='Red 1'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
@@ -133,7 +134,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='red2'
 					label='Red 2'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
@@ -147,7 +148,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					name='red3'
 					label='Red 3'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<TextInput
 					control={control}

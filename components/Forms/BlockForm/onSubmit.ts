@@ -10,12 +10,12 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 		if (!user || user.banned || !user.administrator) return;
 		(data as unknown as CreateScheduleBlock) = {
 			...data,
-			blue1: data.blue1?._id,
-			blue2: data.blue2?._id,
-			blue3: data.blue3?._id,
-			red1: data.red1?._id,
-			red2: data.red2?._id,
-			red3: data.red3?._id,
+			blue1: data.blue1?._id || null,
+			blue2: data.blue2?._id || null,
+			blue3: data.blue3?._id || null,
+			red1: data.red1?._id || null,
+			red2: data.red2?._id || null,
+			red3: data.red3?._id || null,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
@@ -27,14 +27,15 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 
 	const onUpdate: SubmitHandler<ScheduleBlockI> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
+		console.log(data);
 		(data as unknown as CreateScheduleBlock) = {
 			...data,
-			blue1: data.blue1?._id,
-			blue2: data.blue2?._id,
-			blue3: data.blue3?._id,
-			red1: data.red1?._id,
-			red2: data.red2?._id,
-			red3: data.red3?._id,
+			blue1: data.blue1?._id || null,
+			blue2: data.blue2?._id || null,
+			blue3: data.blue3?._id || null,
+			red1: data.red1?._id || null,
+			red2: data.red2?._id || null,
+			red3: data.red3?._id || null,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
