@@ -2,7 +2,6 @@
 	"name": "scouting-bot",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
 		"start": "cross-env NODE_ENV=prod ts-node .",
 		"dev": "cross-env NODE_ENV=dev tsnd ."

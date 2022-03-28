@@ -11,7 +11,9 @@ export default new RouteHandler<'api', WAuth>()
 		if (!req.user || req.user.banned)
 			return res.status(403).json({ message: 'You are not authorized.' });
 
-		const blocks = await ScheduleBlock.find({}).populate('blue1 blue2 blue3 red1 red2 red3');
+		const blocks = await ScheduleBlock.find({})
+			.sort('startTime')
+			.populate('blue1 blue2 blue3 red1 red2 red3');
 
 		return res.status(200).json(blocks);
 	})

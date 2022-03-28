@@ -26,7 +26,7 @@
 		"module": "esnext",
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
-		"baseUrl": "./"
+		"baseUrl": ".",
 	},
 	"include": ["next-env.d.ts", "**/*.ts"],
 	"exclude": ["node_modules"]

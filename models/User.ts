@@ -1,6 +1,6 @@
 import { Model, model, models, Schema } from 'mongoose';
 
-const userSchema = new Schema<UserI>(
+export const userSchema = new Schema<UserI>(
 	{
 		username: { type: String, unique: true, required: true, minlength: 3, index: true },
 		administrator: { type: Boolean, required: true, default: false },

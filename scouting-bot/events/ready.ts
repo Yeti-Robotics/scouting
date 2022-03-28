@@ -1,4 +1,4 @@
-import { createEventHandler } from '../create-event-handler';
+import { createEventHandler } from '../createEventHandler';
 
 const ready = createEventHandler('ready', () => console.log('Ready!'), true);
 
