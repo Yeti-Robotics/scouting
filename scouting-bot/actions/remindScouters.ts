@@ -43,7 +43,7 @@ const remindScouters = async (client: Client) => {
 
 	// Get Text Channel to send messages too
 	const channel = (await client.channels.fetch(
-		isDev() ? '954378244591853650' : '721729526857465946',
+		process.env.CHANNEL_ID || 'i forgor 💀',
 	)) as TextChannel;
 	if (!channel) return;
 	if (!channel.isText()) return;

@@ -3,11 +3,10 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { readdirSync } from 'fs';
 import { CreateCommand } from './createCommand';
-import { isDev } from './utils/isDev';
 
 export const deployCommands = async () => {
-	const GUILD_ID = isDev() ? '867919239783264346' : '408711970305474560';
-	const CLIENT_ID = '957359702335979590';
+	const GUILD_ID = process.env.GUILD_ID || 'I forgor 💀';
+	const CLIENT_ID = process.env.GUILD_ID || 'I forgor 💀';
 
 	const commands: any[] = [];
 
