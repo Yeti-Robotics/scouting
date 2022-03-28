@@ -1,5 +1,6 @@
 import { StandFormI } from '@/models/StandForm';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Link as MuiLink } from '@mui/material';
+import Link from 'next/link';
 import Section from '../Section';
 
 interface Props {
@@ -9,7 +10,12 @@ interface Props {
 const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	return (
 		<Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
-			<h4 style={{ marginBottom: 0 }}>{form.notes}</h4>
+			<Link href={`/matches/${form.matchNumber}`} passHref>
+				<MuiLink sx={{ fontWeight: 'bold', mt: '1.33rem' }}>
+					Match {form.matchNumber}
+				</MuiLink>
+			</Link>
+			<h4 style={{ margin: 0 }}>{form.notes}</h4>
 			<p style={{ marginTop: 0 }}>
 				- {form.scouter.firstName} {form.scouter.lastName}
 			</p>

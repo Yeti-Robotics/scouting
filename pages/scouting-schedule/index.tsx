@@ -5,6 +5,7 @@ import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { Box, Button, Checkbox, FormControlLabel, Modal } from '@mui/material';
+import { blue, red } from '@mui/material/colors';
 import Link from 'next/link';
 import { useState } from 'react';
 import useSWR from 'swr';
@@ -51,7 +52,7 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						backgroundColor: 'blue',
+						backgroundColor: blue[500],
 						padding: 1,
 						margin: 1,
 						borderRadius: '4px',
@@ -76,7 +77,7 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						backgroundColor: 'red',
+						backgroundColor: red[500],
 						padding: 1,
 						margin: 1,
 						borderRadius: '4px',

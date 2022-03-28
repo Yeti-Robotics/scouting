@@ -1,3 +1,4 @@
+import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { CreateStandForm } from '@/models/StandForm';
@@ -6,6 +7,8 @@ import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useSWR from 'swr';
+import Autocomplete from '../Autocomplete';
 import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
@@ -25,6 +28,15 @@ interface Props {
 	id?: string;
 }
 
+const getTeamsAsArr = (match: MatchI | null) =>
+	[
+		{ label: `Blue 1 - ${match?.blue1}`, value: match?.blue1 },
+		{ label: `Blue 2 - ${match?.blue2}`, value: match?.blue2 },
+		{ label: `Blue 3 - ${match?.blue3}`, value: match?.blue3 },
+		{ label: `Red 1 - ${match?.red1}`, value: match?.red1 },
+		{ label: `Red 2 - ${match?.red2}`, value: match?.red2 },
+		{ label: `Red 3 - ${match?.red3}`, value: match?.red3 },
+	].filter((team) => team.value !== undefined);
 const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
@@ -32,11 +44,11 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [approving, setApproving] = useState<'' | 'fetching' | 'done'>('');
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
-	const [override, setOverride] = useState(true);
-	// const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const { control, handleSubmit, reset, setValue } = useForm<CreateStandForm>({
+	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
+	const { control, handleSubmit, reset, watch } = useForm<CreateStandForm>({
 		defaultValues: defaultForm,
 	});
+	const matchNumber = watch('matchNumber');
 
 	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
 
@@ -53,12 +65,10 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 		};
 	}, []);
 
-	// useEffect(() => {
-	// 	if (!create || !match || !user) return;
-	// 	if (!team) return setMatch(null);
-	// 	setValue('matchNumber', match.matchNumber);
-	// 	setValue('teamNumber', team);
-	// }, [match]);
+	useEffect(() => {
+		if (!create || !matches || !user) return;
+		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
+	}, [matchNumber]);
 
 	if (!user && create) {
 		return <CircularProgress />;
@@ -86,44 +96,6 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 				</Button>
 			)}
 			<ConnectionIndicator isOffline={isOffline} />
-			{/* {create && (
-				<FormSection title='Select Match'>
-					<Autocomplete
-						options={matchOptions}
-						fullWidth
-						getOptionLabel={(o) => `Match ${o.matchNumber}`}
-						value={match}
-						onChange={(e, v) => setMatch(v)}
-						isOptionEqualToValue={(o, v) => {
-							return (
-								o === v || o.matchNumber === parseInt(v)
-							);
-						}}
-						renderInput={(params) => (
-							<TextField
-								label='Select Match'
-								{...params}
-								inputProps={{ ...params.inputProps }}
-							/>
-						)}
-					/>
-					<FormControlLabel
-						label='Override'
-						control={
-							<MuiCheckbox
-								onChange={(e) => setOverride(e.target.checked)}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={override}
-							/>
-						}
-					/>
-				</FormSection>
-			)} */}
-			{/* {matchOptions.length <= 0 && create && (
-				<h1>You are not Scheduled to scout any matches.</h1>
-			)} */}
-			{/* if create form and user is scouting hide this */}
-
 			<>
 				<FormSection title='Match Info'>
 					<TextInput
@@ -131,15 +103,17 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						name='matchNumber'
 						label='Match Number'
 						valueAsNumber
-						disabled={!override || !canEdit}
+						disabled={!canEdit}
 						rules={{ required: true, min: 1 }}
 					/>
-					<TextInput
+					<Autocomplete
 						control={control}
 						name='teamNumber'
 						label='Team Number'
 						valueAsNumber
-						disabled={!override || !canEdit}
+						freeSolo
+						options={getTeamsAsArr(match)}
+						disabled={!canEdit}
 						rules={{ required: true, min: 1 }}
 					/>
 				</FormSection>
@@ -293,7 +267,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					Approve
 				</Button>
 			)}
-			{(match || !create || override) && Boolean(canEdit) && (
+			{(create || Boolean(canEdit)) && (
 				<SubmitButton disabled={submitting === 'fetching'}>
 					{submitting === 'fetching' ? (
 						<CircularProgress sx={{ m: 1, ml: 0 }} size='1rem' color='inherit' />
