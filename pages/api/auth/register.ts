@@ -8,7 +8,7 @@ import { hashSync } from 'bcrypt';
 const handler = new RouteHandler();
 
 handler.use(connectDB).post(async (req, res) => {
-	const user: UserI = JSON.parse(req.body);
+	const { at, user }: { at: string; user: UserI } = JSON.parse(req.body);
 
 	if (await User.exists({ username: user.username }))
 		return res.status(400).json({ message: 'Username is already in use.' });
@@ -17,7 +17,17 @@ handler.use(connectDB).post(async (req, res) => {
 	user.password = hashedPass;
 	user.administrator = false;
 
-	const savedUser = new User(user);
+	const headers = new Headers();
+	headers.append('Authorization', `Bearer ${at}`);
+
+	const discordRes = await fetch('https://discord.com/api/users/@me', { headers });
+	console.log(discordRes);
+	const discUser = await discordRes.json();
+	console.log(discUser);
+
+	if (!discUser) return res.status(403).json({ message: 'Discord is unauthorized.' });
+
+	const savedUser = new User({ ...user, discordId: discUser.id });
 	await savedUser.save();
 
 	const token = signJwt(res, savedUser.username);

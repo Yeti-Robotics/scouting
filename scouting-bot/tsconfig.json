@@ -1,0 +1,33 @@
+{
+	// Most ts-node options can be specified here using their programmatic names.
+	"ts-node": {
+		// It is faster to skip typechecking.
+		// Remove if you want ts-node to do typechecking.
+		"files": true,
+		"esm": true,
+		"compilerOptions": {
+			// compilerOptions specified here will override those declared below,
+			// but *only* in ts-node.  Useful if you want ts-node and tsc to use
+			// different options with a single tsconfig.json.
+			"module": "commonjs",
+			"baseUrl": "./"
+		}
+	},
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["ES2020", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"module": "esnext",
+		"resolveJsonModule": true,
+		"moduleResolution": "node",
+		"baseUrl": ".",
+	},
+	"include": ["next-env.d.ts", "**/*.ts"],
+	"exclude": ["node_modules"]
+}

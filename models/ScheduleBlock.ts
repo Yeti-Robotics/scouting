@@ -1,7 +1,7 @@
 import { Model, model, models, Schema } from 'mongoose';
 import { UserI } from './User';
 
-const scheduleBlockSchema = new Schema<ScheduleBlockI>(
+export const scheduleBlockSchema = new Schema<ScheduleBlockI>(
 	{
 		startTime: { type: Number, required: true },
 		endTime: { type: Number, required: true },
@@ -11,6 +11,8 @@ const scheduleBlockSchema = new Schema<ScheduleBlockI>(
 		red1: { type: Schema.Types.ObjectId, ref: 'user', required: false },
 		red2: { type: Schema.Types.ObjectId, ref: 'user', required: false },
 		red3: { type: Schema.Types.ObjectId, ref: 'user', required: false },
+		min30: { type: Boolean, default: () => false },
+		min10: { type: Boolean, default: () => false },
 	},
 	{ timestamps: true, collection: 'scheduleBlocks' },
 );
@@ -27,24 +29,28 @@ export interface ScheduleBlockI {
 	red3?: UserI;
 	createdAt: string;
 	updatedAt: string;
+	min30: boolean;
+	min10: boolean;
 }
 
 export interface CreateScheduleBlock {
 	_id: string;
 	startTime: number;
 	endTime: number;
-	blue1?: string;
-	blue2?: string;
-	blue3?: string;
-	red1?: string;
-	red2?: string;
-	red3?: string;
+	blue1: string | null;
+	blue2: string | null;
+	blue3: string | null;
+	red1: string | null;
+	red2: string | null;
+	red3: string | null;
 	createdAt: string;
 	updatedAt: string;
+	min30: boolean;
+	min10: boolean;
 }
 
-const User =
+const ScheduleBlock =
 	(models.scheduleBlock as Model<CreateScheduleBlock>) ||
 	model('scheduleBlock', scheduleBlockSchema);
 
-export default User;
+export default ScheduleBlock;

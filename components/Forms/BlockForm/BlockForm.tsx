@@ -22,6 +22,9 @@ interface Props {
 	id?: string;
 }
 
+const getOptLabel = (opt: any) =>
+	opt.firstName ? `${opt.firstName} ${opt.lastName} (${opt.username})` : opt.label ?? '';
+
 const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 	const router = useRouter();
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
@@ -37,6 +40,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 	if (!user || !users) return <CircularProgress />;
 	const options = users.map((user) => ({
 		username: user.username,
+		_id: user._id,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
 	}));
 
@@ -69,85 +73,61 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='blue1'
 					label='Blue 1'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='blue2'
 					label='Blue 2'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='blue3'
 					label='Blue 3'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='red1'
 					label='Red 1'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='red2'
 					label='Red 2'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<Autocomplete
 					options={options}
 					control={control}
 					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={(opt) =>
-						opt.firstName
-							? `${opt.firstName} ${opt.lastName} (${opt.username})`
-							: opt.label
-					}
+					getOptionLabel={getOptLabel}
 					name='red3'
 					label='Red 3'
 					disabled={!canEdit}
-					rules={{ required: true, min: 1 }}
+					rules={{ required: false, validate: undefined }}
 				/>
 				<TextInput
 					control={control}
