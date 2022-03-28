@@ -15,13 +15,8 @@ const remindScouters = async (client: Client) => {
 
 	const possibleBlocks = blocks.filter((block) => block.startTime > Date.now());
 
-	possibleBlocks.forEach((block) => console.log(new Date(block.startTime).toLocaleTimeString()));
-
-	const nextBlock = blocks.filter(
-		(block) => block.startTime > Date.now(),
-	)[0] as unknown as Document<ScheduleBlockI> & ScheduleBlockI & { _id: string };
-
-	//console.log(new Date(nextBlock.startTime).toLocaleTimeString());
+	const nextBlock = possibleBlocks[0] as unknown as Document<ScheduleBlockI> &
+		ScheduleBlockI & { _id: string };
 
 	// if no next block or no scouters return
 	if (

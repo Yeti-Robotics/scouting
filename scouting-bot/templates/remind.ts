@@ -5,7 +5,7 @@ import { ScheduleBlockI } from '../../models/ScheduleBlock';
 
 const fetch = async (channel: TextChannel, id: string | undefined) => {
 	try {
-		const member = await channel.guild.members.fetch(id || '');
+		const member = await channel.guild.members.fetch(id || '123456');
 		return member;
 	} catch (e) {
 		return Promise.resolve(undefined);
