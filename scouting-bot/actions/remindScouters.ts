@@ -1,17 +1,14 @@
 import { Client, TextChannel } from 'discord.js';
 import { useModels } from '../utils/model';
-import { ScheduleBlockI } from '../../models/ScheduleBlock';
-import { remind } from '../templates/remind';
+import { POPULATE_SCOUTERS, ScheduleBlockI } from '../../models/ScheduleBlock';
+import { blockTemplate } from '../templates/blockTemplate';
 import { Document } from 'mongoose';
-import { isDev } from '../utils/isDev';
 
 const remindScouters = async (client: Client) => {
 	const { ScheduleBlock } = useModels();
 	// Constant Checker
 	// Get MongoDB Stuff
-	const blocks = await ScheduleBlock.find({})
-		.sort('startTime')
-		.populate('blue1 blue2 blue3 red1 red2 red3');
+	const blocks = await ScheduleBlock.find({}).sort('startTime').populate(POPULATE_SCOUTERS);
 
 	const possibleBlocks = blocks.filter((block) => block.startTime > Date.now());
 
@@ -48,10 +45,10 @@ const remindScouters = async (client: Client) => {
 	if (!channel) return;
 	if (!channel.isText()) return;
 
-	const reminderMessage = await remind(client, channel, nextBlock);
+	const { pings, embed } = await blockTemplate(nextBlock);
 
 	console.log('Sending reminder...');
-	return channel.send(reminderMessage);
+	return channel.send({ content: pings, embeds: [embed] });
 };
 
 export default remindScouters;

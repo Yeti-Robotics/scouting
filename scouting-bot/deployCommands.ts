@@ -6,7 +6,7 @@ import { CreateCommand } from './createCommand';
 
 export const deployCommands = async () => {
 	const GUILD_ID = process.env.GUILD_ID || 'I forgor 💀';
-	const CLIENT_ID = process.env.GUILD_ID || 'I forgor 💀';
+	const CLIENT_ID = process.env.CLIENT_ID || 'I forgor 💀';
 
 	const commands: any[] = [];
 
