@@ -35,6 +35,9 @@ const Export = () => {
 			<Button component='a' variant='contained' onClick={exporter('/api/export-team-data')}>
 				Team Data
 			</Button>
+			<Button component='a' variant='contained' onClick={exporter('/api/export-stand-forms')}>
+				Stand Form Data
+			</Button>
 		</Layout>
 	);
 };
