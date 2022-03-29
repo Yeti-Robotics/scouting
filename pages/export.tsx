@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import { Button } from '@mui/material';
 import { MouseEventHandler } from 'react';
 
-const exporter = (route: string): MouseEventHandler<HTMLAnchorElement> => {
+const exporter = (route: string, fileName: string): MouseEventHandler<HTMLAnchorElement> => {
 	return async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -23,7 +23,7 @@ const exporter = (route: string): MouseEventHandler<HTMLAnchorElement> => {
 			),
 		);
 		a.href = url;
-		a.download = 'team-data.json';
+		a.download = `${fileName}.json`;
 		a.click();
 	};
 };
@@ -32,10 +32,18 @@ const Export = () => {
 	return (
 		<Layout>
 			<h1>Export</h1>
-			<Button component='a' variant='contained' onClick={exporter('/api/export-team-data')}>
+			<Button
+				component='a'
+				variant='contained'
+				onClick={exporter('/api/export-team-data', 'team-data')}
+			>
 				Team Data
 			</Button>
-			<Button component='a' variant='contained' onClick={exporter('/api/export-stand-forms')}>
+			<Button
+				component='a'
+				variant='contained'
+				onClick={exporter('/api/export-stand-forms', 'stand-forms')}
+			>
 				Stand Form Data
 			</Button>
 		</Layout>
