@@ -2,6 +2,7 @@ import { useUser } from '@/lib/useUser';
 import {
 	AccountCircle,
 	CalendarToday,
+	FileCopy,
 	InsertDriveFile,
 	Menu,
 	NoteAdd,
@@ -143,6 +144,11 @@ const NavBar = () => {
 					href='/records'
 					text='Records'
 					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
+				/>
+				<NavBarButton
+					href='/export'
+					text='Export Data'
+					Icon={<FileCopy sx={{ margin: 1 }} />}
 				/>
 				<Divider />
 				<CasinoButton />
