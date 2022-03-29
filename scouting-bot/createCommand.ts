@@ -3,7 +3,9 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { Awaitable, CommandInteraction } from 'discord.js';
 
 export interface CreateCommand {
-	command: SlashCommandBuilder;
+	command:
+		| SlashCommandBuilder
+		| Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
 	execute: (interaction: CommandInteraction) => Awaitable<void>;
 }
 
@@ -20,6 +22,7 @@ export const executeCommand = async (interaction: CommandInteraction) => {
 		try {
 			await execute(interaction);
 		} catch (e) {
+			console.error(e);
 			await interaction.reply({
 				content: 'There was an error while executing this command!',
 				ephemeral: true,
