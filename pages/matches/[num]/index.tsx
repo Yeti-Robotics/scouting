@@ -3,6 +3,7 @@ import LoadingLayout from '@/components/Layout/LoadingLayout';
 import EndPositions from '@/components/MatchData/EndPositions';
 import MobileShootingTable from '@/components/MatchData/MobileShootingTable';
 import ShootingTable from '@/components/MatchData/ShootingTable';
+import Comments from '@/components/MatchData/Comments';
 import Taxis from '@/components/MatchData/Taxis';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
@@ -57,6 +58,7 @@ const Match = () => {
 			)}
 			<EndPositions match={data} />
 			<Taxis match={data} />
+			<Comments match={data} />
 		</Layout>
 	);
 };
