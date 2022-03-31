@@ -17,7 +17,9 @@ interface FormSchema {
 }
 
 const REDIRECT_URI =
-	'https://discord.com/api/oauth2/authorize?response_type=token&client_id=957359702335979590&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fregister%2Flink-discord&scope=identify';
+	process.env.NODE_ENV === 'production'
+		? 'https://discord.com/api/oauth2/authorize?client_id=957359702335979590&redirect_uri=https%3A%2F%2Fscouting.yetirobotics%2Fregister%2Flink-discord&response_type=code&scope=identify'
+		: 'https://discord.com/api/oauth2/authorize?response_type=token&client_id=957359702335979590&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fregister%2Flink-discord&scope=identify';
 
 const RegisterForm = () => {
 	const router = useRouter();
@@ -30,6 +32,7 @@ const RegisterForm = () => {
 	} = useForm<FormSchema>({
 		mode: 'all',
 	});
+	console.log(process.env.NEXT_PUBLIC_DISCORD_URI);
 	const [usernameIsValid, setUsernameIsValid] = useState<boolean | null | undefined>(null);
 
 	const password = watch('password');
