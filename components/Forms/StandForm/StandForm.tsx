@@ -135,7 +135,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						<Checkbox
 							control={control}
 							name='initiationLine'
-							label='Did they cross the line?'
+							label='Did they leave their box?'
 							size='medium'
 							disabled={!canEdit}
 						/>
@@ -222,11 +222,12 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						disabled={!canEdit}
 						rules={{ required: true }}
 					>
-						<MenuItem value={0}>1</MenuItem>
-						<MenuItem value={1}>2</MenuItem>
-						<MenuItem value={2}>3</MenuItem>
-						<MenuItem value={3}>4</MenuItem>
-						<MenuItem value={4}>5</MenuItem>
+						<MenuItem value={0}>No Defense</MenuItem>
+						<MenuItem value={1}>1 Many Penalties</MenuItem>
+						<MenuItem value={2}>2 Few Penalties/Not Effective </MenuItem>
+						<MenuItem value={3}>3 Pretty Effective</MenuItem>
+						<MenuItem value={4}>4 Very Effective</MenuItem>
+						<MenuItem value={5}>5 Perfect</MenuItem>
 					</Select>
 					<ScoreInput
 						control={control}

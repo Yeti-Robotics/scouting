@@ -24,7 +24,7 @@ export const blockTemplate = async (block: ScheduleBlockI) => {
 		.setTitle('Scouting Reminder 😳')
 		.setURL('https://scouting.yetirobotics.org/stand-scouting')
 		.setDescription(
-			`**${new Date(startTime).toLocaleTimeString(undefined, {
+			`You will be scouting from **${new Date(startTime).toLocaleTimeString(undefined, {
 				hour: '2-digit',
 				minute: '2-digit',
 			})}** to **${new Date(endTime).toLocaleTimeString(undefined, {
@@ -50,7 +50,7 @@ export const blockTemplate = async (block: ScheduleBlockI) => {
 			),
 		)
 		.setFooter({
-			text: 'Thank you, your help is greatly appreciated 😄' + '  Made by Isaiah and Robbie',
+			text: 'If you are scouting a drive train, pay close attention to their defense and penalties!!! Thank you, your help is greatly appreciated 😄  Made by Isaiah and Robbie',
 		});
 
 	// Return the Message pinging people and sending the Embe
