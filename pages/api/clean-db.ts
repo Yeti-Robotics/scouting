@@ -22,6 +22,13 @@ export default new RouteHandler<'api', WAuth>()
 		deletes.push(PitForm.deleteMany({}));
 		deletes.push(PitImage.deleteMany({}));
 		deletes.push(Match.deleteMany({}));
-		await Promise.all(deletes);
+
+		const users = await User.find({});
+		const updateUsers = users.map((user) => {
+			user.coins = 100;
+			return user.save();
+		});
+
+		await Promise.all([...deletes, ...updateUsers]);
 		return res.status(200).json({ message: 'DB successfully cleaned out.' });
 	});
