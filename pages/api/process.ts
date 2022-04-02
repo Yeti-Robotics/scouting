@@ -5,9 +5,11 @@ import StandForm from '@/models/StandForm';
 const getAvg = (balls: number[]) => balls.reduce((acc, curr) => (acc += curr), 0) / balls.length;
 
 const getStdDev = (balls: number[]) => {
-	let total = 0;
 	const avg = getAvg(balls);
-	balls.reduce((acc, curr) => (acc += curr));
+	const stdDev = Math.sqrt(
+		balls.reduce((acc, curr) => (acc += Math.pow(curr - avg, 2)), 0) / balls.length,
+	);
+	return stdDev;
 };
 
 export default new RouteHandler().get(async (req, res) => {
@@ -21,7 +23,7 @@ export default new RouteHandler().get(async (req, res) => {
 			}
 			return form.teleopUpperBallsScored;
 		})
-		.filter((score) => score !== undefined);
+		.filter((score) => score !== undefined) as number[];
 
 	const teleopLowerBallsScored = forms
 		.map((form) => {
@@ -30,5 +32,10 @@ export default new RouteHandler().get(async (req, res) => {
 			}
 			return form.teleopLowBallsScored;
 		})
-		.filter((score) => score !== undefined);
+		.filter((score) => score !== undefined) as number[];
+
+	console.log('Upper Ball Mean = ' + getAvg(teleopUpperBallsScored));
+	console.log('Upper Ball Std Dev = ' + getStdDev(teleopUpperBallsScored));
+	console.log('Low Ball Mean = ' + getAvg(teleopLowerBallsScored));
+	console.log('Low Ball Std Dev = ' + getStdDev(teleopLowerBallsScored));
 });

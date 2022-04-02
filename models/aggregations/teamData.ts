@@ -1,11 +1,11 @@
 import { PipelineStage } from 'mongoose';
 
 export const teamDataAggregation: PipelineStage[] = [
-	{
-		$match: {
-			approved: true,
-		},
-	},
+	// {
+	// 	$match: {
+	// 		approved: true,
+	// 	},
+	// },
 	{
 		$addFields: {
 			autoTotalUpperBalls: {
