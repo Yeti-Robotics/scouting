@@ -21,7 +21,6 @@ export default new RouteHandler<'api', WAuth>()
 	.use(auth)
 	.get(async (req, res) => {
 		const forms = await paginate(StandForm, req.query);
-		console.log('popilatin');
 		await StandForm.populate(forms, { path: 'scouter' });
 		return res.status(200).json(forms);
 	})
