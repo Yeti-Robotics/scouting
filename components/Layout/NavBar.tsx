@@ -145,6 +145,7 @@ const NavBar = () => {
 					text='Records'
 					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
 				/>
+				<Divider />
 				<NavBarButton
 					href='/export'
 					text='Export Data'

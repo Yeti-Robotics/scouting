@@ -16,7 +16,7 @@ export const blockTemplate = async (block: ScheduleBlockI) => {
 	users.push(red3 ? `${red3.firstName} ${red3.lastName}` : undefined);
 
 	// Calculate Time Before your scouting session
-	const warnTime = Math.floor((startTime - Date.now()) / 60000);
+	const warnTime = Math.ceil((startTime - Date.now()) / 60000);
 
 	// Create Embed to send to channel
 	const remindEmbed = new MessageEmbed()
