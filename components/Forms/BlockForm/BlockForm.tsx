@@ -61,7 +61,7 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 					color='error'
 					onClick={() => {
 						fetch(`/api/schedule/${id}`, { method: 'DELETE' }).then((res) => {
-							if (res.ok) router.push('/casino/matches');
+							if (res.ok) router.push('/scouting-schedule');
 						});
 					}}
 				>
