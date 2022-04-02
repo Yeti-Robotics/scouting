@@ -90,11 +90,18 @@ const Create = () => {
 
 	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
+		console.log(data);
 		await fetch(`/api/create-schedule?auto=${auto}`, {
 			method: 'POST',
 			body: JSON.stringify({
 				users: { ...resultsDefaults(users), ...results },
-				options: data,
+				options: {
+					...data,
+					startTime: new Date(data.startTime).valueOf(),
+					endTime: new Date(data.endTime).valueOf(),
+					lunchStartTime: new Date(data.lunchStartTime).valueOf(),
+					lunchEndTime: new Date(data.lunchEndTime).valueOf(),
+				},
 			}),
 		});
 		setFetching('done');

@@ -1,8 +1,9 @@
-import { GridColumns, GridValueFormatterParams } from '@mui/x-data-grid';
+import { GridColumns } from '@mui/x-data-grid';
 import Link from 'next/link';
 import { Link as MuiLink } from '@mui/material';
 import { Check, Close } from '@mui/icons-material';
 import { endPosToString } from '@/lib/mode';
+import { green, red } from '@mui/material/colors';
 
 export const formTableColumns: GridColumns = [
 	{
@@ -45,9 +46,9 @@ export const formTableColumns: GridColumns = [
 		headerName: 'Taxi',
 		renderCell: (params) => {
 			if (params.value) {
-				return <Check />;
+				return <Check sx={{ color: green[500] }} />;
 			} else {
-				return <Close />;
+				return <Close sx={{ color: red[500] }} />;
 			}
 		},
 	},
@@ -56,9 +57,9 @@ export const formTableColumns: GridColumns = [
 		headerName: 'Preload',
 		renderCell: (params) => {
 			if (params.value) {
-				return <Check />;
+				return <Check sx={{ color: green[500] }} />;
 			} else {
-				return <Close />;
+				return <Close sx={{ color: red[500] }} />;
 			}
 		},
 	},
