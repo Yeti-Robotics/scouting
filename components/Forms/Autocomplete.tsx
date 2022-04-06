@@ -29,7 +29,7 @@ const defaultInputSx: SxProps<Theme> = {
 	width: '100%',
 };
 
-const TextInput: React.VFC<Props> = ({
+const Autocomplete: React.VFC<Props> = ({
 	name,
 	control,
 	rules,
@@ -85,7 +85,8 @@ const TextInput: React.VFC<Props> = ({
 										onChange(e); // from props
 								  }
 								: (e, v) => {
-										field.onChange(v.value ?? v);
+										console.log(v);
+										field.onChange(v?.value ?? v);
 										onChange(e); // from props
 								  }
 						}
@@ -117,4 +118,4 @@ const TextInput: React.VFC<Props> = ({
 	);
 };
 
-export default TextInput;
+export default Autocomplete;

@@ -6,6 +6,7 @@ import { Button, CircularProgress, MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Autocomplete from '../Autocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
 import Select from '../Select';
@@ -26,6 +27,7 @@ interface Props {
 const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages, id }) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
+	const [submitting, setSubmitting] = useState<'fetching' | 'done' | ''>('');
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
@@ -40,7 +42,9 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages))}>
+		<Form
+			onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages, setSubmitting))}
+		>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -82,6 +86,14 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 					<MenuItem value={5}>High Climb</MenuItem>
 					<MenuItem value={6}>Traverse Climb</MenuItem>
 				</Select>
+				<Autocomplete
+					name='drivetrain'
+					label='What drivetrain do they use?'
+					options={['Swerve', 'West Coast', 'Mechaunum']}
+					control={control}
+					rules={{ required: true }}
+					freeSolo
+				/>
 				<Select
 					control={control}
 					name='defense'
@@ -116,7 +128,14 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 					Give some more insight into the team such as cycle times.
 				</p>
 			</FormSection>
-			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
+			{Boolean(canEdit) && (
+				<SubmitButton disabled={submitting === 'fetching'}>
+					{submitting === 'fetching' ? (
+						<CircularProgress sx={{ m: 1, ml: 0 }} size='1rem' color='inherit' />
+					) : null}{' '}
+					{create ? 'Submit' : 'Update'}
+				</SubmitButton>
+			)}
 		</Form>
 	);
 };
