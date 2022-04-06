@@ -72,7 +72,7 @@ const Autocomplete: React.VFC<Props> = ({
 						onChange={
 							valueAsNumber
 								? (e, v) => {
-										const parsed = parseFloat(v.value ?? v);
+										const parsed = parseFloat(v?.value ?? v);
 										if (!isNaN(parsed)) {
 											field.onChange(parsed);
 											lastValue.current = parsed;
