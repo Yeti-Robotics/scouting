@@ -24,7 +24,7 @@ const connectDB: RouteHandlerMiddleware<'both'> = {
 
 		if (!global.compKey) {
 			const compKey = await CompKey.findOne();
-			if (!compKey) throw new Error('No competition key in db!');
+			if (!compKey) return;
 			global.compKey = {
 				compKey: compKey.compKey,
 				compYear: parseInt(compKey.compKey.replace(/\D/g, '')),

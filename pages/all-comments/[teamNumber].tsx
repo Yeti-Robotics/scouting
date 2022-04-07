@@ -1,13 +1,10 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import fetcher from '@/lib/fetch';
 import pemForms from '@/past-data/pem-stand-forms.json';
 import ashForms from '@/past-data/ash-stand-forms.json';
 import { Paper, Stack } from '@mui/material';
 import { StandFormI } from '@/models/StandForm';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 
 const CommentDisplay: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	return (
@@ -17,24 +14,16 @@ const CommentDisplay: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	);
 };
 
-const TeamComments: NextPage<{ fallback: Record<string, any> }> = ({ fallback }) => {
+const TeamComments: NextPage<{ forms: StandFormI[] }> = ({ forms }) => {
 	const router = useRouter();
-	const { data } = useSWR<StandFormI[]>(
-		`/api/all-comments?teamNumber=${router.query.teamNumber}`,
-		fetcher,
-		{
-			fallback,
-		},
-	);
-	console.log(data);
 
-	if (!data) return <LoadingLayout />;
+	console.log(forms);
 
 	return (
 		<Layout>
 			<h1>{router.query.teamNumber} Comments</h1>
 			<Stack sx={{ m: 2 }}>
-				{data.map((form) => (
+				{forms.map((form) => (
 					<CommentDisplay key={form._id} form={form} />
 				))}
 			</Stack>
@@ -43,17 +32,16 @@ const TeamComments: NextPage<{ fallback: Record<string, any> }> = ({ fallback })
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-	const key = `/api/all-comments?teamNumber=${query.teamNumber}`;
+	if (!query.teamNumber)
+		return {
+			notFound: true,
+		};
 
 	return {
 		props: {
-			fallback: {
-				[key]: ashForms
-					.concat(pemForms)
-					.filter((form) =>
-						query.teamNumber ? form.teamNumber.toString() === query.teamNumber : true,
-					),
-			},
+			forms: ashForms
+				.concat(pemForms)
+				.filter((form) => form.teamNumber === parseInt(String(query.teamNumber))),
 		},
 	};
 };
