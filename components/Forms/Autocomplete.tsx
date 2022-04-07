@@ -70,7 +70,6 @@ const Autocomplete: React.VFC<Props> = ({
 					onChange(e); // from props
 			  }
 			: (e, v) => {
-					console.log(v);
 					field.onChange(v?.value ?? v);
 					onChange(e); // from props
 			  };
