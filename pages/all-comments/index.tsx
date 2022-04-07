@@ -10,12 +10,15 @@ const AllComments = () => {
 		<Layout>
 			<h1>All Comments</h1>
 			<TextField
+				label='Team Number'
 				value={teamNumber}
 				onChange={(e) => setTeamNumber(parseInt(e.target.value))}
 				inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
 			/>
 			<Link href={`/all-comments/${teamNumber}`} passHref>
-				<Button component='a'>View Comments</Button>
+				<Button variant='contained' component='a' sx={{ mt: 2 }}>
+					View Comments
+				</Button>
 			</Link>
 		</Layout>
 	);
