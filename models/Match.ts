@@ -47,6 +47,8 @@ const matchSchema = new Schema<MatchI, MatchModelType>(
 		startTime: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, required: true },
+		compYear: { type: Number, required: true },
+		compKey: { type: String, required: true },
 		bets: [betSchema],
 	},
 	{ timestamps: true, collection: 'matches' },
@@ -70,6 +72,8 @@ export interface MatchI {
 	setNumber: number;
 	createdAt: string;
 	updatedAt: string;
+	compYear: number;
+	compKey: string;
 }
 
 export interface MatchSchedule {
@@ -90,6 +94,8 @@ export interface MatchSchedule {
 	setNumber: number;
 	createdAt: string;
 	updatedAt: string;
+	compYear: number;
+	compKey: string;
 }
 
 export interface Bet {

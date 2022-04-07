@@ -44,7 +44,18 @@ export default new RouteHandler<'api', WAuth>()
 			});
 		const matches: TBAMatchSimple[] = await apiRes.json();
 
-		await Match.deleteMany({});
+		await CompKey.deleteMany({}).then(async () => {
+			const compKey = new CompKey({
+				compYear: eventKey.replace(/\D/g, ''),
+				compKey: eventKey,
+			});
+			await compKey.save();
+			global.compKey = {
+				compKey: compKey.compKey,
+				compYear: parseInt(compKey.compKey.replace(/\D/g, '')),
+			};
+		});
+
 		await matches.forEach(async (match) => {
 			if (/_(sf|qf|f)/.test(match.key)) return;
 			const savedMatch = new Match();
@@ -88,14 +99,10 @@ export default new RouteHandler<'api', WAuth>()
 			savedMatch.matchNumber = match.match_number;
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;
-			await savedMatch.save();
-		});
+			savedMatch.compKey = compKey.compKey;
+			savedMatch.compYear = compKey.compYear;
 
-		CompKey.deleteMany().then(() => {
-			const compKey = new CompKey({
-				compYear: eventKey.replace(/\D/g, ''),
-				compKey: eventKey,
-			});
+			await savedMatch.save();
 		});
 
 		return res.status(200).json({ message: 'Matches successfully populated.' });

@@ -17,8 +17,6 @@ const CommentDisplay: React.VFC<{ form: StandFormI }> = ({ form }) => {
 const TeamComments: NextPage<{ forms: StandFormI[] }> = ({ forms }) => {
 	const router = useRouter();
 
-	console.log(forms);
-
 	return (
 		<Layout>
 			<h1>{router.query.teamNumber} Comments</h1>
