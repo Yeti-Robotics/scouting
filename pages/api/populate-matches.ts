@@ -46,7 +46,7 @@ export default new RouteHandler<'api', WAuth>()
 
 		await CompKey.deleteMany({}).then(async () => {
 			const compKey = new CompKey({
-				compYear: eventKey.replace(/\D/g, ''),
+				compYear: parseInt(eventKey.replace(/\D/g, '')),
 				compKey: eventKey,
 			});
 			await compKey.save();
