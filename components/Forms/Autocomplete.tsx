@@ -1,7 +1,13 @@
 import { SxProps, Theme, TextField, Autocomplete as MuiAutocomplete, Box } from '@mui/material';
-import { Control, Controller, ControllerProps } from 'react-hook-form';
+import { Control, Controller, ControllerProps, ControllerRenderProps } from 'react-hook-form';
 import { addRequired } from './formHelpers';
-import { useRef } from 'react';
+import { SyntheticEvent, useRef } from 'react';
+
+type AutocompleteOnChange = (
+	event: SyntheticEvent<Element, Event>,
+	value: any,
+	reason: any,
+) => void;
 
 interface Props {
 	control: Control<any>;
@@ -35,7 +41,7 @@ const Autocomplete: React.VFC<Props> = ({
 	rules,
 	onChange = () => {},
 	placeholder,
-	getOptionLabel = (opt) => opt.label ?? opt,
+	getOptionLabel = (opt) => opt.label ?? String(opt),
 	isOptionEqualToValue = (option, value) => option === value,
 	label,
 	options,
@@ -47,6 +53,27 @@ const Autocomplete: React.VFC<Props> = ({
 	valueAsNumber,
 }) => {
 	const lastValue = useRef(defaultValue);
+
+	const updateValue = (field: ControllerRenderProps<any, string>): AutocompleteOnChange =>
+		valueAsNumber
+			? (e, v) => {
+					const parsed = parseFloat(v?.value ?? v);
+					if (!isNaN(parsed)) {
+						field.onChange(parsed);
+						lastValue.current = parsed;
+					} else if (v === '') {
+						field.onChange('');
+						lastValue.current = '';
+					} else {
+						field.onChange(lastValue.current);
+					}
+					onChange(e); // from props
+			  }
+			: (e, v) => {
+					console.log(v);
+					field.onChange(v?.value ?? v);
+					onChange(e); // from props
+			  };
 
 	return (
 		<Box sx={{ m: 1, width: '100%' }}>
@@ -69,27 +96,8 @@ const Autocomplete: React.VFC<Props> = ({
 						onBlur={field.onBlur}
 						value={field.value}
 						isOptionEqualToValue={isOptionEqualToValue}
-						onChange={
-							valueAsNumber
-								? (e, v) => {
-										const parsed = parseFloat(v?.value ?? v);
-										if (!isNaN(parsed)) {
-											field.onChange(parsed);
-											lastValue.current = parsed;
-										} else if (v === '') {
-											field.onChange('');
-											lastValue.current = '';
-										} else {
-											field.onChange(lastValue.current);
-										}
-										onChange(e); // from props
-								  }
-								: (e, v) => {
-										console.log(v);
-										field.onChange(v?.value ?? v);
-										onChange(e); // from props
-								  }
-						}
+						onChange={updateValue(field)}
+						onInputChange={freeSolo ? updateValue(field) : undefined}
 						disabled={disabled}
 						renderInput={(params) => (
 							<TextField

@@ -30,7 +30,7 @@ export default new RouteHandler<'api', WAuth>()
 		const form: CreateStandForm = JSON.parse(req.body);
 
 		const savedForm = new StandForm({ ...form, ...global.compKey, scouter: req.user._id });
-		await savedForm.save();
+		console.log(await savedForm.save());
 
 		res.status(200).json({ message: 'Form saved!' });
 
