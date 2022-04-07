@@ -1,5 +1,6 @@
 import { RouteHandlerMiddleware } from '@/lib/api/RouteHandler';
 import mongoose from 'mongoose';
+import CompKey from '../models/CompKey';
 
 export const CONNECT_DB_MIDDLEWARE_KEY = 'connectDB';
 
@@ -14,12 +15,22 @@ const connectDB: RouteHandlerMiddleware<'both'> = {
 		}
 		if (mongoose.connections[0].readyState) {
 			// use the current connection
-			return;
+		} else {
+			//use a new connection
+			await mongoose
+				.connect(uri, { dbName: process.env.DEFAULT_DB })
+				.catch((err: unknown) => console.error(err));
 		}
-		//use a new connection
-		await mongoose
-			.connect(uri, { dbName: process.env.DEFAULT_DB })
-			.catch((err: unknown) => console.error(err));
+
+		if (!global.compKey) {
+			const compKey = await CompKey.findOne();
+			if (!compKey) throw new Error('No competition key in db!');
+			global.compKey = {
+				compKey: compKey.compKey,
+				compYear: parseInt(compKey.compKey.replace(/\D/g, '')),
+			};
+		}
+
 		return;
 	},
 };

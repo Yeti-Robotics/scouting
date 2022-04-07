@@ -3,6 +3,7 @@ import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
 import Match from '@/models/Match';
+import CompKey from '@/models/CompKey';
 
 interface TBAMatchAlliance {
 	score: number;
@@ -88,6 +89,13 @@ export default new RouteHandler<'api', WAuth>()
 			savedMatch.setNumber = match.set_number;
 			savedMatch.open = true;
 			await savedMatch.save();
+		});
+
+		CompKey.deleteMany().then(() => {
+			const compKey = new CompKey({
+				compYear: eventKey.replace(/\D/g, ''),
+				compKey: eventKey,
+			});
 		});
 
 		return res.status(200).json({ message: 'Matches successfully populated.' });

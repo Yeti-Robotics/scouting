@@ -1,4 +1,4 @@
-import { Model, model, models, Schema, SchemaTypes } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 import { UserI } from './User';
 
 const standFormSchema = new Schema<StandFormI>(
@@ -21,6 +21,8 @@ const standFormSchema = new Schema<StandFormI>(
 		defense: { type: Number, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
+		compYear: { type: Number, required: true },
+		compKey: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
 );
@@ -47,6 +49,8 @@ export interface CreateStandForm {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	compYear: number;
+	compKey: string;
 }
 
 // i stands for interface
@@ -72,6 +76,8 @@ export interface StandFormI {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	compYear: number;
+	compKey: string;
 }
 
 const StandForm = (models.standForm as Model<StandFormI>) || model('standForm', standFormSchema);
