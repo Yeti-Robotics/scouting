@@ -41,7 +41,7 @@ const Autocomplete: React.VFC<Props> = ({
 	rules,
 	onChange = () => {},
 	placeholder,
-	getOptionLabel = (opt) => opt.label ?? String(opt),
+	getOptionLabel = (opt) => opt?.label ?? String(opt),
 	isOptionEqualToValue = (option, value) => option === value,
 	label,
 	options,
