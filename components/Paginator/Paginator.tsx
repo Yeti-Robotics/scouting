@@ -30,7 +30,7 @@ const ReloadButton: React.VFC<{ onClick: (...args: any[]) => any }> = ({ onClick
 	<Button
 		onClick={onClick}
 		variant='contained'
-		sx={{ position: 'absolute', top: '1rem', right: '3rem' }}
+		sx={{ position: 'fixed', top: '1rem', right: '3rem' }}
 	>
 		<Refresh sx={{ m: 1 }} />
 	</Button>
