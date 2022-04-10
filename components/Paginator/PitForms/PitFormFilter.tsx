@@ -2,7 +2,7 @@ import Select from '@/components/Forms/Select';
 import SubmitButton from '@/components/Forms/SubmitButton';
 import TextInput from '@/components/Forms/TextInput';
 import { PitFormI } from '@/models/PitForm';
-import { MenuItem } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FilterForm } from '../Filter.styles';
 import { sanitizeFilter, validateIsNumber } from '../filterHelpers';
@@ -12,7 +12,12 @@ type Spread<T extends object> = T[keyof T];
 
 const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 	const [query, setQuery] = state;
-	const { control, handleSubmit, watch } = useForm({
+	const {
+		control,
+		handleSubmit,
+		watch,
+		reset: resetForm,
+	} = useForm({
 		defaultValues: {
 			...query.filter,
 			sortBy: Object.keys(query.sort)[0],
@@ -30,6 +35,11 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 		const newSort: any = {};
 		newSort[sortBy] = sortFrom;
 		setQuery({ filter, sort: newSort });
+	};
+
+	const reset = () => {
+		setQuery({ filter: {}, sort: { createdAt: -1 } });
+		resetForm();
 	};
 
 	return (
@@ -66,6 +76,9 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 				label='Scouter Username'
 				rules={{ validate: () => true, required: false }}
 			/>
+			<Button variant='contained' onClick={reset} sx={{ mb: 2 }}>
+				Reset Filters
+			</Button>
 			<SubmitButton>Update</SubmitButton>
 		</FilterForm>
 	);

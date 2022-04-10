@@ -1,5 +1,6 @@
 import fetcher from '@/lib/fetch';
-import { CircularProgress } from '@mui/material';
+import { Refresh } from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -25,8 +26,30 @@ interface Props<T> {
 	Display: React.VFC<DisplayProps<T>>;
 }
 
+const ReloadButton: React.VFC<{ onClick: (...args: any[]) => any }> = ({ onClick }) => (
+	<Button
+		onClick={onClick}
+		variant='contained'
+		sx={{ position: 'absolute', top: '1rem', right: '3rem' }}
+	>
+		<Refresh sx={{ m: 1 }} />
+	</Button>
+);
+
+const sanitizeFilters = (obj: Record<string, any>, recursed = false) => {
+	const sanitized: Record<string, any> = {};
+	Object.keys(obj).forEach((key) => {
+		const val = obj[key];
+		if (typeof val === 'object') return (sanitized[key] = sanitizeFilters(val, true));
+		if (val === '') return;
+		if (val === 'null') return (sanitized[key] = null);
+		sanitized[key] = val;
+	});
+	console.log({ obj, sanitized, recursed });
+	return recursed && Object.keys(sanitized).length <= 0 ? undefined : sanitized;
+};
+
 const Paginator = <T extends { _id: string; createdAt: string }>({
-	object,
 	route,
 	Filter,
 	Display,
@@ -36,9 +59,9 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	const [page, setPage] = useState({ page: 1, perPage: 20 });
 	const [query, setQuery] = useState<Query<T>>({ filter: {}, sort: { createdAt: -1 } });
 	const querystring = `?page=${page.page}&perPage=${page.perPage}&filter=${JSON.stringify(
-		query.filter,
+		sanitizeFilters(query.filter),
 	)}&sort=${JSON.stringify(query.sort)}`;
-	const { data, error } = useSWR<T[]>(`${route}${querystring}`, fetcher, {
+	const { data, error, mutate } = useSWR<T[]>(`${route}${querystring}`, fetcher, {
 		onSuccess: () => setLoading(false),
 	});
 	// update queries when page loads
@@ -59,9 +82,15 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 		//router.push(`${router.pathname}${querystring}`, undefined, { shallow: true });
 	}, [page, query]);
 
+	const reload = () => {
+		setLoading(true);
+		mutate();
+	};
+
 	if (!data || loading) {
 		return (
 			<PaginatorWrapper>
+				<ReloadButton onClick={reload} />
 				<FilterWrapper>
 					<Filter state={[query, setQuery]} />
 				</FilterWrapper>
@@ -75,6 +104,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	if (error) {
 		return (
 			<PaginatorWrapper>
+				<ReloadButton onClick={reload} />
 				<FilterWrapper>
 					<Filter state={[query, setQuery]} />
 				</FilterWrapper>
@@ -88,6 +118,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	if (!data[0]) {
 		return (
 			<PaginatorWrapper>
+				<ReloadButton onClick={reload} />
 				<FilterWrapper>
 					<Filter state={[query, setQuery]} />
 				</FilterWrapper>
@@ -100,6 +131,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 
 	return (
 		<PaginatorWrapper>
+			<ReloadButton onClick={reload} />
 			<FilterWrapper>
 				<Filter state={[query, setQuery]} />
 			</FilterWrapper>
