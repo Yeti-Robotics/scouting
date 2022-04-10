@@ -38,7 +38,7 @@ const StandFormCard: React.VFC<Props> = ({ team, form }) => {
 				<h3>Match #: {form.matchNumber}</h3>
 				<DataWrapper>
 					<h4>
-						scouter: {form.scouter.firstName} {form.scouter.lastName}
+						scouter: {form.scouter?.firstName} {form.scouter?.lastName}
 					</h4>
 					<h4>End Pos: {endPosToString(form.endPosition)}</h4>
 				</DataWrapper>

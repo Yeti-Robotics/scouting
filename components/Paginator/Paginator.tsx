@@ -45,7 +45,6 @@ const sanitizeFilters = (obj: Record<string, any>, recursed = false) => {
 		if (val === 'null') return (sanitized[key] = null);
 		sanitized[key] = val;
 	});
-	console.log({ obj, sanitized, recursed });
 	return recursed && Object.keys(sanitized).length <= 0 ? undefined : sanitized;
 };
 

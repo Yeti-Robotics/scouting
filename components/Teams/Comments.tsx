@@ -17,7 +17,7 @@ const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
 			</Link>
 			<h4 style={{ margin: 0 }}>{form.notes}</h4>
 			<p style={{ marginTop: 0 }}>
-				- {form.scouter.firstName} {form.scouter.lastName}
+				- {form.scouter?.firstName} {form.scouter?.lastName}
 			</p>
 		</Box>
 	);
