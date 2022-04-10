@@ -5,6 +5,7 @@ export const PaginatorWrapper = styled.div`
 	justify-content: center;
 	flex-flow: row wrap;
 	width: 100%;
+	position: relative;
 `;
 
 export const ResultsDisplay = styled.div`
