@@ -11,7 +11,7 @@ const StandFormDisplay: React.VFC<DisplayProps<StandFormI>> = ({ record }) => {
 					<h3>Match: {record.matchNumber}</h3>
 					<h3>Team: {record.teamNumber}</h3>
 					<h4>
-						Scouter: {record.scouter.firstName} {record.scouter.lastName}
+						Scouter: {record.scouter?.firstName} {record.scouter?.lastName}
 					</h4>
 				</DisplayWrapper>
 			</Link>
