@@ -64,6 +64,11 @@ const Records = () => {
 			<Button variant='contained' onClick={() => setCleanModal(true)}>
 				Clean db
 			</Button>
+			{user?.administrator && (
+				<Button variant='contained' onClick={() => fetch('/api/approve-all')}>
+					Approve all stand form
+				</Button>
+			)}
 			<Modal open={cleanModal} onClose={() => setCleanModal(false)}>
 				<Box
 					sx={{
