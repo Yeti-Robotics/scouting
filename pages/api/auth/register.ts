@@ -20,12 +20,22 @@ handler.use(connectDB).post(async (req, res) => {
 	const headers = new Headers();
 	headers.append('Authorization', `Bearer ${at}`);
 
+	// get discord user id
 	const discordRes = await fetch('https://discord.com/api/users/@me', { headers });
 	console.log(discordRes);
 	const discUser = await discordRes.json();
-	console.log(discUser);
 
-	if (!discUser) return res.status(403).json({ message: 'Discord is unauthorized.' });
+	if (!discUser) return res.status(401).json({ message: 'Discord is unauthorized.' });
+
+	// check if user is in our discord server
+	const userServersRes = await fetch(`https://discord.com/api/users/@me/guilds`, { headers });
+	console.log(userServersRes);
+	if (!userServersRes.ok)
+		return res.status(401).json({ message: 'Something went wrong checking your servers.' });
+	const servers: any[] = await userServersRes.json();
+	console.log(servers);
+	if (!servers.some((server) => server.id === '408711970305474560'))
+		return res.status(401).json({ message: "You are not a part of yeti's Discord server." });
 
 	const savedUser = new User({ ...user, discordId: discUser.id });
 	await savedUser.save();
