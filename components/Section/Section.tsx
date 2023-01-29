@@ -1,13 +1,14 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Box, Button, Collapse } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface Props {
 	expanded?: boolean;
 	title: string;
+	children: ReactNode;
 }
 
-const Section: React.FC<Props> = ({ title, expanded = true, children }) => {
+const Section = ({ title, expanded = true, children }: Props) => {
 	const [isExpanded, setIsExpanded] = useState(expanded);
 
 	useEffect(() => setIsExpanded(expanded), [expanded]);

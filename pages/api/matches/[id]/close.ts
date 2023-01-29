@@ -7,23 +7,35 @@ import StandForm, { StandFormI } from '@/models/StandForm';
 import User from '@/models/User';
 
 const calcScore = (form: StandFormI) => {
-	const auto = form.autoUpperBallsScored * 4 + form.autoLowBallsScored * 2;
-	const teleop = form.teleopUpperBallsScored * 2 + form.teleopLowBallsScored;
+	let auto =
+		form.autoTopCones * 6 +
+		form.autoTopCubes * 6 +
+		form.autoMidCones * 4 +
+		form.autoMidCubes * 4 +
+		form.autoLowCones * 3 +
+		form.autoLowCubes * 3;
+
+	// add points from auto charging
+	if (form.autoEngaged) {
+		auto += 12;
+	} else if (form.autoDocked) {
+		auto += 8;
+	}
+
+	const teleop =
+		form.teleopTopCones * 5 +
+		form.teleopTopCubes * 5 +
+		form.teleopMidCones * 3 +
+		form.teleopMidCubes * 3 +
+		form.teleopLowCones * 2 +
+		form.teleopLowCubes * 2;
 	let endScore = 0;
 
-	switch (form.endPosition) {
-		case 3:
-			endScore = 4;
-			break;
-		case 4:
-			endScore = 6;
-			break;
-		case 5:
-			endScore = 10;
-			break;
-		case 6:
-			endScore = 15;
-			break;
+	// add points from end charging
+	if (form.teleopEngaged) {
+		endScore += 10 * form.numberOnCharger;
+	} else if (form.teleopDocked) {
+		endScore += 6 * form.numberOnCharger;
 	}
 
 	return auto + teleop + endScore;

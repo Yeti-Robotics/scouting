@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 const Styles = styled.div`
 	display: flex;
@@ -7,7 +8,7 @@ const Styles = styled.div`
 	max-width: 1000px;
 `;
 
-const FlexGrid: React.FC<{ maxWidth?: number }> = ({ children, maxWidth }) => {
+const FlexGrid = ({ children, maxWidth }: { maxWidth?: number; children: ReactNode }) => {
 	return <Styles style={{ maxWidth }}>{children}</Styles>;
 };
 

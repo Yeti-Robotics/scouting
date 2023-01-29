@@ -1,40 +1,79 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
-import { Box, Collapse, FormControlLabel, Paper, Switch, SxProps, Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Collapse, Paper, SxProps, Tooltip } from '@mui/material';
 
 interface Props {
 	table: HTMLDivElement;
 	match: MatchData;
 	team: StandFormWithName;
 	auto: boolean;
-	low: boolean;
+	level: 'top' | 'mid' | 'low';
+	piece: 'cube' | 'cone';
 	maxScored: number;
 	tableHeight: number;
 	showBars: boolean;
 }
 
-const getBalls = ({ auto, low, team }: Pick<Props, 'auto' | 'low' | 'team'>) => {
-	if (auto && low) return { scored: team.autoLowBallsScored, missed: team.autoLowBallsMissed };
-	if (auto && !low)
-		return { scored: team.autoUpperBallsScored, missed: team.autoUpperBallsMissed };
-	if (!auto && low)
-		return { scored: team.teleopLowBallsScored, missed: team.teleopUpperBallsMissed };
-	return { scored: team.teleopUpperBallsScored, missed: team.teleopUpperBallsMissed };
+const getBalls = ({
+	auto,
+	level,
+	piece,
+	team,
+}: Pick<Props, 'auto' | 'level' | 'piece' | 'team'>): number => {
+	if (auto) {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return team.autoTopCones;
+			} else {
+				return team.autoTopCubes;
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return team.autoMidCones;
+			} else {
+				return team.autoMidCubes;
+			}
+		} else {
+			if (piece === 'cone') {
+				return team.autoLowCones;
+			} else {
+				return team.autoLowCubes;
+			}
+		}
+	} else {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return team.teleopTopCones;
+			} else {
+				return team.teleopTopCubes;
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return team.teleopMidCones;
+			} else {
+				return team.teleopMidCubes;
+			}
+		} else {
+			if (piece === 'cone') {
+				return team.teleopLowCones;
+			} else {
+				return team.teleopLowCubes;
+			}
+		}
+	}
 };
 
-const ShootingTableBar: React.VFC<Props> = ({
-	match,
-	table,
+const ShootingTableBar = ({
 	auto,
-	low,
+	level,
+	piece,
 	team,
 	maxScored,
 	tableHeight,
 	showBars,
-}) => {
-	const stats = getBalls({ auto, low, team });
-	const barHeight = (stats.scored / maxScored) * tableHeight - 25;
+}: Props) => {
+	const scored = getBalls({ auto, level, piece, team });
+	const barHeight = (scored / maxScored) * tableHeight - 25;
 
 	const barStyles: SxProps =
 		maxScored !== 0
@@ -62,7 +101,7 @@ const ShootingTableBar: React.VFC<Props> = ({
 			}}
 		>
 			<Collapse in={showBars}>
-				<Tooltip followCursor title={stats.scored}>
+				<Tooltip followCursor title={scored}>
 					<Paper sx={barStyles} elevation={1} />
 				</Tooltip>
 			</Collapse>

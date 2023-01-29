@@ -3,11 +3,13 @@ import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import ShootingTableBar from './ShootingTableBar';
+import { getTitle, selectScoreKey } from '@/lib/matchDataUtils';
 
 interface Props {
 	match: MatchData;
 	auto: boolean;
-	low: boolean;
+	level: 'top' | 'mid' | 'low';
+	piece: 'cone' | 'cube';
 }
 
 const getAllData = (match: MatchData, key: keyof StandFormWithName, ifUndef: any = 0) => {
@@ -16,29 +18,7 @@ const getAllData = (match: MatchData, key: keyof StandFormWithName, ifUndef: any
 	return keys.map((teamKey) => match[teamKey]?.[key] || ifUndef);
 };
 
-const selectScoreKey = ({
-	auto,
-	low,
-}: {
-	auto: boolean;
-	low: boolean;
-}): keyof StandFormWithName => {
-	if (auto && low) return 'autoLowBallsScored';
-	if (auto && !low) return 'autoUpperBallsScored';
-	if (!auto && low) return 'teleopLowBallsScored';
-	if (!auto && !low) return 'teleopUpperBallsScored';
-	throw new Error('How did we get here?');
-};
-
-const getTitle = ({ auto, low }: { auto: boolean; low: boolean }) => {
-	if (auto && low) return 'Auto Low Balls';
-	if (auto && !low) return 'Auto Upper Balls';
-	if (!auto && low) return 'Teleop Low Balls';
-	if (!auto && !low) return 'Teleop Upper Balls';
-	throw new Error('How did we get here? 2');
-};
-
-const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
+const ShootingTable = ({ match, auto, piece, level }: Props) => {
 	const tableRef = useRef<HTMLDivElement>(null);
 	const [tableHeight, setTableHeight] = useState(0);
 	const [loaded, setLoaded] = useState(false); // track when first render happens
@@ -60,12 +40,12 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 		return () => window.removeEventListener('resize', onResize);
 	}, []);
 
-	const maxScored = Math.max(...getAllData(match, selectScoreKey({ auto, low }), 0));
+	const maxScored = Math.max(...getAllData(match, selectScoreKey({ auto, piece, level }), 0));
 
 	return (
 		<>
 			<Box component='h2' sx={{ m: 2 }}>
-				{getTitle({ auto, low })}
+				{getTitle({ auto, piece, level })}
 			</Box>
 			<Box
 				ref={tableRef}
@@ -95,7 +75,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.blue1}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}
@@ -107,7 +88,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.blue2}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}
@@ -119,7 +101,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.blue3}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}
@@ -131,7 +114,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.red1}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}
@@ -143,7 +127,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.red2}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}
@@ -155,7 +140,8 @@ const ShootingTable: React.VFC<Props> = ({ match, auto, low }) => {
 								match={match}
 								team={match.red3}
 								auto={auto}
-								low={low}
+								level={level}
+								piece={piece}
 								maxScored={maxScored}
 								tableHeight={tableHeight}
 								showBars={showBars}

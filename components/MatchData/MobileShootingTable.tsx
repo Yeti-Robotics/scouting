@@ -10,6 +10,7 @@ import {
 	Box,
 } from '@mui/material';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface Column {
 	label: string;
@@ -20,17 +21,25 @@ interface Column {
 
 const columns: readonly Column[] = [
 	{ label: 'Team #' },
-	{ label: 'Upper Teleop' },
-	{ label: 'Low Teleop' },
-	{ label: 'Upper Auto' },
-	{ label: 'Low Auto' },
+	{ label: 'Top Cones Teleop' },
+	{ label: 'Top Cubes Teleop' },
+	{ label: 'Mid Cones Teleop' },
+	{ label: 'Mid Cubes Teleop' },
+	{ label: 'Low Cones Teleop' },
+	{ label: 'Low Cubes Teleop' },
+	{ label: 'Top Cones Auto' },
+	{ label: 'Top Cubes Auto' },
+	{ label: 'Mid Cones Auto' },
+	{ label: 'Mid Cubes Auto' },
+	{ label: 'Low Cones Auto' },
+	{ label: 'Low Cubes Auto' },
 ];
 
 interface Props {
 	match: MatchData;
 }
 
-const BodyCell: React.FC = ({ children, ...props }) => (
+const BodyCell = ({ children, ...props }: { children: ReactNode }) => (
 	<TableCell sx={{ color: 'white', fontWeight: 600 }} align='center' {...props}>
 		{children}
 	</TableCell>
@@ -74,10 +83,18 @@ const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 										</MuiLink>
 									</Link>
 								</BodyCell>
-								<BodyCell>{team?.teleopUpperBallsScored}</BodyCell>
-								<BodyCell>{team?.teleopLowBallsScored}</BodyCell>
-								<BodyCell>{team?.autoUpperBallsScored}</BodyCell>
-								<BodyCell>{team?.autoLowBallsScored}</BodyCell>
+								<BodyCell>{team?.teleopTopCones}</BodyCell>
+								<BodyCell>{team?.teleopTopCubes}</BodyCell>
+								<BodyCell>{team?.teleopMidCones}</BodyCell>
+								<BodyCell>{team?.teleopMidCubes}</BodyCell>
+								<BodyCell>{team?.teleopLowCones}</BodyCell>
+								<BodyCell>{team?.teleopLowCubes}</BodyCell>
+								<BodyCell>{team?.autoTopCones}</BodyCell>
+								<BodyCell>{team?.autoTopCubes}</BodyCell>
+								<BodyCell>{team?.autoMidCones}</BodyCell>
+								<BodyCell>{team?.autoMidCubes}</BodyCell>
+								<BodyCell>{team?.autoLowCones}</BodyCell>
+								<BodyCell>{team?.autoLowCubes}</BodyCell>
 							</TableRow>
 						);
 					})}

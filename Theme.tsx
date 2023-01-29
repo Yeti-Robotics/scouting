@@ -1,12 +1,12 @@
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 export const ThemeContext = createContext({
 	mode: 'dark' as 'dark' | 'light',
 	toggleTheme: () => {},
 });
 
-export const ThemeContextProvider: React.FC = ({ children }) => {
+export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
@@ -40,7 +40,7 @@ const themeWithMode = (mode: 'light' | 'dark') =>
 				},
 		  });
 
-export const Theme: React.FC = ({ children }) => {
+export const Theme = ({ children }: { children: ReactNode }) => {
 	const { mode } = useContext(ThemeContext);
 	return <ThemeProvider theme={themeWithMode(mode)}>{children}</ThemeProvider>;
 };

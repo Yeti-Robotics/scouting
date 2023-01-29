@@ -2,10 +2,10 @@ import { GridColumns } from '@mui/x-data-grid';
 import Link from 'next/link';
 import { Link as MuiLink } from '@mui/material';
 import { Check, Close } from '@mui/icons-material';
-import { endPosToString } from '@/lib/mode';
 import { green, red } from '@mui/material/colors';
+import { StandFormI } from '@/models/StandForm';
 
-export const formTableColumns: GridColumns = [
+export const formTableColumns: GridColumns<StandFormI> = [
 	{
 		field: 'matchNumber',
 		headerName: 'Match',
@@ -21,25 +21,52 @@ export const formTableColumns: GridColumns = [
 		},
 	},
 	{
-		field: 'teleopUpperBallsScored',
-		headerName: 'Teleop Upper',
+		field: 'autoTopCones',
+		headerName: 'Top Cones Auto',
 	},
 	{
-		field: 'teleopLowBallsScored',
-		headerName: 'Teleop Low',
+		field: 'autoTopCubes',
+		headerName: 'Top Cubes Auto',
 	},
 	{
-		field: 'autoUpperBallsScored',
-		headerName: 'Auto Upper',
+		field: 'autoMidCones',
+		headerName: 'Mid Cones Auto',
 	},
 	{
-		field: 'autoLowBallsScored',
-		headerName: 'Auto Low',
+		field: 'autoMidCubes',
+		headerName: 'Mid Cubes Auto',
 	},
 	{
-		field: 'endPosition',
-		headerName: 'End Pos',
-		valueFormatter: (cell) => endPosToString(Number(cell.value)),
+		field: 'autoLowCones',
+		headerName: 'Low Cones Auto',
+	},
+	{
+		field: 'autoLowCubes',
+		headerName: 'Low Cubes Auto',
+	},
+	{
+		field: 'teleopTopCones',
+		headerName: 'Top Cones Teleop',
+	},
+	{
+		field: 'teleopTopCubes',
+		headerName: 'Top Cubes Teleop',
+	},
+	{
+		field: 'teleopMidCones',
+		headerName: 'Mid Cones Teleop',
+	},
+	{
+		field: 'teleopMidCubes',
+		headerName: 'Mid Cubes Teleop',
+	},
+	{
+		field: 'teleopLowCones',
+		headerName: 'Low Cones Teleop',
+	},
+	{
+		field: 'teleopLowCubes',
+		headerName: 'Low Cubes Teleop',
 	},
 	{
 		field: 'initiationLine',

@@ -37,7 +37,7 @@ const getTeamsAsArr = (match: MatchI | null) =>
 		{ label: `Red 2 - ${match?.red2}`, value: match?.red2 },
 		{ label: `Red 3 - ${match?.red3}`, value: match?.red3 },
 	].filter((team) => team.value !== undefined);
-const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
+const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [isOffline, setIsOffline] = useState(false);
@@ -45,10 +45,12 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
 	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const { control, handleSubmit, reset, watch } = useForm<CreateStandForm>({
+	const { control, handleSubmit, reset, setValue, watch } = useForm<CreateStandForm>({
 		defaultValues: defaultForm,
 	});
 	const matchNumber = watch('matchNumber');
+	const autoDocked = watch('autoDocked');
+	const teleopDocked = watch('teleopDocked');
 
 	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
 
@@ -69,6 +71,16 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 		if (!create || !matches || !user) return;
 		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
 	}, [matchNumber]);
+
+	useEffect(() => {
+		if (autoDocked === false) {
+			setValue('autoEngaged', false);
+		}
+		if (teleopDocked === false) {
+			setValue('teleopEngaged', false);
+			setValue('numberOnCharger', 0);
+		}
+	}, [autoDocked, teleopDocked]);
 
 	if (!user && create) {
 		return <CircularProgress />;
@@ -142,79 +154,171 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 					</Box>
 					<ScoreInput
 						control={control}
-						name='autoUpperBallsScored'
-						label='Upper Balls Scored'
+						name='autoTopCones'
+						label='Top Cones Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='autoUpperBallsMissed'
-						label='Upper Balls Missed'
+						name='autoTopCubes'
+						label='Top Cubes Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='autoLowBallsScored'
-						label='Low Balls Scored'
+						name='autoMidCones'
+						label='Mid Cones Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='autoLowBallsMissed'
-						label='Low Balls Missed'
+						name='autoMidCubes'
+						label='Mid Cubes Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
+					<ScoreInput
+						control={control}
+						name='autoLowCones'
+						label='Low Cones Scored'
+						disabled={!canEdit}
+						defaultValue={0}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='autoLowCubes'
+						label='Low Cubes Scored'
+						disabled={!canEdit}
+						defaultValue={0}
+						rules={{ required: true }}
+					/>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'flex-start',
+						}}
+					>
+						<Checkbox
+							control={control}
+							name='autoDocked'
+							label='On charger'
+							size='medium'
+							disabled={!canEdit}
+						/>
+						{autoDocked && (
+							<Checkbox
+								control={control}
+								name='autoEngaged'
+								label='On charger and balanced'
+								size='medium'
+								disabled={!canEdit}
+							/>
+						)}
+					</Box>
 				</FormSection>
 				<FormSection title='Teleop'>
 					<ScoreInput
 						control={control}
-						name='teleopUpperBallsScored'
-						label='Upper Balls Scored'
+						name='teleopTopCones'
+						label='Top Cones Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='teleopUpperBallsMissed'
-						label='Upper Balls Missed'
+						name='teleopTopCubes'
+						label='Top Cubes Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='teleopLowBallsScored'
-						label='Low Balls Scored'
+						name='teleopMidCones'
+						label='Mid Cones Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
 					<ScoreInput
 						control={control}
-						name='teleopLowBallsMissed'
-						label='Low Balls Missed'
+						name='teleopMidCubes'
+						label='Mid Cubes Scored'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
 					/>
+					<ScoreInput
+						control={control}
+						name='teleopLowCones'
+						label='Low Cones Scored'
+						disabled={!canEdit}
+						defaultValue={0}
+						rules={{ required: true }}
+					/>
+					<ScoreInput
+						control={control}
+						name='teleopLowCubes'
+						label='Low Cubes Scored'
+						disabled={!canEdit}
+						defaultValue={0}
+						rules={{ required: true }}
+					/>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'flex-start',
+						}}
+					>
+						<Checkbox
+							control={control}
+							name='teleopDocked'
+							label='On charger'
+							size='medium'
+							disabled={!canEdit}
+						/>
+						{teleopDocked && (
+							<Checkbox
+								control={control}
+								name='teleopEngaged'
+								label='On charger and balanced'
+								size='medium'
+								disabled={!canEdit}
+							/>
+						)}
+					</Box>
+					{teleopDocked && (
+						<ScoreInput
+							control={control}
+							name='numberOnCharger'
+							label='Number of Robots on Charger'
+							disabled={!canEdit}
+							defaultValue={0}
+							max={3}
+							rules={{ required: true }}
+						/>
+					)}
 				</FormSection>
 				<FormSection title='Misc.'>
-					<Select
+					<ScoreInput
 						control={control}
-						name='endPosition'
-						label='End Position'
+						name='links'
+						label='# of Links'
 						disabled={!canEdit}
+						defaultValue={0}
 						rules={{ required: true }}
-					>
-						<MenuItem value={0}>Nothing</MenuItem>
-						<MenuItem value={1}>Defense</MenuItem>
-						<MenuItem value={2}>Shooting</MenuItem>
-						<MenuItem value={3}>Low Climb</MenuItem>
-						<MenuItem value={4}>Middle Climb</MenuItem>
-						<MenuItem value={5}>High Climb</MenuItem>
-						<MenuItem value={6}>Traverse Climb</MenuItem>
-					</Select>
+					/>
 					<Select
 						control={control}
 						name='defense'
@@ -233,6 +337,7 @@ const StandForm: React.VFC<Props> = ({ create, canEdit, defaultForm, id }) => {
 						control={control}
 						name='penalties'
 						label='# of penalties'
+						defaultValue={0}
 						disabled={!canEdit}
 					/>
 					<Textarea

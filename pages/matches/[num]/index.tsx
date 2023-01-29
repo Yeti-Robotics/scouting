@@ -1,6 +1,5 @@
 import Layout from '@/components/Layout';
 import LoadingLayout from '@/components/Layout/LoadingLayout';
-import EndPositions from '@/components/MatchData/EndPositions';
 import MobileShootingTable from '@/components/MatchData/MobileShootingTable';
 import ShootingTable from '@/components/MatchData/ShootingTable';
 import Comments from '@/components/MatchData/Comments';
@@ -48,15 +47,22 @@ const Match = () => {
 			)}
 			{isDesktop && !table ? (
 				<>
-					<ShootingTable match={data} auto={false} low={false} />
-					<ShootingTable match={data} auto={false} low />
-					<ShootingTable match={data} auto low={false} />
-					<ShootingTable match={data} auto low />
+					<ShootingTable match={data} auto={false} level='top' piece='cone' />
+					<ShootingTable match={data} auto={false} level='top' piece='cube' />
+					<ShootingTable match={data} auto={false} level='mid' piece='cone' />
+					<ShootingTable match={data} auto={false} level='mid' piece='cube' />
+					<ShootingTable match={data} auto={false} level='low' piece='cone' />
+					<ShootingTable match={data} auto={false} level='low' piece='cube' />
+					<ShootingTable match={data} auto level='top' piece='cone' />
+					<ShootingTable match={data} auto level='top' piece='cone' />
+					<ShootingTable match={data} auto level='mid' piece='cone' />
+					<ShootingTable match={data} auto level='mid' piece='cone' />
+					<ShootingTable match={data} auto level='low' piece='cone' />
+					<ShootingTable match={data} auto level='low' piece='cone' />
 				</>
 			) : (
 				<MobileShootingTable match={data} />
 			)}
-			<EndPositions match={data} />
 			<Taxis match={data} />
 			<Comments match={data} />
 		</Layout>

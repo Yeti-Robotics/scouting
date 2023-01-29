@@ -1,4 +1,3 @@
-import { endPosToString } from '@/lib/mode';
 import { TeamData } from '@/models/aggregations/teamData';
 import { StandFormI } from '@/models/StandForm';
 import styled from '@emotion/styled';
@@ -35,17 +34,16 @@ const DataWrapper = styled.div`
 	}
 `;
 
-const percentOptions = { maximumFractionDigits: 2, style: 'percent' };
+const percentOptions = { maximumFractionDigits: 2, style: 'decimal' };
 
-const TeamStats: React.VFC<Props> = ({ team, standForms }) => {
-	console.log(standForms);
+const TeamStats = ({ team, standForms }: Props) => {
 	return (
 		<Section title='Team Stats'>
 			<DataSection>
 				<h2>Total Balls</h2>
 				<DataWrapper>
-					<h4>Upper: {team.upperBallsScored}</h4>
-					<h4>Low: {team.lowBallsScored}</h4>
+					<h4>Avg Auto: {team.avgAutoScore?.toFixed(2)}</h4>
+					<h4>Avg Teleop: {team.avgTeleopScore?.toFixed(2)}</h4>
 				</DataWrapper>
 				<Box sx={{ height: 800, maxWidth: 800, width: '100%' }}>
 					<DataGrid

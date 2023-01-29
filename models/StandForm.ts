@@ -7,22 +7,30 @@ const standFormSchema = new Schema<StandFormI>(
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, default: () => 1 },
 		scouter: { type: String, ref: 'user', required: true }, // username
-		autoUpperBallsScored: { type: Number, required: true },
-		autoUpperBallsMissed: { type: Number, required: true },
-		autoLowBallsScored: { type: Number, required: true },
-		autoLowBallsMissed: { type: Number, required: true },
-		teleopUpperBallsScored: { type: Number, required: true },
-		teleopUpperBallsMissed: { type: Number, required: true },
-		teleopLowBallsScored: { type: Number, required: true },
-		teleopLowBallsMissed: { type: Number, required: true },
+		autoTopCubes: { type: Number, required: true },
+		autoTopCones: { type: Number, required: true },
+		autoMidCubes: { type: Number, required: true },
+		autoMidCones: { type: Number, required: true },
+		autoLowCubes: { type: Number, required: true },
+		autoLowCones: { type: Number, required: true },
+		autoDocked: { type: Boolean, required: true },
+		autoEngaged: { type: Boolean, default: () => false },
+		teleopTopCubes: { type: Number, required: true },
+		teleopTopCones: { type: Number, required: true },
+		teleopMidCubes: { type: Number, required: true },
+		teleopMidCones: { type: Number, required: true },
+		teleopLowCubes: { type: Number, required: true },
+		teleopLowCones: { type: Number, required: true },
+		teleopDocked: { type: Boolean, required: true },
+		teleopEngaged: { type: Boolean, default: () => false },
+		numberOnCharger: { type: Number, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
-		endPosition: { type: Number, required: true },
 		defense: { type: Number, required: true },
+		links: { type: Number, required: true },
+		penalties: { type: Number, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
-		compYear: { type: Number, required: true },
-		compKey: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
 );
@@ -33,24 +41,32 @@ export interface CreateStandForm {
 	matchNumber: number;
 	setNumber: number;
 	scouter: string;
-	autoUpperBallsScored: number;
-	autoUpperBallsMissed: number;
-	autoLowBallsScored: number;
-	autoLowBallsMissed: number;
-	teleopUpperBallsScored: number;
-	teleopUpperBallsMissed: number;
-	teleopLowBallsScored: number;
-	teleopLowBallsMissed: number;
+	autoTopCubes: number;
+	autoTopCones: number;
+	autoMidCubes: number;
+	autoMidCones: number;
+	autoLowCubes: number;
+	autoLowCones: number;
+	autoDocked: boolean;
+	autoEngaged: boolean;
+	teleopTopCubes: number;
+	teleopTopCones: number;
+	teleopMidCubes: number;
+	teleopMidCones: number;
+	teleopLowCubes: number;
+	teleopLowCones: number;
+	teleopDocked: boolean;
+	teleopEngaged: boolean;
+	numberOnCharger: number;
 	preload: boolean;
 	initiationLine: boolean;
-	endPosition: number;
+	links: number;
+	penalties: number;
 	defense: number;
 	approved: boolean;
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
-	compYear: number;
-	compKey: string;
 }
 
 // i stands for interface
@@ -59,25 +75,33 @@ export interface StandFormI {
 	teamNumber: number;
 	matchNumber: number;
 	setNumber: number;
-	scouter: UserI;
-	autoUpperBallsScored: number;
-	autoUpperBallsMissed: number;
-	autoLowBallsScored: number;
-	autoLowBallsMissed: number;
-	teleopUpperBallsScored: number;
-	teleopUpperBallsMissed: number;
-	teleopLowBallsScored: number;
-	teleopLowBallsMissed: number;
+	scouter?: UserI;
+	autoTopCubes: number;
+	autoTopCones: number;
+	autoMidCubes: number;
+	autoMidCones: number;
+	autoLowCubes: number;
+	autoLowCones: number;
+	autoDocked: boolean;
+	autoEngaged: boolean;
+	teleopTopCubes: number;
+	teleopTopCones: number;
+	teleopMidCubes: number;
+	teleopMidCones: number;
+	teleopLowCubes: number;
+	teleopLowCones: number;
+	teleopDocked: boolean;
+	teleopEngaged: boolean;
+	numberOnCharger: number;
 	preload: boolean;
 	initiationLine: boolean;
-	endPosition: number;
+	links: number;
+	penalties: number;
 	defense: number;
 	approved: boolean;
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
-	compYear: number;
-	compKey: string;
 }
 
 const StandForm = (models.standForm as Model<StandFormI>) || model('standForm', standFormSchema);

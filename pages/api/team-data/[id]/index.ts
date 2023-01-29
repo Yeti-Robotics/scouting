@@ -1,6 +1,5 @@
 import StandForm from '@/models/StandForm';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
-import { mostCommonEndPos } from '@/lib/mode';
 import PitForm from '@/models/PitForm';
 import { RouteHandler } from '@/lib/api/RouteHandler';
 import connectDB from '@/middleware/connect-db';
@@ -14,10 +13,6 @@ handler.use(connectDB).get(async (req, res) => {
 		...teamDataAggregation,
 		{ $match: { teamNumber: parseInt(filter) } },
 	]);
-	team.forEach((team) => {
-		const commonEndPos = mostCommonEndPos(team.endPosition);
-		(team as any).endPosition = commonEndPos;
-	});
 	const standForms = await StandForm.find({ teamNumber: parseInt(filter) }).populate('scouter');
 	console.log(standForms);
 	const pitForms = await PitForm.find({ teamNumber: parseInt(filter) });

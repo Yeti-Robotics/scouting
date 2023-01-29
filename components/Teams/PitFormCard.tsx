@@ -1,4 +1,3 @@
-import { endPosToString } from '@/lib/mode';
 import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
 import styled from '@emotion/styled';
@@ -37,7 +36,6 @@ const PitFormCard: React.VFC<Props> = ({ team, form }) => {
 			<CardWrapper>
 				<DataWrapper>
 					<h4>scouter: {form.scouter}</h4>
-					<h4>End Pos: {endPosToString(form.endPosition)}</h4>
 				</DataWrapper>
 			</CardWrapper>
 		</Link>
