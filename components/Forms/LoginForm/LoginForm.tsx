@@ -1,10 +1,9 @@
 import { useUser } from '@/lib/useUser';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
-import SubmitButton from '../SubmitButton';
 import TextInput from '../TextInput';
 
 interface FormSchema {
@@ -45,7 +44,7 @@ const LoginForm = () => {
 						type='password'
 						rules={{ required: true }}
 					/>
-					<SubmitButton>Submit</SubmitButton>
+					<Button type='submit'>Submit</Button>
 					{loginSuccess !== undefined && !loginSuccess && (
 						<p style={{ color: 'red', fontSize: '1rem' }}>
 							Username or password incorrect

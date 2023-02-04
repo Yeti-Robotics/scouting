@@ -1,17 +1,17 @@
 import { useUser } from '@/lib/useUser';
 import {
-	AccountCircle,
-	CalendarToday,
-	FileCopy,
-	InsertDriveFile,
-	Menu,
-	NoteAdd,
-	Paid,
-	SportsKabaddi,
-} from '@mui/icons-material';
-import { Box, Button, Divider, Drawer } from '@mui/material';
-import Link from 'next/link';
+	IconUserCircle,
+	IconCalendar,
+	IconCopy,
+	IconFile,
+	IconMenu,
+	IconNote,
+	IconMoneybag,
+	IconShirtSport,
+} from '@tabler/icons-react';
+import { Box, Button, Divider, Drawer, Group } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { Link } from '../Link';
 
 interface ButtonProps {
 	href: string;
@@ -19,29 +19,20 @@ interface ButtonProps {
 	Icon?: JSX.Element;
 }
 
-const NavBarButton: React.VFC<ButtonProps> = ({ href, text, Icon }) => {
+const NavBarButton = ({ href, text, Icon }: ButtonProps) => {
 	return (
-		<Link href={href} passHref={true}>
-			<Box
-				component='a'
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					height: 75,
-					padding: 2,
-					'&:hover': { backgroundColor: 'primary.light' },
-				}}
-			>
+		<Link href={href} p='md' h={75}>
+			<Group align='center'>
 				{Icon}
 				{text}
-			</Box>
+			</Group>
 		</Link>
 	);
 };
 
 const getRandomColorValue = () => Math.ceil(Math.random() * 255);
 
-const CasinoButton: React.VFC = () => {
+const CasinoButton = () => {
 	const [colorValue, setColorValue] = useState({
 		r: getRandomColorValue(),
 		g: getRandomColorValue(),
@@ -63,21 +54,19 @@ const CasinoButton: React.VFC = () => {
 	}, []);
 
 	return (
-		<Link href='/casino' passHref={true}>
-			<Box
-				component='a'
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					height: 75,
-					padding: 2,
-					backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
-					color: avgColorDark ? 'white' : 'black',
-				}}
-			>
-				<Paid sx={{ margin: 1, color: avgColorDark ? 'white' : 'black' }} />
+		<Link
+			href='/casino'
+			p='md'
+			h={75}
+			sx={{
+				backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
+				color: avgColorDark ? 'white' : 'black',
+			}}
+		>
+			<Group align='center'>
+				<IconMoneybag style={{ margin: 1, color: avgColorDark ? 'white' : 'black' }} />
 				Casino
-			</Box>
+			</Group>
 		</Link>
 	);
 };
@@ -90,14 +79,13 @@ const NavBar = () => {
 		<Box
 			sx={{
 				display: 'flex',
-				backgroundColor: 'primary.main',
 				width: '100%',
 				alignItems: 'center',
 				opacity: 1,
 				padding: '0.5rem 2rem 0.5rem 2rem',
 			}}
 		>
-			<Link href='/' passHref={true}>
+			<Link href='/'>
 				<h1 style={{ flexGrow: 1, textDecoration: 'underline', cursor: 'pointer' }}>
 					Yeti Scouting
 				</h1>
@@ -107,49 +95,49 @@ const NavBar = () => {
 				sx={{ color: 'text.primary', borderColor: 'text.primary', padding: '1rem' }}
 				onClick={() => setMenuOpened((prev) => !prev)}
 			>
-				<Menu />
+				<IconMenu />
 			</Button>
-			<Drawer open={menuOpened} anchor='top' onClose={() => setMenuOpened(false)}>
+			<Drawer opened={menuOpened} position='top' onClose={() => setMenuOpened(false)}>
 				<NavBarButton
 					href={user ? '/logout' : '/login'}
 					text={user ? 'Logout' : 'Login'}
-					Icon={<AccountCircle sx={{ margin: 1 }} />}
+					Icon={<IconUserCircle style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/stand-scouting'
 					text='Stand Scouting Form'
-					Icon={<NoteAdd sx={{ margin: 1 }} />}
+					Icon={<IconNote style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/pit-scouting'
 					text='Pit Scouting Form'
-					Icon={<NoteAdd sx={{ margin: 1 }} />}
+					Icon={<IconNote style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/matches'
 					text='Match Data'
-					Icon={<SportsKabaddi sx={{ margin: 1 }} />}
+					Icon={<IconShirtSport style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/scouting-schedule'
 					text='Stand Scouting Schedule'
-					Icon={<CalendarToday sx={{ margin: 1 }} />}
+					Icon={<IconCalendar style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/records'
 					text='Records'
-					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
+					Icon={<IconFile style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<NavBarButton
 					href='/export'
 					text='Export Data'
-					Icon={<FileCopy sx={{ margin: 1 }} />}
+					Icon={<IconCopy style={{ margin: 8 }} />}
 				/>
 				<Divider />
 				<CasinoButton />

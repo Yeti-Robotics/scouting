@@ -1,15 +1,15 @@
+import { Stack } from '@mantine/core';
 import { ReactNode } from 'react';
-import { MainContainer, PageContainer } from './Layout.styles';
 import NavBar from './NavBar';
-import ThemeToggle from './ThemeToggle';
+import { ThemeSwitch } from './ThemeSwitch';
 
 const Layout = ({ children }: { children: ReactNode }) => {
 	return (
-		<PageContainer>
+		<Stack spacing={0}>
 			<NavBar />
-			<MainContainer>{children}</MainContainer>
-			<ThemeToggle />
-		</PageContainer>
+			<ThemeSwitch />
+			<Stack>{children}</Stack>
+		</Stack>
 	);
 };
 

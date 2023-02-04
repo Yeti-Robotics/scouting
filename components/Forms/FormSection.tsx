@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box } from '@mantine/core';
 import { ReactNode } from 'react';
 
 interface Props {
