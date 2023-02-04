@@ -1,6 +1,5 @@
 import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
-import styled from '@emotion/styled';
 import Link from 'next/link';
 
 interface Props {

@@ -1,5 +1,5 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box } from '@mui/material';
+import { Box } from '@mantine/core';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { getTeamColor } from '@/lib/matchDataUtils';
 
