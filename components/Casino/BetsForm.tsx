@@ -206,7 +206,7 @@ const BetsForm = ({ match, user, id }: Props) => {
 						disabled={betsClosed}
 					/>
 				</FormSection>
-				<Button disabled={betsClosed || fetching === 'fetching'}>
+				<Button type='submit' disabled={betsClosed || fetching === 'fetching'}>
 					{fetching === 'fetching' && (
 						<Loader sx={{ m: 1, ml: 0 }} color='inherit' size='1rem' />
 					)}{' '}
