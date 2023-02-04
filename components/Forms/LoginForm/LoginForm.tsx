@@ -1,20 +1,19 @@
 import { useUser } from '@/lib/useUser';
-import { Box, Button } from '@mantine/core';
+import { Box, Button, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
-import TextInput from '../TextInput';
 
 interface FormSchema {
 	username: string;
 	password: string;
 }
 
-const LoginForm = () => {
+export const LoginForm = () => {
 	const router = useRouter();
 	const { mutate } = useUser({ canRedirect: false });
-	const { handleSubmit, control } = useForm<FormSchema>();
+	const { handleSubmit, register } = useForm<FormSchema>();
 	const [loginSuccess, setLoginSuccess] = useState<boolean>();
 
 	const onSubmit = async (data: FormSchema) => {
@@ -31,18 +30,11 @@ const LoginForm = () => {
 		<Box>
 			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Login'>
+					<TextInput label='Username' {...register('username', { required: true })} />
 					<TextInput
-						control={control}
-						name='username'
-						label='Username'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='password'
 						label='Password'
 						type='password'
-						rules={{ required: true }}
+						{...register('password', { required: true })}
 					/>
 					<Button type='submit'>Submit</Button>
 					{loginSuccess !== undefined && !loginSuccess && (
@@ -55,5 +47,3 @@ const LoginForm = () => {
 		</Box>
 	);
 };
-
-export default LoginForm;
