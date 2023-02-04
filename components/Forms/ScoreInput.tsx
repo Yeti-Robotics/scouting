@@ -1,15 +1,25 @@
 import { Box, Button, SxProps, TextField, Theme } from '@mui/material';
 import { ChangeEvent } from 'react';
-import { Control, Controller, ControllerProps, ControllerRenderProps } from 'react-hook-form';
+import {
+	Control,
+	Controller,
+	ControllerProps,
+	ControllerRenderProps,
+	FieldValues,
+	Path,
+	PathValue,
+} from 'react-hook-form';
 import { addRequired } from './formHelpers';
 
-interface Props {
-	control: Control<any>;
-	name: string;
+interface Props<T extends FieldValues> {
+	control: Control<T>;
+	name: Path<T>;
+	defaultValue?: PathValue<T, Path<T>>;
 	onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	rules?: ControllerProps['rules'];
 	label?: string;
 	disabled?: boolean;
+	max?: number;
 }
 
 const defaultSx: SxProps<Theme> = {
@@ -21,22 +31,25 @@ const defaultInputSx: SxProps<Theme> = {
 	width: '100%',
 };
 
-const increment = (field: ControllerRenderProps) => {
+const increment = <T extends FieldValues>(field: ControllerRenderProps<T>, max?: number) => {
+	if (max !== undefined && field.value + 1 > max) return;
 	field.onChange(field.value + 1);
 };
 
-const decrement = (field: ControllerRenderProps) => {
+const decrement = <T extends FieldValues>(field: ControllerRenderProps<T>) => {
 	if (field.value != 0) field.onChange(field.value - 1);
 };
 
-const ScoreInput: React.VFC<Props> = ({
+const ScoreInput = <T extends FieldValues>({
 	name,
 	control,
 	rules,
-	onChange = (e) => {},
+	defaultValue,
+	onChange = () => {},
 	label,
 	disabled,
-}) => {
+	max,
+}: Props<T>) => {
 	return (
 		<Box
 			sx={{
@@ -53,7 +66,7 @@ const ScoreInput: React.VFC<Props> = ({
 			<Box sx={{ display: 'flex', width: '100%' }}>
 				<Controller
 					name={name}
-					defaultValue={0}
+					defaultValue={defaultValue}
 					control={control}
 					rules={{ required: true, ...rules }}
 					render={({ field, fieldState: { error } }) => (
@@ -96,7 +109,7 @@ const ScoreInput: React.VFC<Props> = ({
 									borderTopLeftRadius: 0,
 									borderBottomLeftRadius: 0,
 								}}
-								onClick={() => increment(field)}
+								onClick={() => increment(field, max)}
 								variant='contained'
 								disabled={disabled}
 							>

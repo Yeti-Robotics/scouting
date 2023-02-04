@@ -1,11 +1,11 @@
 import { Box, SxProps, TextField, Theme } from '@mui/material';
 import { ChangeEvent, useRef } from 'react';
-import { Control, Controller, ControllerProps } from 'react-hook-form';
+import { Control, Controller, ControllerProps, FieldValues, Path } from 'react-hook-form';
 import { addRequired } from './formHelpers';
 
-interface Props {
-	control: Control<any>;
-	name: string;
+interface Props<T extends FieldValues> {
+	control: Control<T>;
+	name: Path<T>;
 	onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	rules?: ControllerProps['rules'];
 	label?: string;
@@ -25,11 +25,11 @@ const defaultInputSx: SxProps<Theme> = {
 	width: '100%',
 };
 
-const TextInput: React.VFC<Props> = ({
+const TextInput = <T extends FieldValues>({
 	name,
 	control,
 	rules,
-	onChange = (e) => {},
+	onChange = () => {},
 	placeholder,
 	label,
 	type,
@@ -37,7 +37,7 @@ const TextInput: React.VFC<Props> = ({
 	sx,
 	disabled,
 	valueAsNumber,
-}) => {
+}: Props<T>) => {
 	const lastValue = useRef(defaultValue);
 
 	return (

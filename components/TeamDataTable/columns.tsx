@@ -1,7 +1,7 @@
-import { endPosToString } from '@/lib/mode';
 import { GridColumns, GridValueFormatterParams } from '@mui/x-data-grid';
 import Link from 'next/link';
 import { Link as MuiLink } from '@mui/material';
+import { TeamData } from '@/models/aggregations/teamData';
 
 const percentageFormatter = (cell: GridValueFormatterParams) =>
 	(Number(cell.value) / 100).toLocaleString(undefined, {
@@ -12,7 +12,7 @@ const percentageFormatter = (cell: GridValueFormatterParams) =>
 const truncDecimals = (cell: GridValueFormatterParams) =>
 	Number(cell.value).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
-export const tableColumns: GridColumns = [
+export const tableColumns: GridColumns<TeamData> = [
 	{
 		field: 'teamNumber',
 		headerName: 'Team #',
@@ -31,38 +31,26 @@ export const tableColumns: GridColumns = [
 		width: 105,
 	},
 	{
-		field: 'avgUpperBallsScored',
-		headerName: 'Avg Upper Scored',
+		field: 'avgAutoScore',
+		headerName: 'Avg Auto Score',
 		width: 130,
 		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'avgLowBallsScored',
-		headerName: 'Avg Low Scored',
+		field: 'avgTeleopScore',
+		headerName: 'Avg Teleop Score',
 		width: 140,
 		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'avgUpperAuto',
-		headerName: 'Upper Auto Acc',
+		field: 'avgEndScore',
+		headerName: 'Avg End Score',
 		width: 130,
-		valueFormatter: percentageFormatter,
+		valueFormatter: truncDecimals,
 	},
 	{
-		field: 'avgLowerAuto',
-		headerName: 'Lower Auto Acc',
-		width: 130,
-		valueFormatter: percentageFormatter,
-	},
-	{
-		field: 'avgUpperTeleop',
-		headerName: 'Upper Teleop Acc',
-		width: 135,
-		valueFormatter: percentageFormatter,
-	},
-	{
-		field: 'avgLowerTeleop',
-		headerName: 'Lower Teleop Acc',
+		field: 'initiationLine',
+		headerName: 'Init Line %',
 		width: 130,
 		valueFormatter: percentageFormatter,
 	},
@@ -77,23 +65,5 @@ export const tableColumns: GridColumns = [
 		headerName: 'Avg Defense',
 		width: 110,
 		valueFormatter: truncDecimals,
-	},
-	{
-		field: 'upperBallsScored',
-		headerName: 'Total Upper Balls',
-		width: 140,
-		valueFormatter: truncDecimals,
-	},
-	{
-		field: 'lowBallsScored',
-		headerName: 'Total Low Balls',
-		width: 140,
-		valueFormatter: truncDecimals,
-	},
-	{
-		field: 'bestEndPosition',
-		headerName: 'Best End Position',
-		width: 180,
-		valueFormatter: (cell) => endPosToString(Number(cell.value)),
 	},
 ];

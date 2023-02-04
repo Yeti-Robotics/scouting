@@ -1,11 +1,13 @@
 import { Box } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface Props {
 	title?: string;
 	color?: string;
+	children: ReactNode;
 }
 
-const FormSection: React.FC<Props> = ({ title, color, children }) => {
+const FormSection = ({ title, color, children }: Props) => {
 	return (
 		<Box
 			sx={{

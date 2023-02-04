@@ -23,24 +23,106 @@ export const filterTeams = (match: MatchData, func: (team?: StandFormWithName) =
 
 export const selectScoreKey = ({
 	auto,
-	low,
+	level,
+	piece,
 }: {
 	auto: boolean;
-	low: boolean;
+	level: 'top' | 'mid' | 'low';
+	piece: 'cone' | 'cube';
 }): keyof StandFormWithName => {
-	if (auto && low) return 'autoLowBallsScored';
-	if (auto && !low) return 'autoUpperBallsScored';
-	if (!auto && low) return 'teleopLowBallsScored';
-	if (!auto && !low) return 'teleopUpperBallsScored';
-	throw new Error('How did we get here?');
+	if (auto) {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return 'autoTopCones';
+			} else {
+				return 'autoTopCubes';
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return 'autoMidCones';
+			} else {
+				return 'autoMidCubes';
+			}
+		} else {
+			if (piece === 'cone') {
+				return 'autoLowCones';
+			} else {
+				return 'autoLowCubes';
+			}
+		}
+	} else {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return 'teleopTopCones';
+			} else {
+				return 'teleopTopCubes';
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return 'teleopMidCones';
+			} else {
+				return 'teleopMidCubes';
+			}
+		} else {
+			if (piece === 'cone') {
+				return 'teleopLowCones';
+			} else {
+				return 'teleopLowCubes';
+			}
+		}
+	}
 };
 
-export const getTitle = ({ auto, low }: { auto: boolean; low: boolean }) => {
-	if (auto && low) return 'Auto Low Balls';
-	if (auto && !low) return 'Auto Upper Balls';
-	if (!auto && low) return 'Teleop Low Balls';
-	if (!auto && !low) return 'Teleop Upper Balls';
-	throw new Error('How did we get here? 2');
+export const getTitle = ({
+	auto,
+	level,
+	piece,
+}: {
+	auto: boolean;
+	level: 'top' | 'mid' | 'low';
+	piece: 'cone' | 'cube';
+}) => {
+	if (auto) {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return 'Top Cones Auto';
+			} else {
+				return 'Top Cubes Auto';
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return 'Mid Cones Auto';
+			} else {
+				return 'Mid Cubes Auto';
+			}
+		} else {
+			if (piece === 'cone') {
+				return 'Low Cones Auto';
+			} else {
+				return 'Low Cubes Auto';
+			}
+		}
+	} else {
+		if (level === 'top') {
+			if (piece === 'cone') {
+				return 'Top Cones Teleop';
+			} else {
+				return 'Top Cubes Teleop';
+			}
+		} else if (level === 'mid') {
+			if (piece === 'cone') {
+				return 'Mid Cones Teleop';
+			} else {
+				return 'Mid Cubes Teleop';
+			}
+		} else {
+			if (piece === 'cone') {
+				return 'Low Cones Teleop';
+			} else {
+				return 'Low Cubes Teleop';
+			}
+		}
+	}
 };
 
 export const hasTeam = (match: MatchData | MatchI, team: number) => {

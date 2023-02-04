@@ -1,5 +1,5 @@
 import { Box, MenuItem, SxProps, TextField, Theme } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 import { Control, Controller, ControllerProps } from 'react-hook-form';
 import { addRequired } from './formHelpers';
 
@@ -11,22 +11,23 @@ interface Props {
 	label?: string;
 	defaultValue?: any;
 	disabled?: boolean;
+	children: ReactNode;
 }
 
 const defaultInputSx: SxProps<Theme> = {
 	width: '100%',
 };
 
-const Select: React.FC<Props> = ({
+const Select = ({
 	children,
 	name,
 	control,
 	rules,
 	label,
-	onChange = (e) => {},
+	onChange = () => {},
 	defaultValue,
 	disabled,
-}) => {
+}: Props) => {
 	return (
 		<Box
 			sx={{

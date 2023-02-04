@@ -89,7 +89,7 @@ const Autocomplete: React.VFC<Props> = ({
 				render={({ field, fieldState: { error } }) => (
 					<MuiAutocomplete
 						freeSolo={freeSolo}
-						options={options}
+						options={[options]}
 						sx={{ ...defaultSx, ...defaultInputSx, ...sx }}
 						getOptionLabel={getOptionLabel}
 						onBlur={field.onBlur}

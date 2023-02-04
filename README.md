@@ -1,3 +1,5 @@
+# Yeti Scouting
+
 ## Getting Started
 
 First, make sure you have Node.js installed, to check, run in a terminal:

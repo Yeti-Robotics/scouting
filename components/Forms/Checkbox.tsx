@@ -1,11 +1,18 @@
 import { Box, Checkbox as MuiCheckbox, FormControlLabel } from '@mui/material';
 import { ChangeEvent } from 'react';
-import { Control, Controller, ControllerProps } from 'react-hook-form';
+import {
+	Control,
+	Controller,
+	ControllerProps,
+	FieldValues,
+	Path,
+	PathValue,
+} from 'react-hook-form';
 import { addRequired } from './formHelpers';
 
-interface Props {
-	control: Control<any>;
-	name: string;
+interface Props<T extends FieldValues> {
+	control: Control<T>;
+	name: Path<T>;
 	onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	rules?: ControllerProps['rules'];
 	label?: string;
@@ -14,21 +21,21 @@ interface Props {
 	disabled?: boolean;
 }
 
-const Checkbox: React.VFC<Props> = ({
+const Checkbox = <T extends FieldValues>({
 	name,
 	control,
 	rules,
 	label,
-	onChange = (e) => {},
-	defaultValue,
+	onChange = () => {},
+	defaultValue = false,
 	size,
 	disabled,
-}) => {
+}: Props<T>) => {
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 1 }}>
 			<Controller
 				name={name}
-				defaultValue={defaultValue || false}
+				defaultValue={defaultValue as PathValue<T, Path<T>>}
 				control={control}
 				rules={rules}
 				render={({ field }) => (

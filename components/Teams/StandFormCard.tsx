@@ -1,4 +1,3 @@
-import { endPosToString } from '@/lib/mode';
 import { TeamData } from '@/models/aggregations/teamData';
 import { StandFormI } from '@/models/StandForm';
 import styled from '@emotion/styled';
@@ -31,7 +30,7 @@ const CardWrapper = styled.a`
 	border-radius: ${({ theme }) => theme.shape.borderRadius}px;
 `;
 
-const StandFormCard: React.VFC<Props> = ({ team, form }) => {
+const StandFormCard = ({ team, form }: Props) => {
 	return (
 		<Link href={`/records/stand-forms/${form._id}`} passHref={true}>
 			<CardWrapper>
@@ -40,7 +39,6 @@ const StandFormCard: React.VFC<Props> = ({ team, form }) => {
 					<h4>
 						scouter: {form.scouter?.firstName} {form.scouter?.lastName}
 					</h4>
-					<h4>End Pos: {endPosToString(form.endPosition)}</h4>
 				</DataWrapper>
 			</CardWrapper>
 		</Link>

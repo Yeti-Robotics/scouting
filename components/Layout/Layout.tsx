@@ -1,9 +1,9 @@
-import { Container } from '@mui/material';
+import { ReactNode } from 'react';
 import { MainContainer, PageContainer } from './Layout.styles';
 import NavBar from './NavBar';
 import ThemeToggle from './ThemeToggle';
 
-const Layout: React.FC = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
 	return (
 		<PageContainer>
 			<NavBar />

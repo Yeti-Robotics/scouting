@@ -22,7 +22,9 @@ interface Props {
 const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
-	const { handleSubmit, control, watch } = useForm<UserI & { newPassword: string }>({
+	const { handleSubmit, control, watch } = useForm<
+		UserI & { newPassword: string; confPassword: string }
+	>({
 		defaultValues: defaultUser,
 	});
 	const [usernameIsValid, setUsernameIsValid] = useState<boolean | null | undefined>(null);

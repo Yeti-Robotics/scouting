@@ -33,7 +33,6 @@ handler.use(connectDB).post(async (req, res) => {
 	if (!userServersRes.ok)
 		return res.status(401).json({ message: 'Something went wrong checking your servers.' });
 	const servers: any[] = await userServersRes.json();
-	console.log(servers);
 	if (!servers.some((server) => server.id === '408711970305474560'))
 		return res.status(401).json({ message: "You are not a part of yeti's Discord server." });
 
