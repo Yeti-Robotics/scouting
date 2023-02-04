@@ -1,5 +1,5 @@
 import { useUser } from '@/lib/useUser';
-import { Box, Button, TextInput } from '@mantine/core';
+import { Box, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -31,7 +31,7 @@ export const LoginForm = () => {
 			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Login'>
 					<TextInput label='Username' {...register('username', { required: true })} />
-					<TextInput
+					<PasswordInput
 						label='Password'
 						type='password'
 						{...register('password', { required: true })}
