@@ -1,4 +1,4 @@
-import Select from '@/components/Forms/Select';
+import Select from '@/components/Forms/ControlledSelect';
 import SubmitButton from '@/components/Forms/SubmitButton';
 import TextInput from '@/components/Forms/TextInput';
 import { PitFormI } from '@/models/PitForm';

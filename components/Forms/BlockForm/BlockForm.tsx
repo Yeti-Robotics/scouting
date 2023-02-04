@@ -8,7 +8,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import Autocomplete from '../Autocomplete';
+import Autocomplete from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
 import SubmitButton from '../SubmitButton';

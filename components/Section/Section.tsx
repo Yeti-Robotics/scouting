@@ -1,5 +1,5 @@
-import { ArrowDropDown } from '@mui/icons-material';
-import { Box, Button, Collapse } from '@mui/material';
+import { IconArrowDown } from '@tabler/icons-react';
+import { Box, Button, Collapse } from '@mantine/core';
 import { ReactNode, useEffect, useState } from 'react';
 
 interface Props {
@@ -47,9 +47,9 @@ const Section = ({ title, expanded = true, children }: Props) => {
 			>
 				{title}
 				<Button onClick={() => setIsExpanded((prev) => !prev)}>
-					<ArrowDropDown
-						style={{ transform: isExpanded ? 'rotate(0deg)' : 'rotate(180deg)' }}
-						sx={{
+					<IconArrowDown
+						style={{
+							transform: isExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
 							color: 'text.primary',
 							fontSize: 48,
 							transition: 'transform 0.15s ease',

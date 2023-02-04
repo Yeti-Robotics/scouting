@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
 import { Form } from '../Forms/FormStyle';
-import Select from '../Forms/Select';
+import Select from '../Forms/ControlledSelect';
 import SubmitButton from '../Forms/SubmitButton';
 import TextInput from '../Forms/TextInput';
 

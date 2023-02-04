@@ -1,4 +1,4 @@
-import Select from '@/components/Forms/Select';
+import Select from '@/components/Forms/ControlledSelect';
 import TextInput from '@/components/Forms/TextInput';
 import Layout from '@/components/Layout';
 import LoadingLayout from '@/components/Layout/LoadingLayout';
