@@ -8,7 +8,7 @@ specifiers:
   '@mantine/hooks': 6.0.0-alpha.4
   '@mantine/modals': 6.0.0-alpha.4
   '@mantine/next': 6.0.0-alpha.4
-  '@tabler/icons-react': ^2.2.0
+  '@tabler/icons-react': 2.2.0
   '@types/bcrypt': 5.0.0
   '@types/formidable': 2.0.3
   '@types/jsonwebtoken': 9.0.1
@@ -22,7 +22,7 @@ specifiers:
   eslint-config-next: 12.3.1
   eslint-config-prettier: 8.6.0
   eslint-plugin-prettier: 4.2.1
-  ez-cookies: ^0.1.0
+  ez-cookies: 0.1.0
   formidable: 3.2.1
   jsonwebtoken: 9.0.0
   mongoose: 6.9.0
