@@ -1,10 +1,9 @@
-import { Link } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { IconLink } from '@tabler/icons-react';
+import { Button, PasswordInput, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
-import TextInput from '../TextInput';
 
 interface FormSchema {
 	firstName: string;
@@ -22,7 +21,7 @@ const RegisterForm = () => {
 	const router = useRouter();
 	const {
 		handleSubmit,
-		control,
+		register,
 		watch,
 		getValues,
 		formState: { isValid },
@@ -56,21 +55,9 @@ const RegisterForm = () => {
 		<>
 			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
 				<FormSection title='Register'>
+					<TextInput label='First Name' {...register('firstName', { required: true })} />
+					<TextInput label='Last Name' {...register('lastName', { required: true })} />
 					<TextInput
-						control={control}
-						name='firstName'
-						label='First Name'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='lastName'
-						label='Last Name'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='username'
 						label={
 							usernameIsValid === undefined && usernameIsValid !== null
 								? // if is undefined and not null it is loading state
@@ -80,37 +67,31 @@ const RegisterForm = () => {
 								  'Username'
 								: 'Username is taken'
 						}
-						rules={{
+						{...register('username', {
 							required: true,
 							minLength: 3,
 							validate: () => Boolean(usernameIsValid),
-						}}
+						})}
 						onChange={validateUsername}
 					/>
-					<TextInput
-						control={control}
-						name='password'
+					<PasswordInput
 						label='Password'
 						type='password'
-						rules={{ required: true, minLength: 6 }}
+						{...register('password', { required: true, minLength: 6 })}
 					/>
 					<TextInput
-						control={control}
-						name='confPassword'
 						label='Confirm Password'
 						type='password'
-						rules={{
+						{...register('confPassword', {
 							required: true,
 							minLength: 6,
 							validate: (v) => v === password,
-						}}
+						})}
 					/>
 					<TextInput
-						control={control}
-						name='teamNumber'
 						label='Team Number'
 						type='number'
-						rules={{ required: true, min: 1 }}
+						{...register('teamNumber', { required: true, min: 1 })}
 					/>
 					<Button
 						sx={{ m: 2 }}
@@ -119,7 +100,7 @@ const RegisterForm = () => {
 						href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
 						disabled={!isValid}
 					>
-						<Link sx={{ m: 1, ml: 0 }} /> Link Discord
+						<IconLink style={{ margin: 8, marginLeft: 0 }} /> Link Discord
 					</Button>
 				</FormSection>
 			</form>
