@@ -1,15 +1,12 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import { Delete } from '@mui/icons-material';
-import { Button, CircularProgress } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { Button, Loader, Checkbox, TextInput, PasswordInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Checkbox from '../Checkbox';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
 import { onSubmit } from './onSubmit';
 
 interface Props {
@@ -19,10 +16,10 @@ interface Props {
 	id?: string;
 }
 
-const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
+const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
-	const { handleSubmit, control, watch } = useForm<
+	const { handleSubmit, register, watch } = useForm<
 		UserI & { newPassword: string; confPassword: string }
 	>({
 		defaultValues: defaultUser,
@@ -41,7 +38,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 	const newPassword = watch('newPassword');
 
 	if (!user) {
-		return <CircularProgress />;
+		return <Loader />;
 	}
 
 	if (!user.administrator) {
@@ -65,13 +62,11 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 						});
 					}}
 				>
-					<Delete />
+					<IconTrash />
 				</Button>
 			)}
 			<FormSection title='Info'>
 				<TextInput
-					control={control}
-					name='username'
 					label={
 						usernameIsValid === undefined && usernameIsValid !== null
 							? // if is undefined and not null it is loading state
@@ -81,66 +76,67 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 							  'Username'
 							: 'Username is taken'
 					}
-					rules={{
+					{...register('username', {
 						required: true,
 						minLength: 3,
 						validate: (v) => {
 							if (v === defaultUser?.username) return true;
 							return Boolean(usernameIsValid);
 						},
-					}}
+					})}
 					onChange={validateUsername}
 				/>
 				<TextInput
-					control={control}
-					name='firstName'
 					label='First Name'
 					disabled={!canEdit}
-					rules={{ required: true }}
+					{...register('firstName', {
+						required: true,
+					})}
 				/>
 				<TextInput
-					control={control}
-					name='lastName'
 					label='Last Name'
 					disabled={!canEdit}
-					rules={{ required: true }}
+					{...register('lastName', {
+						required: true,
+					})}
 				/>
-				<TextInput
-					control={control}
-					name='newPassword'
+				<PasswordInput
 					label='New Password'
 					type='password'
-					rules={{ required: false, validate: undefined, minLength: 6 }}
+					{...register('newPassword', {
+						required: false,
+						validate: undefined,
+						minLength: 6,
+					})}
 				/>
-				<TextInput
-					control={control}
-					name='confPassword'
+				<PasswordInput
 					label='Confirm Password'
 					type='password'
-					rules={{
+					{...register('confPassword', {
 						required: newPassword !== '',
 						minLength: 6,
 						validate: (v) => v === newPassword,
-					}}
+					})}
 				/>
 				<TextInput
-					control={control}
-					name='teamNumber'
 					label='Team Number'
 					type='number'
-					rules={{ required: true, min: 1 }}
+					{...register('teamNumber', {
+						required: true,
+						min: 1,
+					})}
 				/>
 				<TextInput
-					control={control}
-					name='coins'
 					label='Coins'
 					type='number'
-					rules={{ required: true }}
+					{...register('coins', {
+						required: true,
+					})}
 				/>
-				<Checkbox control={control} name='administrator' />
-				<Checkbox control={control} name='banned' />
+				<Checkbox {...register('administrator')} />
+				<Checkbox {...register('banned')} />
 			</FormSection>
-			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
+			{Boolean(canEdit) && <Button type='submit'>{create ? 'Submit' : 'Update'}</Button>}
 		</Form>
 	);
 };
