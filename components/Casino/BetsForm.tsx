@@ -1,12 +1,11 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Checkbox, CircularProgress, FormControlLabel, MenuItem } from '@mui/material';
+import { Button, Checkbox, Loader } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
 import { Form } from '../Forms/FormStyle';
 import Select from '../Forms/Select';
-import SubmitButton from '../Forms/SubmitButton';
 import TextInput from '../Forms/TextInput';
 
 interface Props {
@@ -18,7 +17,7 @@ interface Props {
 const numberValidate = (value: any) => !isNaN(parseFloat(value));
 const textValidate = (value: any) => value !== '';
 
-const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
+const BetsForm = ({ match, user, id }: Props) => {
 	const { handleSubmit, control, watch, reset } = useForm<Omit<Bet, 'username'>>();
 	const [notBetting, setNotBetting] = useState({
 		winner: false,
@@ -92,18 +91,13 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 						}}
 						valueAsNumber
 					/>
-					<FormControlLabel
-						label='Not Betting on This Section'
-						control={
-							<Checkbox
-								onChange={(e) =>
-									setNotBetting((prev) => ({ ...prev, winner: e.target.checked }))
-								}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={notBetting.winner}
-								disabled={betsClosed}
-							/>
+					<Checkbox
+						onChange={(e) =>
+							setNotBetting((prev) => ({ ...prev, winner: e.target.checked }))
 						}
+						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						checked={notBetting.winner}
+						disabled={betsClosed}
 					/>
 				</FormSection>
 				<FormSection
@@ -146,21 +140,17 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 						}}
 						valueAsNumber
 					/>
-					<FormControlLabel
-						label='Not Betting on This Section'
-						control={
-							<Checkbox
-								onChange={(e) =>
-									setNotBetting((prev) => ({
-										...prev,
-										topScorer: e.target.checked,
-									}))
-								}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={notBetting.topScorer}
-								disabled={betsClosed}
-							/>
+
+					<Checkbox
+						onChange={(e) =>
+							setNotBetting((prev) => ({
+								...prev,
+								topScorer: e.target.checked,
+							}))
 						}
+						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						checked={notBetting.topScorer}
+						disabled={betsClosed}
 					/>
 				</FormSection>
 				<FormSection
@@ -203,29 +193,25 @@ const BetsForm: React.VFC<Props> = ({ match, user, id }) => {
 						}}
 						valueAsNumber
 					/>
-					<FormControlLabel
-						label='Not Betting on This Section'
-						control={
-							<Checkbox
-								onChange={(e) =>
-									setNotBetting((prev) => ({
-										...prev,
-										bottomScorer: e.target.checked,
-									}))
-								}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={notBetting.bottomScorer}
-								disabled={betsClosed}
-							/>
+
+					<Checkbox
+						onChange={(e) =>
+							setNotBetting((prev) => ({
+								...prev,
+								bottomScorer: e.target.checked,
+							}))
 						}
+						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						checked={notBetting.bottomScorer}
+						disabled={betsClosed}
 					/>
 				</FormSection>
-				<SubmitButton disabled={betsClosed || fetching === 'fetching'}>
+				<Button disabled={betsClosed || fetching === 'fetching'}>
 					{fetching === 'fetching' && (
-						<CircularProgress sx={{ m: 1, ml: 0 }} color='inherit' size='1rem' />
+						<Loader sx={{ m: 1, ml: 0 }} color='inherit' size='1rem' />
 					)}{' '}
 					Submit Bets
-				</SubmitButton>
+				</Button>
 				<p>After you submit your bets you will not be able to change them.</p>
 			</Form>
 		</>
