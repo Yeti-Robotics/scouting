@@ -1,12 +1,12 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box } from '@mui/material';
-import { red, blue } from '@mui/material/colors';
+import { Box, useMantineTheme } from '@mantine/core';
 
 interface Props {
 	match: MatchData;
 }
 
-const Taxis: React.VFC<Props> = ({ match }) => {
+const Taxis = ({ match }: Props) => {
+	const theme = useMantineTheme();
 	return (
 		<>
 			<Box component='h1' sx={{ mt: 6 }}>
@@ -27,7 +27,7 @@ const Taxis: React.VFC<Props> = ({ match }) => {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						backgroundColor: blue[500],
+						backgroundColor: theme.colors.blue[5],
 						px: 2,
 						borderRadius: 2,
 						m: 1,
@@ -42,7 +42,7 @@ const Taxis: React.VFC<Props> = ({ match }) => {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						backgroundColor: red[500],
+						backgroundColor: theme.colors.red[5],
 						px: 2,
 						borderRadius: 2,
 						m: 1,
