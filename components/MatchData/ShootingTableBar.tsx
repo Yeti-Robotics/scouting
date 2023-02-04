@@ -1,6 +1,6 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
-import { Box, Collapse, Paper, SxProps, Tooltip } from '@mui/material';
+import { Box, Collapse, Paper, Sx, Tooltip } from '@mantine/core';
 
 interface Props {
 	table: HTMLDivElement;
@@ -75,7 +75,7 @@ const ShootingTableBar = ({
 	const scored = getBalls({ auto, level, piece, team });
 	const barHeight = (scored / maxScored) * tableHeight - 25;
 
-	const barStyles: SxProps =
+	const barStyles: Sx =
 		maxScored !== 0
 			? {
 					height: barHeight,
@@ -101,8 +101,8 @@ const ShootingTableBar = ({
 			}}
 		>
 			<Collapse in={showBars}>
-				<Tooltip followCursor title={scored}>
-					<Paper sx={barStyles} elevation={1} />
+				<Tooltip label={scored}>
+					<Paper sx={barStyles} />
 				</Tooltip>
 			</Collapse>
 			<Box

@@ -1,6 +1,6 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Loader } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import ShootingTableBar from './ShootingTableBar';
 import { getTitle, selectScoreKey } from '@/lib/matchDataUtils';
@@ -162,7 +162,7 @@ const ShootingTable = ({ match, auto, piece, level }: Props) => {
 						Nobody scored 💀
 					</Box>
 				) : (
-					<CircularProgress />
+					<Loader />
 				)}
 			</Box>
 		</>
