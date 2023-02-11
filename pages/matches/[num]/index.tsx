@@ -1,5 +1,3 @@
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 import MobileShootingTable from '@/components/MatchData/MobileShootingTable';
 import ShootingTable from '@/components/MatchData/ShootingTable';
 import Comments from '@/components/MatchData/Comments';
@@ -7,7 +5,8 @@ import Taxis from '@/components/MatchData/Taxis';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchData } from '@/models/aggregations/matchData';
-import { Checkbox, FormControlLabel, useMediaQuery } from '@mui/material';
+import { Checkbox, Loader } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -26,23 +25,17 @@ const Match = () => {
 
 	useEffect(() => setTable(isDesktop), []);
 
-	if (!data) return <LoadingLayout />;
-	console.log(table);
+	if (!data) return <Loader size='xl' />;
 
 	return (
-		<Layout>
+		<>
 			<h1>Match {router.query.num}</h1>
 			<h1>Scoring</h1>
 			{isDesktop && (
-				<FormControlLabel
-					control={
-						<Checkbox
-							value={table}
-							checked={table}
-							onChange={() => setTable((prev) => !prev)}
-						/>
-					}
+				<Checkbox
 					label='Table View'
+					checked={table}
+					onChange={(e) => setTable(e.target.checked)}
 				/>
 			)}
 			{isDesktop && !table ? (
@@ -65,7 +58,7 @@ const Match = () => {
 			)}
 			<Taxis match={data} />
 			<Comments match={data} />
-		</Layout>
+		</>
 	);
 };
 

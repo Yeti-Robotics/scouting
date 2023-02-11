@@ -1,7 +1,6 @@
 import { MatchData } from '@/models/aggregations/matchData';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { MatchI } from '@/models/Match';
-import { red, blue } from '@mui/material/colors';
 
 export const getAllData = (match: MatchData, key: keyof StandFormWithName, ifUndef: any = 0) => {
 	const keys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;
@@ -148,26 +147,26 @@ export const getTeamColor = (match: MatchData, team?: StandFormWithName | number
 			team?.teamNumber === match.blue2?.teamNumber ||
 			team?.teamNumber === match.blue3?.teamNumber
 		)
-			return blue[500];
+			return '#00ff00';
 		if (
 			team?.teamNumber === match.red1?.teamNumber ||
 			team?.teamNumber === match.red2?.teamNumber ||
 			team?.teamNumber === match.red3?.teamNumber
 		)
-			return red[500];
+			return '#ff0000';
 	} else {
 		if (
 			team === match.blue1?.teamNumber ||
 			team === match.blue2?.teamNumber ||
 			team === match.blue3?.teamNumber
 		)
-			return blue[500];
+			return '#00ff00';
 		if (
 			team === match.red1?.teamNumber ||
 			team === match.red2?.teamNumber ||
 			team === match.red3?.teamNumber
 		)
-			return red[500];
+			return '#ff0000';
 	}
 	return 'none';
 };
