@@ -1,6 +1,5 @@
-import Layout from '@/components/Layout';
 import { useUser } from '@/lib/useUser';
-import { CircularProgress } from '@mui/material';
+import { Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -15,11 +14,7 @@ const Logout = () => {
 		});
 	}, []);
 
-	return (
-		<Layout>
-			<CircularProgress />
-		</Layout>
-	);
+	return <Loader size='xl' />;
 };
 
 export default Logout;

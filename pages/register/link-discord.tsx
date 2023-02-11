@@ -1,4 +1,4 @@
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -30,7 +30,7 @@ const LinkDiscord = () => {
 		});
 	}, []);
 
-	return <LoadingLayout />;
+	return <Loader size='xl' />;
 };
 
 export default LinkDiscord;

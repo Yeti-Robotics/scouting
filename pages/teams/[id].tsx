@@ -10,7 +10,7 @@ import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageRes } from '@/models/PitImage';
 import { StandFormI } from '@/models/StandForm';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -44,33 +44,25 @@ const TeamPage = () => {
 	}, [router.isReady]);
 
 	if (!data) {
-		return (
-			<Layout>
-				<CircularProgress />
-			</Layout>
-		);
+		return <Loader size='xl' />;
 	}
 
 	if (error) {
-		return (
-			<Layout>
-				<h1>{'There was an error getting your data :('}</h1>
-			</Layout>
-		);
+		return <h1>There was an error getting your data :(</h1>;
 	}
 
 	if (!data.team) {
 		return (
-			<Layout>
+			<>
 				<h1>No data found for team number {router.query.id}</h1>
-			</Layout>
+			</>
 		);
 	}
 
 	const { team, standForms, pitForms } = data;
 
 	return (
-		<Layout>
+		<>
 			<h1>
 				{team.teamNumber} {team.teamName}
 			</h1>
@@ -93,7 +85,7 @@ const TeamPage = () => {
 			</Section>
 			<Section title='Pit Images' expanded={Boolean(images ? images[0] : images)}>
 				<Box sx={{ display: 'flex', flexFlow: 'row wrap' }}>
-					{images === undefined && <CircularProgress />}
+					{images === undefined && <Loader size='xl' />}
 					{images === null && <h2>There was an error getting images.</h2>}
 					{images ? (
 						!images[0] ? (
@@ -119,7 +111,7 @@ const TeamPage = () => {
 					) : null}
 				</Box>
 			</Section>
-		</Layout>
+		</>
 	);
 };
 

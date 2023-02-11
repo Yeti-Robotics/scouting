@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout';
-import { Button } from '@mui/material';
+import { Button } from '@mantine/core';
 import { MouseEventHandler } from 'react';
 
 const exporter = (route: string, fileName: string): MouseEventHandler<HTMLAnchorElement> => {
@@ -30,7 +30,7 @@ const exporter = (route: string, fileName: string): MouseEventHandler<HTMLAnchor
 
 const Export = () => {
 	return (
-		<Layout>
+		<>
 			<h1>Export</h1>
 			<Button
 				component='a'
@@ -46,7 +46,7 @@ const Export = () => {
 			>
 				Stand Form Data
 			</Button>
-		</Layout>
+		</>
 	);
 };
 
