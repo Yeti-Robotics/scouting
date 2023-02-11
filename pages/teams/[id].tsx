@@ -1,4 +1,3 @@
-import Layout from '@/components/Layout';
 import Section from '@/components/Section';
 import Comments from '@/components/Teams/Comments';
 import PitFormCard from '@/components/Teams/PitFormCard';

@@ -1,4 +1,3 @@
-import Layout from '@/components/Layout';
 import { Button } from '@mantine/core';
 import { MouseEventHandler } from 'react';
 
