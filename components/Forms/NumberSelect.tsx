@@ -7,7 +7,7 @@ type Props<T extends FieldValues> = {
 	name: Path<T>;
 	data: (number | { label: string; value: number })[];
 	onChange?: (v: number) => void;
-} & Omit<SelectProps, 'data' | 'onChange'>;
+} & Omit<SelectProps, 'name' | 'data' | 'onChange'>;
 
 export const NumberSelect = <T extends FieldValues>({
 	name,

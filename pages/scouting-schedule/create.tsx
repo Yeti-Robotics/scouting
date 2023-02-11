@@ -1,19 +1,9 @@
-import Select from '@/components/Forms/ControlledSelect';
-import TextInput from '@/components/Forms/TextInput';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { NumberSelect } from '@/components/Forms/NumberSelect';
+import { Loader, TextInput } from '@mantine/core';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import {
-	Box,
-	Checkbox,
-	Divider,
-	FormControlLabel,
-	Button,
-	CircularProgress,
-	MenuItem,
-} from '@mui/material';
+import { Box, Checkbox, Divider, Button } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
@@ -38,23 +28,16 @@ const UserDisplay: React.VFC<{
 					{user.firstName} {user.lastName}
 				</Box>
 				<Box ml={1}>
-					<FormControlLabel
-						label='Can Scout'
-						control={
-							<Checkbox
-								onChange={(e) =>
-									setResults((prev) => ({
-										...prev,
-										[user._id]: e.target.checked,
-									}))
-								}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={
-									results[user._id] !== undefined
-										? results[user._id]
-										: user.canScout
-								}
-							/>
+					<Checkbox
+						onChange={(e) =>
+							setResults((prev) => ({
+								...prev,
+								[user._id]: e.target.checked,
+							}))
+						}
+						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						checked={
+							results[user._id] !== undefined ? results[user._id] : user.canScout
 						}
 					/>
 				</Box>
@@ -86,7 +69,7 @@ const Create = () => {
 	const [results, setResults] = useState<Record<string, boolean>>({});
 	const [fetching, setFetching] = useState<'' | 'fetching' | 'done'>('');
 	const [auto, setAuto] = useState(false);
-	const { control, handleSubmit } = useForm<ScheduleOptionsForm>();
+	const { control, register, handleSubmit } = useForm<ScheduleOptionsForm>();
 
 	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
@@ -107,17 +90,12 @@ const Create = () => {
 		setFetching('done');
 	};
 
-	if (!user || !users) return <LoadingLayout />;
+	if (!user || !users) return <Loader size='xl' />;
 
-	if (!user.administrator)
-		return (
-			<Layout>
-				<h1>You are not authorized to use this.</h1>
-			</Layout>
-		);
+	if (!user.administrator) return <h1>You are not authorized to use this.</h1>;
 
 	return (
-		<Layout>
+		<>
 			<form
 				style={{
 					display: 'flex',
@@ -128,46 +106,37 @@ const Create = () => {
 				}}
 				onSubmit={handleSubmit(submitCanScouts)}
 			>
-				<Select name='blockLength' label='Block Length' control={control} defaultValue={30}>
-					<MenuItem value={15}>15</MenuItem>
-					<MenuItem value={30}>30</MenuItem>
-					<MenuItem value={45}>45</MenuItem>
-					<MenuItem value={60}>60</MenuItem>
-				</Select>
+				<NumberSelect
+					name='blockLength'
+					label='Block Length'
+					control={control}
+					data={[15, 30, 45, 60]}
+				/>
 				<TextInput
-					name='startTime'
 					label='Start Time'
-					control={control}
+					{...register('startTime', { required: true })}
 					type='datetime-local'
 				/>
 				<TextInput
-					name='endTime'
 					label='End Time'
-					control={control}
+					{...register('endTime', { required: true })}
 					type='datetime-local'
 				/>
 				<TextInput
-					name='lunchStartTime'
 					label='Lunch Start Time'
-					control={control}
+					{...register('lunchStartTime', { required: true })}
 					type='datetime-local'
 				/>
 				<TextInput
-					name='lunchEndTime'
 					label='Lunch End Time'
-					control={control}
+					{...register('lunchEndTime', { required: true })}
 					type='datetime-local'
 				/>
 
-				<FormControlLabel
-					label='Auto Generate?'
-					control={
-						<Checkbox
-							onChange={(e) => setAuto(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={auto}
-						/>
-					}
+				<Checkbox
+					onChange={(e) => setAuto(e.target.checked)}
+					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+					checked={auto}
 				/>
 
 				{auto && (
@@ -188,11 +157,11 @@ const Create = () => {
 					</>
 				)}
 				<Button type='submit' variant='contained' sx={{ mt: 2 }}>
-					{fetching === 'fetching' && <CircularProgress color='inherit' size='1rem' />}
+					{fetching === 'fetching' && <Loader color='inherit' size='1rem' />}
 					Submit
 				</Button>
 			</form>
-		</Layout>
+		</>
 	);
 };
 

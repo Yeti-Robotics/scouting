@@ -1,11 +1,9 @@
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, FormControlLabel, Modal } from '@mui/material';
-import { blue, red } from '@mui/material/colors';
+import { Loader } from '@mantine/core';
+import { Box, Button, Checkbox, useMantineTheme } from '@mantine/core';
 import Link from 'next/link';
 import { useState } from 'react';
 import useSWR from 'swr';
@@ -13,6 +11,7 @@ import useSWR from 'swr';
 const Divider = () => <span style={{ backgroundColor: 'white', padding: '1px 0' }} />;
 
 const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user, block }) => {
+	const theme = useMantineTheme();
 	return (
 		<Box
 			sx={{
@@ -52,7 +51,7 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						backgroundColor: blue[500],
+						backgroundColor: theme.colors.blue[5],
 						padding: 1,
 						margin: 1,
 						borderRadius: '4px',
@@ -77,7 +76,7 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						backgroundColor: red[500],
+						backgroundColor: theme.colors.red[5],
 						padding: 1,
 						margin: 1,
 						borderRadius: '4px',
@@ -110,15 +109,14 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 
 const ScoutingSchedule = () => {
 	const { user } = useUser({ canRedirect: true });
-	const { data, mutate } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
+	const { data } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
 	const [showMyBlocks, setShowMyBlocks] = useState(true);
 	const [showPastBlocks, setShowPastBlocks] = useState(false);
-	const [clearModal, setClearModal] = useState(false);
 
-	if (!user || !data) return <LoadingLayout />;
+	if (!user || !data) return <Loader size='xl' />;
 
 	return (
-		<Layout>
+		<>
 			{user.administrator && (
 				<Link href='/scouting-schedule/create' passHref>
 					<Button component='a' variant='contained'>
@@ -127,30 +125,20 @@ const ScoutingSchedule = () => {
 				</Link>
 			)}
 			{user.administrator && (
-				<Button variant='contained' sx={{ mt: 2 }} onClick={() => setClearModal(true)}>
+				<Button variant='contained' sx={{ mt: 2 }}>
 					Clear Schedule
 				</Button>
 			)}
 			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-				<FormControlLabel
-					label='Show Only My Matches'
-					control={
-						<Checkbox
-							onChange={(e) => setShowMyBlocks(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showMyBlocks}
-						/>
-					}
+				<Checkbox
+					onChange={(e) => setShowMyBlocks(e.target.checked)}
+					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+					checked={showMyBlocks}
 				/>
-				<FormControlLabel
-					label='Show Past Matches'
-					control={
-						<Checkbox
-							onChange={(e) => setShowPastBlocks(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showPastBlocks}
-						/>
-					}
+				<Checkbox
+					onChange={(e) => setShowPastBlocks(e.target.checked)}
+					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+					checked={showPastBlocks}
 				/>
 			</Box>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
@@ -161,48 +149,7 @@ const ScoutingSchedule = () => {
 						<BlockDisplay key={block._id} user={user} block={block} />
 					))}
 			</Box>
-			<Modal open={clearModal} onClose={() => setClearModal(false)}>
-				<Box
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 400,
-						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4,
-					}}
-				>
-					<p>
-						Performing this action will remove all matches and bets currently in the
-						database, are you sure you wish to do this
-					</p>
-					<Button
-						color='error'
-						variant='contained'
-						onClick={() => {
-							fetch(`/api/schedule/clear`).then((res) => {
-								if (res.ok) {
-									mutate();
-									setClearModal(false);
-								}
-							});
-						}}
-					>
-						Yes, Do It
-					</Button>
-					<Button
-						color='success'
-						variant='contained'
-						onClick={() => setClearModal(false)}
-					>
-						Nah, Go Back
-					</Button>
-				</Box>
-			</Modal>
-		</Layout>
+		</>
 	);
 };
 
