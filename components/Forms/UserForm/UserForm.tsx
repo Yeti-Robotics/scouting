@@ -16,7 +16,7 @@ interface Props {
 	id?: string;
 }
 
-const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
+export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
 	const { handleSubmit, register, watch } = useForm<
@@ -140,5 +140,3 @@ const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 		</Form>
 	);
 };
-
-export default UserForm;

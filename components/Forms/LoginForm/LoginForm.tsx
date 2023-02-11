@@ -1,9 +1,8 @@
 import { useUser } from '@/lib/useUser';
-import { Box, Button, PasswordInput, TextInput } from '@mantine/core';
+import { Box, Button, Paper, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormSection from '../FormSection';
 
 interface FormSchema {
 	username: string;
@@ -27,23 +26,24 @@ export const LoginForm = () => {
 	};
 
 	return (
-		<Box>
-			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
-				<FormSection title='Login'>
-					<TextInput label='Username' {...register('username', { required: true })} />
-					<PasswordInput
-						label='Password'
-						type='password'
-						{...register('password', { required: true })}
-					/>
-					<Button type='submit'>Submit</Button>
-					{loginSuccess !== undefined && !loginSuccess && (
-						<p style={{ color: 'red', fontSize: '1rem' }}>
-							Username or password incorrect
-						</p>
-					)}
-				</FormSection>
-			</form>
-		</Box>
+		<Paper withBorder shadow='xl'>
+			<Box
+				component='form'
+				p='md'
+				sx={{ display: 'flex', flexDirection: 'column' }}
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				<TextInput label='Username' {...register('username', { required: true })} />
+				<PasswordInput label='Password' {...register('password', { required: true })} />
+				<Button mt='md' type='submit'>
+					Submit
+				</Button>
+				{loginSuccess !== undefined && !loginSuccess && (
+					<Text style={{ color: 'red', fontSize: '1rem' }}>
+						Username or password incorrect
+					</Text>
+				)}
+			</Box>
+		</Paper>
 	);
 };

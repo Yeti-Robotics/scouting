@@ -17,7 +17,7 @@ interface FormSchema {
 
 const REDIRECT_URI = process.env.NEXT_PUBLIC_DISCORD_URI;
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
 	const router = useRouter();
 	const {
 		handleSubmit,
@@ -107,5 +107,3 @@ const RegisterForm = () => {
 		</>
 	);
 };
-
-export default RegisterForm;

@@ -34,7 +34,7 @@ const getTheme = (
 });
 
 const noLayoutPaths: string[] = [];
-const publicPaths: string[] = ['/login', '/register'];
+const publicPaths: string[] = ['/', '/login', '/register'];
 
 const MyApp: _App<{
 	colorScheme: ColorScheme;
@@ -55,7 +55,7 @@ const MyApp: _App<{
 		data: user,
 		error,
 		mutate,
-	} = useSWR('/api/decode/verify', fetcher, { fallbackData: initialUser });
+	} = useSWR('/api/auth/decode', fetcher, { fallbackData: initialUser });
 
 	useEffect(() => {
 		if ((!user || error) && !isPublic) {
@@ -98,15 +98,13 @@ const MyApp: _App<{
 				<MantineProvider withGlobalStyles withNormalizeCSS theme={theme as any}>
 					<ColorProvider primaryColor={primaryColor} setPrimaryColor={setPrimaryColor}>
 						<ModalsProvider>
-							<ModalsProvider>
-								{!isNoLayout ? (
-									<Layout>
-										<Component {...pageProps} />
-									</Layout>
-								) : (
+							{!isNoLayout ? (
+								<Layout>
 									<Component {...pageProps} />
-								)}
-							</ModalsProvider>
+								</Layout>
+							) : (
+								<Component {...pageProps} />
+							)}
 						</ModalsProvider>
 					</ColorProvider>
 				</MantineProvider>
