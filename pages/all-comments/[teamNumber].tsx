@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import pemForms from '@/past-data/pem-stand-forms.json';
 import ashForms from '@/past-data/ash-stand-forms.json';
-import { Paper, Stack } from '@mui/material';
+import { Paper, Stack } from '@mantine/core';
 import { StandFormI } from '@/models/StandForm';
 
 const CommentDisplay: React.VFC<{ form: StandFormI }> = ({ form }) => {
