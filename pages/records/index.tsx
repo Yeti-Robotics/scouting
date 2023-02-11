@@ -1,10 +1,9 @@
-import FlexGrid from '@/components/FlexGrid';
-import Layout from '@/components/Layout';
 import { useUser } from '@/lib/useUser';
-import { AccountCircle, InsertDriveFile } from '@mui/icons-material';
-import { Box, Button, Modal } from '@mui/material';
-import Link from 'next/link';
-import { useState } from 'react';
+import { Group, Title } from '@mantine/core';
+import { IconUser, IconFile } from '@tabler/icons-react';
+import { Button } from '@mantine/core';
+import { openConfirmModal } from '@mantine/modals';
+import { Link } from '@/components/Link';
 
 interface MenuCardProps {
 	href: string;
@@ -37,31 +36,29 @@ const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
 
 const Records = () => {
 	const { user } = useUser({ canRedirect: false });
-	const [cleanModal, setCleanModal] = useState(false);
 
 	return (
-		<Layout>
-			<h1>Records</h1>
-			<FlexGrid>
-				<MenuCard
-					href='/records/stand-forms'
-					text='Stand Forms'
-					Icon={<InsertDriveFile sx={{ mr: 1 }} />}
-				/>
-				<MenuCard
-					href='/records/pit-forms'
-					text='Pit Forms'
-					Icon={<InsertDriveFile sx={{ mr: 1 }} />}
-				/>
+		<>
+			<Title order={1}>Records</Title>
+			<Group>
+				<MenuCard href='/records/stand-forms' text='Stand Forms' Icon={<IconUser />} />
+				<MenuCard href='/records/pit-forms' text='Pit Forms' Icon={<IconFile />} />
 				{user?.administrator && (
-					<MenuCard
-						href='/records/users'
-						text='Users'
-						Icon={<AccountCircle sx={{ mr: 1 }} />}
-					/>
+					<MenuCard href='/records/users' text='Users' Icon={<IconUser />} />
 				)}
-			</FlexGrid>
-			<Button variant='contained' onClick={() => setCleanModal(true)}>
+			</Group>
+			<Button
+				variant='contained'
+				onClick={() =>
+					openConfirmModal({
+						title: 'Awe you shure? 🥺',
+						children: 'Delete everything????!??! 😱',
+						confirmProps: { color: 'red', children: 'Delete it all 😈' },
+						cancelProps: { children: 'Go back 😭' },
+						onConfirm: () => fetch(`/api/clean-db`),
+					})
+				}
+			>
 				Clean db
 			</Button>
 			{user?.administrator && (
@@ -69,47 +66,7 @@ const Records = () => {
 					Approve all stand form
 				</Button>
 			)}
-			<Modal open={cleanModal} onClose={() => setCleanModal(false)}>
-				<Box
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 400,
-						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4,
-					}}
-				>
-					<p>
-						Performing this action will remove all forms, matches, and bets currently in
-						the database, are you sure you wish to do this
-					</p>
-					<Button
-						color='error'
-						variant='contained'
-						onClick={() => {
-							fetch(`/api/clean-db`).then((res) => {
-								if (res.ok) {
-									setCleanModal(false);
-								}
-							});
-						}}
-					>
-						Yes, Do It
-					</Button>
-					<Button
-						color='success'
-						variant='contained'
-						onClick={() => setCleanModal(false)}
-					>
-						Nah, Go Back
-					</Button>
-				</Box>
-			</Modal>
-		</Layout>
+		</>
 	);
 };
 
