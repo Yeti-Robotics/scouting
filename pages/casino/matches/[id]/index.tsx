@@ -1,22 +1,17 @@
 import BetsForm from '@/components/Casino/BetsForm';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button } from '@mui/material';
-import Link from 'next/link';
+import { Box, Button, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
 const userHasBetOn = (match: MatchI, user: UserI) =>
 	match.bets.map((bet) => bet.username).includes(user.username);
 
-const TeamWrapper: React.VFC<{ teamNumber: number; col: 'red' | 'blue' }> = ({
-	teamNumber,
-	col,
-}) => {
+const TeamWrapper = ({ teamNumber, col }: { teamNumber: number; col: 'red' | 'blue' }) => {
 	return (
 		<Link href={`/teams/${teamNumber}`} passHref>
 			<Button
@@ -46,28 +41,20 @@ const Match = () => {
 		fetcher,
 	);
 
-	if (!data || !user) return <LoadingLayout />;
+	if (!data || !user) return <Loader size='xl' />;
 
 	const betsClosed = data.startTime < Date.now() + 300000;
 
 	if (error) {
-		return (
-			<Layout>
-				<h1>There was an error retrieving this form.</h1>
-			</Layout>
-		);
+		return <h1>There was an error retrieving this form.</h1>;
 	}
 
 	if (!data._id) {
-		return (
-			<Layout>
-				<h1>No form was found with this id.</h1>
-			</Layout>
-		);
+		return <h1>No form was found with this id.</h1>;
 	}
 
 	return (
-		<Layout>
+		<>
 			{user.administrator && (
 				<Link href={`/casino/matches/${router.query.id}/edit`} passHref>
 					<Button component='a' variant='contained'>
@@ -127,7 +114,7 @@ const Match = () => {
 					<BetsForm match={data} user={user} id={String(router.query.id)} />
 				)
 			}
-		</Layout>
+		</>
 	);
 };
 

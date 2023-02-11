@@ -6,7 +6,7 @@ import ashForms from '@/past-data/ash-stand-forms.json';
 import { Paper, Stack } from '@mantine/core';
 import { StandFormI } from '@/models/StandForm';
 
-const CommentDisplay: React.VFC<{ form: StandFormI }> = ({ form }) => {
+const CommentDisplay = ({ form }: { form: StandFormI }) => {
 	return (
 		<Paper sx={{ m: 1, p: 1 }}>
 			<p>{form.notes.trim() || 'No comment'}</p>

@@ -1,25 +1,21 @@
 import MatchDisplay from '@/components/Casino/MatchDisplay';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { Box, Button, Modal, TextField } from '@mui/material';
-import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { Button, Loader, Stack, TextInput } from '@mantine/core';
+import { useState } from 'react';
 import useSWR from 'swr';
 
 const Matches = () => {
 	const { user } = useUser({ canRedirect: true });
-	const { data, mutate } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const eventKeyRef = useRef<HTMLInputElement>(null);
-	const [populateModal, setPopulateModal] = useState(false);
-	const [clearModal, setClearModal] = useState(false);
+	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
+	const [eventKey, setEventKey] = useState('');
 
-	if (!user || !data) return <LoadingLayout />;
+	if (!user || !data) return <Loader size='xl' />;
 
 	return (
-		<Layout>
+		<>
 			<h1>Matches</h1>
 
 			{user.administrator && (
@@ -35,124 +31,26 @@ const Matches = () => {
 				</Link>
 			)}
 			{user.administrator && (
-				<>
-					<TextField
+				<Stack>
+					<TextInput
 						label='TBA Event Key'
 						placeholder='<year><event key>'
-						inputProps={{ ref: eventKeyRef }}
+						value={eventKey}
+						onChange={(e) => setEventKey(e.target.value)}
 						sx={{ margin: 2 }}
 					/>
-					<Button
-						color='success'
-						variant='contained'
-						sx={{ textTransform: 'none' }}
-						onClick={() => eventKeyRef.current?.value && setPopulateModal(true)}
-					>
+					<Button color='success' variant='contained' sx={{ textTransform: 'none' }}>
 						Populate Matches
 					</Button>
-				</>
+				</Stack>
 			)}
 			{user.administrator && (
-				<Button
-					color='success'
-					variant='contained'
-					sx={{ textTransform: 'none' }}
-					onClick={() => setClearModal(true)}
-				>
+				<Button color='success' variant='contained' sx={{ textTransform: 'none' }}>
 					Clear Matches
 				</Button>
 			)}
-			<Modal open={populateModal} onClose={() => setPopulateModal(false)}>
-				<Box
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 400,
-						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4,
-					}}
-				>
-					<p>
-						Performing this action will remove all matches and bets currently in the
-						database, are you sure you wish to do this
-					</p>
-					<Button
-						color='error'
-						variant='contained'
-						onClick={() => {
-							eventKeyRef.current?.value &&
-								fetch(
-									`/api/populate-matches?evKey=${eventKeyRef.current?.value}`,
-								).then((res) => {
-									if (res.ok) {
-										mutate();
-										setPopulateModal(false);
-									} else {
-										null;
-									}
-								});
-						}}
-					>
-						Yes, Do It
-					</Button>
-					<Button
-						color='success'
-						variant='contained'
-						onClick={() => setPopulateModal(false)}
-					>
-						Nah, Go Back
-					</Button>
-				</Box>
-			</Modal>
-			<Modal open={clearModal} onClose={() => setClearModal(false)}>
-				<Box
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 400,
-						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4,
-					}}
-				>
-					<p>
-						Performing this action will remove all matches and bets currently in the
-						database, are you sure you wish to do this
-					</p>
-					<Button
-						color='error'
-						variant='contained'
-						onClick={() => {
-							fetch(`/api/clear-matches`).then((res) => {
-								if (res.ok) {
-									mutate();
-									setClearModal(false);
-								} else {
-									null;
-								}
-							});
-						}}
-					>
-						Yes, Do It
-					</Button>
-					<Button
-						color='success'
-						variant='contained'
-						onClick={() => setPopulateModal(false)}
-					>
-						Nah, Go Back
-					</Button>
-				</Box>
-			</Modal>
 			<MatchDisplay matches={data} />
-		</Layout>
+		</>
 	);
 };
 

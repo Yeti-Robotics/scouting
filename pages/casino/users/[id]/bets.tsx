@@ -1,9 +1,7 @@
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { Bet } from '@/models/Match';
-import { Box } from '@mui/material';
+import { Box, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
@@ -91,17 +89,12 @@ const UserBets = () => {
 		username: string;
 	}>(router.isReady ? `/api/auth/users/${router.query.id}/bets` : null, fetcher);
 
-	if (!user || !data) return <LoadingLayout />;
+	if (!user || !data) return <Loader size='xl' />;
 
-	if (user.banned)
-		return (
-			<Layout>
-				<h1>You&#39;re banned you sussy baka.</h1>
-			</Layout>
-		);
+	if (user.banned) return <h1>You&#39;re banned you sussy baka.</h1>;
 
 	return (
-		<Layout>
+		<>
 			<h1 style={{ marginBottom: 0 }}>{data.username}&#39;s bets</h1>
 			<h2 style={{ color: 'rgb(150, 150, 50)', marginTop: 0 }}>Their coins: {data.coins}</h2>
 			<Box
@@ -117,7 +110,7 @@ const UserBets = () => {
 					<h1>No bets for this user</h1>
 				)}
 			</Box>
-		</Layout>
+		</>
 	);
 };
 
