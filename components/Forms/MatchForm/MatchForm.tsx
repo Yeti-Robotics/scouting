@@ -3,15 +3,14 @@ import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Delete } from '@mui/icons-material';
-import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
+import { Delete } from '@mantine/core';
+import { Box, Button, Loader, MenuItem } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import Autocomplete from '../ControlledAutocomplete';
+import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
 import Select from '../ControlledSelect';
 import SubmitButton from '../SubmitButton';
 import TextInput from '../TextInput';
@@ -56,7 +55,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -129,7 +128,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 				<h2 style={{ marginBottom: 0 }}>Scouters</h2>
 				<Box sx={{ display: 'flex', width: '100%' }}>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<Autocomplete
+						<ControlledAutocomplete
 							options={options}
 							control={control}
 							isOptionEqualToValue={(opt, v) =>
@@ -140,7 +139,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
-						<Autocomplete
+						<ControlledAutocomplete
 							options={options}
 							control={control}
 							isOptionEqualToValue={(opt, v) =>
@@ -151,7 +150,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
-						<Autocomplete
+						<ControlledAutocomplete
 							options={options}
 							control={control}
 							isOptionEqualToValue={(opt, v) =>
@@ -164,7 +163,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 						/>
 					</div>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<Autocomplete
+						<ControlledAutocomplete
 							options={options}
 							control={control}
 							isOptionEqualToValue={(opt, v) =>
@@ -175,7 +174,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
-						<Autocomplete
+						<ControlledAutocomplete
 							options={options}
 							control={control}
 							isOptionEqualToValue={(opt, v) =>
@@ -186,16 +185,13 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
 						/>
-						<Autocomplete
-							options={options}
+						<ControlledAutocomplete
 							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
 							name='scouters.red3'
 							label='Red 3'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							data={[]}
 						/>
 					</div>
 				</Box>
@@ -240,13 +236,13 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 					}}
 				>
 					{closing === 'fetching' && (
-						<CircularProgress size='1rem' color='inherit' sx={{ m: 1, ml: 0 }} />
+						<Loader size='xl' color='inherit' sx={{ m: 1, ml: 0 }} />
 					)}{' '}
 					Close Bets
 				</Button>
 			)}
 			<SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>
-		</Form>
+		</Box>
 	);
 };
 
