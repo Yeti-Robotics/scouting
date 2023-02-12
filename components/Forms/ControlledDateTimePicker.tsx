@@ -1,18 +1,20 @@
-import { Autocomplete, AutocompleteProps } from '@mantine/core';
+import { DateTimePicker } from '@mantine/dates';
+import { DateTimePickerProps } from '@mantine/dates';
 import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
 	rules?: UseControllerProps<T>['rules'];
-} & AutocompleteProps;
+	valueAsString?: boolean;
+} & DateTimePickerProps;
 
-export const ControlledAutocomplete = <T extends FieldValues>({
+export const ControlledDateTimePicker = <T extends FieldValues>({
 	control,
 	name,
-	data,
 	onChange,
 	rules,
+	valueAsString,
 	...props
 }: Props<T>) => {
 	const { field, fieldState } = useController({
@@ -22,16 +24,15 @@ export const ControlledAutocomplete = <T extends FieldValues>({
 	});
 
 	return (
-		<Autocomplete
-			data={data}
+		<DateTimePicker
 			name={field.name}
 			onBlur={field.onBlur}
 			value={field.value}
 			error={fieldState.error?.message}
 			ref={field.ref}
-			onChange={(e) => {
-				field.onChange(e);
-				onChange?.(e);
+			onChange={(v) => {
+				field.onChange(valueAsString ? v?.toISOString() : v);
+				onChange?.(v);
 			}}
 			{...props}
 		/>

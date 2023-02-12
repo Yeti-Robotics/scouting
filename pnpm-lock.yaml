@@ -5,7 +5,10 @@ specifiers:
   '@emotion/server': 11.10.0
   '@mantine/core': 6.0.0-alpha.5
   '@mantine/dates': 6.0.0-alpha.5
+<<<<<<< HEAD
+=======
   '@mantine/dropzone': 6.0.0-alpha.5
+>>>>>>> da1e08adcf5f2a7d2242bd62feca848ebb463566
   '@mantine/hooks': 6.0.0-alpha.5
   '@mantine/modals': 6.0.0-alpha.5
   '@mantine/next': 6.0.0-alpha.5
@@ -41,7 +44,10 @@ dependencies:
   '@emotion/server': 11.10.0
   '@mantine/core': 6.0.0-alpha.5_d6bsl22mxtsbza7bjjcldhrsbi
   '@mantine/dates': 6.0.0-alpha.5_ycy4m6gtofyi25tc5smczm324q
+<<<<<<< HEAD
+=======
   '@mantine/dropzone': 6.0.0-alpha.5_kjotsjdmc4bg6raywavak2ysi4
+>>>>>>> da1e08adcf5f2a7d2242bd62feca848ebb463566
   '@mantine/hooks': 6.0.0-alpha.5_react@18.2.0
   '@mantine/modals': 6.0.0-alpha.5_kjotsjdmc4bg6raywavak2ysi4
   '@mantine/next': 6.0.0-alpha.5_frkyvidol3cyjondljhrqtyp5u
@@ -1171,8 +1177,13 @@ packages:
       react: 18.2.0
     dev: false
 
+<<<<<<< HEAD
+  /@mantine/hooks/6.0.0-alpha.5_react@18.2.0:
+    resolution: {integrity: sha512-uoFyCoodbMLz4FtcpAmZGQl9ENWKk5quZ+Spx+bbEiQf2Bb+vZQVECmhaGsftFG7v1FBp7/Smxs5nkF3FjQJuA==}
+=======
   /@mantine/dropzone/6.0.0-alpha.5_kjotsjdmc4bg6raywavak2ysi4:
     resolution: {integrity: sha512-9+tG59Q1xhlf1LKJdbKMm4P1PTakFzb9QtglLphMlp70I+YO+0j8ga70NX/7BbCyadg317GTVCsnFtatu0Ssog==}
+>>>>>>> da1e08adcf5f2a7d2242bd62feca848ebb463566
     peerDependencies:
       '@mantine/core': 6.0.0-alpha.5
       '@mantine/hooks': 6.0.0-alpha.5
@@ -1187,6 +1198,11 @@ packages:
       react-dropzone: 14.2.3_react@18.2.0
     dev: false
 
+<<<<<<< HEAD
+  /@mantine/modals/6.0.0-alpha.5_kjotsjdmc4bg6raywavak2ysi4:
+    resolution: {integrity: sha512-fc4bn4vEgXvko/Xs65DPjES2Qb3Z3yp3Gw314ymowAkZZNQEKzQxORAiYgygbc6Gu5GM6hPdyHeE+zmG7mg5hA==}
+    peerDependencies:
+=======
   /@mantine/hooks/6.0.0-alpha.5_react@18.2.0:
     resolution: {integrity: sha512-uoFyCoodbMLz4FtcpAmZGQl9ENWKk5quZ+Spx+bbEiQf2Bb+vZQVECmhaGsftFG7v1FBp7/Smxs5nkF3FjQJuA==}
     peerDependencies:
@@ -1198,6 +1214,7 @@ packages:
   /@mantine/modals/6.0.0-alpha.5_kjotsjdmc4bg6raywavak2ysi4:
     resolution: {integrity: sha512-fc4bn4vEgXvko/Xs65DPjES2Qb3Z3yp3Gw314ymowAkZZNQEKzQxORAiYgygbc6Gu5GM6hPdyHeE+zmG7mg5hA==}
     peerDependencies:
+>>>>>>> da1e08adcf5f2a7d2242bd62feca848ebb463566
       '@mantine/core': 6.0.0-alpha.5
       '@mantine/hooks': 6.0.0-alpha.5
       react: '>=16.8.0'

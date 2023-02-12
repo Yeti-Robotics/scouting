@@ -1,3 +1,4 @@
+import 'dayjs/locale/en';
 import Layout from '@/components/Layout';
 import type { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { useState, useMemo, ReactNode, useEffect } from 'react';
@@ -17,6 +18,7 @@ import { ColorProvider } from '@/components/ColorProvider';
 import useSWR from 'swr';
 import { UserI } from '@/models/User';
 import fetcher from '@/lib/fetch';
+import { DatesProvider } from '@mantine/dates';
 
 interface _App<P> {
 	(props: AppProps & P): ReactNode;
@@ -96,17 +98,22 @@ const MyApp: _App<{
 			</Head>
 			<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
 				<MantineProvider withGlobalStyles withNormalizeCSS theme={theme as any}>
-					<ColorProvider primaryColor={primaryColor} setPrimaryColor={setPrimaryColor}>
-						<ModalsProvider>
-							{!isNoLayout ? (
-								<Layout>
+					<DatesProvider settings={{ locale: 'en', weekendDays: [6, 0] }}>
+						<ColorProvider
+							primaryColor={primaryColor}
+							setPrimaryColor={setPrimaryColor}
+						>
+							<ModalsProvider>
+								{!isNoLayout ? (
+									<Layout>
+										<Component {...pageProps} />
+									</Layout>
+								) : (
 									<Component {...pageProps} />
-								</Layout>
-							) : (
-								<Component {...pageProps} />
-							)}
-						</ModalsProvider>
-					</ColorProvider>
+								)}
+							</ModalsProvider>
+						</ColorProvider>
+					</DatesProvider>
 				</MantineProvider>
 			</ColorSchemeProvider>
 		</>
