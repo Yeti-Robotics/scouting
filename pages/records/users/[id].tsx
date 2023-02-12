@@ -1,4 +1,4 @@
-import UserForm from '@/components/Forms/UserForm';
+import { UserForm } from '@/components/Forms/UserForm';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';

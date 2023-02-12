@@ -1,4 +1,4 @@
-import StandForm from '@/components/Forms/StandForm';
+import { StandForm } from '@/components/Forms/StandForm';
 import { useUser } from '@/lib/useUser';
 import { Loader } from '@mantine/core';
 
