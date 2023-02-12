@@ -9,7 +9,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
 import { ScoreInput } from '../ScoreInput';
 import ConnectionIndicator from './ConnectionIndicator';
 import { onSubmit } from './onSubmit';
@@ -89,7 +88,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}>
+		<Box
+			component='form'
+			onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}
+		>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -363,6 +365,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					{create ? 'Submit' : 'Update'}
 				</Button>
 			)}
-		</Form>
+		</Box>
 	);
 };

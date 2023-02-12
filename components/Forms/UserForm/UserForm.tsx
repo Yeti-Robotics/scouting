@@ -1,12 +1,11 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, Loader, Checkbox, TextInput, PasswordInput } from '@mantine/core';
+import { Button, Loader, Checkbox, TextInput, PasswordInput, Box } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
 import { onSubmit } from './onSubmit';
 
 interface Props {
@@ -50,7 +49,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -137,6 +136,6 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				<Checkbox {...register('banned')} />
 			</FormSection>
 			{Boolean(canEdit) && <Button type='submit'>{create ? 'Submit' : 'Update'}</Button>}
-		</Form>
+		</Box>
 	);
 };
