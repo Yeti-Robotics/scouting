@@ -1,3 +1,1 @@
-import UserForm from './UserForm';
-
-export default UserForm;
+export { UserForm } from './UserForm';

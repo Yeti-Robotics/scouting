@@ -1,3 +1,1 @@
-import StandForm from './StandForm';
-
-export default StandForm;
+export { StandForm } from './StandForm';
