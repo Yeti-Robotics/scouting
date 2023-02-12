@@ -12,6 +12,7 @@ import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
 import { onSubmit } from './onSubmit';
+import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
 
 interface Props {
 	create: boolean;
@@ -19,9 +20,6 @@ interface Props {
 	canEdit?: boolean;
 	id?: string;
 }
-
-const getOptLabel = (opt: any) =>
-	opt.firstName ? `${opt.firstName} ${opt.lastName} (${opt.username})` : opt.label ?? '';
 
 const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	const router = useRouter();
@@ -67,83 +65,73 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 			)}
 			<FormSection title='Info'>
 				<ControlledAutocomplete
-					options={options}
 					control={control}
-					data={[]}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue1'
 					label='Blue 1'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue2'
 					label='Blue 2'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue3'
 					label='Blue 3'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red1'
 					label='Red 1'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red2'
 					label='Red 2'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red3'
 					label='Red 3'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<TextInput
+				<ControlledDateTimePicker
 					control={control}
 					name='startTime'
 					label='Start Time'
-					type='datetime-local'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					valueAsString
 				/>
-				<TextInput
+				<ControlledDateTimePicker
 					control={control}
 					name='endTime'
 					label='End Time'
-					type='datetime-local'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					valueAsString
 				/>
 			</FormSection>
-			<SubmitButton disabled={!canEdit}>{create ? 'Submit' : 'Update'}</SubmitButton>
+			<Button type='submit' disabled={!canEdit}>
+				{create ? 'Submit' : 'Update'}
+			</Button>
 		</Form>
 	);
 };
