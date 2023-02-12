@@ -1,13 +1,6 @@
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import {
-	Box,
-	Button,
-	Checkbox,
-	FormControlLabel,
-	CircularProgress,
-	TextField,
-} from '@mui/material';
+import { Box, Button, Checkbox, Loader, NumberInput } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@/lib/useUser';
@@ -19,7 +12,7 @@ interface Props {
 const userHasBetOn = (match: MatchI, user: UserI) =>
 	match.bets.map((bet) => bet.username).includes(user.username);
 
-const Match: React.VFC<{ match: MatchI; user: UserI; i: number }> = ({ match, user, i }) => {
+const Match = ({ match, user, i }: { match: MatchI; user: UserI; i: number }) => {
 	const [time, setTime] = useState(match.startTime - Date.now() / 1000);
 
 	useEffect(() => {
@@ -100,49 +93,35 @@ const Match: React.VFC<{ match: MatchI; user: UserI; i: number }> = ({ match, us
 	);
 };
 
-const MatchDisplay: React.VFC<Props> = ({ matches }) => {
+const MatchDisplay = ({ matches }: Props) => {
 	const { user } = useUser({ canRedirect: false });
 	const [showHasBetOn, setShowHasBetOn] = useState(false);
 	const [showPastMatches, setShowPastMatches] = useState(false);
 	const [amountToShow, setAmountToShow] = useState(4);
 
-	if (!user) return <CircularProgress />;
+	if (!user) return <Loader size='xl' />;
 
 	return (
 		<>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-				<FormControlLabel
+				<Checkbox
+					onChange={(e) => setShowHasBetOn(e.target.checked)}
 					label='Show Has Bet On'
-					control={
-						<Checkbox
-							onChange={(e) => setShowHasBetOn(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showHasBetOn}
-						/>
-					}
+					checked={showHasBetOn}
 				/>
-				<FormControlLabel
+
+				<Checkbox
 					label='Show Past Matches'
-					control={
-						<Checkbox
-							onChange={(e) => setShowPastMatches(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showPastMatches}
-						/>
-					}
+					onChange={(e) => setShowPastMatches(e.target.checked)}
+					checked={showPastMatches}
 				/>
-				<TextField
-					inputProps={{
-						onChange: (e) =>
-							setAmountToShow(
-								parseInt(e.currentTarget.value) >= 1
-									? parseInt(e.currentTarget.value)
-									: 1,
-							),
-					}}
+
+				<NumberInput
+					onChange={(v) => setAmountToShow(v || 1)}
 					type='number'
 					label='Amount To Show'
 					value={amountToShow}
+					min={1}
 				/>
 			</Box>
 			<Box sx={{ padding: 2, width: '100%', display: 'flex', flexWrap: 'wrap' }}>

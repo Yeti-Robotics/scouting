@@ -1,12 +1,13 @@
 import { Select, SelectProps } from '@mantine/core';
 import { useMemo } from 'react';
-import { Control, useController, FieldValues, Path } from 'react-hook-form';
+import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
 	data: (number | { label: string; value: number })[];
 	onChange?: (v: number) => void;
+	rules?: UseControllerProps<T>['rules'];
 } & Omit<SelectProps, 'name' | 'data' | 'onChange'>;
 
 export const NumberSelect = <T extends FieldValues>({
@@ -14,9 +15,14 @@ export const NumberSelect = <T extends FieldValues>({
 	control,
 	data,
 	onChange,
+	rules,
 	...props
 }: Props<T>) => {
-	const { field, fieldState } = useController({ control, name });
+	const { field, fieldState } = useController({
+		control,
+		name,
+		rules: { required: props.required, ...rules },
+	});
 	const normalizedData = useMemo(
 		() =>
 			data

@@ -4,7 +4,7 @@ import { Control, useController, FieldValues, Path } from 'react-hook-form';
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
-	data: SelectItem;
+	data: SelectItem[];
 } & SelectProps;
 
 export const ControlledSelect = <T extends FieldValues>({

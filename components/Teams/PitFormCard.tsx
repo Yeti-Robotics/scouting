@@ -8,7 +8,7 @@ interface Props {
 	form: PitFormI;
 }
 
-const PitFormCard: React.VFC<Props> = ({ team, form }) => {
+const PitFormCard = ({ form }: Props) => {
 	return (
 		<Link href={`/records/pit-forms/${form._id}`} passHref={true}>
 			<Box component='a'>

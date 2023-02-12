@@ -1,22 +1,22 @@
-import Checkbox from '@/components/Forms/Checkbox';
-import Select from '@/components/Forms/ControlledSelect';
-import SubmitButton from '@/components/Forms/SubmitButton';
-import TextInput from '@/components/Forms/TextInput';
+import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput';
+import { ControlledSelect } from '@/components/Forms/ControlledSelect';
+import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { StandFormI } from '@/models/StandForm';
-import { Button, MenuItem } from '@mui/material';
+import { Button, Checkbox, TextInput } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FilterForm } from '../Filter.styles';
-import { sanitizeFilter, validateIsNumber } from '../filterHelpers';
+import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
 
 type Spread<T extends object> = T[keyof T];
 
-const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
+const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 	const [query, setQuery] = state;
 	const {
 		control,
 		handleSubmit,
 		watch,
+		register,
 		reset: resetForm,
 	} = useForm({
 		defaultValues: {
@@ -46,59 +46,53 @@ const StandFormFilter: React.VFC<FilterProps<StandFormI>> = ({ state }) => {
 	return (
 		<FilterForm onSubmit={handleSubmit(onSubmit)}>
 			<h1>Sort</h1>
-			<Select control={control} name='sortBy' label='Sort By' defaultValue='createdAt'>
-				<MenuItem defaultChecked value='createdAt'>
-					Submission Time
-				</MenuItem>
-				<MenuItem value='_id'>id</MenuItem>
-			</Select>
-			<Select control={control} name='sortFrom' label='Sort From' defaultValue={-1}>
-				<MenuItem value={1}>
-					{sortBy === 'createdAt' || sortBy === 'updatedAt'
-						? 'most recent to least recent'
-						: 'low to high'}
-				</MenuItem>
-				<MenuItem defaultChecked value={-1}>
-					{sortBy === 'createdAt' || sortBy === 'updatedAt'
-						? 'least recent to most recent'
-						: 'high to low'}
-				</MenuItem>
-			</Select>
+			<ControlledSelect
+				control={control}
+				data={[
+					{ value: 'createdAt', label: 'Submission Time' },
+					{ value: '_id', label: 'id' },
+				]}
+				name='sortBy'
+				label='Sort By'
+			/>
+
+			<NumberSelect
+				control={control}
+				data={[
+					{
+						value: 1,
+						label:
+							sortBy === 'createdAt' || sortBy === 'updatedAt'
+								? 'most recent to least recent'
+								: 'low to high',
+					},
+					{
+						value: -1,
+						label:
+							sortBy === 'createdAt' || sortBy === 'updatedAt'
+								? 'least recent to most recent'
+								: 'high to low',
+					},
+				]}
+				name='sortFrom'
+				label='Sort From'
+			/>
 			<h1>Filter</h1>
-			<Checkbox
-				control={control}
-				name='approved'
-				label='Approved'
-				rules={{ validate: undefined }}
-			/>
+			<Checkbox {...register('approved', { validate: undefined })} label='Approved' />
+			<ControlledNumberInput control={control} name='matchNumber' label='Match Number' />
+			<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
 			<TextInput
-				control={control}
-				name='matchNumber'
-				label='Match Number'
-				rules={{ validate: validateIsNumber, required: false }}
-			/>
-			<TextInput
-				control={control}
-				name='teamNumber'
-				label='Team Number'
-				rules={{ validate: validateIsNumber, required: false }}
-			/>
-			<TextInput
-				control={control}
-				name='scouter.firstName'
+				{...register('scouter.firstName', { validate: () => true, required: false })}
 				label='Scouter First Name'
-				rules={{ validate: () => true, required: false }}
 			/>
 			<TextInput
-				control={control}
-				name='scouter.lastName'
+				{...register('scouter.lastName', { validate: () => true, required: false })}
 				label='Scouter Last Name'
-				rules={{ validate: () => true, required: false }}
 			/>
 			<Button variant='contained' onClick={reset} sx={{ mb: 2 }}>
 				Reset Filters
 			</Button>
-			<SubmitButton>Update</SubmitButton>
+			<Button type='submit'>Update</Button>
 		</FilterForm>
 	);
 };

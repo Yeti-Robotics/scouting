@@ -3,16 +3,14 @@ import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import Delete from '@mui/icons-material/Delete';
-import { Button, CircularProgress } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { AutocompleteItem, Button, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import Autocomplete from '../ControlledAutocomplete';
+import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
 import { Form } from '../FormStyle';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
 import { onSubmit } from './onSubmit';
 
 interface Props {
@@ -25,7 +23,7 @@ interface Props {
 const getOptLabel = (opt: any) =>
 	opt.firstName ? `${opt.firstName} ${opt.lastName} (${opt.username})` : opt.label ?? '';
 
-const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
+const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
@@ -37,10 +35,9 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 		},
 	});
 
-	if (!user || !users) return <CircularProgress />;
-	const options = users.map((user) => ({
-		username: user.username,
-		_id: user._id,
+	if (!user || !users) return <Loader size='xl' />;
+	const options: AutocompleteItem[] = users.map((user) => ({
+		value: user.username,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
 	}));
 
@@ -65,14 +62,14 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 						});
 					}}
 				>
-					<Delete />
+					<IconTrash />
 				</Button>
 			)}
 			<FormSection title='Info'>
-				<Autocomplete
+				<ControlledAutocomplete
 					options={options}
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
+					data={[]}
 					getOptionLabel={getOptLabel}
 					name='blue1'
 					label='Blue 1'

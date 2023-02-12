@@ -1,10 +1,11 @@
 import { Autocomplete, AutocompleteItem, AutocompleteProps } from '@mantine/core';
-import { Control, useController, FieldValues, Path } from 'react-hook-form';
+import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
 	data: AutocompleteItem;
+	rules?: UseControllerProps<T>['rules'];
 } & AutocompleteProps;
 
 export const ControlledAutocomplete = <T extends FieldValues>({
@@ -12,12 +13,13 @@ export const ControlledAutocomplete = <T extends FieldValues>({
 	name,
 	data,
 	onChange,
+	rules,
 	...props
 }: Props<T>) => {
 	const { field, fieldState } = useController({
 		control,
 		name,
-		rules: { required: props.required },
+		rules: { required: props.required, ...rules },
 	});
 
 	return (

@@ -1,12 +1,13 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Button, Checkbox, Loader } from '@mantine/core';
+import { Button, Checkbox, Input, Loader } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
 import { Form } from '../Forms/FormStyle';
-import { ControlledSelect } from '../Forms/ControlledSelect';
-import TextInput from '../Forms/TextInput';
+import { ControlledSegmentedControl } from '../Forms/ControlledSegmentedControl';
+import { ControlledNumberInput } from '../Forms/ControlledNumberInput';
+import { NumberSelect } from '../Forms/NumberSelect';
 
 interface Props {
 	match: MatchI;
@@ -18,7 +19,7 @@ const numberValidate = (value: any) => !isNaN(parseFloat(value));
 const textValidate = (value: any) => value !== '';
 
 const BetsForm = ({ match, user, id }: Props) => {
-	const { handleSubmit, control, watch, reset } = useForm<Omit<Bet, 'username'>>();
+	const { handleSubmit, control, watch } = useForm<Omit<Bet, 'username'>>();
 	const [notBetting, setNotBetting] = useState({
 		winner: false,
 		topScorer: false,
@@ -66,20 +67,22 @@ const BetsForm = ({ match, user, id }: Props) => {
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
-					<Select
-						control={control}
-						name='winner.bet'
-						label='Who will win?'
-						disabled={betsClosed || notBetting.winner}
-						rules={{
-							required: !notBetting.winner,
-							validate: notBetting.winner ? undefined : textValidate,
-						}}
-					>
-						<MenuItem value='blue'>Blue Alliance</MenuItem>
-						<MenuItem value='red'>Red Alliance</MenuItem>
-					</Select>
-					<TextInput
+					<Input.Wrapper label='Who Will Win?' required={!notBetting.winner}>
+						<ControlledSegmentedControl
+							control={control}
+							name='winner.bet'
+							data={[
+								{ value: 'blue', label: 'Blue Alliance' },
+								{ value: 'red', label: 'Red Alliance' },
+							]}
+							disabled={betsClosed || notBetting.winner}
+							rules={{
+								required: !notBetting.winner,
+								validate: notBetting.winner ? undefined : textValidate,
+							}}
+						/>
+					</Input.Wrapper>
+					<ControlledNumberInput
 						control={control}
 						name='winner.amount'
 						label='Amount to Bet'
@@ -89,13 +92,12 @@ const BetsForm = ({ match, user, id }: Props) => {
 							min: 1,
 							validate: notBetting.winner ? undefined : numberValidate,
 						}}
-						valueAsNumber
+						min={1}
 					/>
 					<Checkbox
 						onChange={(e) =>
 							setNotBetting((prev) => ({ ...prev, winner: e.target.checked }))
 						}
-						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 						checked={notBetting.winner}
 						disabled={betsClosed}
 					/>
@@ -110,8 +112,9 @@ const BetsForm = ({ match, user, id }: Props) => {
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
-					<Select
+					<NumberSelect
 						control={control}
+						data={Object.values(match).map((teamNumber) => teamNumber)}
 						name='topScorer.bet'
 						label='Who will score the most?'
 						disabled={betsClosed || notBetting.topScorer}
@@ -119,15 +122,8 @@ const BetsForm = ({ match, user, id }: Props) => {
 							required: !notBetting.topScorer,
 							validate: notBetting.topScorer ? undefined : textValidate,
 						}}
-					>
-						{match.blue1 && <MenuItem value={match.blue1}>{match.blue1}</MenuItem>}
-						{match.blue2 && <MenuItem value={match.blue2}>{match.blue2}</MenuItem>}
-						{match.blue3 && <MenuItem value={match.blue3}>{match.blue3}</MenuItem>}
-						{match.red1 && <MenuItem value={match.red1}>{match.red1}</MenuItem>}
-						{match.red2 && <MenuItem value={match.red2}>{match.red2}</MenuItem>}
-						{match.red3 && <MenuItem value={match.red3}>{match.red3}</MenuItem>}
-					</Select>
-					<TextInput
+					/>
+					<ControlledNumberInput
 						control={control}
 						type='number'
 						name='topScorer.amount'
@@ -138,7 +134,7 @@ const BetsForm = ({ match, user, id }: Props) => {
 							min: 1,
 							validate: notBetting.topScorer ? undefined : numberValidate,
 						}}
-						valueAsNumber
+						min={1}
 					/>
 
 					<Checkbox
@@ -163,8 +159,9 @@ const BetsForm = ({ match, user, id }: Props) => {
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
-					<Select
+					<NumberSelect
 						control={control}
+						data={Object.values(match).map((teamNumber) => teamNumber)}
 						name='bottomScorer.bet'
 						label='Who will score the least?'
 						disabled={betsClosed || notBetting.bottomScorer}
@@ -172,15 +169,8 @@ const BetsForm = ({ match, user, id }: Props) => {
 							required: !notBetting.bottomScorer,
 							validate: notBetting.bottomScorer ? undefined : textValidate,
 						}}
-					>
-						{match.blue1 && <MenuItem value={match.blue1}>{match.blue1}</MenuItem>}
-						{match.blue2 && <MenuItem value={match.blue2}>{match.blue2}</MenuItem>}
-						{match.blue3 && <MenuItem value={match.blue3}>{match.blue3}</MenuItem>}
-						{match.red1 && <MenuItem value={match.red1}>{match.red1}</MenuItem>}
-						{match.red2 && <MenuItem value={match.red2}>{match.red2}</MenuItem>}
-						{match.red3 && <MenuItem value={match.red3}>{match.red3}</MenuItem>}
-					</Select>
-					<TextInput
+					/>
+					<ControlledNumberInput
 						control={control}
 						type='number'
 						name='bottomScorer.amount'
@@ -191,7 +181,7 @@ const BetsForm = ({ match, user, id }: Props) => {
 							validate: notBetting.bottomScorer ? undefined : numberValidate,
 							min: 1,
 						}}
-						valueAsNumber
+						min={1}
 					/>
 
 					<Checkbox
@@ -201,7 +191,6 @@ const BetsForm = ({ match, user, id }: Props) => {
 								bottomScorer: e.target.checked,
 							}))
 						}
-						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 						checked={notBetting.bottomScorer}
 						disabled={betsClosed}
 					/>
