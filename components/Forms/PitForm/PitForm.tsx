@@ -1,40 +1,39 @@
 import { useUser } from '@/lib/useUser';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
-import { Delete } from '@mui/icons-material';
-import { Button, CircularProgress, MenuItem } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { Box, Button, Loader, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Autocomplete from '../ControlledAutocomplete';
+import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
-import Select from '../ControlledSelect';
-import SubmitButton from '../SubmitButton';
-import Textarea from '../Textarea';
-import TextInput from '../TextInput';
 import Images from './Images';
 import { onSubmit } from './onSubmit';
+import { ControlledNumberInput } from '../ControlledNumberInput';
+import { NumberSelect } from '../NumberSelect';
 
-interface Props {
+type Props = {
 	create: boolean;
 	defaultForm?: PitFormI;
 	defaultImages?: PitImageI[];
 	canEdit?: boolean;
 	id?: string;
-}
+};
 
-const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages, id }) => {
+const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [submitting, setSubmitting] = useState<'fetching' | 'done' | ''>('');
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
-	const { control, handleSubmit, reset } = useForm<PitFormI>({ defaultValues: defaultForm });
+	const { control, handleSubmit, reset, register } = useForm<PitFormI>({
+		defaultValues: defaultForm,
+	});
 
 	if (!user && create) {
-		return <CircularProgress />;
+		return <Loader size='xl' />;
 	}
 
 	if (user && create && user.banned) {
@@ -42,7 +41,8 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 	}
 
 	return (
-		<Form
+		<Box
+			component='form'
 			onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages, setSubmitting))}
 		>
 			{user && user.administrator && !create && id && (
@@ -56,87 +56,106 @@ const PitForm: React.VFC<Props> = ({ create, defaultForm, canEdit, defaultImages
 						});
 					}}
 				>
-					<Delete />
+					<IconTrash />
 				</Button>
 			)}
 			<FormSection title='Images'>
 				<Images state={[images, setImages]} canEdit={canEdit} />
 			</FormSection>
 			<FormSection title='Info'>
-				<TextInput
+				<ControlledNumberInput
 					control={control}
 					name='teamNumber'
 					label='Team Number'
 					type='number'
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
+					min={1}
 				/>
-				<Select
+				<NumberSelect
 					control={control}
 					name='endPosition'
 					label='Where do they end the game?'
 					disabled={!canEdit}
 					rules={{ required: true }}
-				>
-					<MenuItem value={0}>Nothing</MenuItem>
-					<MenuItem value={1}>Defense</MenuItem>
-					<MenuItem value={2}>Shooting</MenuItem>
-					<MenuItem value={3}>Low Climb</MenuItem>
-					<MenuItem value={4}>Middle Climb</MenuItem>
-					<MenuItem value={5}>High Climb</MenuItem>
-					<MenuItem value={6}>Traverse Climb</MenuItem>
-				</Select>
-				<Autocomplete
+					data={[
+						{
+							value: 0,
+							label: 'Nothing',
+						},
+						{
+							value: 1,
+							label: 'Defense',
+						},
+						{
+							value: 2,
+							label: 'Scoring',
+						},
+						{
+							value: 3,
+							label: 'Parked',
+						},
+						{
+							value: 4,
+							label: 'Charger Unbalanced',
+						},
+						{
+							value: 5,
+							label: 'Charger Balanced',
+						},
+					]}
+				/>
+				<ControlledAutocomplete
 					name='drivetrain'
 					label='What drivetrain do they use?'
-					options={['Swerve', 'West Coast', 'Mechaunum']}
 					control={control}
 					rules={{ required: true }}
-					freeSolo
+					data={['Swerve', 'West Coast', 'Mechaunum']}
 				/>
-				<Select
+				<NumberSelect
 					control={control}
 					name='defense'
 					label='Can they play defense?'
 					disabled={!canEdit}
 					rules={{ required: true }}
-				>
-					<MenuItem value={0}>They can't</MenuItem>
-					<MenuItem value={1}>They can</MenuItem>
-					<MenuItem value={2}>It is their strategy</MenuItem>
-				</Select>
-				<Select
+					data={[
+						{ value: 0, label: "They can't" },
+						{ value: 1, label: 'They can' },
+						{ value: 2, label: 'It is their strategy' },
+					]}
+				/>
+				<NumberSelect
 					control={control}
 					name='shooting'
-					label='Where do they shoot?'
+					label='Where do they score?'
 					disabled={!canEdit}
 					rules={{ required: true }}
-				>
-					<MenuItem value={0}>They don't</MenuItem>
-					<MenuItem value={1}>Low goal</MenuItem>
-					<MenuItem value={2}>High goal</MenuItem>
-					<MenuItem value={3}>Both goals</MenuItem>
-				</Select>
+					data={[
+						{ value: 0, label: "They don't" },
+						{ value: 1, label: 'Bottom' },
+						{ value: 2, label: 'Middle' },
+						{ value: 3, label: 'Top' },
+					]}
+				/>
 				<Textarea
-					control={control}
-					name='notes'
+					{...register('notes', { required: true })}
 					label='Notes'
 					disabled={!canEdit}
-					rules={{ required: true }}
 				/>
 				<p style={{ textAlign: 'center', fontSize: '0.8rem' }}>
 					Give some more insight into the team such as cycle times.
 				</p>
 			</FormSection>
 			{Boolean(canEdit) && (
-				<SubmitButton disabled={submitting === 'fetching'}>
-					{submitting === 'fetching' ? (
-						<CircularProgress sx={{ m: 1, ml: 0 }} size='1rem' color='inherit' />
-					) : null}{' '}
+				<Button
+					type='submit'
+					loading={submitting === 'fetching'}
+					disabled={submitting === 'fetching'}
+				>
 					{create ? 'Submit' : 'Update'}
-				</SubmitButton>
+				</Button>
 			)}
-		</Form>
+		</Box>
 	);
 };
 

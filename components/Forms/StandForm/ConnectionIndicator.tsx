@@ -1,5 +1,5 @@
 import { useFirstRender } from '@/lib/useFirstRender';
-import { Box } from '@mui/material';
+import { Box } from '@mantine/core';
 import { useEffect, useRef } from 'react';
 
 interface Props {

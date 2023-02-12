@@ -1,11 +1,12 @@
 import { Reader } from '@/lib/Reader';
+import { FileWithPath } from '@mantine/dropzone';
 import { ChangeEvent, RefObject } from 'react';
 
 export const handleFileChange =
 	(
 		i: number,
 		imageRef: RefObject<HTMLImageElement>,
-		inputRef: RefObject<HTMLInputElement>,
+		files: FileWithPath[],
 		setImage: (index: number, imageFile: File | undefined) => Promise<void>,
 	) =>
 	async (e: ChangeEvent<HTMLInputElement>) => {

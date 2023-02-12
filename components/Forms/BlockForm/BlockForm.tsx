@@ -4,13 +4,12 @@ import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { AutocompleteItem, Button, Loader } from '@mantine/core';
+import { AutocompleteItem, Box, Button, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
 import { onSubmit } from './onSubmit';
 import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
 
@@ -48,7 +47,7 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -132,7 +131,7 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 			<Button type='submit' disabled={!canEdit}>
 				{create ? 'Submit' : 'Update'}
 			</Button>
-		</Form>
+		</Box>
 	);
 };
 

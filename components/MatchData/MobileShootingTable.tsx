@@ -1,16 +1,8 @@
 import { filterTeams, getTeamColor } from '@/lib/matchDataUtils';
 import { MatchData } from '@/models/aggregations/matchData';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableRow,
-	Link as MuiLink,
-	Box,
-} from '@mui/material';
-import Link from 'next/link';
+import { Table, Box, Anchor } from '@mantine/core';
 import { ReactNode } from 'react';
+import { Link } from '../Link';
 
 interface Column {
 	label: string;
@@ -40,33 +32,30 @@ interface Props {
 }
 
 const BodyCell = ({ children, ...props }: { children: ReactNode }) => (
-	<TableCell sx={{ color: 'white', fontWeight: 600 }} align='center' {...props}>
+	<Box component='td' sx={{ color: 'white', fontWeight: 600 }} align='center' {...props}>
 		{children}
-	</TableCell>
+	</Box>
 );
 
 const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 	return (
 		<Box sx={{ maxWidth: '1000px' }}>
 			<Table>
-				<TableHead>
-					<TableRow>
+				<th>
+					<tr>
 						{columns.map((col) => (
-							<TableCell
-								key={col.label}
-								align='center'
-								style={{ minWidth: col.minWidth }}
-							>
+							<td key={col.label} align='center' style={{ minWidth: col.minWidth }}>
 								{col.label}
-							</TableCell>
+							</td>
 						))}
-					</TableRow>
-				</TableHead>
-				<TableBody>
+					</tr>
+				</th>
+				<tbody>
 					{filterTeams(match, (team) => Boolean(team)).map((team) => {
 						if (!team) return <></>;
 						return (
-							<TableRow
+							<Box
+								component='tr'
 								key={team?._id}
 								sx={{
 									backgroundColor: getTeamColor(match, team),
@@ -76,11 +65,11 @@ const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 							>
 								<BodyCell>
 									<Link href={`/teams/${team?.teamNumber}`} passHref>
-										<MuiLink
+										<Anchor
 											sx={{ color: 'white', textDecoration: 'underline' }}
 										>
 											{team?.teamNumber}
-										</MuiLink>
+										</Anchor>
 									</Link>
 								</BodyCell>
 								<BodyCell>{team?.teleopTopCones}</BodyCell>
@@ -95,10 +84,10 @@ const MobileShootingTable: React.VFC<Props> = ({ match }) => {
 								<BodyCell>{team?.autoMidCubes}</BodyCell>
 								<BodyCell>{team?.autoLowCones}</BodyCell>
 								<BodyCell>{team?.autoLowCubes}</BodyCell>
-							</TableRow>
+							</Box>
 						);
 					})}
-				</TableBody>
+				</tbody>
 			</Table>
 		</Box>
 	);

@@ -2,9 +2,8 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { PitFormI } from '@/models/PitForm';
-import { Button, TextInput } from '@mantine/core';
+import { Box, Button, TextInput } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FilterForm } from '../Filter.styles';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
 
@@ -44,7 +43,7 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 	};
 
 	return (
-		<FilterForm onSubmit={handleSubmit(onSubmit)}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit)}>
 			<h1>Sort</h1>
 			<ControlledSelect
 				control={control}
@@ -92,7 +91,7 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 				Reset Filters
 			</Button>
 			<Button type='submit'>Update</Button>
-		</FilterForm>
+		</Box>
 	);
 };
 

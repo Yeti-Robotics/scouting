@@ -20,7 +20,7 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 		if (!user || user.banned || !user.administrator) return;
 		(data as any).startTime = new Date(data.startTime).valueOf();
 		(data.winner as any) = data.winner ? data.winner : undefined;
-		fetch('/api/matches/', {
+		fetch('/api/matches', {
 			method: 'PATCH',
 			body: JSON.stringify(data),
 		});

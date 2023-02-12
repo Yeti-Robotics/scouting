@@ -1,10 +1,9 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Button, Checkbox, Input, Loader } from '@mantine/core';
+import { Box, Button, Checkbox, Input, Loader } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
-import { Form } from '../Forms/FormStyle';
 import { ControlledSegmentedControl } from '../Forms/ControlledSegmentedControl';
 import { ControlledNumberInput } from '../Forms/ControlledNumberInput';
 import { NumberSelect } from '../Forms/NumberSelect';
@@ -40,7 +39,8 @@ const BetsForm = ({ match, user, id }: Props) => {
 	return (
 		<>
 			<h1>Bets {betsClosed && '(Closed)'}</h1>
-			<Form
+			<Box
+				component='form'
 				onSubmit={handleSubmit((data) => {
 					if (!user || yourCoins < 0 || fetching === 'fetching') return;
 					if (notBetting.winner) data.winner = undefined;
@@ -202,7 +202,7 @@ const BetsForm = ({ match, user, id }: Props) => {
 					Submit Bets
 				</Button>
 				<p>After you submit your bets you will not be able to change them.</p>
-			</Form>
+			</Box>
 		</>
 	);
 };

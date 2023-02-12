@@ -2,9 +2,8 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { StandFormI } from '@/models/StandForm';
-import { Button, Checkbox, TextInput } from '@mantine/core';
+import { Box, Button, Checkbox, TextInput } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FilterForm } from '../Filter.styles';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
 
@@ -44,7 +43,7 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 	};
 
 	return (
-		<FilterForm onSubmit={handleSubmit(onSubmit)}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit)}>
 			<h1>Sort</h1>
 			<ControlledSelect
 				control={control}
@@ -93,7 +92,7 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 				Reset Filters
 			</Button>
 			<Button type='submit'>Update</Button>
-		</FilterForm>
+		</Box>
 	);
 };
 

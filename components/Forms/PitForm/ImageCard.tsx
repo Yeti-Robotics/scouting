@@ -6,7 +6,7 @@ import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { useEffect, useRef } from 'react';
 import { handleFileChange } from './handleFileChange';
 
-interface Props {
+type Props = {
 	image: Partial<
 		PitImageI & {
 			listId: number;
@@ -15,9 +15,9 @@ interface Props {
 	i: number;
 	setImage: (index: number, imageFile: File | undefined) => Promise<void>;
 	removeImage: (index: number) => void;
-}
+};
 
-const ImageCard: React.VFC<Props> = ({ image, setImage, i, removeImage }) => {
+const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 	const imageRef = useRef<HTMLImageElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const theme = useMantineTheme();
@@ -39,7 +39,7 @@ const ImageCard: React.VFC<Props> = ({ image, setImage, i, removeImage }) => {
 			{!image._id && (
 				<>
 					<Dropzone
-						onDrop={(files) => console.log('accepted files', files)}
+						onDrop={(files) => handleFileChange(i, imageRef, files, setImage)}
 						onReject={(files) => console.log('rejected files', files)}
 						maxSize={3 * 1024 ** 2}
 						accept={['image/png', 'image/jpg', 'image/jpeg']}
@@ -83,14 +83,6 @@ const ImageCard: React.VFC<Props> = ({ image, setImage, i, removeImage }) => {
 							</div>
 						</Group>
 					</Dropzone>
-
-					<TextField
-						type='file'
-						ref={inputRef}
-						disabled={Boolean(image._id)}
-						onChange={handleFileChange(i, imageRef, inputRef, setImage)}
-						inputProps={{ accept: '.png,.jpg,.jpeg' }}
-					/>
 
 					<Button
 						variant='contained'
