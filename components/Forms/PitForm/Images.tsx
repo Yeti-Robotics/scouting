@@ -1,5 +1,5 @@
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Group } from '@mantine/core';
 import ImageCard from './ImageCard';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 let id = 0;
 
-const Images: React.VFC<Props> = ({ state, canEdit }) => {
+const Images = ({ state, canEdit }: Props) => {
 	const [images, setImages] = state;
 
 	const addImage = () => {
@@ -52,7 +52,7 @@ const Images: React.VFC<Props> = ({ state, canEdit }) => {
 						setImage={setImage}
 					/>
 				))}
-				<Box display='flex' justifyContent='center'>
+				<Group position='center'>
 					<Button
 						sx={{ mt: 1 }}
 						variant='contained'
@@ -61,7 +61,7 @@ const Images: React.VFC<Props> = ({ state, canEdit }) => {
 					>
 						Add Image
 					</Button>
-				</Box>
+				</Group>
 			</Box>
 		</>
 	);
