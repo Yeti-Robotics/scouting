@@ -1,5 +1,5 @@
 import { StandFormI } from '@/models/StandForm';
-import { Box, Divider, NavLink} from '@mantine/core';
+import { Box, Divider, NavLink } from '@mantine/core';
 import Link from 'next/link';
 import Section from '../Section';
 
