@@ -81,7 +81,8 @@ const NavBar = () => {
 				alignItems: 'center',
 				opacity: 1,
 				padding: '0.5rem 1rem 0.5rem 1rem',
-				h: 48,
+				h: '3rem',
+				zIndex: 2,
 				backgroundColor: theme.colors[theme.primaryColor][5],
 			})}
 		>
@@ -92,7 +93,9 @@ const NavBar = () => {
 				}}
 				href='/'
 			>
-				<Title sx={{ fontSize: 32, color: 'white' }}>Yeti Scouting</Title>
+				<Title color='dark' sx={{ fontSize: 32 }}>
+					Yeti Scouting
+				</Title>
 			</Link>
 			<Burger opened={menuOpened} onClick={() => setMenuOpened((prev) => !prev)} />
 			<Drawer
