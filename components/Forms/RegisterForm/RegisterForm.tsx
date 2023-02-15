@@ -1,9 +1,8 @@
-import { IconLink } from '@tabler/icons-react';
-import { Button, PasswordInput, TextInput } from '@mantine/core';
+import { IconBrandDiscord } from '@tabler/icons-react';
+import { Button, Paper, PasswordInput, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormSection from '../FormSection';
 
 interface FormSchema {
 	firstName: string;
@@ -53,57 +52,63 @@ export const RegisterForm = () => {
 
 	return (
 		<>
-			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
-				<FormSection title='Register'>
-					<TextInput label='First Name' {...register('firstName', { required: true })} />
-					<TextInput label='Last Name' {...register('lastName', { required: true })} />
-					<TextInput
-						label={
-							usernameIsValid === undefined && usernameIsValid !== null
-								? // if is undefined and not null it is loading state
-								  'Validating...'
-								: usernameIsValid || usernameIsValid === null
-								? // if is null or valid shows Username
-								  'Username'
-								: 'Username is taken'
-						}
-						{...register('username', {
-							required: true,
-							minLength: 3,
-							validate: () => Boolean(usernameIsValid),
-						})}
-						onChange={validateUsername}
-					/>
-					<PasswordInput
-						label='Password'
-						type='password'
-						{...register('password', { required: true, minLength: 6 })}
-					/>
-					<TextInput
-						label='Confirm Password'
-						type='password'
-						{...register('confPassword', {
-							required: true,
-							minLength: 6,
-							validate: (v) => v === password,
-						})}
-					/>
-					<TextInput
-						label='Team Number'
-						type='number'
-						{...register('teamNumber', { required: true, min: 1 })}
-					/>
-					<Button
-						sx={{ m: 2 }}
-						variant='contained'
-						component='a'
-						href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
-						disabled={!isValid}
-					>
-						<IconLink style={{ margin: 8, marginLeft: 0 }} /> Link Discord
-					</Button>
-				</FormSection>
-			</form>
+			<Paper
+				component='form'
+				withBorder
+				shadow='xl'
+				p='md'
+				style={{ display: 'flex', flexDirection: 'column' }}
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				<TextInput label='First Name' {...register('firstName', { required: true })} />
+				<TextInput label='Last Name' {...register('lastName', { required: true })} />
+				<TextInput
+					label={
+						usernameIsValid === undefined && usernameIsValid !== null
+							? // if is undefined and not null it is loading state
+							  'Validating...'
+							: usernameIsValid || usernameIsValid === null
+							? // if is null or valid shows Username
+							  'Username'
+							: 'Username is taken'
+					}
+					{...register('username', {
+						required: true,
+						minLength: 3,
+						validate: () => Boolean(usernameIsValid),
+					})}
+					onChange={validateUsername}
+				/>
+				<PasswordInput
+					label='Password'
+					type='password'
+					{...register('password', { required: true, minLength: 6 })}
+				/>
+				<TextInput
+					label='Confirm Password'
+					type='password'
+					{...register('confPassword', {
+						required: true,
+						minLength: 6,
+						validate: (v) => v === password,
+					})}
+				/>
+				<TextInput
+					label='Team Number'
+					type='number'
+					{...register('teamNumber', { required: true, min: 1 })}
+				/>
+				<Button
+					mt='md'
+					component='a'
+					href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
+					disabled={!isValid}
+					leftIcon={<IconBrandDiscord stroke={1.5} />}
+					color='indigo'
+				>
+					Link Discord
+				</Button>
+			</Paper>
 		</>
 	);
 };
