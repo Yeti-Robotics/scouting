@@ -5,7 +5,7 @@ import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Loader, NumberInput } from '@mantine/core';
+import { Box, Button, Group, Loader, NumberInput } from '@mantine/core';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
@@ -124,23 +124,14 @@ const MatchData = () => {
 		);
 
 	return (
-		<Layout>
+		<>
 			<h1>Match Data</h1>
 			<h2>Filters</h2>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					flexWrap: 'wrap',
-				}}
-			>
+			<Group>
 				<NumberInput value={matchNum} label='Match Number' onChange={setMatchNum} />
 				<NumberInput value={teamNum} label='Team Number' onChange={setTeamNum} />
-			</Box>
-			<Button variant='contained' onClick={clearFilters}>
-				Clear Filters
-			</Button>
+			</Group>
+			<Button onClick={clearFilters}>Clear Filters</Button>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
 				{data
 					.filter(
@@ -151,7 +142,7 @@ const MatchData = () => {
 						<MatchDisplay key={match._id} match={match} user={user} />
 					))}
 			</Box>
-		</Layout>
+		</>
 	);
 };
 
