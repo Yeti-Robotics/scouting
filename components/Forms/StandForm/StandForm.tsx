@@ -2,8 +2,18 @@ import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { CreateStandForm } from '@/models/StandForm';
-import { IconCheck, IconTrash } from '@tabler/icons-react';
-import { Box, Button, Loader, Checkbox, TextInput, Textarea } from '@mantine/core';
+import { IconTrash } from '@tabler/icons-react';
+import {
+	Box,
+	Button,
+	Loader,
+	Checkbox,
+	TextInput,
+	Textarea,
+	Stack,
+	Text,
+	Group,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -42,7 +52,21 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	const [match, setMatch] = useState<MatchI | null>(null);
 	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { register, control, handleSubmit, reset, setValue, watch } = useForm<CreateStandForm>({
-		defaultValues: defaultForm,
+		defaultValues: {
+			autoTopCones: 0,
+			autoMidCones: 0,
+			autoLowCones: 0,
+			autoTopCubes: 0,
+			autoMidCubes: 0,
+			autoLowCubes: 0,
+			teleopTopCones: 0,
+			teleopMidCones: 0,
+			teleopLowCones: 0,
+			teleopTopCubes: 0,
+			teleopMidCubes: 0,
+			teleopLowCubes: 0,
+			...defaultForm,
+		},
 	});
 	const matchNumber = watch('matchNumber');
 	const autoDocked = watch('autoDocked');
@@ -107,11 +131,12 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				</Button>
 			)}
 			<ConnectionIndicator isOffline={isOffline} />
-			<>
+			<Stack align='flex'>
 				<FormSection title='Match Info'>
 					<TextInput
 						label='Match Number'
 						disabled={!canEdit}
+						required
 						{...register('matchNumber', { required: true })}
 					/>
 					<NumberAutocomplete
@@ -120,35 +145,30 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						label='Team Number'
 						data={getTeamsAsArr(match)}
 						disabled={!canEdit}
+						required
 					/>
 				</FormSection>
 				<FormSection title='Autonomous'>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'flex-start',
-						}}
-					>
+					<Stack pb='md'>
 						<Checkbox
 							{...register('preload')}
 							label='Preloaded?'
-							size='medium'
+							size='xl'
 							disabled={!canEdit}
 						/>
 						<Checkbox
 							{...register('initiationLine')}
 							label='Did they leave their box?'
-							size='medium'
+							size='xl'
 							disabled={!canEdit}
 						/>
-					</Box>
+					</Stack>
 					<ScoreInput
 						control={control}
 						name='autoTopCones'
 						label='Top Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -156,7 +176,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='autoTopCubes'
 						label='Top Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -164,7 +184,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='autoMidCones'
 						label='Mid Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -172,7 +192,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='autoMidCubes'
 						label='Mid Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -180,7 +200,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='autoLowCones'
 						label='Low Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -188,31 +208,25 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='autoLowCubes'
 						label='Low Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'flex-start',
-						}}
-					>
+					<Stack mt='md'>
 						<Checkbox
 							{...register('autoDocked')}
 							label='On charger'
-							size='medium'
+							size='xl'
 							disabled={!canEdit}
 						/>
 						{autoDocked && (
 							<Checkbox
 								{...register('autoEngaged')}
 								label='On charger and balanced'
-								size='md'
+								size='xl'
 								disabled={!canEdit}
 							/>
 						)}
-					</Box>
+					</Stack>
 				</FormSection>
 				<FormSection title='Teleop'>
 					<ScoreInput
@@ -220,7 +234,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopTopCones'
 						label='Top Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -228,7 +242,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopTopCubes'
 						label='Top Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -236,7 +250,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopMidCones'
 						label='Mid Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -244,7 +258,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopMidCubes'
 						label='Mid Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -252,7 +266,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopLowCones'
 						label='Low Cones Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<ScoreInput
@@ -260,38 +274,32 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='teleopLowCubes'
 						label='Low Cubes Scored'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'flex-start',
-						}}
-					>
+					<Stack mt='md'>
 						<Checkbox
 							{...register('teleopDocked')}
 							label='On charger'
-							size='md'
+							size='xl'
 							disabled={!canEdit}
 						/>
 						{teleopDocked && (
 							<Checkbox
 								{...register('teleopEngaged')}
 								label='On charger and balanced'
-								size='md'
+								size='xl'
 								disabled={!canEdit}
 							/>
 						)}
-					</Box>
+					</Stack>
 					{teleopDocked && (
 						<ScoreInput
 							control={control}
 							name='numberOnCharger'
 							label='Number of Robots on Charger'
 							disabled={!canEdit}
-							defaultValue={0}
+							min={0}
 							max={3}
 							required
 						/>
@@ -303,7 +311,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						name='links'
 						label='# of Links'
 						disabled={!canEdit}
-						defaultValue={0}
+						min={0}
 						required
 					/>
 					<NumberSelect
@@ -325,7 +333,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						control={control}
 						name='penalties'
 						label='# of penalties'
-						defaultValue={0}
+						min={0}
 						disabled={!canEdit}
 					/>
 					<Textarea
@@ -334,37 +342,40 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						{...register('notes', { required: true })}
 						required
 					/>
-					<p>
+					<Text>
 						Give some more insight into the match such as: strategy, robot status
 						(disabled, broken), and human players. Don't write too much, be concise!
-					</p>
+					</Text>
 				</FormSection>
-			</>
+			</Stack>
 
-			{Boolean(canEdit) && !create && !defaultForm?.approved && (
-				<Button
-					type='button'
-					color='success'
-					variant='contained'
-					m='md'
-					onClick={() => {
-						setApproving('fetching');
-						fetch(`/api/forms/stand/${id}/approve`).then(() => setApproving('done'));
-					}}
-				>
-					{approving === 'fetching' ? (
-						<Loader color='inherit' sx={{ margin: 1, ml: 0 }} size='1rem' />
-					) : (
-						<IconCheck style={{ margin: 8, marginLeft: 0 }} />
-					)}{' '}
-					Approve
-				</Button>
-			)}
-			{(create || Boolean(canEdit)) && (
-				<Button disabled={submitting === 'fetching'} loading={submitting === 'fetching'}>
-					{create ? 'Submit' : 'Update'}
-				</Button>
-			)}
+			<Group position='center' mt='md'>
+				{Boolean(canEdit) && !create && !defaultForm?.approved && (
+					<Button
+						type='button'
+						color='green'
+						variant='contained'
+						m='md'
+						loading={approving === 'fetching'}
+						onClick={() => {
+							setApproving('fetching');
+							fetch(`/api/forms/stand/${id}/approve`).finally(() =>
+								setApproving('done'),
+							);
+						}}
+					>
+						Approve
+					</Button>
+				)}
+				{(create || Boolean(canEdit)) && (
+					<Button
+						disabled={submitting === 'fetching'}
+						loading={submitting === 'fetching'}
+					>
+						{create ? 'Submit' : 'Update'}
+					</Button>
+				)}
+			</Group>
 		</Box>
 	);
 };

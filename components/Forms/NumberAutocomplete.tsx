@@ -1,12 +1,13 @@
 import { Autocomplete, AutocompleteProps } from '@mantine/core';
 import { useMemo } from 'react';
-import { Control, useController, FieldValues, Path } from 'react-hook-form';
+import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
 	data: (number | { label: string; value: number })[];
 	onChange?: (v: number) => void;
+	rules?: UseControllerProps<T>['rules'];
 } & Omit<AutocompleteProps, 'data' | 'onChange'>;
 
 export const NumberAutocomplete = <T extends FieldValues>({
@@ -14,12 +15,13 @@ export const NumberAutocomplete = <T extends FieldValues>({
 	name,
 	data,
 	onChange,
+	rules,
 	...props
 }: Props<T>) => {
 	const { field, fieldState } = useController({
 		control,
 		name,
-		rules: { required: props.required },
+		rules: { required: props.required, ...rules },
 	});
 	const normalizedData = useMemo(
 		() =>

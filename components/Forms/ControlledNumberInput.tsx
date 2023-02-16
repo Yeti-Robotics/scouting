@@ -12,12 +12,14 @@ export const ControlledNumberInput = <T extends FieldValues>({
 	name,
 	onChange,
 	rules,
+	max,
+	min,
 	...props
 }: Props<T>) => {
 	const { field, fieldState } = useController({
 		control,
 		name,
-		rules: { required: props.required, ...rules },
+		rules: { required: props.required, max, min, ...rules },
 	});
 
 	return (
@@ -27,6 +29,8 @@ export const ControlledNumberInput = <T extends FieldValues>({
 			value={field.value}
 			error={fieldState.error?.message}
 			ref={field.ref}
+			max={max}
+			min={min}
 			onChange={(e) => {
 				field.onChange(e);
 				onChange?.(e);

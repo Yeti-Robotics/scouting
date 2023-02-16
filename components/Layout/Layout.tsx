@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 
 const Layout = ({ children }: { children: ReactNode }) => {
 	return (
-		<Stack spacing={0}>
+		<Stack spacing={0} pb='md'>
 			<NavBar />
 			<Stack align='center' pt='5rem'>
 				{children}
