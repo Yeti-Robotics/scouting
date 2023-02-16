@@ -11,6 +11,8 @@ import {
 import { Burger, Drawer, Group, NavLink, Paper, Stack, Title } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Link } from '../Link';
+import { ThemeSwitch } from './ThemeSwitch';
+import { ColorPicker } from './ColorPicker';
 
 interface ButtonProps {
 	href: string;
@@ -104,7 +106,12 @@ const NavBar = () => {
 				}}
 				href='/'
 			>
-				<Title color='dark' sx={{ fontSize: 32 }}>
+				<Title
+					sx={(theme) => ({
+						fontSize: 32,
+						color: theme.colorScheme === 'light' ? 'black' : 'white',
+					})}
+				>
 					Yeti Scouting
 				</Title>
 			</Link>
@@ -116,7 +123,10 @@ const NavBar = () => {
 				withCloseButton={false}
 				padding={0}
 			>
-				<Group position='right' p='md'>
+				<Group position='apart' p='md'>
+					<Group>
+						<ThemeSwitch /> <ColorPicker />
+					</Group>
 					<Burger opened={menuOpened} onClick={() => setMenuOpened((prev) => !prev)} />
 				</Group>
 				<Stack spacing={0}>

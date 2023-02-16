@@ -128,7 +128,7 @@ MyApp.getInitialProps = async (appCtx) => {
 		...appProps,
 		user: undefined,
 		colorScheme: (getCookie('colorScheme', { req: appCtx.ctx.req }) || 'light') as ColorScheme,
-		primaryColor: getCookie('primaryColor', { req: appCtx.ctx.req }) || 'orange',
+		primaryColor: getCookie('primaryColor', { req: appCtx.ctx.req }) || 'cyan',
 	};
 };
 
