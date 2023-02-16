@@ -2,7 +2,7 @@ import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import { Box, Divider, Anchor, Loader, Text, Title } from '@mantine/core';
+import { Box, Divider, Anchor, Loader, Title } from '@mantine/core';
 import useSWR from 'swr';
 
 const UserBets = () => {
