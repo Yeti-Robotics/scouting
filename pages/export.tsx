@@ -31,18 +31,10 @@ const Export = () => {
 	return (
 		<>
 			<h1>Export</h1>
-			<Button
-				component='a'
-				variant='contained'
-				onClick={exporter('/api/export-team-data', 'team-data')}
-			>
+			<Button component='a' onClick={exporter('/api/export-team-data', 'team-data')}>
 				Team Data
 			</Button>
-			<Button
-				component='a'
-				variant='contained'
-				onClick={exporter('/api/export-stand-forms', 'stand-forms')}
-			>
+			<Button component='a' onClick={exporter('/api/export-stand-forms', 'stand-forms')}>
 				Stand Form Data
 			</Button>
 		</>
