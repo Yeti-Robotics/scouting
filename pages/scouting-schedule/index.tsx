@@ -2,7 +2,7 @@ import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import { Loader } from '@mantine/core';
+import { Loader, Stack } from '@mantine/core';
 import { Box, Button, Checkbox, useMantineTheme } from '@mantine/core';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -119,28 +119,24 @@ const ScoutingSchedule = () => {
 		<>
 			{user.administrator && (
 				<Link href='/scouting-schedule/create' passHref>
-					<Button component='a' variant='contained'>
-						Create Schedule
-					</Button>
+					<Button component='a'>Create Schedule</Button>
 				</Link>
 			)}
-			{user.administrator && (
-				<Button variant='contained' sx={{ mt: 2 }}>
-					Clear Schedule
-				</Button>
-			)}
-			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+			{user.administrator && <Button sx={{ mt: 2 }}>Clear Schedule</Button>}
+			<Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 				<Checkbox
 					onChange={(e) => setShowMyBlocks(e.target.checked)}
+					label='Show My Blocks'
 					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 					checked={showMyBlocks}
 				/>
 				<Checkbox
 					onChange={(e) => setShowPastBlocks(e.target.checked)}
+					label='Show Past Blocks'
 					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 					checked={showPastBlocks}
 				/>
-			</Box>
+			</Stack>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
 				{data
 					.filter(showPastBlocks ? () => true : (match) => match.startTime > Date.now()) // wont show up is match is in next 5 mins (300000 millisecondss)
