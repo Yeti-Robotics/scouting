@@ -25,6 +25,7 @@ export const ControlledDateTimePicker = <T extends FieldValues>({
 
 	return (
 		<DateTimePicker
+			{...props}
 			name={field.name}
 			onBlur={field.onBlur}
 			value={field.value}
@@ -34,7 +35,6 @@ export const ControlledDateTimePicker = <T extends FieldValues>({
 				field.onChange(valueAsString ? v?.toISOString() : v);
 				onChange?.(v);
 			}}
-			{...props}
 		/>
 	);
 };

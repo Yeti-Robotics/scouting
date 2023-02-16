@@ -37,10 +37,11 @@ export const NumberAutocomplete = <T extends FieldValues>({
 
 	return (
 		<Autocomplete
+			{...props}
 			data={normalizedData}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value}
+			value={field.value?.toString() ?? ''}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(v) => {
@@ -50,7 +51,6 @@ export const NumberAutocomplete = <T extends FieldValues>({
 				field.onChange(parsed);
 				onChange?.(parsed); // from props
 			}}
-			{...props}
 		/>
 	);
 };

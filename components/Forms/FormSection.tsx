@@ -1,4 +1,4 @@
-import { Box, Paper, Title } from '@mantine/core';
+import { Paper, Stack, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 
 interface Props {
@@ -32,18 +32,7 @@ const FormSection = ({ title, color, children }: Props) => {
 					{title}
 				</Title>
 			)}
-			<Box
-				sx={{
-					display: 'flex',
-					width: '100%',
-					flexDirection: 'column',
-					alignItems: 'center',
-					flexGrow: 1,
-					padding: 1,
-				}}
-			>
-				{children}
-			</Box>
+			<Stack align='center'>{children}</Stack>
 		</Paper>
 	);
 };

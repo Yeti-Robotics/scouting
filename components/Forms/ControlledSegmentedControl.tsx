@@ -28,6 +28,7 @@ export const ControlledSegmentedControl = <T extends FieldValues>({
 	return (
 		<Input.Wrapper label={label}>
 			<SegmentedControl
+				{...props}
 				data={data}
 				name={field.name}
 				onBlur={field.onBlur}
@@ -37,7 +38,6 @@ export const ControlledSegmentedControl = <T extends FieldValues>({
 					field.onChange(e);
 					onChange?.(e); // from props
 				}}
-				{...props}
 			/>
 		</Input.Wrapper>
 	);

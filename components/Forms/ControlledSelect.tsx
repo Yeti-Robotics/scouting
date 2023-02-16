@@ -20,6 +20,7 @@ export const ControlledSelect = <T extends FieldValues>({
 
 	return (
 		<Select
+			{...props}
 			data={data}
 			name={field.name}
 			onBlur={field.onBlur}
@@ -30,7 +31,6 @@ export const ControlledSelect = <T extends FieldValues>({
 				field.onChange(e);
 				onChange?.(e); // from props
 			}}
-			{...props}
 		/>
 	);
 };

@@ -24,9 +24,10 @@ export const ControlledNumberInput = <T extends FieldValues>({
 
 	return (
 		<NumberInput
+			{...props}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value}
+			value={field.value ?? ''}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			max={max}
@@ -35,7 +36,6 @@ export const ControlledNumberInput = <T extends FieldValues>({
 				field.onChange(e);
 				onChange?.(e);
 			}}
-			{...props}
 		/>
 	);
 };

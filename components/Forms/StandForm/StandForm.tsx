@@ -3,17 +3,7 @@ import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { CreateStandForm } from '@/models/StandForm';
 import { IconTrash } from '@tabler/icons-react';
-import {
-	Box,
-	Button,
-	Loader,
-	Checkbox,
-	TextInput,
-	Textarea,
-	Stack,
-	Text,
-	Group,
-} from '@mantine/core';
+import { Box, Button, Loader, Checkbox, Textarea, Stack, Text, Group } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +15,7 @@ import { onSubmit } from './onSubmit';
 import { setOnline } from './setOnline';
 import { NumberSelect } from '../NumberSelect';
 import { NumberAutocomplete } from '../NumberAutocomplete';
+import { ControlledNumberInput } from '../ControlledNumberInput';
 
 interface Props {
 	create: boolean;
@@ -65,6 +56,9 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			teleopTopCubes: 0,
 			teleopMidCubes: 0,
 			teleopLowCubes: 0,
+			links: 0,
+			penalties: 0,
+			numberOnCharger: 0,
 			...defaultForm,
 		},
 	});
@@ -111,6 +105,8 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		return <h1>You&#39;ve been banned you sussy baka.</h1>;
 	}
 
+	console.log(teleopDocked);
+
 	return (
 		<Box
 			component='form'
@@ -133,11 +129,13 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			<ConnectionIndicator isOffline={isOffline} />
 			<Stack align='flex'>
 				<FormSection title='Match Info'>
-					<TextInput
+					<ControlledNumberInput
 						label='Match Number'
 						disabled={!canEdit}
 						required
-						{...register('matchNumber', { required: true })}
+						control={control}
+						name='matchNumber'
+						hideControls
 					/>
 					<NumberAutocomplete
 						control={control}
@@ -369,6 +367,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				)}
 				{(create || Boolean(canEdit)) && (
 					<Button
+						type='submit'
 						disabled={submitting === 'fetching'}
 						loading={submitting === 'fetching'}
 					>

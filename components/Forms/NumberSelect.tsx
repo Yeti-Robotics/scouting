@@ -29,7 +29,7 @@ export const NumberSelect = <T extends FieldValues>({
 				.map((n) =>
 					typeof n === 'number'
 						? { label: n.toString(), value: n.toString() }
-						: { label: n.label, value: n.value.toString() },
+						: { label: n.label, value: n.value?.toString() },
 				)
 				.filter((data) => data.value !== undefined && data.value !== null),
 		[data],
@@ -37,10 +37,14 @@ export const NumberSelect = <T extends FieldValues>({
 
 	return (
 		<Select
+			{...props}
 			data={normalizedData}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value}
+			value={
+				/* Must be string here so select can tell what was picked */
+				field.value?.toString() ?? ''
+			}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(v) => {
@@ -50,7 +54,6 @@ export const NumberSelect = <T extends FieldValues>({
 				field.onChange(parsed);
 				onChange?.(parsed); // from props
 			}}
-			{...props}
 		/>
 	);
 };

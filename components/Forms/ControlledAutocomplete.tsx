@@ -23,6 +23,7 @@ export const ControlledAutocomplete = <T extends FieldValues>({
 
 	return (
 		<Autocomplete
+			{...props}
 			data={data}
 			name={field.name}
 			onBlur={field.onBlur}
@@ -33,7 +34,6 @@ export const ControlledAutocomplete = <T extends FieldValues>({
 				field.onChange(e);
 				onChange?.(e);
 			}}
-			{...props}
 		/>
 	);
 };
