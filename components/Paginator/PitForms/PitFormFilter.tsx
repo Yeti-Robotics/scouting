@@ -2,14 +2,14 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { PitFormI } from '@/models/PitForm';
-import { Box, Button, TextInput } from '@mantine/core';
+import { Button, Paper, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
 
 type Spread<T extends object> = T[keyof T];
 
-const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
+const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 	const [query, setQuery] = state;
 	const {
 		control,
@@ -43,8 +43,14 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 	};
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit)}>
-			<h1>Sort</h1>
+		<Paper
+			component='form'
+			onSubmit={handleSubmit(onSubmit)}
+			withBorder
+			shadow='xl'
+			sx={{ display: 'flex', flexDirection: 'column' }}
+		>
+			<Title order={1}>Sort</Title>
 			<ControlledSelect
 				control={control}
 				data={[
@@ -76,7 +82,7 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<h1>Filter</h1>
+			<Title order={1}>Filter</Title>
 			<ControlledNumberInput
 				control={control}
 				name='teamNumber'
@@ -91,7 +97,7 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 				Reset Filters
 			</Button>
 			<Button type='submit'>Update</Button>
-		</Box>
+		</Paper>
 	);
 };
 

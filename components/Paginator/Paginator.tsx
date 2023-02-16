@@ -1,6 +1,6 @@
 import fetcher from '@/lib/fetch';
 import { IconRefresh } from '@tabler/icons-react';
-import { Box, Button, Loader } from '@mantine/core';
+import { Box, Button, Group, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -87,58 +87,58 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 
 	if (!data || loading) {
 		return (
-			<Box>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
 				<Box>
 					<Filter state={[query, setQuery]} />
 				</Box>
-				<Box>
+				<Group>
 					<Loader size='xl' />
-				</Box>
-			</Box>
+				</Group>
+			</Group>
 		);
 	}
 
 	if (error) {
 		return (
-			<Box>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
 				<Box>
 					<Filter state={[query, setQuery]} />
 				</Box>
-				<Box>
+				<Group>
 					<h1>There was an error getting your data.</h1>
-				</Box>
-			</Box>
+				</Group>
+			</Group>
 		);
 	}
 
 	if (!data[0]) {
 		return (
-			<Box>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
 				<Box>
 					<Filter state={[query, setQuery]} />
 				</Box>
-				<Box>
+				<Group>
 					<h1>Nothing matched your query.</h1>
-				</Box>
-			</Box>
+				</Group>
+			</Group>
 		);
 	}
 
 	return (
-		<Box>
+		<Group px='md' w='100%' align='flex'>
 			<ReloadButton onClick={reload} />
 			<Box>
 				<Filter state={[query, setQuery]} />
 			</Box>
-			<Box>
+			<Group align='start'>
 				{data.map((record) => {
 					return <Display key={record._id} record={record} />;
 				})}
-			</Box>
-		</Box>
+			</Group>
+		</Group>
 	);
 };
 

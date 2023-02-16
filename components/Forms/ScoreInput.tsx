@@ -15,7 +15,7 @@ export const ScoreInput = <T extends FieldValues>({ control, name, label, ...pro
 	// Value must be greater than or equal to 0
 	const setValue = (number: (number: number | '') => number) => {
 		const newVal = number(value);
-		if (newVal <= 0) _setValue(0);
+		if (newVal < 0) _setValue(0);
 		else _setValue(newVal);
 	};
 

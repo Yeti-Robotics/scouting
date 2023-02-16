@@ -1,6 +1,6 @@
 import { useUser } from '@/lib/useUser';
 import { Group, Title } from '@mantine/core';
-import { IconUser, IconFile } from '@tabler/icons-react';
+import { IconUser, IconFile, IconFlame } from '@tabler/icons-react';
 import { Button } from '@mantine/core';
 import { openConfirmModal } from '@mantine/modals';
 import { Link } from '@/components/Link';
@@ -11,26 +11,11 @@ interface MenuCardProps {
 	Icon?: JSX.Element;
 }
 
-const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
+const MenuCard = ({ href, text, Icon }: MenuCardProps) => {
 	return (
-		<Link href={href} passHref>
-			<Button
-				component='a'
-				sx={{
-					color: 'text.primary',
-					backgroundColor: 'primary.main',
-					display: 'flex',
-					alignItems: 'center',
-					padding: 2,
-					margin: 1,
-					borderRadius: 1,
-					textTransform: 'none',
-				}}
-				variant='contained'
-			>
-				{Icon} {text}
-			</Button>
-		</Link>
+		<Button component={Link} href={href} leftIcon={Icon}>
+			{text}
+		</Button>
 	);
 };
 
@@ -48,7 +33,7 @@ const Records = () => {
 				)}
 			</Group>
 			<Button
-				variant='contained'
+				leftIcon={<IconFlame />}
 				onClick={() =>
 					openConfirmModal({
 						title: 'Awe you shure? 🥺',
@@ -59,7 +44,7 @@ const Records = () => {
 					})
 				}
 			>
-				Clean db
+				Clean DB
 			</Button>
 			{user?.administrator && (
 				<Button variant='contained' onClick={() => fetch('/api/approve-all')}>

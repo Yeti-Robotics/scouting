@@ -1,18 +1,24 @@
 import { Link } from '@/components/Link';
 import { PitFormI } from '@/models/PitForm';
-import { Box } from '@mantine/core';
+import { Card, Title } from '@mantine/core';
 import { DisplayProps } from '../Paginator';
 
-const PitFormDisplay: React.VFC<DisplayProps<PitFormI>> = ({ record }) => {
+const PitFormDisplay = ({ record }: DisplayProps<PitFormI>) => {
 	return (
-		<Box>
-			<Link href={`/records/pit-forms/${record._id}`} passHref>
-				<Box>
-					<h3>Team: {record.teamNumber}</h3>
-					<h4>Scouter: {record.scouter}</h4>
-				</Box>
-			</Link>
-		</Box>
+		<Card
+			component={Link}
+			href={`/records/pit-forms/${record._id}`}
+			withBorder
+			shadow='md'
+			p='md'
+		>
+			<Title order={3}>
+				<strong>Team:</strong> {record.teamNumber}
+			</Title>
+			<Title order={4}>
+				<strong>Scouter:</strong> {record.scouter}
+			</Title>
+		</Card>
 	);
 };
 

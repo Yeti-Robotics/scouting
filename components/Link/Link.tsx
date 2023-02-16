@@ -5,7 +5,7 @@ type Props = BoxProps & LinkProps;
 
 export const Link = ({ children, ...props }: Props) => {
 	return (
-		<Box component={NextLink} {...props}>
+		<Box component={NextLink} style={{ textDecoration: 'none' }} {...props}>
 			{children}
 		</Box>
 	);

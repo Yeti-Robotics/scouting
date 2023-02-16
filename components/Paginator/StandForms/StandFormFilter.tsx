@@ -2,7 +2,7 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { StandFormI } from '@/models/StandForm';
-import { Box, Button, Checkbox, TextInput } from '@mantine/core';
+import { Button, Checkbox, Paper, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
@@ -43,8 +43,15 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 	};
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit)}>
-			<h1>Sort</h1>
+		<Paper
+			component='form'
+			withBorder
+			shadow='xl'
+			p='md'
+			sx={{ display: 'flex', flexDirection: 'column' }}
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<Title order={2}>Sort</Title>
 			<ControlledSelect
 				control={control}
 				data={[
@@ -76,7 +83,7 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<h1>Filter</h1>
+			<Title order={2}>Filter</Title>
 			<Checkbox {...register('approved', { validate: undefined })} label='Approved' />
 			<ControlledNumberInput control={control} name='matchNumber' label='Match Number' />
 			<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
@@ -88,11 +95,13 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 				{...register('scouter.lastName', { validate: () => true, required: false })}
 				label='Scouter Last Name'
 			/>
-			<Button variant='contained' onClick={reset} sx={{ mb: 2 }}>
+			<Button variant='contained' onClick={reset} mt='md'>
 				Reset Filters
 			</Button>
-			<Button type='submit'>Update</Button>
-		</Box>
+			<Button type='submit' mt='md'>
+				Update
+			</Button>
+		</Paper>
 	);
 };
 

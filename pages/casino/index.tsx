@@ -11,25 +11,9 @@ interface MenuCardProps {
 
 const MenuCard = ({ href, text, Icon }: MenuCardProps) => {
 	return (
-		<Link href={href} passHref>
-			<Button
-				component='a'
-				sx={{
-					color: 'text.primary',
-					backgroundColor: 'primary.main',
-					display: 'flex',
-					alignItems: 'center',
-					padding: 2,
-					margin: 1,
-					borderRadius: 1,
-					textTransform: 'none',
-				}}
-				variant='contained'
-				leftIcon={Icon}
-			>
-				{text}
-			</Button>
-		</Link>
+		<Button href={href} component={Link} leftIcon={Icon}>
+			{text}
+		</Button>
 	);
 };
 
@@ -40,7 +24,7 @@ const Casino = () => {
 
 	return (
 		<>
-			<h1>Records</h1>
+			<h1>Casino</h1>
 			<Group>
 				<MenuCard href='/casino/matches' text='Matches' Icon={<IconSportBillard />} />
 				<MenuCard

@@ -1,21 +1,27 @@
 import { Link } from '@/components/Link';
 import { StandFormI } from '@/models/StandForm';
-import { Box } from '@mantine/core';
+import { Card, Text } from '@mantine/core';
 import { DisplayProps } from '../Paginator';
 
-const StandFormDisplay: React.VFC<DisplayProps<StandFormI>> = ({ record }) => {
+const StandFormDisplay = ({ record }: DisplayProps<StandFormI>) => {
 	return (
-		<Box>
-			<Link href={`/records/stand-forms/${record._id}`} passHref>
-				<Box>
-					<h3>Match: {record.matchNumber}</h3>
-					<h3>Team: {record.teamNumber}</h3>
-					<h4>
-						Scouter: {record.scouter?.firstName} {record.scouter?.lastName}
-					</h4>
-				</Box>
-			</Link>
-		</Box>
+		<Card
+			component={Link}
+			href={`/records/stand-forms/${record._id}`}
+			withBorder
+			shadow='md'
+			p='md'
+		>
+			<Text size='md'>
+				<strong>Match:</strong> {record.matchNumber}
+			</Text>
+			<Text size='md'>
+				<strong>Team:</strong> {record.teamNumber}
+			</Text>
+			<Text size='md'>
+				<strong>Scouter:</strong> {record.scouter?.firstName} {record.scouter?.lastName}
+			</Text>
+		</Card>
 	);
 };
 

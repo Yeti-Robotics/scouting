@@ -2,7 +2,7 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { UserI } from '@/models/User';
-import { Box, Button, TextInput } from '@mantine/core';
+import { Button, Paper, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
@@ -41,8 +41,15 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 	};
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit)}>
-			<h1>Sort</h1>
+		<Paper
+			withBorder
+			shadow='xl'
+			p='md'
+			component='form'
+			sx={{ display: 'flex', flexDirection: 'column' }}
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<Title order={1}>Sort</Title>
 			<ControlledSelect
 				control={control}
 				data={[
@@ -74,7 +81,7 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<h1>Filter</h1>
+			<Title order={1}>Filter</Title>
 			<TextInput
 				{...register('firstName', { validate: undefined, required: false })}
 				label='First Name'
@@ -88,11 +95,13 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 				label='Username'
 			/>
 			<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
-			<Button variant='contained' onClick={reset} sx={{ mb: 2 }}>
+			<Button onClick={reset} mt='md'>
 				Reset Filters
 			</Button>
-			<Button type='submit'>Update</Button>
-		</Box>
+			<Button type='submit' mt='md'>
+				Update
+			</Button>
+		</Paper>
 	);
 };
 
