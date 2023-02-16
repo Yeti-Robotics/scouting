@@ -9,22 +9,32 @@ import {
 	IconShirtSport,
 } from '@tabler/icons-react';
 import { Burger, Drawer, Group, NavLink, Paper, Stack, Title } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Link } from '../Link';
 
 interface ButtonProps {
 	href: string;
 	text: string;
 	Icon?: JSX.Element;
+	setMenuOpened: Dispatch<SetStateAction<boolean>>;
 }
 
-const NavBarButton = ({ href, text, Icon }: ButtonProps) => {
-	return <NavLink label={text} icon={Icon} component={Link} href={href} p='md' />;
+const NavBarButton = ({ href, text, Icon, setMenuOpened }: ButtonProps) => {
+	return (
+		<NavLink
+			label={text}
+			icon={Icon}
+			component={Link}
+			href={href}
+			p='md'
+			onClick={() => setMenuOpened(false)}
+		/>
+	);
 };
 
 const getRandomColorValue = () => Math.ceil(Math.random() * 255);
 
-const CasinoButton = () => {
+const CasinoButton = ({ setMenuOpened }: { setMenuOpened: Dispatch<SetStateAction<boolean>> }) => {
 	const [colorValue, setColorValue] = useState({
 		r: getRandomColorValue(),
 		g: getRandomColorValue(),
@@ -52,6 +62,7 @@ const CasinoButton = () => {
 			label='Casino'
 			icon={<IconMoneybag style={{ color: avgColorDark ? 'white' : 'black' }} />}
 			p='md'
+			onClick={() => setMenuOpened(false)}
 			sx={{
 				backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
 				'&:hover': {
@@ -113,38 +124,45 @@ const NavBar = () => {
 						href={user ? '/logout' : '/login'}
 						text={user ? 'Logout' : 'Login'}
 						Icon={<IconUserCircle style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/stand-scouting'
 						text='Stand Scouting Form'
 						Icon={<IconNote style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/pit-scouting'
 						text='Pit Scouting Form'
 						Icon={<IconNote style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/matches'
 						text='Match Data'
 						Icon={<IconShirtSport style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/scouting-schedule'
 						text='Stand Scouting Schedule'
 						Icon={<IconCalendar style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/records'
 						text='Records'
 						Icon={<IconFile style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
 						href='/export'
 						text='Export Data'
 						Icon={<IconCopy style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
 					/>
-					<CasinoButton />
+					<CasinoButton setMenuOpened={setMenuOpened} />
 				</Stack>
 			</Drawer>
 		</Paper>
