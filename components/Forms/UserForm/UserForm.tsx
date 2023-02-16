@@ -5,7 +5,6 @@ import { Button, Loader, Checkbox, TextInput, PasswordInput, Box, Stack } from '
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormSection from '../FormSection';
 import { onSubmit } from './onSubmit';
 
 interface Props {
