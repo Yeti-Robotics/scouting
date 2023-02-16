@@ -1,7 +1,7 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, Loader, Checkbox, TextInput, PasswordInput, Box } from '@mantine/core';
+import { Button, Loader, Checkbox, TextInput, PasswordInput, Box, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ interface Props {
 export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
+	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const { handleSubmit, register, watch } = useForm<
 		UserI & { newPassword: string; confPassword: string }
 	>({
@@ -49,7 +50,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	}
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, setSubmitting))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -64,7 +65,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					<IconTrash />
 				</Button>
 			)}
-			<FormSection title='Info'>
+			<Stack spacing='sm'>
 				<TextInput
 					label={
 						usernameIsValid === undefined && usernameIsValid !== null
@@ -101,7 +102,6 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				/>
 				<PasswordInput
 					label='New Password'
-					type='password'
 					{...register('newPassword', {
 						required: false,
 						validate: undefined,
@@ -110,7 +110,6 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				/>
 				<PasswordInput
 					label='Confirm Password'
-					type='password'
 					{...register('confPassword', {
 						required: newPassword !== '',
 						minLength: 6,
@@ -132,10 +131,20 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 						required: true,
 					})}
 				/>
-				<Checkbox {...register('administrator')} />
-				<Checkbox {...register('banned')} />
-			</FormSection>
-			{Boolean(canEdit) && <Button type='submit'>{create ? 'Submit' : 'Update'}</Button>}
+				<Checkbox label='Administrator' {...register('administrator')} />
+				<Checkbox label='Banned' {...register('banned')} />
+			</Stack>
+			{Boolean(canEdit) && (
+				<Button
+					type='submit'
+					mt='md'
+					fullWidth
+					disabled={submitting === 'fetching'}
+					loading={submitting === 'fetching'}
+				>
+					{create ? 'Submit' : 'Update'}
+				</Button>
+			)}
 		</Box>
 	);
 };
