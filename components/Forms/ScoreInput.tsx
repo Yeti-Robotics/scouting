@@ -39,11 +39,11 @@ export const ScoreInput = <T extends FieldValues>({
 
 				<NumberInput
 					{...props}
+					styles={{ input: { textAlign: 'center' } }}
 					hideControls
 					value={field.value}
 					onChange={(v) => {
 						if (v === '') v = 0;
-
 						field.onChange(v);
 						props.onChange?.(v);
 					}}

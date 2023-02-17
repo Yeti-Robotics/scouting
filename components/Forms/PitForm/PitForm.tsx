@@ -2,7 +2,7 @@ import { useUser } from '@/lib/useUser';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import { Box, Button, Loader, Textarea } from '@mantine/core';
+import { ActionIcon, Box, Button, Loader, Text, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,7 @@ type Props = {
 	id?: string;
 };
 
-const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => {
+export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const [submitting, setSubmitting] = useState<'fetching' | 'done' | ''>('');
@@ -46,8 +46,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 			onSubmit={handleSubmit(onSubmit(create, user, reset, images, setImages, setSubmitting))}
 		>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
@@ -57,7 +56,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
 			<FormSection title='Images'>
 				<Images state={[images, setImages]} canEdit={canEdit} />
@@ -70,6 +69,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					type='number'
 					disabled={!canEdit}
 					rules={{ required: true, min: 1 }}
+					required
 					min={1}
 				/>
 				<NumberSelect
@@ -78,6 +78,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					label='Where do they end the game?'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					required
 					data={[
 						{
 							value: 0,
@@ -110,6 +111,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					label='What drivetrain do they use?'
 					control={control}
 					rules={{ required: true }}
+					required
 					data={['Swerve', 'West Coast', 'Mechaunum']}
 				/>
 				<NumberSelect
@@ -118,6 +120,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					label='Can they play defense?'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					required
 					data={[
 						{ value: 0, label: "They can't" },
 						{ value: 1, label: 'They can' },
@@ -130,6 +133,7 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					label='Where do they score?'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					required
 					data={[
 						{ value: 0, label: "They don't" },
 						{ value: 1, label: 'Bottom' },
@@ -141,22 +145,17 @@ const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Props) => 
 					{...register('notes', { required: true })}
 					label='Notes'
 					disabled={!canEdit}
+					required
 				/>
-				<p style={{ textAlign: 'center', fontSize: '0.8rem' }}>
+				<Text align='center'>
 					Give some more insight into the team such as cycle times.
-				</p>
+				</Text>
 			</FormSection>
 			{Boolean(canEdit) && (
-				<Button
-					type='submit'
-					loading={submitting === 'fetching'}
-					disabled={submitting === 'fetching'}
-				>
+				<Button type='submit' loading={submitting === 'fetching'}>
 					{create ? 'Submit' : 'Update'}
 				</Button>
 			)}
 		</Box>
 	);
 };
-
-export default PitForm;

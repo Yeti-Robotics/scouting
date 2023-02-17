@@ -1,4 +1,4 @@
-import PitForm from '@/components/Forms/PitForm';
+import { PitForm } from '@/components/Forms/PitForm';
 import { useUser } from '@/lib/useUser';
 import { Loader } from '@mantine/core';
 

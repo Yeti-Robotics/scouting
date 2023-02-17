@@ -52,7 +52,7 @@ export interface CreateScheduleBlock {
 export const POPULATE_SCOUTERS = 'blue1 blue2 blue3 red1 red2 red3';
 
 const ScheduleBlock =
-	(models.scheduleBlock as Model<CreateScheduleBlock>) ||
+	(models?.scheduleBlock as Model<CreateScheduleBlock>) ||
 	model('scheduleBlock', scheduleBlockSchema);
 
 export default ScheduleBlock;

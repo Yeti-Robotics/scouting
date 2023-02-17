@@ -10,12 +10,13 @@ import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import FormSection from '../FormSection';
 import { ScoreInput } from '../ScoreInput';
-import ConnectionIndicator from './ConnectionIndicator';
 import { onSubmit } from './onSubmit';
 import { setOnline } from './setOnline';
 import { NumberSelect } from '../NumberSelect';
 import { NumberAutocomplete } from '../NumberAutocomplete';
 import { ControlledNumberInput } from '../ControlledNumberInput';
+import { notifications } from '@mantine/notifications';
+import { defaultValues } from './defaultValues';
 
 interface Props {
 	create: boolean;
@@ -44,21 +45,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { register, control, handleSubmit, reset, setValue, watch } = useForm<CreateStandForm>({
 		defaultValues: {
-			autoTopCones: 0,
-			autoMidCones: 0,
-			autoLowCones: 0,
-			autoTopCubes: 0,
-			autoMidCubes: 0,
-			autoLowCubes: 0,
-			teleopTopCones: 0,
-			teleopMidCones: 0,
-			teleopLowCones: 0,
-			teleopTopCubes: 0,
-			teleopMidCubes: 0,
-			teleopLowCubes: 0,
-			links: 0,
-			penalties: 0,
-			numberOnCharger: 0,
+			...defaultValues,
 			...defaultForm,
 		},
 	});
@@ -66,7 +53,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	const autoDocked = watch('autoDocked');
 	const teleopDocked = watch('teleopDocked');
 
-	const handleOnline = useCallback(() => setOnline(isOffline, setIsOffline)(), []);
+	const handleOnline = useCallback(
+		() => setOnline(isOffline, setIsOffline)(),
+		[isOffline, setIsOffline],
+	);
 
 	useEffect(() => {
 		const setOffline = () => {
@@ -96,6 +86,17 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		}
 	}, [autoDocked, teleopDocked]);
 
+	useEffect(() => {
+		if (isOffline)
+			notifications.show({
+				title: isOffline ? 'You went offline 😔' : 'Back online 😁',
+				message: isOffline
+					? 'You just went offline. Any forms you submit will be saved on your device and submitted when you have an internet connection. Be sure to keep this page open. Click me to dismiss.'
+					: 'You are back online, any forms you may have submitted while offline were automagically submitted. Click me to dismiss.',
+				autoClose: 10000,
+			});
+	}, [isOffline]);
+
 	if (!user && create) {
 		return <Loader />;
 	}
@@ -104,8 +105,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	if (create && user?.banned) {
 		return <h1>You&#39;ve been banned you sussy baka.</h1>;
 	}
-
-	console.log(teleopDocked);
 
 	return (
 		<Box
@@ -126,7 +125,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					<IconTrash />
 				</Button>
 			)}
-			<ConnectionIndicator isOffline={isOffline} />
 			<Stack align='flex'>
 				<FormSection title='Match Info'>
 					<ControlledNumberInput

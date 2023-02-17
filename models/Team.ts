@@ -11,6 +11,6 @@ export interface TeamI {
 	team_name: string;
 }
 
-const Team = models.team || model('team', teamSchema);
+const Team = models?.team || model('team', teamSchema);
 
 export default Team;

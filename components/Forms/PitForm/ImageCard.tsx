@@ -1,6 +1,6 @@
 import { Reader } from '@/lib/Reader';
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button, Group, Image, rem, Text, useMantineTheme } from '@mantine/core';
+import { Box, Button, Group, Image, rem, Stack, Text, useMantineTheme } from '@mantine/core';
 import { Dropzone } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { useEffect, useRef } from 'react';
@@ -34,7 +34,7 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 	}, []);
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+		<Stack>
 			<Image style={{ alignSelf: 'center' }} ref={imageRef} alt='Pit Image' />
 			{!image._id && (
 				<>
@@ -96,7 +96,7 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 					</Button>
 				</>
 			)}
-		</Box>
+		</Stack>
 	);
 };
 

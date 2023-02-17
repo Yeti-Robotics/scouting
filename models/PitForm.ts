@@ -26,6 +26,6 @@ export interface PitFormI {
 	createdAt: string;
 }
 
-const PitForm = (models.pitForm as Model<PitFormI>) || model('pitForm', pitFormSchema);
+const PitForm = (models?.pitForm as Model<PitFormI>) || model('pitForm', pitFormSchema);
 
 export default PitForm;

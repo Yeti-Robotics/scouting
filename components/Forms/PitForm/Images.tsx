@@ -1,5 +1,5 @@
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button, Group } from '@mantine/core';
+import { Button, Group, Stack } from '@mantine/core';
 import ImageCard from './ImageCard';
 
 interface Props {
@@ -42,7 +42,7 @@ const Images = ({ state, canEdit }: Props) => {
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+			<Stack>
 				{images.map((image, i) => (
 					<ImageCard
 						key={image._id || image.listId || Date.now()}
@@ -62,7 +62,7 @@ const Images = ({ state, canEdit }: Props) => {
 						Add Image
 					</Button>
 				</Group>
-			</Box>
+			</Stack>
 		</>
 	);
 };

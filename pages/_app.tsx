@@ -1,7 +1,7 @@
 import 'dayjs/locale/en';
 import Layout from '@/components/Layout';
 import type { AppContext, AppInitialProps, AppProps } from 'next/app';
-import { useState, useMemo, ReactNode, useEffect } from 'react';
+import { useState, useMemo, ReactNode } from 'react';
 import Head from 'next/head';
 import {
 	ColorScheme,
@@ -19,6 +19,9 @@ import useSWR from 'swr';
 import { UserI } from '@/models/User';
 import fetcher from '@/lib/fetch';
 import { DatesProvider } from '@mantine/dates';
+import { authToken } from '@/middleware/auth';
+import { connectToDbB } from '@/middleware/connect-db';
+import { Notifications } from '@mantine/notifications';
 
 interface _App<P> {
 	(props: AppProps & P): ReactNode;
@@ -51,19 +54,9 @@ const MyApp: _App<{
 	primaryColor: initialPrimaryColor,
 }) => {
 	const isNoLayout = noLayoutPaths.includes(router.pathname);
-	const isPublic = publicPaths.includes(router.pathname);
 
-	const {
-		data: user,
-		error,
-		mutate,
-	} = useSWR('/api/auth/decode', fetcher, { fallbackData: initialUser });
-
-	useEffect(() => {
-		if ((!user || error) && !isPublic) {
-			mutate(undefined);
-			router.push(`/login?from=${router.pathname}`);
-		}
+	useSWR('/api/auth/decode', fetcher, {
+		fallbackData: initialUser,
 	});
 
 	const [primaryColor, _setPrimaryColor] = useState(initialPrimaryColor);
@@ -98,6 +91,7 @@ const MyApp: _App<{
 			</Head>
 			<ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
 				<MantineProvider withGlobalStyles withNormalizeCSS theme={theme as any}>
+					<Notifications position='bottom-left' />
 					<DatesProvider settings={{ locale: 'en', weekendDays: [6, 0] }}>
 						<ColorProvider
 							primaryColor={primaryColor}
@@ -123,10 +117,12 @@ const MyApp: _App<{
 MyApp.getInitialProps = async (appCtx) => {
 	const appProps = await App.getInitialProps(appCtx);
 	const cookies = parse(appCtx.ctx.req?.headers.cookie || '');
+	await connectToDbB();
+	const user = await authToken(cookies['access_token']);
 
 	return {
 		...appProps,
-		user: undefined,
+		user,
 		colorScheme: (getCookie('colorScheme', { req: appCtx.ctx.req }) || 'light') as ColorScheme,
 		primaryColor: getCookie('primaryColor', { req: appCtx.ctx.req }) || 'cyan',
 	};

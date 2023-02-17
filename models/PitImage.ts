@@ -26,6 +26,6 @@ export interface PitImageRes {
 	};
 }
 
-const PitImage = (models.pitImage as Model<PitImageI>) || model('pitImage', pitImageSchema);
+const PitImage = (models?.pitImage as Model<PitImageI>) || model('pitImage', pitImageSchema);
 
 export default PitImage;

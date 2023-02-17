@@ -1,6 +1,6 @@
 import { CreateStandForm } from '@/models/StandForm';
 
-export const defaultForm: Partial<CreateStandForm> = {
+export const defaultValues: Partial<CreateStandForm> = {
 	autoTopCones: 0,
 	autoMidCones: 0,
 	autoLowCones: 0,
