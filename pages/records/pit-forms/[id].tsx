@@ -1,4 +1,4 @@
-import PitForm from '@/components/Forms/PitForm';
+import { PitForm } from '@/components/Forms/PitForm';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { PitFormI } from '@/models/PitForm';
