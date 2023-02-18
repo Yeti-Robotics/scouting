@@ -2,7 +2,7 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { UserI } from '@/models/User';
-import { Button, Paper, TextInput, Title } from '@mantine/core';
+import { Button, Group, Paper, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
@@ -50,53 +50,57 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<Title order={1}>Sort</Title>
-			<ControlledSelect
-				control={control}
-				data={[
-					{ value: 'createdAt', label: 'Submission Time' },
-					{ value: '_id', label: 'id' },
-				]}
-				name='sortBy'
-				label='Sort By'
-			/>
+			<Group align='center' position='center'>
+				<ControlledSelect
+					control={control}
+					data={[
+						{ value: 'createdAt', label: 'Submission Time' },
+						{ value: '_id', label: 'id' },
+					]}
+					name='sortBy'
+					label='Sort By'
+				/>
 
-			<NumberSelect
-				control={control}
-				data={[
-					{
-						value: 1,
-						label:
-							sortBy === 'createdAt' || sortBy === 'updatedAt'
-								? 'most recent to least recent'
-								: 'low to high',
-					},
-					{
-						value: -1,
-						label:
-							sortBy === 'createdAt' || sortBy === 'updatedAt'
-								? 'least recent to most recent'
-								: 'high to low',
-					},
-				]}
-				name='sortFrom'
-				label='Sort From'
-			/>
+				<NumberSelect
+					control={control}
+					data={[
+						{
+							value: 1,
+							label:
+								sortBy === 'createdAt' || sortBy === 'updatedAt'
+									? 'most recent to least recent'
+									: 'low to high',
+						},
+						{
+							value: -1,
+							label:
+								sortBy === 'createdAt' || sortBy === 'updatedAt'
+									? 'least recent to most recent'
+									: 'high to low',
+						},
+					]}
+					name='sortFrom'
+					label='Sort From'
+				/>
+			</Group>
 			<Title pt='md' order={1}>
 				Filter
 			</Title>
-			<TextInput
-				{...register('firstName', { validate: undefined, required: false })}
-				label='First Name'
-			/>
-			<TextInput
-				{...register('lastName', { validate: undefined, required: false })}
-				label='Last Name'
-			/>
-			<TextInput
-				{...register('username', { validate: undefined, required: false })}
-				label='Username'
-			/>
-			<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
+			<Group>
+				<TextInput
+					{...register('firstName', { validate: undefined, required: false })}
+					label='First Name'
+				/>
+				<TextInput
+					{...register('lastName', { validate: undefined, required: false })}
+					label='Last Name'
+				/>
+				<TextInput
+					{...register('username', { validate: undefined, required: false })}
+					label='Username'
+				/>
+				<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
+			</Group>
 			<Button onClick={reset} mt='md'>
 				Reset Filters
 			</Button>

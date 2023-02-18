@@ -1,6 +1,6 @@
 import fetcher from '@/lib/fetch';
 import { IconRefresh } from '@tabler/icons-react';
-import { Box, Button, Group, Loader } from '@mantine/core';
+import { Box, Button, Group, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -128,17 +128,17 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	}
 
 	return (
-		<Group px='md' w='100%' align='flex' position='center'>
+		<Stack px='md' align='center' justify='center'>
 			<ReloadButton onClick={reload} />
 			<Box>
 				<Filter state={[query, setQuery]} />
 			</Box>
-			<Group align='start' position='center'>
+			<Group align='center' position='center'>
 				{data.map((record) => {
 					return <Display key={record._id} record={record} />;
 				})}
 			</Group>
-		</Group>
+		</Stack>
 	);
 };
 
