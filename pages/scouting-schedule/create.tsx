@@ -1,66 +1,45 @@
-import Select from '@/components/Forms/Select';
-import TextInput from '@/components/Forms/TextInput';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { NumberSelect } from '@/components/Forms/NumberSelect';
+import { Group, Loader, Stack } from '@mantine/core';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import {
-	Box,
-	Checkbox,
-	Divider,
-	FormControlLabel,
-	Button,
-	CircularProgress,
-	MenuItem,
-} from '@mui/material';
+import { Box, Checkbox, Divider, Button } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
+import { ControlledDateTimePicker } from '@/components/Forms/ControlledDateTimePicker';
 
-const UserDisplay: React.VFC<{
+const UserDisplay = ({
+	user,
+	state,
+}: {
 	user: UserI;
 	state: [Record<string, boolean>, React.Dispatch<React.SetStateAction<Record<string, boolean>>>];
-}> = ({ user, state }) => {
+}) => {
 	const [results, setResults] = state;
 	return (
-		<>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					width: '100%',
-					padding: '0 0.5rem',
-				}}
-			>
-				<Box mr={1}>
+		<div key={user._id}>
+			<Group align='center' position='center' px='md'>
+				<Box>
 					{user.firstName} {user.lastName}
 				</Box>
-				<Box ml={1}>
-					<FormControlLabel
-						label='Can Scout'
-						control={
-							<Checkbox
-								onChange={(e) =>
-									setResults((prev) => ({
-										...prev,
-										[user._id]: e.target.checked,
-									}))
-								}
-								sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-								checked={
-									results[user._id] !== undefined
-										? results[user._id]
-										: user.canScout
-								}
-							/>
+				<Box>
+					<Checkbox
+						onChange={(e) =>
+							setResults((prev) => ({
+								...prev,
+								[user._id]: e.target.checked,
+							}))
+						}
+						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						checked={
+							results[user._id] !== undefined ? results[user._id] : user.canScout
 						}
 					/>
 				</Box>
-			</Box>
+			</Group>
 			<Divider />
-		</>
+		</div>
 	);
 };
 
@@ -107,92 +86,80 @@ const Create = () => {
 		setFetching('done');
 	};
 
-	if (!user || !users) return <LoadingLayout />;
+	if (!user || !users) return <Loader size='xl' />;
 
-	if (!user.administrator)
-		return (
-			<Layout>
-				<h1>You are not authorized to use this.</h1>
-			</Layout>
-		);
+	if (!user.administrator) return <h1>You are not authorized to use this.</h1>;
 
 	return (
-		<Layout>
-			<form
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					width: '100%',
-					padding: '1rem',
-				}}
-				onSubmit={handleSubmit(submitCanScouts)}
-			>
-				<Select name='blockLength' label='Block Length' control={control} defaultValue={30}>
-					<MenuItem value={15}>15</MenuItem>
-					<MenuItem value={30}>30</MenuItem>
-					<MenuItem value={45}>45</MenuItem>
-					<MenuItem value={60}>60</MenuItem>
-				</Select>
-				<TextInput
-					name='startTime'
-					label='Start Time'
-					control={control}
-					type='datetime-local'
-				/>
-				<TextInput
-					name='endTime'
-					label='End Time'
-					control={control}
-					type='datetime-local'
-				/>
-				<TextInput
-					name='lunchStartTime'
-					label='Lunch Start Time'
-					control={control}
-					type='datetime-local'
-				/>
-				<TextInput
-					name='lunchEndTime'
-					label='Lunch End Time'
-					control={control}
-					type='datetime-local'
-				/>
+		<>
+			<Box component='form' m='md' onSubmit={handleSubmit(submitCanScouts)}>
+				<Stack align='flex'>
+					<NumberSelect
+						name='blockLength'
+						label='Block Length'
+						control={control}
+						data={[15, 30, 45, 60]}
+					/>
+					<ControlledDateTimePicker
+						label='Start Time'
+						name='startTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Start Time'
+						name='endTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Lunch Start Time'
+						name='lunchStartTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Lunch End Time'
+						name='lunchEndTime'
+						required
+						control={control}
+						valueAsString
+					/>
 
-				<FormControlLabel
-					label='Auto Generate?'
-					control={
-						<Checkbox
-							onChange={(e) => setAuto(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={auto}
-						/>
-					}
-				/>
+					<Checkbox
+						onChange={(e) => setAuto(e.target.checked)}
+						checked={auto}
+						label='Auto Generate'
+					/>
 
-				{auto && (
-					<>
-						<h2>Select Scouters</h2>
-						<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-							{users.map((user, i) => (
-								<>
-									{i === 0 && <Divider />}
-									<UserDisplay
-										key={user._id}
-										user={user}
-										state={[results, setResults]}
-									/>
-								</>
-							))}
-						</Box>
-					</>
-				)}
-				<Button type='submit' variant='contained' sx={{ mt: 2 }}>
-					{fetching === 'fetching' && <CircularProgress color='inherit' size='1rem' />}
-					Submit
-				</Button>
-			</form>
-		</Layout>
+					{auto && (
+						<>
+							<h2>Select Scouters</h2>
+							<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+								{users.map((user, i) => (
+									<>
+										{i === 0 && <Divider />}
+										<UserDisplay
+											key={user._id}
+											user={user}
+											state={[results, setResults]}
+										/>
+									</>
+								))}
+							</Box>
+						</>
+					)}
+				</Stack>
+				<Stack align='center'>
+					<Button type='submit' mt='md' loading={fetching === 'fetching'}>
+						Submit
+					</Button>
+				</Stack>
+			</Box>
+		</>
 	);
 };
 

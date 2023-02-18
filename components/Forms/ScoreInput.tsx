@@ -1,126 +1,67 @@
-import { Box, Button, SxProps, TextField, Theme } from '@mui/material';
-import { ChangeEvent } from 'react';
-import {
-	Control,
-	Controller,
-	ControllerProps,
-	ControllerRenderProps,
-	FieldValues,
-	Path,
-	PathValue,
-} from 'react-hook-form';
-import { addRequired } from './formHelpers';
+import { Group, ActionIcon, NumberInputProps, Input, NumberInput } from '@mantine/core';
+import { Control, FieldValues, Path, useController, UseControllerProps } from 'react-hook-form';
 
-interface Props<T extends FieldValues> {
+type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
-	defaultValue?: PathValue<T, Path<T>>;
-	onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-	rules?: ControllerProps['rules'];
-	label?: string;
-	disabled?: boolean;
-	max?: number;
-}
+	rules?: UseControllerProps<T>['rules'];
+} & NumberInputProps;
 
-const defaultSx: SxProps<Theme> = {
-	color: 'palette.action.hover',
-	borderRadius: 0,
-};
-
-const defaultInputSx: SxProps<Theme> = {
-	width: '100%',
-};
-
-const increment = <T extends FieldValues>(field: ControllerRenderProps<T>, max?: number) => {
-	if (max !== undefined && field.value + 1 > max) return;
-	field.onChange(field.value + 1);
-};
-
-const decrement = <T extends FieldValues>(field: ControllerRenderProps<T>) => {
-	if (field.value != 0) field.onChange(field.value - 1);
-};
-
-const ScoreInput = <T extends FieldValues>({
-	name,
+export const ScoreInput = <T extends FieldValues>({
 	control,
-	rules,
-	defaultValue,
-	onChange = () => {},
+	name,
 	label,
-	disabled,
-	max,
+	rules,
+	...props
 }: Props<T>) => {
+	const { field, fieldState } = useController({
+		control,
+		name,
+		rules: { required: props.required, min: props.min, max: props.max, ...rules },
+	});
+
+	const change = (v: number) => {
+		if (props.min !== undefined && v < props.min) return;
+		if (props.max !== undefined && v > props.max) return;
+		field.onChange(v);
+	};
+
 	return (
-		<Box
-			sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				m: 1,
-				width: '100%',
-			}}
-		>
-			<Box sx={{ color: 'palette.text.secondary' }}>
-				{label ? addRequired(rules?.required, label) : addRequired(rules?.required, name)}
-			</Box>
-			<Box sx={{ display: 'flex', width: '100%' }}>
-				<Controller
-					name={name}
-					defaultValue={defaultValue}
-					control={control}
-					rules={{ required: true, ...rules }}
-					render={({ field, fieldState: { error } }) => (
-						<>
-							<Button
-								sx={{
-									fontSize: '16px',
-									fontWeight: 'bold',
-									position: 'relative',
-									left: 1,
-									borderTopRightRadius: 0,
-									borderBottomRightRadius: 0,
-								}}
-								onClick={() => decrement(field)}
-								variant='contained'
-								disabled={disabled}
-							>
-								-
-							</Button>
-							<TextField
-								type='number'
-								sx={{ defaultSx, ...defaultInputSx }}
-								inputRef={field.ref}
-								name={field.name}
-								onChange={(e) => {
-									field.onChange(e);
-									onChange(e); // from props
-								}}
-								onBlur={field.onBlur}
-								value={field.value}
-								disabled={true}
-								error={Boolean(error)}
-							/>
-							<Button
-								sx={{
-									fontSize: '16px',
-									fontWeight: 'bold',
-									position: 'relative',
-									right: 1,
-									borderTopLeftRadius: 0,
-									borderBottomLeftRadius: 0,
-								}}
-								onClick={() => increment(field, max)}
-								variant='contained'
-								disabled={disabled}
-							>
-								+
-							</Button>
-						</>
-					)}
+		<Input.Wrapper label={label} required={props.required}>
+			<Group spacing={8}>
+				<ActionIcon
+					size={36}
+					variant='default'
+					onClick={() => change(typeof field.value !== 'number' ? -1 : field.value - 1)}
+				>
+					-
+				</ActionIcon>
+
+				<NumberInput
+					{...props}
+					styles={{ input: { textAlign: 'center' } }}
+					hideControls
+					value={field.value}
+					onChange={(v) => {
+						if (v === '') v = 0;
+						field.onChange(v);
+						props.onChange?.(v);
+					}}
+					name={field.name}
+					onBlur={field.onBlur}
+					ref={field.ref}
+					error={fieldState.error?.message}
+					disabled
 				/>
-			</Box>
-		</Box>
+
+				<ActionIcon
+					size={36}
+					variant='default'
+					onClick={() => change(typeof field.value !== 'number' ? 1 : field.value + 1)}
+				>
+					+
+				</ActionIcon>
+			</Group>
+		</Input.Wrapper>
 	);
 };
-
-export default ScoreInput;

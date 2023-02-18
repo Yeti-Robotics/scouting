@@ -1,19 +1,17 @@
 import fetcher from '@/lib/fetch';
 import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
-import { ScheduleBlockI } from '@/models/ScheduleBlock';
+import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import Delete from '@mui/icons-material/Delete';
-import { Button, CircularProgress } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { ActionIcon, AutocompleteItem, Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import Autocomplete from '../Autocomplete';
+import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
 import { onSubmit } from './onSubmit';
+import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
 
 interface Props {
 	create: boolean;
@@ -22,25 +20,35 @@ interface Props {
 	id?: string;
 }
 
-const getOptLabel = (opt: any) =>
-	opt.firstName ? `${opt.firstName} ${opt.lastName} (${opt.username})` : opt.label ?? '';
+const fullBlockToCreate = (fullBlock: ScheduleBlockI | undefined): CreateScheduleBlock => {
+	(fullBlock as unknown) = {
+		...fullBlock,
+		blue1: fullBlock?.blue1?.username,
+		blue2: fullBlock?.blue2?.username,
+		blue3: fullBlock?.blue3?.username,
+		red1: fullBlock?.red1?.username,
+		red2: fullBlock?.red2?.username,
+		red3: fullBlock?.red3?.username,
+	};
+	return fullBlock as CreateScheduleBlock;
+};
 
-const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
+export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
-	const { control, handleSubmit } = useForm<ScheduleBlockI>({
+	const { control, handleSubmit } = useForm<CreateScheduleBlock>({
 		defaultValues: {
-			...defaultBlock,
+			...fullBlockToCreate(defaultBlock),
 			startTime: numToDateTimeInput(defaultBlock.startTime) as any,
 			endTime: numToDateTimeInput(defaultBlock.endTime) as any,
 		},
 	});
 
-	if (!user || !users) return <CircularProgress />;
-	const options = users.map((user) => ({
-		username: user.username,
-		_id: user._id,
+	if (!user || !users) return <Loader size='xl' />;
+	const usersMap = Object.fromEntries(users.map((user) => [user.username, user]));
+	const options: AutocompleteItem[] = users.map((user) => ({
+		value: user.username,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
 	}));
 
@@ -53,10 +61,11 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, usersMap))}>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
@@ -65,89 +74,81 @@ const BlockForm: React.VFC<Props> = ({ create, defaultBlock, canEdit, id }) => {
 						});
 					}}
 				>
-					<Delete />
-				</Button>
+					<IconTrash />
+				</ActionIcon>
 			)}
 			<FormSection title='Info'>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue1'
 					label='Blue 1'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue2'
 					label='Blue 2'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='blue3'
 					label='Blue 3'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red1'
 					label='Red 1'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red2'
 					label='Red 2'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<Autocomplete
-					options={options}
+				<ControlledAutocomplete
 					control={control}
-					isOptionEqualToValue={(opt, v) => opt.username === v.username}
-					getOptionLabel={getOptLabel}
+					data={options}
 					name='red3'
 					label='Red 3'
 					disabled={!canEdit}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<TextInput
+				<ControlledDateTimePicker
 					control={control}
 					name='startTime'
 					label='Start Time'
-					type='datetime-local'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					valueAsString
 				/>
-				<TextInput
+				<ControlledDateTimePicker
 					control={control}
 					name='endTime'
 					label='End Time'
-					type='datetime-local'
 					disabled={!canEdit}
 					rules={{ required: true }}
+					valueAsString
 				/>
 			</FormSection>
-			<SubmitButton disabled={!canEdit}>{create ? 'Submit' : 'Update'}</SubmitButton>
-		</Form>
+			<Stack align='center' mt='md'>
+				<Button type='submit' disabled={!canEdit}>
+					{create ? 'Submit' : 'Update'}
+				</Button>
+			</Stack>
+		</Box>
 	);
 };
 

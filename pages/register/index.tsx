@@ -1,12 +1,7 @@
-import RegisterForm from '@/components/Forms/RegisterForm';
-import Layout from '@/components/Layout';
+import { RegisterForm } from '@/components/Forms/RegisterForm';
 
 const Register = () => {
-	return (
-		<Layout>
-			<RegisterForm />
-		</Layout>
-	);
+	return <RegisterForm />;
 };
 
 export default Register;

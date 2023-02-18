@@ -1,21 +1,18 @@
 import { useUser } from '@/lib/useUser';
-import { Box } from '@mui/material';
+import { Box, Button, Paper, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormSection from '../FormSection';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
 
 interface FormSchema {
 	username: string;
 	password: string;
 }
 
-const LoginForm = () => {
+export const LoginForm = () => {
 	const router = useRouter();
 	const { mutate } = useUser({ canRedirect: false });
-	const { handleSubmit, control } = useForm<FormSchema>();
+	const { handleSubmit, register } = useForm<FormSchema>();
 	const [loginSuccess, setLoginSuccess] = useState<boolean>();
 
 	const onSubmit = async (data: FormSchema) => {
@@ -29,32 +26,24 @@ const LoginForm = () => {
 	};
 
 	return (
-		<Box>
-			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
-				<FormSection title='Login'>
-					<TextInput
-						control={control}
-						name='username'
-						label='Username'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='password'
-						label='Password'
-						type='password'
-						rules={{ required: true }}
-					/>
-					<SubmitButton>Submit</SubmitButton>
-					{loginSuccess !== undefined && !loginSuccess && (
-						<p style={{ color: 'red', fontSize: '1rem' }}>
-							Username or password incorrect
-						</p>
-					)}
-				</FormSection>
-			</form>
-		</Box>
+		<Paper withBorder shadow='xl'>
+			<Box
+				component='form'
+				p='md'
+				sx={{ display: 'flex', flexDirection: 'column' }}
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				<TextInput label='Username' {...register('username', { required: true })} />
+				<PasswordInput label='Password' {...register('password', { required: true })} />
+				<Button mt='md' type='submit'>
+					Submit
+				</Button>
+				{loginSuccess !== undefined && !loginSuccess && (
+					<Text style={{ color: 'red', fontSize: '1rem' }}>
+						Username or password incorrect
+					</Text>
+				)}
+			</Box>
+		</Paper>
 	);
 };
-
-export default LoginForm;

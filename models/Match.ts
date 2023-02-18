@@ -126,6 +126,6 @@ export interface Bet {
 }
 
 const Match =
-	(models.match as MatchModelType) || model<MatchI, MatchModelType>('match', matchSchema);
+	(models?.match as MatchModelType) || model<MatchI, MatchModelType>('match', matchSchema);
 
 export default Match;

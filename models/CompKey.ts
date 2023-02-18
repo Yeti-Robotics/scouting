@@ -15,6 +15,6 @@ export interface CompKeyI {
 	updatedAt: string;
 }
 
-const CompKey = (models.compKey as Model<CompKeyI>) || model('compKey', compKeySchema);
+const CompKey = (models?.compKey as Model<CompKeyI>) || model('compKey', compKeySchema);
 
 export default CompKey;

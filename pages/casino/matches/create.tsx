@@ -1,25 +1,15 @@
 import MatchForm from '@/components/Forms/MatchForm';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 import { useUser } from '@/lib/useUser';
+import { Loader } from '@mantine/core';
 
 const CreateMatch = () => {
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 
-	if (!user) return <LoadingLayout />;
+	if (!user) return <Loader size='xl' />;
 
-	if (user.banned)
-		return (
-			<Layout>
-				<h1>You&#39;re banned you sussy baka.</h1>
-			</Layout>
-		);
+	if (user.banned) return <h1>You&#39;re banned you sussy baka.</h1>;
 
-	return (
-		<Layout>
-			<MatchForm create={true} canEdit={user.administrator} />
-		</Layout>
-	);
+	return <MatchForm create={true} canEdit={user.administrator} />;
 };
 
 export default CreateMatch;

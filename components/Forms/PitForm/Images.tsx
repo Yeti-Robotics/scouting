@@ -1,5 +1,5 @@
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button } from '@mui/material';
+import { Button, Group, Stack } from '@mantine/core';
 import ImageCard from './ImageCard';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 let id = 0;
 
-const Images: React.VFC<Props> = ({ state, canEdit }) => {
+const Images = ({ state, canEdit }: Props) => {
 	const [images, setImages] = state;
 
 	const addImage = () => {
@@ -27,7 +27,6 @@ const Images: React.VFC<Props> = ({ state, canEdit }) => {
 	};
 
 	const setImage = async (index: number, imageFile: File | undefined) => {
-		if (!images[index]) throw new Error('Set Image provided index out of bounds.');
 		const newImages = [...images];
 
 		if (!imageFile) {
@@ -42,7 +41,7 @@ const Images: React.VFC<Props> = ({ state, canEdit }) => {
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+			<Stack>
 				{images.map((image, i) => (
 					<ImageCard
 						key={image._id || image.listId || Date.now()}
@@ -52,17 +51,12 @@ const Images: React.VFC<Props> = ({ state, canEdit }) => {
 						setImage={setImage}
 					/>
 				))}
-				<Box display='flex' justifyContent='center'>
-					<Button
-						sx={{ mt: 1 }}
-						variant='contained'
-						disabled={!canEdit}
-						onClick={addImage}
-					>
+				<Group position='center'>
+					<Button mt='md' disabled={!canEdit} onClick={addImage}>
 						Add Image
 					</Button>
-				</Box>
-			</Box>
+				</Group>
+			</Stack>
 		</>
 	);
 };

@@ -1,16 +1,12 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
-import { Delete } from '@mui/icons-material';
-import { Button, CircularProgress } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { Button, Loader, Checkbox, TextInput, PasswordInput, Box, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Checkbox from '../Checkbox';
-import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
 import { onSubmit } from './onSubmit';
+import { ControlledNumberInput } from '../ControlledNumberInput';
 
 interface Props {
 	create: boolean;
@@ -19,10 +15,11 @@ interface Props {
 	id?: string;
 }
 
-const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
+export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
-	const { handleSubmit, control, watch } = useForm<
+	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
+	const { handleSubmit, register, control, watch } = useForm<
 		UserI & { newPassword: string; confPassword: string }
 	>({
 		defaultValues: defaultUser,
@@ -41,7 +38,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 	const newPassword = watch('newPassword');
 
 	if (!user) {
-		return <CircularProgress />;
+		return <Loader size='xl' />;
 	}
 
 	if (!user.administrator) {
@@ -53,7 +50,7 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, setSubmitting))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -65,13 +62,11 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 						});
 					}}
 				>
-					<Delete />
+					<IconTrash />
 				</Button>
 			)}
-			<FormSection title='Info'>
+			<Stack spacing='sm'>
 				<TextInput
-					control={control}
-					name='username'
 					label={
 						usernameIsValid === undefined && usernameIsValid !== null
 							? // if is undefined and not null it is loading state
@@ -81,68 +76,73 @@ const UserForm: React.VFC<Props> = ({ create, defaultUser, canEdit, id }) => {
 							  'Username'
 							: 'Username is taken'
 					}
-					rules={{
+					required
+					{...register('username', {
 						required: true,
 						minLength: 3,
 						validate: (v) => {
 							if (v === defaultUser?.username) return true;
 							return Boolean(usernameIsValid);
 						},
-					}}
+					})}
 					onChange={validateUsername}
 				/>
 				<TextInput
-					control={control}
-					name='firstName'
 					label='First Name'
 					disabled={!canEdit}
-					rules={{ required: true }}
+					required
+					{...register('firstName', {
+						required: true,
+					})}
 				/>
 				<TextInput
-					control={control}
-					name='lastName'
 					label='Last Name'
 					disabled={!canEdit}
-					rules={{ required: true }}
+					required
+					{...register('lastName', {
+						required: true,
+					})}
 				/>
-				<TextInput
-					control={control}
-					name='newPassword'
+				<PasswordInput
 					label='New Password'
-					type='password'
-					rules={{ required: false, validate: undefined, minLength: 6 }}
+					{...register('newPassword', {
+						required: false,
+						validate: undefined,
+						minLength: 6,
+					})}
 				/>
-				<TextInput
-					control={control}
-					name='confPassword'
+				<PasswordInput
 					label='Confirm Password'
-					type='password'
-					rules={{
-						required: newPassword !== '',
+					{...register('confPassword', {
+						required: !!newPassword,
 						minLength: 6,
 						validate: (v) => v === newPassword,
-					}}
+					})}
 				/>
 				<TextInput
-					control={control}
-					name='teamNumber'
 					label='Team Number'
 					type='number'
-					rules={{ required: true, min: 1 }}
+					required
+					{...register('teamNumber', {
+						required: true,
+						min: 1,
+					})}
 				/>
-				<TextInput
-					control={control}
-					name='coins'
-					label='Coins'
-					type='number'
-					rules={{ required: true }}
-				/>
-				<Checkbox control={control} name='administrator' />
-				<Checkbox control={control} name='banned' />
-			</FormSection>
-			{Boolean(canEdit) && <SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>}
-		</Form>
+				<ControlledNumberInput label='Coins' name='coins' control={control} required />
+				<Checkbox label='Administrator' {...register('administrator')} />
+				<Checkbox label='Banned' {...register('banned')} />
+			</Stack>
+			{Boolean(canEdit) && (
+				<Button
+					type='submit'
+					mt='md'
+					fullWidth
+					disabled={submitting === 'fetching'}
+					loading={submitting === 'fetching'}
+				>
+					{create ? 'Submit' : 'Update'}
+				</Button>
+			)}
+		</Box>
 	);
 };
-
-export default UserForm;

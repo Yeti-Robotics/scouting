@@ -104,6 +104,6 @@ export interface StandFormI {
 	updatedAt: string;
 }
 
-const StandForm = (models.standForm as Model<StandFormI>) || model('standForm', standFormSchema);
+const StandForm = (models?.standForm as Model<StandFormI>) || model('standForm', standFormSchema);
 
 export default StandForm;

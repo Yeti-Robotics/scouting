@@ -1,35 +1,29 @@
-import fetcher from '@/lib/fetch';
 import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { UserI } from '@/models/User';
-import { Delete } from '@mui/icons-material';
-import { Box, Button, CircularProgress, MenuItem } from '@mui/material';
+import { IconTrash } from '@tabler/icons-react';
+import { Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSWR from 'swr';
-import Autocomplete from '../Autocomplete';
 import FormSection from '../FormSection';
-import { Form } from '../FormStyle';
-import Select from '../Select';
-import SubmitButton from '../SubmitButton';
-import TextInput from '../TextInput';
+import { ControlledSelect } from '../ControlledSelect';
 import { onSubmit } from './onSubmit';
+import { ControlledNumberInput } from '../ControlledNumberInput';
+import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
 
-interface Props {
+type Props = {
 	create: boolean;
 	defaultMatch?: MatchI;
 	canEdit?: boolean;
 	id?: string;
-}
+};
 
 export type FormMatch = Omit<MatchI, 'startTime'> & { startTime: string };
 
-const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
+const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 	const router = useRouter();
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
-	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { handleSubmit, control, watch } = useForm<FormMatch>({
 		defaultValues: {
@@ -41,11 +35,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	});
 	const winner = watch('winner');
 
-	if (!user || !users) return <CircularProgress />;
-	const options = users.map((user) => ({
-		username: user.username,
-		label: `${user.firstName} ${user.lastName} (${user.username})`,
-	}));
+	if (!user) return <Loader size='xl' />;
 
 	if (!user.administrator) {
 		return <h1>You are not authorized to use this!</h1>;
@@ -56,7 +46,7 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, router))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'
@@ -68,168 +58,107 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 						});
 					}}
 				>
-					<Delete />
+					<IconTrash />
 				</Button>
 			)}
 			<FormSection title='Info'>
 				<Box sx={{ display: 'flex', width: '100%' }}>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue1'
 							label='Blue 1'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue2'
 							label='Blue 2'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue3'
 							label='Blue 3'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
 					</div>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red1'
 							label='Red 1'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red2'
 							label='Red 2'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
-						<TextInput
+						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red3'
 							label='Red 3'
-							type='number'
 							disabled={!canEdit}
 							rules={{ required: true, min: 1 }}
+							min={1}
 						/>
 					</div>
 				</Box>
-				<h2 style={{ marginBottom: 0 }}>Scouters</h2>
-				<Box sx={{ display: 'flex', width: '100%' }}>
-					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.blue1'
-							label='Blue 1'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.blue2'
-							label='Blue 2'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.blue3'
-							label='Blue 3'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-					</div>
-					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.red1'
-							label='Red 1'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.red2'
-							label='Red 2'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-						<Autocomplete
-							options={options}
-							control={control}
-							isOptionEqualToValue={(opt, v) =>
-								opt.username === v.username || opt.username === v
-							}
-							name='scouters.red3'
-							label='Red 3'
-							disabled={!canEdit}
-							rules={{ required: true, min: 1 }}
-						/>
-					</div>
-				</Box>
-				<TextInput
-					control={control}
-					name='matchNumber'
-					label='Match Number'
-					valueAsNumber
-					rules={{ required: true, min: 1 }}
-				/>
-				<TextInput
-					control={control}
-					name='startTime'
-					label='Start Time'
-					type='datetime-local'
-					rules={{ required: true }}
-				/>
+				<Stack>
+					<ControlledNumberInput
+						control={control}
+						name='matchNumber'
+						label='Match Number'
+						min={1}
+						required
+						rules={{ min: 1 }}
+					/>
+					<ControlledDateTimePicker
+						control={control}
+						name='startTime'
+						label='Start Time'
+						valueAsString
+						required
+					/>
+				</Stack>
 				{!create && (
-					<Select
+					<ControlledSelect
 						control={control}
 						name='winner'
 						label='Winner'
-						rules={{ required: false, validate: undefined }}
-					>
-						<MenuItem value='blue'>Blue Alliance</MenuItem>
-						<MenuItem value='red'>Red Alliance</MenuItem>
-						<MenuItem value='tie'>Tie or No Winner</MenuItem>
-					</Select>
+						required
+						rules={{ required: false }}
+						data={[
+							{ value: 'blue', label: 'Blue Alliance' },
+							{ value: 'red', label: 'Red Alliance' },
+							{ value: 'tie', label: 'Tie or No Winner' },
+						]}
+					/>
 				)}
 			</FormSection>
 			{!create && defaultMatch?.open && (
 				<Button
 					type='button'
 					variant='contained'
+					loading={closing === 'fetching'}
 					onClick={() => {
 						if (!winner) return;
 						setClosing('fetching');
@@ -239,14 +168,13 @@ const MatchForm: React.VFC<Props> = ({ create, defaultMatch, canEdit, id }) => {
 						});
 					}}
 				>
-					{closing === 'fetching' && (
-						<CircularProgress size='1rem' color='inherit' sx={{ m: 1, ml: 0 }} />
-					)}{' '}
 					Close Bets
 				</Button>
 			)}
-			<SubmitButton>{create ? 'Submit' : 'Update'}</SubmitButton>
-		</Form>
+			<Button mt='md' fullWidth type='submit'>
+				{create ? 'Submit' : 'Update'}
+			</Button>
+		</Box>
 	);
 };
 

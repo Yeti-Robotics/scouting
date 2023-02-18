@@ -1,10 +1,8 @@
-import { Link } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { IconBrandDiscord } from '@tabler/icons-react';
+import { Button, Paper, PasswordInput, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormSection from '../FormSection';
-import TextInput from '../TextInput';
 
 interface FormSchema {
 	firstName: string;
@@ -18,11 +16,11 @@ interface FormSchema {
 
 const REDIRECT_URI = process.env.NEXT_PUBLIC_DISCORD_URI;
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
 	const router = useRouter();
 	const {
 		handleSubmit,
-		control,
+		register,
 		watch,
 		getValues,
 		formState: { isValid },
@@ -54,77 +52,63 @@ const RegisterForm = () => {
 
 	return (
 		<>
-			<form style={{ padding: '1rem' }} onSubmit={handleSubmit(onSubmit)}>
-				<FormSection title='Register'>
-					<TextInput
-						control={control}
-						name='firstName'
-						label='First Name'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='lastName'
-						label='Last Name'
-						rules={{ required: true }}
-					/>
-					<TextInput
-						control={control}
-						name='username'
-						label={
-							usernameIsValid === undefined && usernameIsValid !== null
-								? // if is undefined and not null it is loading state
-								  'Validating...'
-								: usernameIsValid || usernameIsValid === null
-								? // if is null or valid shows Username
-								  'Username'
-								: 'Username is taken'
-						}
-						rules={{
-							required: true,
-							minLength: 3,
-							validate: () => Boolean(usernameIsValid),
-						}}
-						onChange={validateUsername}
-					/>
-					<TextInput
-						control={control}
-						name='password'
-						label='Password'
-						type='password'
-						rules={{ required: true, minLength: 6 }}
-					/>
-					<TextInput
-						control={control}
-						name='confPassword'
-						label='Confirm Password'
-						type='password'
-						rules={{
-							required: true,
-							minLength: 6,
-							validate: (v) => v === password,
-						}}
-					/>
-					<TextInput
-						control={control}
-						name='teamNumber'
-						label='Team Number'
-						type='number'
-						rules={{ required: true, min: 1 }}
-					/>
-					<Button
-						sx={{ m: 2 }}
-						variant='contained'
-						component='a'
-						href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
-						disabled={!isValid}
-					>
-						<Link sx={{ m: 1, ml: 0 }} /> Link Discord
-					</Button>
-				</FormSection>
-			</form>
+			<Paper
+				component='form'
+				withBorder
+				shadow='xl'
+				p='md'
+				style={{ display: 'flex', flexDirection: 'column' }}
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				<TextInput label='First Name' {...register('firstName', { required: true })} />
+				<TextInput label='Last Name' {...register('lastName', { required: true })} />
+				<TextInput
+					label={
+						usernameIsValid === undefined && usernameIsValid !== null
+							? // if is undefined and not null it is loading state
+							  'Validating...'
+							: usernameIsValid || usernameIsValid === null
+							? // if is null or valid shows Username
+							  'Username'
+							: 'Username is taken'
+					}
+					{...register('username', {
+						required: true,
+						minLength: 3,
+						validate: () => Boolean(usernameIsValid),
+					})}
+					onChange={validateUsername}
+				/>
+				<PasswordInput
+					label='Password'
+					type='password'
+					{...register('password', { required: true, minLength: 6 })}
+				/>
+				<TextInput
+					label='Confirm Password'
+					type='password'
+					{...register('confPassword', {
+						required: true,
+						minLength: 6,
+						validate: (v) => v === password,
+					})}
+				/>
+				<TextInput
+					label='Team Number'
+					type='number'
+					{...register('teamNumber', { required: true, min: 1 })}
+				/>
+				<Button
+					mt='md'
+					component='a'
+					href={REDIRECT_URI + `&state=${JSON.stringify(getValues())}`}
+					disabled={!isValid}
+					leftIcon={<IconBrandDiscord stroke={1.5} />}
+					color='indigo'
+				>
+					Link Discord
+				</Button>
+			</Paper>
 		</>
 	);
 };
-
-export default RegisterForm;

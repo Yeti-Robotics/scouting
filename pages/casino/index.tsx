@@ -1,10 +1,7 @@
-import FlexGrid from '@/components/FlexGrid';
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
 import { useUser } from '@/lib/useUser';
-import { Paid, ShowChart, SportsKabaddi } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import Link from 'next/link';
+import { IconCoin, IconLayoutBoard, IconSportBillard } from '@tabler/icons-react';
+import { Button, Group, Loader } from '@mantine/core';
+import { Link } from '@/components/Link';
 
 interface MenuCardProps {
 	href: string;
@@ -12,55 +9,36 @@ interface MenuCardProps {
 	Icon?: JSX.Element;
 }
 
-const MenuCard: React.VFC<MenuCardProps> = ({ href, text, Icon }) => {
+const MenuCard = ({ href, text, Icon }: MenuCardProps) => {
 	return (
-		<Link href={href} passHref>
-			<Button
-				component='a'
-				sx={{
-					color: 'text.primary',
-					backgroundColor: 'primary.main',
-					display: 'flex',
-					alignItems: 'center',
-					padding: 2,
-					margin: 1,
-					borderRadius: 1,
-					textTransform: 'none',
-				}}
-				variant='contained'
-			>
-				{Icon} {text}
-			</Button>
-		</Link>
+		<Button href={href} component={Link} leftIcon={Icon}>
+			{text}
+		</Button>
 	);
 };
 
 const Casino = () => {
 	const { user } = useUser({ canRedirect: true });
 
-	if (!user) return <LoadingLayout />;
+	if (!user) return <Loader size='xl' />;
 
 	return (
-		<Layout>
-			<h1>Records</h1>
-			<FlexGrid>
-				<MenuCard
-					href='/casino/matches'
-					text='Matches'
-					Icon={<SportsKabaddi sx={{ mr: 1 }} />}
-				/>
+		<>
+			<h1>Casino</h1>
+			<Group>
+				<MenuCard href='/casino/matches' text='Matches' Icon={<IconSportBillard />} />
 				<MenuCard
 					href='/casino/leaderboard'
 					text='Leaderboard'
-					Icon={<ShowChart sx={{ mr: 1 }} />}
+					Icon={<IconLayoutBoard />}
 				/>
 				<MenuCard
 					href={`/casino/users/${user._id}/bets`}
 					text='My Bets'
-					Icon={<Paid sx={{ mr: 1 }} />}
+					Icon={<IconCoin />}
 				/>
-			</FlexGrid>
-		</Layout>
+			</Group>
+		</>
 	);
 };
 

@@ -1,10 +1,9 @@
 import fetcher from '@/lib/fetch';
-import { Refresh } from '@mui/icons-material';
-import { Button, CircularProgress } from '@mui/material';
+import { IconRefresh } from '@tabler/icons-react';
+import { Box, Button, Group, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-import { FilterWrapper, PaginatorWrapper, ResultsDisplay } from './Paginator.styles';
 
 interface Query<T> {
 	filter: Partial<T>;
@@ -22,17 +21,17 @@ export interface DisplayProps<T> {
 interface Props<T> {
 	object: T /* gives autocomplete on props */;
 	route: string;
-	Filter: React.VFC<FilterProps<T>>;
-	Display: React.VFC<DisplayProps<T>>;
+	Filter: React.FC<FilterProps<T>>;
+	Display: React.FC<DisplayProps<T>>;
 }
 
-const ReloadButton: React.VFC<{ onClick: (...args: any[]) => any }> = ({ onClick }) => (
+const ReloadButton = ({ onClick }: { onClick: (...args: any[]) => any }) => (
 	<Button
 		onClick={onClick}
 		variant='contained'
 		sx={{ position: 'fixed', top: '1rem', right: '3rem' }}
 	>
-		<Refresh sx={{ m: 1 }} />
+		<IconRefresh />
 	</Button>
 );
 
@@ -88,58 +87,58 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 
 	if (!data || loading) {
 		return (
-			<PaginatorWrapper>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
-				<FilterWrapper>
+				<Box>
 					<Filter state={[query, setQuery]} />
-				</FilterWrapper>
-				<ResultsDisplay>
-					<CircularProgress />
-				</ResultsDisplay>
-			</PaginatorWrapper>
+				</Box>
+				<Group>
+					<Loader size='xl' />
+				</Group>
+			</Group>
 		);
 	}
 
 	if (error) {
 		return (
-			<PaginatorWrapper>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
-				<FilterWrapper>
+				<Box>
 					<Filter state={[query, setQuery]} />
-				</FilterWrapper>
-				<ResultsDisplay>
+				</Box>
+				<Group>
 					<h1>There was an error getting your data.</h1>
-				</ResultsDisplay>
-			</PaginatorWrapper>
+				</Group>
+			</Group>
 		);
 	}
 
 	if (!data[0]) {
 		return (
-			<PaginatorWrapper>
+			<Group px='md' w='100%' align='flex'>
 				<ReloadButton onClick={reload} />
-				<FilterWrapper>
+				<Box>
 					<Filter state={[query, setQuery]} />
-				</FilterWrapper>
-				<ResultsDisplay>
+				</Box>
+				<Group>
 					<h1>Nothing matched your query.</h1>
-				</ResultsDisplay>
-			</PaginatorWrapper>
+				</Group>
+			</Group>
 		);
 	}
 
 	return (
-		<PaginatorWrapper>
+		<Stack px='md' align='center' justify='center'>
 			<ReloadButton onClick={reload} />
-			<FilterWrapper>
+			<Box>
 				<Filter state={[query, setQuery]} />
-			</FilterWrapper>
-			<ResultsDisplay>
+			</Box>
+			<Group align='center' position='center'>
 				{data.map((record) => {
 					return <Display key={record._id} record={record} />;
 				})}
-			</ResultsDisplay>
-		</PaginatorWrapper>
+			</Group>
+		</Stack>
 	);
 };
 

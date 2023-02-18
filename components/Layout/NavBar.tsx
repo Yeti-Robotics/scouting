@@ -1,47 +1,42 @@
 import { useUser } from '@/lib/useUser';
 import {
-	AccountCircle,
-	CalendarToday,
-	FileCopy,
-	InsertDriveFile,
-	Menu,
-	NoteAdd,
-	Paid,
-	SportsKabaddi,
-} from '@mui/icons-material';
-import { Box, Button, Divider, Drawer } from '@mui/material';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+	IconUserCircle,
+	IconCalendar,
+	IconCopy,
+	IconFile,
+	IconNote,
+	IconMoneybag,
+	IconShirtSport,
+} from '@tabler/icons-react';
+import { Burger, Drawer, Group, NavLink, Paper, Stack, Title } from '@mantine/core';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Link } from '../Link';
+import { ThemeSwitch } from './ThemeSwitch';
+import { ColorPicker } from './ColorPicker';
 
 interface ButtonProps {
 	href: string;
 	text: string;
 	Icon?: JSX.Element;
+	setMenuOpened: Dispatch<SetStateAction<boolean>>;
 }
 
-const NavBarButton: React.VFC<ButtonProps> = ({ href, text, Icon }) => {
+const NavBarButton = ({ href, text, Icon, setMenuOpened }: ButtonProps) => {
 	return (
-		<Link href={href} passHref={true}>
-			<Box
-				component='a'
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					height: 75,
-					padding: 2,
-					'&:hover': { backgroundColor: 'primary.light' },
-				}}
-			>
-				{Icon}
-				{text}
-			</Box>
-		</Link>
+		<NavLink
+			label={text}
+			icon={Icon}
+			component={Link}
+			href={href}
+			p='md'
+			onClick={() => setMenuOpened(false)}
+		/>
 	);
 };
 
 const getRandomColorValue = () => Math.ceil(Math.random() * 255);
 
-const CasinoButton: React.VFC = () => {
+const CasinoButton = ({ setMenuOpened }: { setMenuOpened: Dispatch<SetStateAction<boolean>> }) => {
 	const [colorValue, setColorValue] = useState({
 		r: getRandomColorValue(),
 		g: getRandomColorValue(),
@@ -63,22 +58,21 @@ const CasinoButton: React.VFC = () => {
 	}, []);
 
 	return (
-		<Link href='/casino' passHref={true}>
-			<Box
-				component='a'
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					height: 75,
-					padding: 2,
+		<NavLink
+			component={Link}
+			href='/casino'
+			label='Casino'
+			icon={<IconMoneybag style={{ color: avgColorDark ? 'white' : 'black' }} />}
+			p='md'
+			onClick={() => setMenuOpened(false)}
+			sx={{
+				backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
+				'&:hover': {
 					backgroundColor: `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`,
-					color: avgColorDark ? 'white' : 'black',
-				}}
-			>
-				<Paid sx={{ margin: 1, color: avgColorDark ? 'white' : 'black' }} />
-				Casino
-			</Box>
-		</Link>
+				},
+				color: avgColorDark ? 'white' : 'black',
+			}}
+		/>
 	);
 };
 
@@ -87,74 +81,101 @@ const NavBar = () => {
 	const [menuOpened, setMenuOpened] = useState(false);
 
 	return (
-		<Box
-			sx={{
+		<Paper
+			shadow='xl'
+			radius={0}
+			sx={(theme) => ({
+				position: 'fixed',
+				top: 0,
+				left: 0,
 				display: 'flex',
-				backgroundColor: 'primary.main',
+				justifyContent: 'space-between',
 				width: '100%',
 				alignItems: 'center',
 				opacity: 1,
-				padding: '0.5rem 2rem 0.5rem 2rem',
-			}}
+				padding: '0.5rem 1rem 0.5rem 1rem',
+				h: '3rem',
+				zIndex: 2,
+				backgroundColor: theme.colors[theme.primaryColor][5],
+			})}
 		>
-			<Link href='/' passHref={true}>
-				<h1 style={{ flexGrow: 1, textDecoration: 'underline', cursor: 'pointer' }}>
-					Yeti Scouting
-				</h1>
-			</Link>
-			<Button
-				variant='outlined'
-				sx={{ color: 'text.primary', borderColor: 'text.primary', padding: '1rem' }}
-				onClick={() => setMenuOpened((prev) => !prev)}
+			<Link
+				sx={{
+					'&:visited': { color: 'inherit' },
+					textDecoration: 'none',
+				}}
+				href='/'
 			>
-				<Menu />
-			</Button>
-			<Drawer open={menuOpened} anchor='top' onClose={() => setMenuOpened(false)}>
-				<NavBarButton
-					href={user ? '/logout' : '/login'}
-					text={user ? 'Logout' : 'Login'}
-					Icon={<AccountCircle sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/stand-scouting'
-					text='Stand Scouting Form'
-					Icon={<NoteAdd sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/pit-scouting'
-					text='Pit Scouting Form'
-					Icon={<NoteAdd sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/matches'
-					text='Match Data'
-					Icon={<SportsKabaddi sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/scouting-schedule'
-					text='Stand Scouting Schedule'
-					Icon={<CalendarToday sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/records'
-					text='Records'
-					Icon={<InsertDriveFile sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<NavBarButton
-					href='/export'
-					text='Export Data'
-					Icon={<FileCopy sx={{ margin: 1 }} />}
-				/>
-				<Divider />
-				<CasinoButton />
+				<Title
+					sx={(theme) => ({
+						fontSize: 32,
+						color: theme.colorScheme === 'light' ? 'black' : 'white',
+					})}
+				>
+					Yeti Scouting
+				</Title>
+			</Link>
+			<Burger opened={menuOpened} onClick={() => setMenuOpened((prev) => !prev)} />
+			<Drawer
+				opened={menuOpened}
+				position='top'
+				onClose={() => setMenuOpened(false)}
+				withCloseButton={false}
+				padding={0}
+			>
+				<Group position='apart' p='md'>
+					<Group>
+						<ThemeSwitch /> <ColorPicker />
+					</Group>
+					<Burger opened={menuOpened} onClick={() => setMenuOpened((prev) => !prev)} />
+				</Group>
+				<Stack spacing={0}>
+					<NavBarButton
+						href={user ? '/logout' : '/login'}
+						text={user ? 'Logout' : 'Login'}
+						Icon={<IconUserCircle style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/stand-scouting'
+						text='Stand Scouting Form'
+						Icon={<IconNote style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/pit-scouting'
+						text='Pit Scouting Form'
+						Icon={<IconNote style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/matches'
+						text='Match Data'
+						Icon={<IconShirtSport style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/scouting-schedule'
+						text='Stand Scouting Schedule'
+						Icon={<IconCalendar style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/records'
+						text='Records'
+						Icon={<IconFile style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/export'
+						text='Export Data'
+						Icon={<IconCopy style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<CasinoButton setMenuOpened={setMenuOpened} />
+				</Stack>
 			</Drawer>
-		</Box>
+		</Paper>
 	);
 };
 

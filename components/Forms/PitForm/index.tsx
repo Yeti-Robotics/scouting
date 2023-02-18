@@ -1,3 +1,1 @@
-import PitForm from './PitForm';
-
-export default PitForm;
+export { PitForm } from './PitForm';

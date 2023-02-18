@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Paper, Stack, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 
 interface Props {
@@ -9,52 +9,31 @@ interface Props {
 
 const FormSection = ({ title, color, children }: Props) => {
 	return (
-		<Box
+		<Paper
+			withBorder
+			shadow='xl'
+			p='md'
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				width: '95%',
-				m: 2,
 			}}
 		>
 			{title && (
-				<Box
+				<Title
 					sx={{
 						width: '100%',
 						fontSize: '1.75rem',
 						fontWeight: 'bold',
 						backgroundColor: color || 'primary.main',
-						padding: 1,
-						border: '1px solid #fff',
-						borderColor: color || 'primary.main',
-						borderTopLeftRadius: '8px',
-						borderTopRightRadius: '8px',
-						borderBottom: '0px',
 					}}
 				>
 					{title}
-				</Box>
+				</Title>
 			)}
-			<Box
-				sx={{
-					display: 'flex',
-					width: '100%',
-					flexDirection: 'column',
-					alignItems: 'center',
-					flexGrow: 1,
-					padding: 1,
-					border: '1px solid #fff',
-					borderTop: '0px',
-					borderColor: color || 'primary.main',
-					borderBottomLeftRadius: '8px',
-					borderBottomRightRadius: '8px',
-				}}
-			>
-				{children}
-			</Box>
-		</Box>
+			<Stack align='center'>{children}</Stack>
+		</Paper>
 	);
 };
 

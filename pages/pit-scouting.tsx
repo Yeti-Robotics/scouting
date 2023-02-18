@@ -1,32 +1,19 @@
-import PitForm from '@/components/Forms/PitForm';
-import Layout from '@/components/Layout';
+import { PitForm } from '@/components/Forms/PitForm';
 import { useUser } from '@/lib/useUser';
-import { CircularProgress } from '@mui/material';
+import { Loader } from '@mantine/core';
 
 const PitScouting = () => {
 	const { user, loading } = useUser();
 
 	if (!user) {
-		return (
-			<Layout>
-				<CircularProgress />
-			</Layout>
-		);
+		return <Loader size='xl' />;
 	}
 
 	if (!user && !loading) {
-		return (
-			<Layout>
-				<h1>You are not authorized.</h1>
-			</Layout>
-		);
+		return <h1>You are not authorized.</h1>;
 	}
 
-	return (
-		<Layout>
-			<PitForm create={true} canEdit={true} />
-		</Layout>
-	);
+	return <PitForm create={true} canEdit={true} />;
 };
 
 export default PitScouting;

@@ -1,21 +1,22 @@
+import { Link } from '@/components/Link';
 import { UserI } from '@/models/User';
-import Link from 'next/link';
-import { DisplayContainer, DisplayWrapper } from '../Display.styles';
+import { Card, Text } from '@mantine/core';
 import { DisplayProps } from '../Paginator';
 
-const UserDisplay: React.VFC<DisplayProps<UserI>> = ({ record }) => {
+const UserDisplay = ({ record }: DisplayProps<UserI>) => {
 	return (
-		<DisplayContainer>
-			<Link href={`/records/users/${record._id}`} passHref>
-				<DisplayWrapper>
-					<h3>
-						Name: {record.firstName} {record.lastName}
-					</h3>
-					<h4>Username: {record.username}</h4>
-					<h4>Team: {record.teamNumber}</h4>
-				</DisplayWrapper>
-			</Link>
-		</DisplayContainer>
+		<Card component={Link} href={`/records/users/${record._id}`} withBorder shadow='md' p='md'>
+			<Text size='md'>
+				<strong>Name:</strong> {record.firstName} {record.lastName}
+			</Text>
+
+			<Text size='md'>
+				<strong>Username:</strong> {record.username}
+			</Text>
+			<Text size='md'>
+				<strong>Team:</strong> {record.teamNumber}
+			</Text>
+		</Card>
 	);
 };
 

@@ -1,5 +1,5 @@
 import { StandFormI } from '@/models/StandForm';
-import { Box, Divider, Link as MuiLink } from '@mui/material';
+import { Box, Divider, NavLink } from '@mantine/core';
 import Link from 'next/link';
 import Section from '../Section';
 
@@ -11,9 +11,9 @@ const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	return (
 		<Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
 			<Link href={`/matches/${form.matchNumber}`} passHref>
-				<MuiLink sx={{ fontWeight: 'bold', mt: '1.33rem' }}>
+				<NavLink sx={{ fontWeight: 'bold', mt: '1.33rem' }}>
 					Match {form.matchNumber}
-				</MuiLink>
+				</NavLink>
 			</Link>
 			<h4 style={{ margin: 0 }}>{form.notes}</h4>
 			<p style={{ marginTop: 0 }}>

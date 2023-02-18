@@ -1,15 +1,8 @@
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import {
-	Box,
-	Button,
-	Checkbox,
-	FormControlLabel,
-	CircularProgress,
-	TextField,
-} from '@mui/material';
+import { Card, Checkbox, Group, Loader, NumberInput, Stack, Text, Title } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/Link';
 import { useUser } from '@/lib/useUser';
 
 interface Props {
@@ -19,7 +12,7 @@ interface Props {
 const userHasBetOn = (match: MatchI, user: UserI) =>
 	match.bets.map((bet) => bet.username).includes(user.username);
 
-const Match: React.VFC<{ match: MatchI; user: UserI; i: number }> = ({ match, user, i }) => {
+const Match = ({ match, user, i }: { match: MatchI; user: UserI; i: number }) => {
 	const [time, setTime] = useState(match.startTime - Date.now() / 1000);
 
 	useEffect(() => {
@@ -31,121 +24,77 @@ const Match: React.VFC<{ match: MatchI; user: UserI; i: number }> = ({ match, us
 	}, []);
 
 	return (
-		<Link href={`/casino/matches/${match._id}`} passHref>
-			<Button
-				component='a'
-				variant='contained'
-				sx={{
-					textTransform: 'none',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					margin: 2,
-					flexGrow: 1,
-				}}
-			>
-				<Box component='h2' sx={{ mb: 0 }}>
-					Match #: {match.matchNumber}
-				</Box>
-				<Box component='h3' sx={{ mt: 0 }}>
-					Set #: {match.setNumber}
-				</Box>
-				<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							padding: 2,
-							borderRadius: 1,
-							backgroundColor: 'blue',
-							color: 'white',
-							fontWeight: 'bold',
-							margin: 1,
-						}}
-					>
-						<p>Blue 1: {match.blue1}</p>
-						<p>Blue 2: {match.blue2}</p>
-						<p>Blue 3: {match.blue3}</p>
-					</Box>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							padding: 2,
-							borderRadius: 1,
-							backgroundColor: 'red',
-							color: 'white',
-							fontWeight: 'bold',
-							margin: 1,
-						}}
-					>
-						<p>Red 1: {match.red1}</p>
-						<p>Red 2: {match.red2}</p>
-						<p>Red 3: {match.red3}</p>
-					</Box>
-				</Box>
-				{i === 0 && (
-					<p>
-						Bets close in:{' '}
-						{`${(time / 60).toFixed(0)}:${time % 60 < 9 ? '0' : ''}${(
-							time % 60
-						).toFixed(0)}`}
-					</p>
-				)}
-				{userHasBetOn(match, user) && 'You have bet on this Match.'}
-			</Button>
-		</Link>
+		<Card
+			component={Link}
+			href={`/casino/matches/${match._id}`}
+			withBorder
+			shadow='md'
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				flexGrow: 1,
+			}}
+		>
+			<Title order={2}>Match #: {match.matchNumber}</Title>
+			<Title order={3}>Set #: {match.setNumber}</Title>
+			<Group align='center' position='center'>
+				<Stack align='center' p='md'>
+					<p>Blue 1: {match.blue1}</p>
+					<p>Blue 2: {match.blue2}</p>
+					<p>Blue 3: {match.blue3}</p>
+				</Stack>
+				<Stack align='center' p='md'>
+					<p>Red 1: {match.red1}</p>
+					<p>Red 2: {match.red2}</p>
+					<p>Red 3: {match.red3}</p>
+				</Stack>
+			</Group>
+			{i === 0 && (
+				<Text>
+					Bets close in:{' '}
+					{`${(time / 60).toFixed(0)}:${time % 60 < 9 ? '0' : ''}${(time % 60).toFixed(
+						0,
+					)}`}
+				</Text>
+			)}
+			{userHasBetOn(match, user) && 'You have bet on this Match.'}
+		</Card>
 	);
 };
 
-const MatchDisplay: React.VFC<Props> = ({ matches }) => {
+const MatchDisplay = ({ matches }: Props) => {
 	const { user } = useUser({ canRedirect: false });
 	const [showHasBetOn, setShowHasBetOn] = useState(false);
 	const [showPastMatches, setShowPastMatches] = useState(false);
 	const [amountToShow, setAmountToShow] = useState(4);
 
-	if (!user) return <CircularProgress />;
+	if (!user) return <Loader size='xl' />;
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-				<FormControlLabel
+			<Stack align='center' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+				<Checkbox
+					onChange={(e) => setShowHasBetOn(e.target.checked)}
 					label='Show Has Bet On'
-					control={
-						<Checkbox
-							onChange={(e) => setShowHasBetOn(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showHasBetOn}
-						/>
-					}
+					checked={showHasBetOn}
 				/>
-				<FormControlLabel
+
+				<Checkbox
 					label='Show Past Matches'
-					control={
-						<Checkbox
-							onChange={(e) => setShowPastMatches(e.target.checked)}
-							sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-							checked={showPastMatches}
-						/>
-					}
+					onChange={(e) => setShowPastMatches(e.target.checked)}
+					checked={showPastMatches}
 				/>
-				<TextField
-					inputProps={{
-						onChange: (e) =>
-							setAmountToShow(
-								parseInt(e.currentTarget.value) >= 1
-									? parseInt(e.currentTarget.value)
-									: 1,
-							),
-					}}
+
+				<NumberInput
+					onChange={(v) => setAmountToShow(v || 1)}
 					type='number'
 					label='Amount To Show'
 					value={amountToShow}
+					min={1}
 				/>
-			</Box>
-			<Box sx={{ padding: 2, width: '100%', display: 'flex', flexWrap: 'wrap' }}>
+			</Stack>
+			<Group p='md'>
 				{matches
 					.filter(
 						showPastMatches
@@ -158,7 +107,7 @@ const MatchDisplay: React.VFC<Props> = ({ matches }) => {
 					.map((match, i) => (
 						<Match match={match} user={user} i={i} key={match._id} />
 					))}
-			</Box>
+			</Group>
 		</>
 	);
 };

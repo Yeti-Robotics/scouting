@@ -1,19 +1,16 @@
-import Layout from '@/components/Layout';
-import LoadingLayout from '@/components/Layout/LoadingLayout';
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, TextField } from '@mui/material';
-import Link from 'next/link';
+import { Box, Button, Group, Loader, NumberInput, Title } from '@mantine/core';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
 const Divider = () => <span style={{ backgroundColor: 'white', padding: '1px 0' }} />;
 
-// eslint-disable-next-line react/display-name
-const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = memo(({ user, match }) => {
+const MatchDisplay = memo(function MatchDisplay({ user, match }: { match: MatchI; user?: UserI }) {
 	return (
 		<Link href={`/matches/${match.matchNumber}`} passHref>
 			<Button
@@ -23,9 +20,6 @@ const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = memo(({ user, m
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					'&.MuiButton-contained': {
-						color: 'white',
-					},
 					textTransform: 'none',
 					flexGrow: 1,
 					padding: 1,
@@ -111,62 +105,38 @@ const MatchDisplay: React.VFC<{ match: MatchI; user?: UserI }> = memo(({ user, m
 const MatchData = () => {
 	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { user } = useUser({ canRedirect: true });
-	const [matchNum, setMatchNum] = useState<number | null>(null);
-	const [teamNum, setTeamNum] = useState<number | null>(null);
+	const [matchNum, setMatchNum] = useState<number | ''>('');
+	const [teamNum, setTeamNum] = useState<number | ''>('');
 
 	const clearFilters = () => {
-		setMatchNum(null);
-		setTeamNum(null);
+		setMatchNum('');
+		setTeamNum('');
 	};
 
-	if (!data || !user) return <LoadingLayout />;
+	if (!data || !user) return <Loader size='xl' />;
 
-	if (user.banned)
-		return (
-			<Layout>
-				<h1>You&#39;ve been banned you sussy baka.</h1>
-			</Layout>
-		);
+	if (user.banned) return <h1>You&#39;ve been banned you sussy baka.</h1>;
 
 	return (
-		<Layout>
+		<>
 			<h1>Match Data</h1>
-			<h2>Filters</h2>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					flexWrap: 'wrap',
-				}}
-			>
-				<TextField
-					value={matchNum}
-					label='Match Number'
-					onChange={(e) => setMatchNum(parseInt(e.target.value) || null)}
-					inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-				/>
-				<TextField
-					value={teamNum}
-					label='Team Number'
-					onChange={(e) => setTeamNum(parseInt(e.target.value) || null)}
-					inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-				/>
-			</Box>
-			<Button variant='contained' onClick={clearFilters}>
-				Clear Filters
-			</Button>
+			<Title order={2}>Filters</Title>
+			<Group position='center'>
+				<NumberInput value={matchNum} label='Match Number' onChange={setMatchNum} />
+				<NumberInput value={teamNum} label='Team Number' onChange={setTeamNum} />
+			</Group>
+			<Button onClick={clearFilters}>Clear Filters</Button>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
 				{data
 					.filter(
-						matchNum === null ? () => true : (match) => match.matchNumber === matchNum,
+						matchNum === '' ? () => true : (match) => match.matchNumber === matchNum,
 					)
-					.filter(teamNum === null ? () => true : (match) => hasTeam(match, teamNum))
+					.filter(teamNum === '' ? () => true : (match) => hasTeam(match, teamNum))
 					.map((match) => (
 						<MatchDisplay key={match._id} match={match} user={user} />
 					))}
 			</Box>
-		</Layout>
+		</>
 	);
 };
 

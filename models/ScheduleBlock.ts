@@ -37,12 +37,12 @@ export interface CreateScheduleBlock {
 	_id: string;
 	startTime: number;
 	endTime: number;
-	blue1: string | null;
-	blue2: string | null;
-	blue3: string | null;
-	red1: string | null;
-	red2: string | null;
-	red3: string | null;
+	blue1?: string;
+	blue2?: string;
+	blue3?: string;
+	red1?: string;
+	red2?: string;
+	red3?: string;
 	createdAt: string;
 	updatedAt: string;
 	min30: boolean;
@@ -52,7 +52,7 @@ export interface CreateScheduleBlock {
 export const POPULATE_SCOUTERS = 'blue1 blue2 blue3 red1 red2 red3';
 
 const ScheduleBlock =
-	(models.scheduleBlock as Model<CreateScheduleBlock>) ||
+	(models?.scheduleBlock as Model<CreateScheduleBlock>) ||
 	model('scheduleBlock', scheduleBlockSchema);
 
 export default ScheduleBlock;

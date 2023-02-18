@@ -1,21 +1,21 @@
-import Select from '@/components/Forms/Select';
-import SubmitButton from '@/components/Forms/SubmitButton';
-import TextInput from '@/components/Forms/TextInput';
+import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput';
+import { ControlledSelect } from '@/components/Forms/ControlledSelect';
+import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { PitFormI } from '@/models/PitForm';
-import { Button, MenuItem } from '@mui/material';
+import { Button, Group, Paper, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FilterForm } from '../Filter.styles';
-import { sanitizeFilter, validateIsNumber } from '../filterHelpers';
+import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
 
 type Spread<T extends object> = T[keyof T];
 
-const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
+const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 	const [query, setQuery] = state;
 	const {
 		control,
 		handleSubmit,
 		watch,
+		register,
 		reset: resetForm,
 	} = useForm({
 		defaultValues: {
@@ -43,44 +43,68 @@ const PitFormFilter: React.VFC<FilterProps<PitFormI>> = ({ state }) => {
 	};
 
 	return (
-		<FilterForm onSubmit={handleSubmit(onSubmit)}>
-			<h1>Sort</h1>
-			<Select control={control} name='sortBy' label='Sort By' defaultValue='createdAt'>
-				<MenuItem defaultChecked value='createdAt'>
-					Submission Time
-				</MenuItem>
-				<MenuItem value='_id'>id</MenuItem>
-			</Select>
-			<Select control={control} name='sortFrom' label='Sort From' defaultValue={-1}>
-				<MenuItem value={1}>
-					{sortBy === 'createdAt' || sortBy === 'updatedAt'
-						? 'most recent to least recent'
-						: 'low to high'}
-				</MenuItem>
-				<MenuItem defaultChecked value={-1}>
-					{sortBy === 'createdAt' || sortBy === 'updatedAt'
-						? 'least recent to most recent'
-						: 'high to low'}
-				</MenuItem>
-			</Select>
-			<h1>Filter</h1>
-			<TextInput
-				control={control}
-				name='teamNumber'
-				label='Team Number'
-				rules={{ validate: validateIsNumber, required: false }}
-			/>
-			<TextInput
-				control={control}
-				name='scouter'
-				label='Scouter Username'
-				rules={{ validate: () => true, required: false }}
-			/>
-			<Button variant='contained' onClick={reset} sx={{ mb: 2 }}>
+		<Paper
+			component='form'
+			onSubmit={handleSubmit(onSubmit)}
+			withBorder
+			shadow='xl'
+			p='md'
+			sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+		>
+			<Title order={1}>Sort</Title>
+			<Group align='center' position='center'>
+				<ControlledSelect
+					control={control}
+					data={[
+						{ value: 'createdAt', label: 'Submission Time' },
+						{ value: '_id', label: 'id' },
+					]}
+					name='sortBy'
+					label='Sort By'
+				/>
+
+				<NumberSelect
+					control={control}
+					data={[
+						{
+							value: 1,
+							label:
+								sortBy === 'createdAt' || sortBy === 'updatedAt'
+									? 'most recent to least recent'
+									: 'low to high',
+						},
+						{
+							value: -1,
+							label:
+								sortBy === 'createdAt' || sortBy === 'updatedAt'
+									? 'least recent to most recent'
+									: 'high to low',
+						},
+					]}
+					name='sortFrom'
+					label='Sort From'
+				/>
+			</Group>
+			<Title pt='md' order={1}>
+				Filter
+			</Title>
+			<Group align='center' position='center'>
+				<ControlledNumberInput
+					control={control}
+					name='teamNumber'
+					label='Team Number'
+					rules={{ required: false }}
+				/>
+				<TextInput
+					{...register('scouter', { validate: () => true, required: false })}
+					label='Scouter Username'
+				/>
+			</Group>
+			<Button onClick={reset} sx={{ mb: 2 }}>
 				Reset Filters
 			</Button>
-			<SubmitButton>Update</SubmitButton>
-		</FilterForm>
+			<Button type='submit'>Update</Button>
+		</Paper>
 	);
 };
 

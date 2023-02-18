@@ -34,6 +34,6 @@ export interface UserI {
 	discordId: string;
 }
 
-const User = (models.user as Model<UserI>) || model('user', userSchema);
+const User = (models?.user as Model<UserI>) || model('user', userSchema);
 
 export default User;

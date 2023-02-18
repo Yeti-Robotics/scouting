@@ -12,17 +12,17 @@ export const setOnline: Func = (isOffline, setIsOffline) => async () => {
 	const currentForms: CreateStandForm[] | false = JSON.parse(
 		sessionStorage.getItem('standForms') || 'false',
 	);
-	const pingRes = await fetchTimeout('/api/ping', 3000, {
+	const isOffline = await fetchTimeout('/api/ping', 3000, {
 		signal: controller.signal,
 		method: 'GET',
 	})
 		.then((res) => {
-			return res.status ? false : true;
+			return res.status === 200 ? false : true;
 		})
 		.catch(() => {
 			return true;
 		});
-	if (pingRes) return;
+	if (isOffline) return;
 	setIsOffline(false);
 	if (currentForms) {
 		currentForms.forEach((form) =>
