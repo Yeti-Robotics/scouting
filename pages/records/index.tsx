@@ -25,7 +25,7 @@ const Records = () => {
 	return (
 		<>
 			<Title order={1}>Records</Title>
-			<Group>
+			<Group position='center'>
 				<MenuCard href='/records/stand-forms' text='Stand Forms' Icon={<IconUser />} />
 				<MenuCard href='/records/pit-forms' text='Pit Forms' Icon={<IconFile />} />
 				{user?.administrator && (
@@ -47,9 +47,7 @@ const Records = () => {
 				Clean DB
 			</Button>
 			{user?.administrator && (
-				<Button variant='contained' onClick={() => fetch('/api/approve-all')}>
-					Approve all stand form
-				</Button>
+				<Button onClick={() => fetch('/api/approve-all')}>Approve all stand forms</Button>
 			)}
 		</>
 	);

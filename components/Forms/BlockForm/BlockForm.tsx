@@ -1,10 +1,10 @@
 import fetcher from '@/lib/fetch';
 import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
-import { ScheduleBlockI } from '@/models/ScheduleBlock';
+import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { AutocompleteItem, Box, Button, Loader } from '@mantine/core';
+import { ActionIcon, AutocompleteItem, Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
@@ -20,19 +20,33 @@ interface Props {
 	id?: string;
 }
 
-const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
+const fullBlockToCreate = (fullBlock: ScheduleBlockI | undefined): CreateScheduleBlock => {
+	(fullBlock as unknown) = {
+		...fullBlock,
+		blue1: fullBlock?.blue1?.username,
+		blue2: fullBlock?.blue2?.username,
+		blue3: fullBlock?.blue3?.username,
+		red1: fullBlock?.red1?.username,
+		red2: fullBlock?.red2?.username,
+		red3: fullBlock?.red3?.username,
+	};
+	return fullBlock as CreateScheduleBlock;
+};
+
+export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
-	const { control, handleSubmit } = useForm<ScheduleBlockI>({
+	const { control, handleSubmit } = useForm<CreateScheduleBlock>({
 		defaultValues: {
-			...defaultBlock,
+			...fullBlockToCreate(defaultBlock),
 			startTime: numToDateTimeInput(defaultBlock.startTime) as any,
 			endTime: numToDateTimeInput(defaultBlock.endTime) as any,
 		},
 	});
 
 	if (!user || !users) return <Loader size='xl' />;
+	const usersMap = Object.fromEntries(users.map((user) => [user.username, user]));
 	const options: AutocompleteItem[] = users.map((user) => ({
 		value: user.username,
 		label: `${user.firstName} ${user.lastName} (${user.username})`,
@@ -47,10 +61,11 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	}
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, usersMap))}>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
@@ -60,7 +75,7 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
 			<FormSection title='Info'>
 				<ControlledAutocomplete
@@ -128,9 +143,11 @@ const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					valueAsString
 				/>
 			</FormSection>
-			<Button type='submit' disabled={!canEdit}>
-				{create ? 'Submit' : 'Update'}
-			</Button>
+			<Stack align='center' mt='md'>
+				<Button type='submit' disabled={!canEdit}>
+					{create ? 'Submit' : 'Update'}
+				</Button>
+			</Stack>
 		</Box>
 	);
 };

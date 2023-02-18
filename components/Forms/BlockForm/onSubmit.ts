@@ -1,21 +1,25 @@
-import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
+import { CreateScheduleBlock } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { SubmitHandler } from 'react-hook-form';
 
-type MatchFormOnSubmit = (create: boolean, user: UserI) => SubmitHandler<ScheduleBlockI>;
+type MatchFormOnSubmit = (
+	create: boolean,
+	user: UserI,
+	users: Record<string, UserI>,
+) => SubmitHandler<CreateScheduleBlock>;
 
 // returns dif function depending on whether the form is for updating or creation
-export const onSubmit: MatchFormOnSubmit = (create, user) => {
-	const onCreate: SubmitHandler<ScheduleBlockI> = (data) => {
+export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
+	const onCreate: SubmitHandler<CreateScheduleBlock> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
-		(data as unknown as CreateScheduleBlock) = {
+		data = {
 			...data,
-			blue1: data.blue1?._id || null,
-			blue2: data.blue2?._id || null,
-			blue3: data.blue3?._id || null,
-			red1: data.red1?._id || null,
-			red2: data.red2?._id || null,
-			red3: data.red3?._id || null,
+			blue1: usersMap[data.blue1 ?? '']._id,
+			blue2: usersMap[data.blue2 ?? '']._id,
+			blue3: usersMap[data.blue3 ?? '']._id,
+			red1: usersMap[data.red1 ?? '']._id,
+			red2: usersMap[data.red2 ?? '']._id,
+			red3: usersMap[data.red3 ?? '']._id,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
@@ -25,17 +29,16 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 		});
 	};
 
-	const onUpdate: SubmitHandler<ScheduleBlockI> = (data) => {
+	const onUpdate: SubmitHandler<CreateScheduleBlock> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
-		console.log(data);
-		(data as unknown as CreateScheduleBlock) = {
+		data = {
 			...data,
-			blue1: data.blue1?._id || null,
-			blue2: data.blue2?._id || null,
-			blue3: data.blue3?._id || null,
-			red1: data.red1?._id || null,
-			red2: data.red2?._id || null,
-			red3: data.red3?._id || null,
+			blue1: usersMap[data.blue1 ?? '']._id,
+			blue2: usersMap[data.blue2 ?? '']._id,
+			blue3: usersMap[data.blue3 ?? '']._id,
+			red1: usersMap[data.red1 ?? '']._id,
+			red2: usersMap[data.red2 ?? '']._id,
+			red3: usersMap[data.red3 ?? '']._id,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};

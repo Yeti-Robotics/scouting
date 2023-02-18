@@ -1,4 +1,4 @@
-import BlockForm from '@/components/Forms/BlockForm';
+import { BlockForm } from '@/components/Forms/BlockForm';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';

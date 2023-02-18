@@ -12,15 +12,13 @@ import {
 	MantineThemeOverride,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
-import { getCookie, parse, setCookie } from 'ez-cookies';
+import { getCookie, setCookie } from 'ez-cookies';
 import App from 'next/app';
 import { ColorProvider } from '@/components/ColorProvider';
 import useSWR from 'swr';
 import { UserI } from '@/models/User';
 import fetcher from '@/lib/fetch';
 import { DatesProvider } from '@mantine/dates';
-import { authToken } from '@/middleware/auth';
-import { connectToDbB } from '@/middleware/connect-db';
 import { Notifications } from '@mantine/notifications';
 
 interface _App<P> {
@@ -39,7 +37,6 @@ const getTheme = (
 });
 
 const noLayoutPaths: string[] = [];
-const publicPaths: string[] = ['/', '/login', '/register'];
 
 const MyApp: _App<{
 	colorScheme: ColorScheme;
@@ -116,13 +113,10 @@ const MyApp: _App<{
 
 MyApp.getInitialProps = async (appCtx) => {
 	const appProps = await App.getInitialProps(appCtx);
-	const cookies = parse(appCtx.ctx.req?.headers.cookie || '');
-	await connectToDbB();
-	const user = await authToken(cookies['access_token']);
 
 	return {
 		...appProps,
-		user,
+		user: undefined,
 		colorScheme: (getCookie('colorScheme', { req: appCtx.ctx.req }) || 'light') as ColorScheme,
 		primaryColor: getCookie('primaryColor', { req: appCtx.ctx.req }) || 'cyan',
 	};

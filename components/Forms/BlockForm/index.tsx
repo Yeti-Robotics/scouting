@@ -1,3 +1,1 @@
-import BlockForm from './BlockForm';
-
-export default BlockForm;
+export { BlockForm } from './BlockForm';
