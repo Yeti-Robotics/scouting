@@ -131,62 +131,6 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 						/>
 					</div>
 				</Box>
-				<h2 style={{ marginBottom: 0 }}>Scouters</h2>
-				<Box sx={{ display: 'flex', width: '100%' }}>
-					<div style={{ width: '100%', margin: '0.5rem' }}>
-						{/*  Not really sure why thi scouters section exists 🤷 */}
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.blue1' as any}
-							data={options}
-							label='Blue 1'
-							disabled={!canEdit}
-							required
-						/>
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.blue2' as any}
-							data={options}
-							label='Blue 2'
-							disabled={!canEdit}
-							required
-						/>
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.blue3' as any}
-							data={options}
-							label='Blue 3'
-							disabled={!canEdit}
-							required
-						/>
-					</div>
-					<div style={{ width: '100%', margin: '0.5rem' }}>
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.red1' as any}
-							data={options}
-							label='Red 1'
-							disabled={!canEdit}
-							required
-						/>
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.red2' as any}
-							data={options}
-							label='Red 2'
-							disabled={!canEdit}
-							required
-						/>
-						<ControlledAutocomplete
-							control={control}
-							name={'scouters.red3' as any}
-							data={options}
-							label='Red 3'
-							disabled={!canEdit}
-							required
-						/>
-					</div>
-				</Box>
 				<Stack>
 					<ControlledNumberInput
 						control={control}

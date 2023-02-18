@@ -27,6 +27,9 @@ export default new RouteHandler<'api', WAuth>()
 			bottomScorer: undefined,
 			topScorer: undefined,
 			open: true,
+			setNumber: 1,
+			compYear: 2023,
+			compKey: 'dw',
 		});
 		await savedMatch.save();
 
