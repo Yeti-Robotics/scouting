@@ -19,19 +19,17 @@ const Matches = () => {
 			<h1>Matches</h1>
 
 			{user.administrator && (
-				<Link href='/casino/matches/create' passHref>
-					<Button
-						component='a'
-						color='success'
-						variant='contained'
-						sx={{ textTransform: 'none' }}
-					>
-						Create a Match
-					</Button>
-				</Link>
-			)}
-			{user.administrator && (
 				<Stack>
+					<Link href='/casino/matches/create' passHref>
+						<Button
+							component='a'
+							fullWidth
+							color='success'
+							sx={{ textTransform: 'none' }}
+						>
+							Create a Match
+						</Button>
+					</Link>
 					<TextInput
 						label='TBA Event Key'
 						placeholder='<year><event key>'
@@ -39,16 +37,15 @@ const Matches = () => {
 						onChange={(e) => setEventKey(e.target.value)}
 						sx={{ margin: 2 }}
 					/>
-					<Button color='success' variant='contained' sx={{ textTransform: 'none' }}>
+					<Button color='success' sx={{ textTransform: 'none' }}>
 						Populate Matches
+					</Button>
+					<Button color='success' sx={{ textTransform: 'none' }}>
+						Clear Matches
 					</Button>
 				</Stack>
 			)}
-			{user.administrator && (
-				<Button color='success' variant='contained' sx={{ textTransform: 'none' }}>
-					Clear Matches
-				</Button>
-			)}
+
 			<MatchDisplay matches={data} />
 		</>
 	);
