@@ -1,16 +1,15 @@
 import { GetServerSideProps, NextPage } from 'next';
-import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import pemForms from '@/past-data/pem-stand-forms.json';
 import ashForms from '@/past-data/ash-stand-forms.json';
-import { Paper, Stack } from '@mantine/core';
+import { Card, Stack, Text } from '@mantine/core';
 import { StandFormI } from '@/models/StandForm';
 
 const CommentDisplay = ({ form }: { form: StandFormI }) => {
 	return (
-		<Paper sx={{ m: 1, p: 1 }}>
-			<p>{form.notes.trim() || 'No comment'}</p>
-		</Paper>
+		<Card withBorder shadow='md' m='md'>
+			<Text>{form.notes.trim() || 'No comment'}</Text>
+		</Card>
 	);
 };
 
@@ -18,14 +17,14 @@ const TeamComments: NextPage<{ forms: StandFormI[] }> = ({ forms }) => {
 	const router = useRouter();
 
 	return (
-		<Layout>
+		<>
 			<h1>{router.query.teamNumber} Comments</h1>
-			<Stack sx={{ m: 2 }}>
+			<Stack>
 				{forms.map((form) => (
 					<CommentDisplay key={form._id} form={form} />
 				))}
 			</Stack>
-		</Layout>
+		</>
 	);
 };
 
