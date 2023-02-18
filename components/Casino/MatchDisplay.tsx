@@ -1,6 +1,6 @@
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Group, Loader, NumberInput, Stack } from '@mantine/core';
+import { Box, Button, Checkbox, Loader, NumberInput, Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@/lib/useUser';
