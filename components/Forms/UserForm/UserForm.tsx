@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { onSubmit } from './onSubmit';
+import { ControlledNumberInput } from '../ControlledNumberInput';
 
 interface Props {
 	create: boolean;
@@ -18,7 +19,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const router = useRouter();
 	const { user } = useUser({ redirectIfNotAdmin: true });
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
-	const { handleSubmit, register, watch } = useForm<
+	const { handleSubmit, register, control, watch } = useForm<
 		UserI & { newPassword: string; confPassword: string }
 	>({
 		defaultValues: defaultUser,
@@ -37,7 +38,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	const newPassword = watch('newPassword');
 
 	if (!user) {
-		return <Loader />;
+		return <Loader size='xl' />;
 	}
 
 	if (!user.administrator) {
@@ -75,6 +76,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 							  'Username'
 							: 'Username is taken'
 					}
+					required
 					{...register('username', {
 						required: true,
 						minLength: 3,
@@ -88,6 +90,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				<TextInput
 					label='First Name'
 					disabled={!canEdit}
+					required
 					{...register('firstName', {
 						required: true,
 					})}
@@ -95,6 +98,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				<TextInput
 					label='Last Name'
 					disabled={!canEdit}
+					required
 					{...register('lastName', {
 						required: true,
 					})}
@@ -110,7 +114,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				<PasswordInput
 					label='Confirm Password'
 					{...register('confPassword', {
-						required: newPassword !== '',
+						required: !!newPassword,
 						minLength: 6,
 						validate: (v) => v === newPassword,
 					})}
@@ -118,18 +122,13 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 				<TextInput
 					label='Team Number'
 					type='number'
+					required
 					{...register('teamNumber', {
 						required: true,
 						min: 1,
 					})}
 				/>
-				<TextInput
-					label='Coins'
-					type='number'
-					{...register('coins', {
-						required: true,
-					})}
-				/>
+				<ControlledNumberInput label='Coins' name='coins' control={control} required />
 				<Checkbox label='Administrator' {...register('administrator')} />
 				<Checkbox label='Banned' {...register('banned')} />
 			</Stack>
