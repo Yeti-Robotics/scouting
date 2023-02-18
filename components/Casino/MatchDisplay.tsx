@@ -1,6 +1,6 @@
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Loader, NumberInput } from '@mantine/core';
+import { Box, Button, Checkbox, Loader, NumberInput, Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@/lib/useUser';
@@ -103,7 +103,7 @@ const MatchDisplay = ({ matches }: Props) => {
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+			<Stack align='center' sx={{ display: 'flex', flexWrap: 'wrap' }}>
 				<Checkbox
 					onChange={(e) => setShowHasBetOn(e.target.checked)}
 					label='Show Has Bet On'
@@ -123,7 +123,7 @@ const MatchDisplay = ({ matches }: Props) => {
 					value={amountToShow}
 					min={1}
 				/>
-			</Box>
+			</Stack>
 			<Box sx={{ padding: 2, width: '100%', display: 'flex', flexWrap: 'wrap' }}>
 				{matches
 					.filter(
