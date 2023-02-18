@@ -46,7 +46,7 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 			shadow='xl'
 			p='md'
 			component='form'
-			sx={{ display: 'flex', flexDirection: 'column' }}
+			sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<Title order={1}>Sort</Title>
