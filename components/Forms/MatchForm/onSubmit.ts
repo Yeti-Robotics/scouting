@@ -1,11 +1,16 @@
 import { UserI } from '@/models/User';
+import { NextRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { FormMatch } from './MatchForm';
 
-type MatchFormOnSubmit = (create: boolean, user: UserI) => SubmitHandler<FormMatch>;
+type MatchFormOnSubmit = (
+	create: boolean,
+	user: UserI,
+	router: NextRouter,
+) => SubmitHandler<FormMatch>;
 
 // returns dif function depending on whether the form is for updating or creation
-export const onSubmit: MatchFormOnSubmit = (create, user) => {
+export const onSubmit: MatchFormOnSubmit = (create, user, router) => {
 	const onCreate: SubmitHandler<FormMatch> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
 		const { bets, winner, ...filtered } = data;
@@ -13,6 +18,8 @@ export const onSubmit: MatchFormOnSubmit = (create, user) => {
 		fetch('/api/matches', {
 			method: 'POST',
 			body: JSON.stringify(filtered),
+		}).then((res) => {
+			if (res.ok) router.push('/casino/matches');
 		});
 	};
 

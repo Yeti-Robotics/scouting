@@ -1,8 +1,8 @@
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Loader, NumberInput, Stack } from '@mantine/core';
+import { Card, Checkbox, Group, Loader, NumberInput, Stack, Text, Title } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/Link';
 import { useUser } from '@/lib/useUser';
 
 interface Props {
@@ -24,72 +24,42 @@ const Match = ({ match, user, i }: { match: MatchI; user: UserI; i: number }) =>
 	}, []);
 
 	return (
-		<Link href={`/casino/matches/${match._id}`} passHref>
-			<Button
-				component='a'
-				variant='contained'
-				sx={{
-					textTransform: 'none',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					margin: 2,
-					flexGrow: 1,
-				}}
-			>
-				<Box component='h2' sx={{ mb: 0 }}>
-					Match #: {match.matchNumber}
-				</Box>
-				<Box component='h3' sx={{ mt: 0 }}>
-					Set #: {match.setNumber}
-				</Box>
-				<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							padding: 2,
-							borderRadius: 1,
-							backgroundColor: 'blue',
-							color: 'white',
-							fontWeight: 'bold',
-							margin: 1,
-						}}
-					>
-						<p>Blue 1: {match.blue1}</p>
-						<p>Blue 2: {match.blue2}</p>
-						<p>Blue 3: {match.blue3}</p>
-					</Box>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							padding: 2,
-							borderRadius: 1,
-							backgroundColor: 'red',
-							color: 'white',
-							fontWeight: 'bold',
-							margin: 1,
-						}}
-					>
-						<p>Red 1: {match.red1}</p>
-						<p>Red 2: {match.red2}</p>
-						<p>Red 3: {match.red3}</p>
-					</Box>
-				</Box>
-				{i === 0 && (
-					<p>
-						Bets close in:{' '}
-						{`${(time / 60).toFixed(0)}:${time % 60 < 9 ? '0' : ''}${(
-							time % 60
-						).toFixed(0)}`}
-					</p>
-				)}
-				{userHasBetOn(match, user) && 'You have bet on this Match.'}
-			</Button>
-		</Link>
+		<Card
+			component={Link}
+			href={`/casino/matches/${match._id}`}
+			withBorder
+			shadow='md'
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				flexGrow: 1,
+			}}
+		>
+			<Title order={2}>Match #: {match.matchNumber}</Title>
+			<Title order={3}>Set #: {match.setNumber}</Title>
+			<Group align='center' position='center'>
+				<Stack align='center' p='md'>
+					<p>Blue 1: {match.blue1}</p>
+					<p>Blue 2: {match.blue2}</p>
+					<p>Blue 3: {match.blue3}</p>
+				</Stack>
+				<Stack align='center' p='md'>
+					<p>Red 1: {match.red1}</p>
+					<p>Red 2: {match.red2}</p>
+					<p>Red 3: {match.red3}</p>
+				</Stack>
+			</Group>
+			{i === 0 && (
+				<Text>
+					Bets close in:{' '}
+					{`${(time / 60).toFixed(0)}:${time % 60 < 9 ? '0' : ''}${(time % 60).toFixed(
+						0,
+					)}`}
+				</Text>
+			)}
+			{userHasBetOn(match, user) && 'You have bet on this Match.'}
+		</Card>
 	);
 };
 
@@ -124,7 +94,7 @@ const MatchDisplay = ({ matches }: Props) => {
 					min={1}
 				/>
 			</Stack>
-			<Box sx={{ padding: 2, width: '100%', display: 'flex', flexWrap: 'wrap' }}>
+			<Group p='md'>
 				{matches
 					.filter(
 						showPastMatches
@@ -137,7 +107,7 @@ const MatchDisplay = ({ matches }: Props) => {
 					.map((match, i) => (
 						<Match match={match} user={user} i={i} key={match._id} />
 					))}
-			</Box>
+			</Group>
 		</>
 	);
 };

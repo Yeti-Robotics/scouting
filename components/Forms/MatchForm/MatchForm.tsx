@@ -1,15 +1,11 @@
-import fetcher from '@/lib/fetch';
 import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { AutocompleteItem, Box, Button, Loader, Stack } from '@mantine/core';
+import { Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSWR from 'swr';
-import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
 import { ControlledSelect } from '../ControlledSelect';
 import { onSubmit } from './onSubmit';
@@ -28,7 +24,6 @@ export type FormMatch = Omit<MatchI, 'startTime'> & { startTime: string };
 const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 	const router = useRouter();
 	const [closing, setClosing] = useState<'' | 'fetching' | 'done'>('');
-	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { handleSubmit, control, watch } = useForm<FormMatch>({
 		defaultValues: {
@@ -40,11 +35,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 	});
 	const winner = watch('winner');
 
-	if (!user || !users) return <Loader size='xl' />;
-	const options: AutocompleteItem[] = users.map((user) => ({
-		value: user.username,
-		label: `${user.firstName} ${user.lastName} (${user.username})`,
-	}));
+	if (!user) return <Loader size='xl' />;
 
 	if (!user.administrator) {
 		return <h1>You are not authorized to use this!</h1>;
@@ -55,7 +46,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 	}
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user))}>
+		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, router))}>
 			{user && user.administrator && !create && id && (
 				<Button
 					variant='contained'

@@ -1,6 +1,6 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Input, Loader } from '@mantine/core';
+import { Box, Button, Checkbox, Input, Title } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
@@ -41,6 +41,12 @@ const BetsForm = ({ match, user, id }: Props) => {
 			<h1>Bets {betsClosed && '(Closed)'}</h1>
 			<Box
 				component='form'
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					gap: '1rem',
+					alignItems: 'center',
+				}}
 				onSubmit={handleSubmit((data) => {
 					if (!user || yourCoins < 0 || fetching === 'fetching') return;
 					if (notBetting.winner) data.winner = undefined;
@@ -61,9 +67,11 @@ const BetsForm = ({ match, user, id }: Props) => {
 				})}
 			>
 				<FormSection title='Who Wins' color={notBetting.winner ? 'dimgrey' : undefined}>
-					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
-					<h3 style={{ margin: 0 }}>1.5x return</h3>
-					<h3>You are not required to bet on every section.</h3>
+					<Title order={2}>
+						Pick which alliance you think will win and how much you want to bet.
+					</Title>
+					<Title order={3}>1.5x return</Title>
+					<Title order={3}>You are not required to bet on every section.</Title>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
@@ -98,6 +106,8 @@ const BetsForm = ({ match, user, id }: Props) => {
 						onChange={(e) =>
 							setNotBetting((prev) => ({ ...prev, winner: e.target.checked }))
 						}
+						size='xl'
+						label='Not Betting'
 						checked={notBetting.winner}
 						disabled={betsClosed}
 					/>
@@ -106,9 +116,11 @@ const BetsForm = ({ match, user, id }: Props) => {
 					title='Who Scores The Most'
 					color={notBetting.topScorer ? 'dimgrey' : undefined}
 				>
-					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
-					<h3 style={{ margin: 0 }}>2x return</h3>
-					<h3>You are not required to bet on every section.</h3>
+					<Title order={2}>
+						Pick which alliance you think will win and how much you want to bet.
+					</Title>
+					<Title order={3}>2x return</Title>
+					<Title order={3}>You are not required to bet on every section.</Title>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
@@ -144,7 +156,8 @@ const BetsForm = ({ match, user, id }: Props) => {
 								topScorer: e.target.checked,
 							}))
 						}
-						sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
+						size='xl'
+						label='Not Betting'
 						checked={notBetting.topScorer}
 						disabled={betsClosed}
 					/>
@@ -153,9 +166,11 @@ const BetsForm = ({ match, user, id }: Props) => {
 					title='Who Scores The Least'
 					color={notBetting.bottomScorer ? 'dimgrey' : undefined}
 				>
-					<h2>Pick which alliance you think will win and how much you want to bet.</h2>
-					<h3 style={{ margin: 0 }}>2x return</h3>
-					<h3>You are not required to bet on every section.</h3>
+					<Title order={2}>
+						Pick which alliance you think will win and how much you want to bet.
+					</Title>
+					<Title order={3}>2x return</Title>
+					<Title order={3}>You are not required to bet on every section.</Title>
 					<h4 style={{ fontWeight: 'bold', color: 'rgb(150, 150, 50)' }}>
 						Your Coins: {yourCoins}
 					</h4>
@@ -191,14 +206,13 @@ const BetsForm = ({ match, user, id }: Props) => {
 								bottomScorer: e.target.checked,
 							}))
 						}
+						size='xl'
+						label='Not Betting'
 						checked={notBetting.bottomScorer}
 						disabled={betsClosed}
 					/>
 				</FormSection>
-				<Button type='submit' disabled={betsClosed || fetching === 'fetching'}>
-					{fetching === 'fetching' && (
-						<Loader sx={{ m: 1, ml: 0 }} color='inherit' size='1rem' />
-					)}{' '}
+				<Button type='submit' loading={fetching === 'fetching'} disabled={betsClosed}>
 					Submit Bets
 				</Button>
 				<p>After you submit your bets you will not be able to change them.</p>
