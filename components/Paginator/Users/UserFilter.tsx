@@ -81,7 +81,9 @@ const UserFilter = ({ state }: FilterProps<UserI>) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<Title order={1}>Filter</Title>
+			<Title pt='md' order={1}>
+				Filter
+			</Title>
 			<TextInput
 				{...register('firstName', { validate: undefined, required: false })}
 				label='First Name'

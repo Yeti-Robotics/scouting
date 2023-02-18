@@ -48,6 +48,7 @@ const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 			onSubmit={handleSubmit(onSubmit)}
 			withBorder
 			shadow='xl'
+			p='md'
 			sx={{ display: 'flex', flexDirection: 'column' }}
 		>
 			<Title order={1}>Sort</Title>
@@ -82,7 +83,9 @@ const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<Title order={1}>Filter</Title>
+			<Title pt='md' order={1}>
+				Filter
+			</Title>
 			<ControlledNumberInput
 				control={control}
 				name='teamNumber'

@@ -83,7 +83,9 @@ const StandFormFilter = ({ state }: FilterProps<StandFormI>) => {
 				name='sortFrom'
 				label='Sort From'
 			/>
-			<Title order={2}>Filter</Title>
+			<Title pt='md' order={2}>
+				Filter
+			</Title>
 			<Checkbox {...register('approved', { validate: undefined })} label='Approved' />
 			<ControlledNumberInput control={control} name='matchNumber' label='Match Number' />
 			<ControlledNumberInput control={control} name='teamNumber' label='Team Number' />
