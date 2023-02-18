@@ -17,6 +17,7 @@ import { NumberAutocomplete } from '../NumberAutocomplete';
 import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
+import { openWarningModal } from '@/lib/warningModal';
 
 interface Props {
 	create: boolean;
@@ -116,10 +117,12 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					variant='filled'
 					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
-					color='error'
+					color='red'
 					onClick={() => {
-						fetch(`/api/forms/stand/${id}`, { method: 'delete' }).then((res) => {
-							if (res.ok) router.push('/records/stand-forms');
+						openWarningModal({
+							route: `/api/forms/stand/${id}`,
+							method: 'delete',
+							onRes: (res) => res.ok && router.push('/records/stand-forms'),
 						});
 					}}
 				>
