@@ -29,6 +29,7 @@ const PitFormPage = () => {
 
 	const formattedData = { ...data };
 	if (data.images[0]) {
+		console.log(data.images);
 		formattedData.images = (data.images as any).map((image: PitImageRes) => {
 			return { ...image, data: Buffer.from(image.data.data) };
 		});

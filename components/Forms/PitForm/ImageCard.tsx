@@ -1,6 +1,6 @@
 import { Reader } from '@/lib/Reader';
 import { PitImageI } from '@/models/PitImage';
-import { Box, Button, Group, Image, rem, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Button, Group, Image, rem, Stack, Text, useMantineTheme } from '@mantine/core';
 import { Dropzone } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { useEffect, useRef } from 'react';
@@ -19,7 +19,6 @@ type Props = {
 
 const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 	const imageRef = useRef<HTMLImageElement>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
 	const theme = useMantineTheme();
 
 	useEffect(() => {
@@ -34,8 +33,13 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 	}, []);
 
 	return (
-		<Stack>
-			<Image style={{ alignSelf: 'center' }} ref={imageRef} alt='Pit Image' />
+		<Stack align='center'>
+			<Image
+				style={{ display: imageRef.current?.src ? 'block' : 'none', alignSelf: 'center' }}
+				imageRef={imageRef}
+				maw={300}
+				alt='Pit Image'
+			/>
 			{!image._id && (
 				<>
 					<Dropzone
@@ -43,7 +47,7 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 						onReject={(files) => console.log('rejected files', files)}
 						maxSize={3 * 1024 ** 2}
 						accept={['image/png', 'image/jpg', 'image/jpeg']}
-						ref={inputRef}
+						maw={300}
 					>
 						<Group
 							position='center'
@@ -84,14 +88,7 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 						</Group>
 					</Dropzone>
 
-					<Button
-						variant='contained'
-						sx={{
-							backgroundColor: 'error.main',
-							'&:hover': { backgroundColor: 'error.dark' },
-						}}
-						onClick={() => removeImage(i)}
-					>
+					<Button color='red' onClick={() => removeImage(i)}>
 						Delete
 					</Button>
 				</>

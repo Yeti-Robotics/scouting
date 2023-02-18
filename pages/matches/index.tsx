@@ -1,11 +1,10 @@
-import Layout from '@/components/Layout';
 import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Group, Loader, NumberInput } from '@mantine/core';
+import { Box, Button, Group, Loader, NumberInput, Title } from '@mantine/core';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
@@ -116,18 +115,13 @@ const MatchData = () => {
 
 	if (!data || !user) return <Loader size='xl' />;
 
-	if (user.banned)
-		return (
-			<Layout>
-				<h1>You&#39;ve been banned you sussy baka.</h1>
-			</Layout>
-		);
+	if (user.banned) return <h1>You&#39;ve been banned you sussy baka.</h1>;
 
 	return (
 		<>
 			<h1>Match Data</h1>
-			<h2>Filters</h2>
-			<Group>
+			<Title order={2}>Filters</Title>
+			<Group position='center'>
 				<NumberInput value={matchNum} label='Match Number' onChange={setMatchNum} />
 				<NumberInput value={teamNum} label='Team Number' onChange={setTeamNum} />
 			</Group>

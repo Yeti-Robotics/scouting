@@ -10,7 +10,7 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		if (!req.user.administrator || !req.user || req.user.banned)
+		if (!req.user || !req.user.administrator || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update users.' });
 		const normal = Boolean(req.query.normal);
 		const forms = normal ? await User.find({}) : await paginate(User, req.query);

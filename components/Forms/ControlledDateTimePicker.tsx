@@ -1,5 +1,6 @@
 import { DateTimePicker } from '@mantine/dates';
 import { DateTimePickerProps } from '@mantine/dates';
+import dayjs from 'dayjs';
 import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
@@ -28,11 +29,17 @@ export const ControlledDateTimePicker = <T extends FieldValues>({
 			{...props}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value}
+			value={typeof field.value === 'string' ? dayjs(field.value).toDate() : field.value}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(v) => {
-				field.onChange(valueAsString ? v?.toISOString() : v);
+				field.onChange(
+					valueAsString
+						? typeof v?.toISOString === 'function'
+							? v.toISOString()
+							: undefined
+						: v,
+				);
 				onChange?.(v);
 			}}
 		/>

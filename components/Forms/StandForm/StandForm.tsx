@@ -3,7 +3,7 @@ import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { CreateStandForm } from '@/models/StandForm';
 import { IconTrash } from '@tabler/icons-react';
-import { Box, Button, Loader, Checkbox, Textarea, Stack, Text, Group } from '@mantine/core';
+import { Box, Button, Loader, Checkbox, Textarea, Stack, Text, ActionIcon } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -112,8 +112,9 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}
 		>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
@@ -123,9 +124,9 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
-			<Stack align='flex'>
+			<Stack align='flex' mx='md'>
 				<FormSection title='Match Info'>
 					<ControlledNumberInput
 						label='Match Number'
@@ -345,7 +346,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				</FormSection>
 			</Stack>
 
-			<Group position='center' mt='md'>
+			<Stack align='center' mt='md'>
 				{Boolean(canEdit) && !create && !defaultForm?.approved && (
 					<Button
 						type='button'
@@ -372,7 +373,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						{create ? 'Submit' : 'Update'}
 					</Button>
 				)}
-			</Group>
+			</Stack>
 		</Box>
 	);
 };

@@ -1,31 +1,23 @@
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
-import { Loader, Stack } from '@mantine/core';
-import { Box, Button, Checkbox, useMantineTheme } from '@mantine/core';
-import Link from 'next/link';
+import { Card, Divider, Group, Loader, Stack, Text } from '@mantine/core';
+import { Button, Checkbox } from '@mantine/core';
 import { useState } from 'react';
 import useSWR from 'swr';
 
-const Divider = () => <span style={{ backgroundColor: 'white', padding: '1px 0' }} />;
-
-const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user, block }) => {
-	const theme = useMantineTheme();
+const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) => {
 	return (
-		<Box
+		<Card
+			withBorder
+			shadow='md'
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
+				gap: '1rem',
 				alignItems: 'center',
-				backgroundColor: 'primary.main',
-				borderRadius: '4px',
-				'&.MuiButton-contained': {
-					color: 'white',
-				},
-				flexGrow: 1,
-				padding: 1,
-				margin: 1,
 			}}
 		>
 			<h2 style={{ margin: 0 }}>
@@ -39,71 +31,46 @@ const BlockDisplay: React.VFC<{ block: ScheduleBlockI; user: UserI }> = ({ user,
 					minute: '2-digit',
 				})}
 			</h2>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					fontWeight: 500,
-				}}
-			>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						backgroundColor: theme.colors.blue[5],
-						padding: 1,
-						margin: 1,
-						borderRadius: '4px',
-					}}
-				>
-					<Box>
+			<Group position='center' align='center'>
+				<Stack p='md'>
+					<Text fw={600}>
 						Blue 1:
 						<br /> {block.blue1?.firstName} {block.blue1?.lastName[0]}
-					</Box>
+					</Text>
 					<Divider />
-					<Box>
+					<Text fw={600}>
 						Blue 2:
 						<br /> {block.blue2?.firstName} {block.blue2?.lastName[0]}
-					</Box>
+					</Text>
 					<Divider />
-					<Box>
+					<Text fw={600}>
 						Blue 3:
 						<br /> {block.blue3?.firstName} {block.blue3?.lastName[0]}
-					</Box>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						backgroundColor: theme.colors.red[5],
-						padding: 1,
-						margin: 1,
-						borderRadius: '4px',
-					}}
-				>
-					<Box>
+					</Text>
+				</Stack>
+				<Stack p='md'>
+					<Text fw={600}>
 						Red 1:
 						<br /> {block.red1?.firstName} {block.red1?.lastName[0]}
-					</Box>
+					</Text>
 					<Divider />
-					<Box>
+					<Text fw={600}>
 						Red 2:
 						<br /> {block.red2?.firstName} {block.red2?.lastName[0]}
-					</Box>
+					</Text>
 					<Divider />
-					<Box>
+					<Text fw={600}>
 						Red 3:
 						<br /> {block.red3?.firstName} {block.red3?.lastName[0]}
-					</Box>
-				</Box>
-			</Box>
+					</Text>
+				</Stack>
+			</Group>
 			{user.administrator && (
-				<Link href={`/scouting-schedule/${block._id}`} passHref>
-					<Button variant='contained'>Edit Block</Button>
-				</Link>
+				<Button component={Link} href={`/scouting-schedule/${block._id}`}>
+					Edit Block
+				</Button>
 			)}
-		</Box>
+		</Card>
 	);
 };
 
@@ -118,33 +85,31 @@ const ScoutingSchedule = () => {
 	return (
 		<>
 			{user.administrator && (
-				<Link href='/scouting-schedule/create' passHref>
-					<Button component='a'>Create Schedule</Button>
-				</Link>
+				<Button component={Link} href='/scouting-schedule/create'>
+					Create Schedule
+				</Button>
 			)}
-			{user.administrator && <Button sx={{ mt: 2 }}>Clear Schedule</Button>}
-			<Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+			{user.administrator && <Button>Clear Schedule</Button>}
+			<Stack align='center' justify='center'>
 				<Checkbox
 					onChange={(e) => setShowMyBlocks(e.target.checked)}
 					label='Show My Blocks'
-					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 					checked={showMyBlocks}
 				/>
 				<Checkbox
 					onChange={(e) => setShowPastBlocks(e.target.checked)}
 					label='Show Past Blocks'
-					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
 					checked={showPastBlocks}
 				/>
 			</Stack>
-			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+			<Group px='md' align='center' position='center'>
 				{data
 					.filter(showPastBlocks ? () => true : (match) => match.startTime > Date.now()) // wont show up is match is in next 5 mins (300000 millisecondss)
 					.filter(showMyBlocks ? (block) => userIsScouting(user, block) : () => true)
 					.map((block) => (
 						<BlockDisplay key={block._id} user={user} block={block} />
 					))}
-			</Box>
+			</Group>
 		</>
 	);
 };

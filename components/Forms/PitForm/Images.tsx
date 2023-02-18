@@ -27,7 +27,6 @@ const Images = ({ state, canEdit }: Props) => {
 	};
 
 	const setImage = async (index: number, imageFile: File | undefined) => {
-		if (!images[index]) throw new Error('Set Image provided index out of bounds.');
 		const newImages = [...images];
 
 		if (!imageFile) {
@@ -53,12 +52,7 @@ const Images = ({ state, canEdit }: Props) => {
 					/>
 				))}
 				<Group position='center'>
-					<Button
-						sx={{ mt: 1 }}
-						variant='contained'
-						disabled={!canEdit}
-						onClick={addImage}
-					>
+					<Button mt='md' disabled={!canEdit} onClick={addImage}>
 						Add Image
 					</Button>
 				</Group>

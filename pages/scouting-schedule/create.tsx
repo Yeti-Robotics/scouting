@@ -1,5 +1,5 @@
 import { NumberSelect } from '@/components/Forms/NumberSelect';
-import { Loader, TextInput } from '@mantine/core';
+import { Group, Loader, Stack } from '@mantine/core';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
@@ -7,27 +7,23 @@ import { Box, Checkbox, Divider, Button } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
+import { ControlledDateTimePicker } from '@/components/Forms/ControlledDateTimePicker';
 
-const UserDisplay: React.VFC<{
+const UserDisplay = ({
+	user,
+	state,
+}: {
 	user: UserI;
 	state: [Record<string, boolean>, React.Dispatch<React.SetStateAction<Record<string, boolean>>>];
-}> = ({ user, state }) => {
+}) => {
 	const [results, setResults] = state;
 	return (
-		<>
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					width: '100%',
-					padding: '0 0.5rem',
-				}}
-			>
-				<Box mr={1}>
+		<div key={user._id}>
+			<Group align='center' position='center' px='md'>
+				<Box>
 					{user.firstName} {user.lastName}
 				</Box>
-				<Box ml={1}>
+				<Box>
 					<Checkbox
 						onChange={(e) =>
 							setResults((prev) => ({
@@ -41,9 +37,9 @@ const UserDisplay: React.VFC<{
 						}
 					/>
 				</Box>
-			</Box>
+			</Group>
 			<Divider />
-		</>
+		</div>
 	);
 };
 
@@ -69,7 +65,7 @@ const Create = () => {
 	const [results, setResults] = useState<Record<string, boolean>>({});
 	const [fetching, setFetching] = useState<'' | 'fetching' | 'done'>('');
 	const [auto, setAuto] = useState(false);
-	const { control, register, handleSubmit } = useForm<ScheduleOptionsForm>();
+	const { control, handleSubmit } = useForm<ScheduleOptionsForm>();
 
 	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
@@ -96,71 +92,73 @@ const Create = () => {
 
 	return (
 		<>
-			<form
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					width: '100%',
-					padding: '1rem',
-				}}
-				onSubmit={handleSubmit(submitCanScouts)}
-			>
-				<NumberSelect
-					name='blockLength'
-					label='Block Length'
-					control={control}
-					data={[15, 30, 45, 60]}
-				/>
-				<TextInput
-					label='Start Time'
-					{...register('startTime', { required: true })}
-					type='datetime-local'
-				/>
-				<TextInput
-					label='End Time'
-					{...register('endTime', { required: true })}
-					type='datetime-local'
-				/>
-				<TextInput
-					label='Lunch Start Time'
-					{...register('lunchStartTime', { required: true })}
-					type='datetime-local'
-				/>
-				<TextInput
-					label='Lunch End Time'
-					{...register('lunchEndTime', { required: true })}
-					type='datetime-local'
-				/>
+			<Box component='form' m='md' onSubmit={handleSubmit(submitCanScouts)}>
+				<Stack align='flex'>
+					<NumberSelect
+						name='blockLength'
+						label='Block Length'
+						control={control}
+						data={[15, 30, 45, 60]}
+					/>
+					<ControlledDateTimePicker
+						label='Start Time'
+						name='startTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Start Time'
+						name='endTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Lunch Start Time'
+						name='lunchStartTime'
+						required
+						control={control}
+						valueAsString
+					/>
+					<ControlledDateTimePicker
+						label='Lunch End Time'
+						name='lunchEndTime'
+						required
+						control={control}
+						valueAsString
+					/>
 
-				<Checkbox
-					onChange={(e) => setAuto(e.target.checked)}
-					sx={{ '& .MuiSvgIcon-root': { fontSize: 32 } }}
-					checked={auto}
-				/>
+					<Checkbox
+						onChange={(e) => setAuto(e.target.checked)}
+						checked={auto}
+						label='Auto Generate'
+					/>
 
-				{auto && (
-					<>
-						<h2>Select Scouters</h2>
-						<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-							{users.map((user, i) => (
-								<>
-									{i === 0 && <Divider />}
-									<UserDisplay
-										key={user._id}
-										user={user}
-										state={[results, setResults]}
-									/>
-								</>
-							))}
-						</Box>
-					</>
-				)}
-				<Button type='submit' variant='contained' sx={{ mt: 2 }}>
-					{fetching === 'fetching' && <Loader color='inherit' size='1rem' />}
-					Submit
-				</Button>
-			</form>
+					{auto && (
+						<>
+							<h2>Select Scouters</h2>
+							<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+								{users.map((user, i) => (
+									<>
+										{i === 0 && <Divider />}
+										<UserDisplay
+											key={user._id}
+											user={user}
+											state={[results, setResults]}
+										/>
+									</>
+								))}
+							</Box>
+						</>
+					)}
+				</Stack>
+				<Stack align='center'>
+					<Button type='submit' mt='md' loading={fetching === 'fetching'}>
+						Submit
+					</Button>
+				</Stack>
+			</Box>
 		</>
 	);
 };
