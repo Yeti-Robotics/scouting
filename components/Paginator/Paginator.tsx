@@ -128,12 +128,12 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 	}
 
 	return (
-		<Group px='md' w='100%' align='flex'>
+		<Group px='md' w='100%' align='flex' position='center'>
 			<ReloadButton onClick={reload} />
 			<Box>
 				<Filter state={[query, setQuery]} />
 			</Box>
-			<Group align='start'>
+			<Group align='start' position='center'>
 				{data.map((record) => {
 					return <Display key={record._id} record={record} />;
 				})}
