@@ -4,7 +4,7 @@ import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Card, Group, Loader, Stack, Title } from '@mantine/core';
+import { Button, Card, Group, Loader, Stack, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
