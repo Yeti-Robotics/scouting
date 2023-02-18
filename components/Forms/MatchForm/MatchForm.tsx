@@ -4,7 +4,7 @@ import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { AutocompleteItem, Box, Button, Loader } from '@mantine/core';
+import { AutocompleteItem, Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -74,6 +74,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 				<Box sx={{ display: 'flex', width: '100%' }}>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue1'
 							label='Blue 1'
@@ -82,6 +83,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 							min={1}
 						/>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue2'
 							label='Blue 2'
@@ -90,6 +92,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 							min={1}
 						/>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='blue3'
 							label='Blue 3'
@@ -100,6 +103,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 					</div>
 					<div style={{ width: '100%', margin: '0.5rem' }}>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red1'
 							label='Red 1'
@@ -108,6 +112,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 							min={1}
 						/>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red2'
 							label='Red 2'
@@ -116,6 +121,7 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 							min={1}
 						/>
 						<ControlledNumberInput
+							hideControls
 							control={control}
 							name='red3'
 							label='Red 3'
@@ -181,21 +187,23 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 						/>
 					</div>
 				</Box>
-				<ControlledNumberInput
-					control={control}
-					name='matchNumber'
-					label='Match Number'
-					min={1}
-					required
-					rules={{ min: 1 }}
-				/>
-				<ControlledDateTimePicker
-					control={control}
-					name='startTime'
-					label='Start Time'
-					valueAsString
-					required
-				/>
+				<Stack>
+					<ControlledNumberInput
+						control={control}
+						name='matchNumber'
+						label='Match Number'
+						min={1}
+						required
+						rules={{ min: 1 }}
+					/>
+					<ControlledDateTimePicker
+						control={control}
+						name='startTime'
+						label='Start Time'
+						valueAsString
+						required
+					/>
+				</Stack>
 				{!create && (
 					<ControlledSelect
 						control={control}
@@ -228,7 +236,9 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 					Close Bets
 				</Button>
 			)}
-			<Button type='submit'>{create ? 'Submit' : 'Update'}</Button>
+			<Button mt='md' fullWidth type='submit'>
+				{create ? 'Submit' : 'Update'}
+			</Button>
 		</Box>
 	);
 };
