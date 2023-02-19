@@ -98,6 +98,7 @@ const Create = () => {
 						name='blockLength'
 						label='Block Length'
 						control={control}
+						required
 						data={[15, 30, 45, 60]}
 					/>
 					<ControlledDateTimePicker
