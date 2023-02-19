@@ -1,12 +1,22 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, Loader, Checkbox, TextInput, PasswordInput, Box, Stack } from '@mantine/core';
+import {
+	Button,
+	Loader,
+	Checkbox,
+	TextInput,
+	PasswordInput,
+	Box,
+	Stack,
+	ActionIcon,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { onSubmit } from './onSubmit';
 import { ControlledNumberInput } from '../ControlledNumberInput';
+import { openWarningModal } from '@/lib/warningModal';
 
 interface Props {
 	create: boolean;
@@ -52,18 +62,21 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	return (
 		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, setSubmitting))}>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
-						fetch(`/api/auth/users/${id}`, { method: 'DELETE' }).then((res) => {
-							if (res.ok) router.push('/records/users');
+						openWarningModal({
+							route: `/api/auth/users/${id}`,
+							method: 'DELETE',
+							onRes: (res) => res.ok && router.push('/records/users'),
 						});
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
 			<Stack spacing='sm'>
 				<TextInput

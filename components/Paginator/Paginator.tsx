@@ -115,7 +115,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 
 	if (!data[0]) {
 		return (
-			<Group px='md' w='100%' align='flex'>
+			<Stack px='md' w='100%' align='center' justify={'center'}>
 				<ReloadButton onClick={reload} />
 				<Box>
 					<Filter state={[query, setQuery]} />
@@ -123,7 +123,7 @@ const Paginator = <T extends { _id: string; createdAt: string }>({
 				<Group>
 					<h1>Nothing matched your query.</h1>
 				</Group>
-			</Group>
+			</Stack>
 		);
 	}
 

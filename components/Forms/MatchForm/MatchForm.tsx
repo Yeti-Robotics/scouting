@@ -2,7 +2,7 @@ import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { IconTrash } from '@tabler/icons-react';
-import { Box, Button, Loader, Stack } from '@mantine/core';
+import { ActionIcon, Box, Button, Loader, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { ControlledSelect } from '../ControlledSelect';
 import { onSubmit } from './onSubmit';
 import { ControlledNumberInput } from '../ControlledNumberInput';
 import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
+import { openWarningModal } from '@/lib/warningModal';
 
 type Props = {
 	create: boolean;
@@ -48,18 +49,21 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 	return (
 		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, router))}>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
-						fetch(`/api/matches/${id}`, { method: 'DELETE' }).then((res) => {
-							if (res.ok) router.push('/casino/matches');
+						openWarningModal({
+							route: `/api/matches/${id}`,
+							method: 'DELETE',
+							onRes: (res) => res.ok && router.push('/casino/matches'),
 						});
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
 			<FormSection title='Info'>
 				<Box sx={{ display: 'flex', width: '100%' }}>

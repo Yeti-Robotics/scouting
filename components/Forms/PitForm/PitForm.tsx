@@ -12,6 +12,7 @@ import Images from './Images';
 import { onSubmit } from './onSubmit';
 import { ControlledNumberInput } from '../ControlledNumberInput';
 import { NumberSelect } from '../NumberSelect';
+import { openWarningModal } from '@/lib/warningModal';
 
 type Props = {
 	create: boolean;
@@ -52,8 +53,10 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					variant='filled'
 					color='error'
 					onClick={() => {
-						fetch(`/api/forms/pit/${id}`, { method: 'DELETE' }).then((res) => {
-							if (res.ok) router.push('/records/pit-forms');
+						openWarningModal({
+							route: `/api/forms/pit/${id}`,
+							method: 'DELETE',
+							onRes: (res) => res.ok && router.push('/records/pit-forms'),
 						});
 					}}
 				>

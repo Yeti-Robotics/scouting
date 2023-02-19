@@ -47,7 +47,19 @@ const Records = () => {
 				Clean DB
 			</Button>
 			{user?.administrator && (
-				<Button onClick={() => fetch('/api/approve-all')}>Approve all stand forms</Button>
+				<Button
+					onClick={() =>
+						openConfirmModal({
+							title: 'Awe you shure? 🥺',
+							children: 'Approve all stand forms????!??! 😱',
+							confirmProps: { color: 'red', children: 'Approve them all 😈' },
+							cancelProps: { children: 'Go back 😭' },
+							onConfirm: () => fetch(`/api/approve-all`),
+						})
+					}
+				>
+					Approve all stand forms
+				</Button>
 			)}
 		</>
 	);

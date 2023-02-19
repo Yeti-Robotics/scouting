@@ -19,6 +19,12 @@ export const openWarningModal = ({
 	openConfirmModal({
 		title: 'Are you sure about this?',
 		children: <Text>Are you sure you want to perform this action? It may cause damage!</Text>,
+		cancelProps: {
+			children: "Don't do it! 🥺",
+		},
+		confirmProps: {
+			children: 'Do it! 😈',
+		},
 		onCancel,
 		onConfirm: () => {
 			fetch(route, { method, body: data ? JSON.stringify(data) : undefined }).then(onRes);
