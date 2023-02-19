@@ -7,6 +7,7 @@ import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { onSubmit } from './onSubmit';
 import { ControlledNumberInput } from '../ControlledNumberInput';
+import { openWarningModal } from '@/lib/warningModal';
 
 interface Props {
 	create: boolean;
@@ -57,8 +58,10 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
-						fetch(`/api/auth/users/${id}`, { method: 'DELETE' }).then((res) => {
-							if (res.ok) router.push('/records/users');
+						openWarningModal({
+							route: `/api/auth/users/${id}`,
+							method: 'DELETE',
+							onRes: (res) => res.ok && router.push('/records/users'),
 						});
 					}}
 				>
