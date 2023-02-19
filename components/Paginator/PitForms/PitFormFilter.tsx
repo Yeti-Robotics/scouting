@@ -2,7 +2,7 @@ import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput'
 import { ControlledSelect } from '@/components/Forms/ControlledSelect';
 import { NumberSelect } from '@/components/Forms/NumberSelect';
 import { PitFormI } from '@/models/PitForm';
-import { Button, Group, Paper, TextInput, Title } from '@mantine/core';
+import { Button, Group, Paper, Stack, TextInput, Title } from '@mantine/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { sanitizeFilter } from '../filterHelpers';
 import { FilterProps } from '../Paginator';
@@ -88,7 +88,7 @@ const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 			<Title pt='md' order={1}>
 				Filter
 			</Title>
-			<Group align='center' position='center'>
+			<Group align='center' position='center' mb='md'>
 				<ControlledNumberInput
 					control={control}
 					name='teamNumber'
@@ -100,10 +100,12 @@ const PitFormFilter = ({ state }: FilterProps<PitFormI>) => {
 					label='Scouter Username'
 				/>
 			</Group>
-			<Button onClick={reset} sx={{ mb: 2 }}>
-				Reset Filters
-			</Button>
-			<Button type='submit'>Update</Button>
+			<Stack>
+				<Button onClick={reset} sx={{ mb: 2 }}>
+					Reset Filters
+				</Button>
+				<Button type='submit'>Update</Button>
+			</Stack>
 		</Paper>
 	);
 };
