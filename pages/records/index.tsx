@@ -1,5 +1,5 @@
 import { useUser } from '@/lib/useUser';
-import { Group, Title, Modal } from '@mantine/core';
+import { Group, Title } from '@mantine/core';
 import { IconUser, IconFile, IconFlame } from '@tabler/icons-react';
 import { Button } from '@mantine/core';
 import { openConfirmModal } from '@mantine/modals';
