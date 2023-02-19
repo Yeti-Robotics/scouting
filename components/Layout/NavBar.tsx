@@ -95,7 +95,7 @@ const NavBar = () => {
 				opacity: 1,
 				padding: '0.5rem 1rem 0.5rem 1rem',
 				h: '3rem',
-				zIndex: 2,
+				zIndex: 100,
 				backgroundColor: theme.colors[theme.primaryColor][5],
 			})}
 		>
