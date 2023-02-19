@@ -72,6 +72,7 @@ export const RegisterForm = () => {
 							  'Username'
 							: 'Username is taken'
 					}
+					description='Minimum length of 6'
 					{...register('username', {
 						required: true,
 						minLength: 3,
@@ -81,7 +82,6 @@ export const RegisterForm = () => {
 				/>
 				<PasswordInput
 					label='Password'
-					type='password'
 					{...register('password', { required: true, minLength: 6 })}
 				/>
 				<TextInput
