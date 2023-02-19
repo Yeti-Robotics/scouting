@@ -1,6 +1,6 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Input, Overlay, Title } from '@mantine/core';
+import { Box, Button, Checkbox, Input, Title } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
