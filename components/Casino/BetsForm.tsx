@@ -1,6 +1,6 @@
 import { Bet, MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Checkbox, Input, Title } from '@mantine/core';
+import { Box, Button, Checkbox, Input, Overlay, Title } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormSection from '../Forms/FormSection';
@@ -35,6 +35,15 @@ const BetsForm = ({ match, user, id }: Props) => {
 			(!notBetting.topScorer ? Number(topScorerAmount) || 0 : 0) +
 			(!notBetting.bottomScorer ? Number(bottomScorerAmount) || 0 : 0));
 	const betsClosed = match.startTime < Date.now() / 1000; // 5 mins before match is supposed to start
+
+	const teams = {
+		blue1: match.blue1,
+		blue2: match.blue2,
+		blue3: match.blue3,
+		red1: match.red1,
+		red2: match.red2,
+		red3: match.red3,
+	};
 
 	return (
 		<>
@@ -126,7 +135,9 @@ const BetsForm = ({ match, user, id }: Props) => {
 					</h4>
 					<NumberSelect
 						control={control}
-						data={Object.values(match).map((teamNumber) => teamNumber)}
+						data={Object.values(teams)
+							.map((teamNumber) => teamNumber ?? 0)
+							.filter((n) => n)}
 						name='topScorer.bet'
 						label='Who will score the most?'
 						disabled={betsClosed || notBetting.topScorer}
@@ -176,7 +187,9 @@ const BetsForm = ({ match, user, id }: Props) => {
 					</h4>
 					<NumberSelect
 						control={control}
-						data={Object.values(match).map((teamNumber) => teamNumber)}
+						data={Object.values(teams)
+							.map((teamNumber) => teamNumber ?? 0)
+							.filter((n) => n)}
 						name='bottomScorer.bet'
 						label='Who will score the least?'
 						disabled={betsClosed || notBetting.bottomScorer}
