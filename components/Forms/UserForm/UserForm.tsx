@@ -1,7 +1,16 @@
 import { useUser } from '@/lib/useUser';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, Loader, Checkbox, TextInput, PasswordInput, Box, Stack } from '@mantine/core';
+import {
+	Button,
+	Loader,
+	Checkbox,
+	TextInput,
+	PasswordInput,
+	Box,
+	Stack,
+	ActionIcon,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -53,8 +62,9 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	return (
 		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, setSubmitting))}>
 			{user && user.administrator && !create && id && (
-				<Button
-					variant='contained'
+				<ActionIcon
+					variant='filled'
+					size='xl'
 					sx={{ zIndex: 1, position: 'fixed', top: '8rem', right: '2rem' }}
 					color='error'
 					onClick={() => {
@@ -66,7 +76,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					}}
 				>
 					<IconTrash />
-				</Button>
+				</ActionIcon>
 			)}
 			<Stack spacing='sm'>
 				<TextInput
