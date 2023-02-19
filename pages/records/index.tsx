@@ -1,5 +1,5 @@
 import { useUser } from '@/lib/useUser';
-import { Group, Title } from '@mantine/core';
+import { Group, Title, Modal } from '@mantine/core';
 import { IconUser, IconFile, IconFlame } from '@tabler/icons-react';
 import { Button } from '@mantine/core';
 import { openConfirmModal } from '@mantine/modals';
@@ -47,7 +47,19 @@ const Records = () => {
 				Clean DB
 			</Button>
 			{user?.administrator && (
-				<Button onClick={() => fetch('/api/approve-all')}>Approve all stand forms</Button>
+				<Button
+					onClick={() =>
+						openConfirmModal({
+							title: 'Awe you shure? 🥺',
+							children: 'Approve all stand forms????!??! 😱',
+							confirmProps: { color: 'red', children: 'Approve them all 😈' },
+							cancelProps: { children: 'Go back 😭' },
+							onConfirm: () => fetch(`/api/approve-all`),
+						})
+					}
+				>
+					Approve all stand forms
+				</Button>
 			)}
 		</>
 	);
