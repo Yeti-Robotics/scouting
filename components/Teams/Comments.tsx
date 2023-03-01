@@ -1,21 +1,19 @@
 import { StandFormI } from '@/models/StandForm';
-import { Box, Divider, NavLink } from '@mantine/core';
-import Link from 'next/link';
+import { Box, Divider } from '@mantine/core';
+import { Link } from '../Link';
 import Section from '../Section';
 
 interface Props {
 	forms: StandFormI[];
 }
 
-const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
+const Comment = ({ form }: { form: StandFormI }) => {
 	return (
 		<Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
 			<Link href={`/matches/${form.matchNumber}`} passHref>
-				<NavLink sx={{ fontWeight: 'bold', mt: '1.33rem' }}>
-					Match {form.matchNumber}
-				</NavLink>
+				Match {form.matchNumber}
 			</Link>
-			<h4 style={{ margin: 0 }}>{form.notes}</h4>
+			<h4 style={{ margin: 0 }}>"{form.notes}"</h4>
 			<p style={{ marginTop: 0 }}>
 				- {form.scouter?.firstName} {form.scouter?.lastName}
 			</p>
@@ -23,7 +21,7 @@ const Comment: React.VFC<{ form: StandFormI }> = ({ form }) => {
 	);
 };
 
-const Comments: React.VFC<Props> = ({ forms }) => {
+const Comments = ({ forms }: Props) => {
 	return (
 		<Section title='Comments'>
 			{forms.map((form, i) => (

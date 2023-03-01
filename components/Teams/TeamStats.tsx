@@ -15,12 +15,11 @@ const TeamStats = ({ team, standForms }: Props) => {
 	return (
 		<Section title='Team Stats'>
 			<Box>
-				<h2>Total Balls</h2>
+				<h2>Scores</h2>
 				<Box>
 					<h4>Avg Auto: {team.avgAutoScore?.toFixed(2)}</h4>
 					<h4>Avg Teleop: {team.avgTeleopScore?.toFixed(2)}</h4>
 				</Box>
-				<Box sx={{ height: 800, maxWidth: 800, width: '100%' }}>{/* Table here */}</Box>
 			</Box>
 		</Section>
 	);

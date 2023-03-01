@@ -1,5 +1,5 @@
-import { IconArrowDown } from '@tabler/icons-react';
-import { Box, Button, Collapse } from '@mantine/core';
+import { IconChevronDown } from '@tabler/icons-react';
+import { ActionIcon, Card, Collapse, Group, Stack, Title } from '@mantine/core';
 import { ReactNode, useEffect, useState } from 'react';
 
 interface Props {
@@ -14,77 +14,30 @@ const Section = ({ title, expanded = true, children }: Props) => {
 	useEffect(() => setIsExpanded(expanded), [expanded]);
 
 	return (
-		<Box
-			sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'center',
-				width: '95%',
-				m: 2,
-				borderSpacing: 0,
-				position: 'relative',
-			}}
-		>
-			<Box
-				sx={{
-					width: '100%',
-					fontSize: '1.75rem',
-					height: 'auto',
-					fontWeight: 'bold',
-					backgroundColor: 'primary.main',
-					padding: 1,
-					alignSelf: 'flex-start',
-					border: '1px solid #fff',
-					borderColor: 'primary.main',
-					borderTopLeftRadius: '8px',
-					borderTopRightRadius: '8px',
-					borderBottom: '0px',
-					borderBottomLeftRadius: isExpanded ? undefined : '8px',
-					borderBottomRightRadius: isExpanded ? undefined : '8px',
-					transition: 'border-radius 0.15s ease',
-				}}
-			>
-				{title}
-				<Button onClick={() => setIsExpanded((prev) => !prev)}>
-					<IconArrowDown
-						style={{
-							transform: isExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
-							color: 'text.primary',
-							fontSize: 48,
-							transition: 'transform 0.15s ease',
-						}}
-					/>
-				</Button>
-			</Box>
+		<Card withBorder shadow='xl'>
+			<Stack>
+				<Group>
+					<Title>{title}</Title>
+					<ActionIcon
+						variant='subtle'
+						onClick={() => setIsExpanded((prev) => !prev)}
+						size={48}
+					>
+						<IconChevronDown
+							size={48}
+							style={{
+								transform: isExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+								transition: 'transform 0.15s ease',
+							}}
+						/>
+					</ActionIcon>
+				</Group>
 
-			<Box
-				sx={{
-					display: 'flex',
-					height: 'auto',
-					width: '100%',
-					flexDirection: 'column',
-					alignItems: 'center',
-					padding: 2,
-					flexGrow: 1,
-					border: '1px solid #fff',
-					borderTop: '0px',
-					borderBottom: isExpanded ? undefined : '0px',
-					borderColor: 'primary.main',
-					borderBottomLeftRadius: '8px',
-					borderBottomRightRadius: '8px',
-				}}
-				style={{
-					height: isExpanded ? undefined : 0,
-					padding: isExpanded ? undefined : 0,
-					overflow: isExpanded ? undefined : 'hidden',
-				}}
-			>
 				<Collapse in={isExpanded} sx={{ width: '100%' }}>
-					{children}
+					<Stack>{children}</Stack>
 				</Collapse>
-			</Box>
-		</Box>
+			</Stack>
+		</Card>
 	);
 };
 

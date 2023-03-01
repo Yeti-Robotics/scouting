@@ -9,7 +9,7 @@ import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageRes } from '@/models/PitImage';
 import { StandFormI } from '@/models/StandForm';
-import { Box, Loader } from '@mantine/core';
+import { Box, Group, Loader, Stack, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -61,26 +61,26 @@ const TeamPage = () => {
 	const { team, standForms, pitForms } = data;
 
 	return (
-		<>
-			<h1>
+		<Stack p='md' align='center'>
+			<Title>
 				{team.teamNumber} {team.teamName}
-			</h1>
+			</Title>
 			<TeamStats team={team} standForms={standForms} />
 			<Comments forms={standForms} />
 			<Section title='Stand Forms' expanded={Boolean(standForms[0])}>
-				<Box sx={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
+				<Group position='center'>
 					{standForms.map((form) => (
 						<StandFormCard key={form._id} team={team} form={form} />
 					))}
-				</Box>
+				</Group>
 			</Section>
 			<Section title='Pit Forms' expanded={Boolean(pitForms[0])}>
-				<Box sx={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
+				<Group position='center'>
 					{!pitForms[0] && <h2>No pit forms for this team.</h2>}
 					{pitForms.map((form) => (
 						<PitFormCard key={form._id} team={team} form={form} />
 					))}
-				</Box>
+				</Group>
 			</Section>
 			<Section title='Pit Images' expanded={Boolean(images ? images[0] : images)}>
 				<Box sx={{ display: 'flex', flexFlow: 'row wrap' }}>
@@ -110,7 +110,7 @@ const TeamPage = () => {
 					) : null}
 				</Box>
 			</Section>
-		</>
+		</Stack>
 	);
 };
 
