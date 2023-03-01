@@ -8,7 +8,7 @@ export const model = () => {
 	const User = mongoose.model('user', userSchema, 'users');
 	const ScheduleBlock = mongoose.model('scheduleBlock', scheduleBlockSchema, 'scheduleBlocks');
 	models = { ScheduleBlock, User };
-	return { ScheduleBlock, User };
+	return models;
 };
 
 export const useModels = (): ReturnType<typeof model> =>
