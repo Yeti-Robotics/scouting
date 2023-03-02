@@ -149,8 +149,8 @@ const NavBar = () => {
 						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton
-						href='/matches'
-						text='Match Data'
+						href='/teams'
+						text='Team Data'
 						Icon={<IconShirtSport style={{ margin: 8 }} />}
 						setMenuOpened={setMenuOpened}
 					/>
@@ -164,6 +164,12 @@ const NavBar = () => {
 						href='/records'
 						text='Records'
 						Icon={<IconFile style={{ margin: 8 }} />}
+						setMenuOpened={setMenuOpened}
+					/>
+					<NavBarButton
+						href='/matches'
+						text='Match Data'
+						Icon={<IconShirtSport style={{ margin: 8 }} />}
 						setMenuOpened={setMenuOpened}
 					/>
 					<NavBarButton

@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { POPULATE_SCOUTERS } from '../../models/ScheduleBlock';
 import constants from '../constants';
 import { createCommand } from '../createCommand';
@@ -11,22 +11,27 @@ export default createCommand({
 		.setDescription('Show all scouting blocks.'),
 	execute: async (interaction) => {
 		const { ScheduleBlock } = useModels();
-		if (!ScheduleBlock)
-			return await interaction.reply({
+		if (!ScheduleBlock) {
+			await interaction.reply({
 				content: 'There was an error executing the command.',
 				ephemeral: true,
 			});
+			return;
+		}
+		if (!interaction.channel || interaction.channel.isVoiceBased()) return;
 		await interaction.channel?.sendTyping();
 
 		const blocks = await ScheduleBlock.find({}).populate(POPULATE_SCOUTERS);
 
-		if (blocks.length <= 0)
-			return await interaction.reply({
+		if (blocks.length <= 0) {
+			await interaction.reply({
 				content: 'There are no blocks in the database.',
 				ephemeral: true,
 			});
+			return;
+		}
 
-		return await interaction.reply({
+		await interaction.reply({
 			content:
 				'✨Scouting Blocks✨\n\n' +
 				blocks
@@ -42,7 +47,7 @@ export default createCommand({
 					)
 					.join('\n'),
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(constants.yetiBlue)
 					.setTitle('Scouting Schedule')
 					.setURL('https://scouting.yetirobotics.org/scouting-schedule')

@@ -1,14 +1,14 @@
 import { Client, TextChannel } from 'discord.js';
 import { useModels } from '../utils/model';
 import { POPULATE_SCOUTERS, ScheduleBlockI } from '../../models/ScheduleBlock';
-import { blockTemplate } from '../templates/blockTemplate';
+import { blockTemplate } from '../messages/block';
 import { Document } from 'mongoose';
 
 const remindScouters = async (client: Client) => {
 	const { ScheduleBlock } = useModels();
 	// Constant Checker
 	// Get MongoDB Stuff
-	const blocks = await ScheduleBlock.find({}).sort('startTime').populate(POPULATE_SCOUTERS);
+	const blocks = await ScheduleBlock.find().sort('startTime').populate(POPULATE_SCOUTERS);
 
 	const possibleBlocks = blocks.filter((block) => block.startTime > Date.now());
 
@@ -43,7 +43,7 @@ const remindScouters = async (client: Client) => {
 		process.env.CHANNEL_ID || 'i forgor 💀',
 	)) as TextChannel;
 	if (!channel) return;
-	if (!channel.isText()) return;
+	if (!channel.isTextBased()) return;
 
 	const { pings, embed } = await blockTemplate(nextBlock);
 

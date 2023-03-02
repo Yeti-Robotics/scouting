@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Client, ClientEvents, Intents } from 'discord.js';
+import { Client, ClientEvents, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import fs from 'fs';
@@ -13,12 +13,13 @@ config({ path: '.env.local', override: true });
 !isDev() && config({ path: '.env.production', override: true });
 
 (async () => {
-	// Database Grabber
+	if (!process.env.TOKEN) throw new Error('No TOKEN variable in environment.');
 	const uri = process.env.DB_URI;
 	if (!uri) {
 		console.log('No URI, could not connect to DB.');
 		return;
 	}
+
 	//use a new connection
 	await mongoose.connect(uri, { dbName: process.env.DEFAULT_DB }).then(() => {
 		console.log('DB connected!');
@@ -26,12 +27,14 @@ config({ path: '.env.local', override: true });
 	});
 
 	// CREATE THE BOT
-	await deployCommands().then(() => console.log('Successfully registered application commands.'));
+	await deployCommands()
+		.catch(console.log)
+		.then(() => console.log('Successfully registered application commands.'));
 	const client = new Client({
 		intents: [
-			Intents.FLAGS.GUILDS,
-			Intents.FLAGS.GUILD_MESSAGES,
-			Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildMessageReactions,
 		],
 	});
 

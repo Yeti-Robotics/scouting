@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import { scheduleBlockSchema } from '../../models/ScheduleBlock';
-import { userSchema } from '../../models/User';
+import mongoose, { Model } from 'mongoose';
+import { ScheduleBlockI, scheduleBlockSchema } from '../../models/ScheduleBlock';
+import { UserI, userSchema } from '../../models/User';
 
-let models: any = {};
+let models: { ScheduleBlock: Model<ScheduleBlockI>; User: Model<UserI> } = {} as any;
 
 export const model = () => {
 	const User = mongoose.model('user', userSchema, 'users');

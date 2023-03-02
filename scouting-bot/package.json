@@ -3,26 +3,25 @@
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
-		"start": "cross-env NODE_ENV=prod ts-node .",
-		"dev": "cross-env NODE_ENV=dev tsnd ."
+		"start": "cross-env NODE_ENV=prod tsc index.ts",
+		"dev": "cross-env NODE_ENV=dev tsx watch index.ts",
+		"check": "tsc --noEmit"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@discordjs/builders": "^0.12.0",
-		"@discordjs/rest": "^0.3.0",
-		"axios": "^0.25.0",
-		"discord-api-types": "^0.29.0",
-		"discord.js": "^13.6.0",
-		"dotenv": "^14.3.2",
-		"mongoose": "^6.2.8"
+		"@discordjs/builders": "1.4.0",
+		"@discordjs/rest": "1.5.0",
+		"discord-api-types": "0.37.35",
+		"discord.js": "14.7.1",
+		"dotenv": "16.0.3",
+		"mongoose": "6.10.0"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.23",
-		"cross-env": "^7.0.3",
-		"ts-node": "^10.7.0",
-		"ts-node-dev": "^1.1.8",
-		"typescript": "^4.6.3"
+		"cross-env": "7.0.3",
+		"tsx": "^3.12.3",
+		"typescript": "4.9.5"
 	}
 }
