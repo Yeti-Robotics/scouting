@@ -93,11 +93,6 @@ export const RegisterForm = () => {
 						validate: (v) => v === password,
 					})}
 				/>
-				<TextInput
-					label='Team Number'
-					type='number'
-					{...register('teamNumber', { required: true, min: 1 })}
-				/>
 				<Button
 					mt='md'
 					component='a'

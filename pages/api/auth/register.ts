@@ -36,7 +36,7 @@ handler.use(connectDB).post(async (req, res) => {
 	if (!servers.some((server) => server.id === '408711970305474560'))
 		return res.status(401).json({ message: "You are not a part of yeti's Discord server." });
 
-	const savedUser = new User({ ...user, discordId: discUser.id });
+	const savedUser = new User({ ...user, teamNumber: 3506, discordId: discUser.id });
 	await savedUser.save();
 
 	const token = signJwt(res, savedUser.username);
