@@ -1,5 +1,5 @@
 import constants from '../constants';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { ping } from '../utils/ping';
 import { ScheduleBlockI } from '../../models/ScheduleBlock';
 
@@ -19,7 +19,7 @@ export const blockTemplate = async (block: ScheduleBlockI) => {
 	const warnTime = Math.ceil((startTime - Date.now()) / 60000);
 
 	// Create Embed to send to channel
-	const remindEmbed = new MessageEmbed()
+	const remindEmbed = new EmbedBuilder()
 		.setColor(constants.yetiBlue)
 		.setTitle('Scouting Reminder 😳')
 		.setURL('https://scouting.yetirobotics.org/stand-scouting')

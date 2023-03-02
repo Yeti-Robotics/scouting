@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { POPULATE_SCOUTERS } from '../../models/ScheduleBlock';
 import constants from '../constants';
 import { createCommand } from '../createCommand';
@@ -13,18 +12,23 @@ export default createCommand({
 		.addBooleanOption((option) => option.setName('past').setDescription('Show past blocks.')),
 	execute: async (interaction) => {
 		const { User, ScheduleBlock } = useModels();
-		if (!User || !ScheduleBlock)
-			return await interaction.reply({
+		if (!User || !ScheduleBlock) {
+			await interaction.reply({
 				content: 'There was an error executing the command.',
 				ephemeral: true,
 			});
-		await interaction.channel?.sendTyping();
+			return;
+		}
+		if (!interaction.channel || interaction.channel.isVoiceBased()) return;
+		await interaction.channel.sendTyping();
 		const user = await User.findOne({ discordId: interaction.user.id });
-		if (!user)
-			return await interaction.reply({
+		if (!user) {
+			await interaction.reply({
 				content: 'There are no users with your Discord id in our database.',
 				ephemeral: true,
 			});
+			return;
+		}
 
 		let blocks = await ScheduleBlock.find({
 			$or: [
@@ -37,18 +41,20 @@ export default createCommand({
 			],
 		}).populate(POPULATE_SCOUTERS);
 
-		if (!interaction.options.getBoolean('past')) {
+		if (!interaction.options.get('past')?.value) {
 			const now = Date.now();
 			blocks = blocks.filter((block) => block.startTime > now);
 		}
 
-		if (blocks.length <= 0)
-			return await interaction.reply({
+		if (blocks.length <= 0) {
+			await interaction.reply({
 				content: 'You are not scheduled to scout any blocks in the database.',
 				ephemeral: true,
 			});
+			return;
+		}
 
-		return await interaction.reply({
+		await interaction.reply({
 			content:
 				'✨Your Schedule✨\n\n' +
 				blocks
@@ -64,7 +70,7 @@ export default createCommand({
 					)
 					.join('\n'),
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(constants.yetiBlue)
 					.setTitle('Scouting Schedule')
 					.setURL('https://scouting.yetirobotics.org/scouting-schedule')
@@ -72,7 +78,7 @@ export default createCommand({
 					.setFooter({
 						text:
 							'Thank you, your help is greatly appreciated 😄' +
-							'  Made by Isaiah and Robbie',
+							'  Made by Ibomb and Robbie',
 					}),
 			],
 			ephemeral: true,

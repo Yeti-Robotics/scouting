@@ -12,14 +12,14 @@ export const deployCommands = async () => {
 
 	const commandFiles = readdirSync('./commands').filter((file) => file.endsWith('.ts'));
 
-	for (const file of commandFiles) {
+	commandFiles.forEach((file) => {
 		const {
 			default: { command },
 		}: { default: CreateCommand } = require(`./commands/${file}`);
 		commands.push(command.toJSON());
-	}
+	});
 
-	const rest = new REST({ version: '9' }).setToken(process.env.TOKEN || 'No here xD');
+	const rest = new REST({ version: '10' }).setToken(process.env.TOKEN || 'No here xD');
 
 	return rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
 };
