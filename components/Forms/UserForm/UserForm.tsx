@@ -129,7 +129,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					{...register('confPassword', {
 						required: !!newPassword,
 						minLength: !newPassword ? undefined : 6,
-						validate: (v) => v === newPassword,
+						validate: !newPassword ? undefined : (v) => v === newPassword,
 					})}
 				/>
 				<TextInput
