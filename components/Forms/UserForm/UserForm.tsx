@@ -128,7 +128,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					label='Confirm Password'
 					{...register('confPassword', {
 						required: !!newPassword,
-						minLength: newPassword !== '' ? 6 : undefined,
+						minLength: !newPassword ? undefined : 6,
 						validate: (v) => v === newPassword,
 					})}
 				/>
