@@ -76,10 +76,7 @@ const MyApp: _App<{
 		<>
 			<Head>
 				<meta charSet='UTF-8' />
-				<link
-					rel='icon'
-					href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><text y=%22203%22 font-size=%22224%22>💀</text></svg>'
-				/>
+				<link rel='icon' href='/icon.png' />
 				<meta
 					name='viewport'
 					content='minimum-scale=1, initial-scale=1, width=device-width'

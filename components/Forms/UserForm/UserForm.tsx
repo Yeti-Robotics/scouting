@@ -81,11 +81,11 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 			<Stack spacing='sm'>
 				<TextInput
 					label={
-						usernameIsValid === undefined && usernameIsValid !== null
+						usernameIsValid === undefined
 							? // if is undefined and not null it is loading state
 							  'Validating...'
 							: usernameIsValid || usernameIsValid === null
-							? // if is null or valid shows Username
+							? // if is null or valid shows Username because it is valid or hasnt checked yet
 							  'Username'
 							: 'Username is taken'
 					}
@@ -95,7 +95,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 						minLength: 3,
 						validate: (v) => {
 							if (v === defaultUser?.username) return true;
-							return Boolean(usernameIsValid);
+							return Boolean(usernameIsValid !== undefined);
 						},
 					})}
 					onChange={validateUsername}
@@ -128,7 +128,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 					label='Confirm Password'
 					{...register('confPassword', {
 						required: !!newPassword,
-						minLength: 6,
+						minLength: newPassword !== '' ? 6 : undefined,
 						validate: (v) => v === newPassword,
 					})}
 				/>

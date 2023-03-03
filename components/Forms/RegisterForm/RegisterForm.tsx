@@ -27,7 +27,6 @@ export const RegisterForm = () => {
 	} = useForm<FormSchema>({
 		mode: 'all',
 	});
-	console.log();
 	const [usernameIsValid, setUsernameIsValid] = useState<boolean | null | undefined>(null);
 
 	const password = watch('password');
