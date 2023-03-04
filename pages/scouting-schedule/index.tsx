@@ -5,6 +5,7 @@ import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { Card, Divider, Group, Loader, Stack, Text } from '@mantine/core';
 import { Button, Checkbox } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { useState } from 'react';
 import useSWR from 'swr';
 
@@ -77,8 +78,14 @@ const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) =
 const ScoutingSchedule = () => {
 	const { user } = useUser({ canRedirect: true });
 	const { data } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
-	const [showMyBlocks, setShowMyBlocks] = useState(true);
-	const [showPastBlocks, setShowPastBlocks] = useState(false);
+	const [showMyBlocks, setShowMyBlocks] = useLocalStorage({
+		key: 'showMyBlocks',
+		defaultValue: true,
+	});
+	const [showPastBlocks, setShowPastBlocks] = useLocalStorage({
+		key: 'showPastBlocks',
+		defaultValue: false,
+	});
 
 	if (!user || !data) return <Loader size='xl' />;
 
