@@ -1,7 +1,7 @@
 import { CompareTeam } from '@/components/Teams/CompareTeam';
 import fetcher from '@/lib/fetch';
 import { RawTeamData } from '@/models/aggregations/teamData';
-import { Center, Group, Loader, Select, Stack, Text, Title } from '@mantine/core';
+import { Center, Group, Loader, Select, Stack, Title } from '@mantine/core';
 import { IconArrowsDiff } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ const Compare = () => {
 				/>
 			</Group>
 			<Group align='center' position='center'>
-				{team1 ? <CompareTeam team1={team1} team2={team2} /> : <Text>Select Team 1</Text>}
+				{team1 ? <CompareTeam team1={team1} team2={team2} /> : <Title>Select Team 1</Title>}
 			</Group>
 		</Stack>
 	);
