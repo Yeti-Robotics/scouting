@@ -153,8 +153,7 @@ export const CompareTeam = ({ team1, team2 }: Props) => {
 				</Title>
 				{team2 && team2Forms && (
 					<Title order={3}>
-						{team2.teamNumber}
-						{calcBalancePercentage(team2Forms)}%
+						{team2.teamNumber}: {calcBalancePercentage(team2Forms)}%
 					</Title>
 				)}
 			</Group>
