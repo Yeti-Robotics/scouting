@@ -11,7 +11,7 @@ const Compare = () => {
 	const router = useRouter();
 	const { data: rawTeams, error } = useSWR<RawTeamData[]>('/api/team-data', fetcher);
 	const [team1Number, setTeam1Number] = useState<number | null>(
-		parseInt(String(router.query.team)) || null,
+		parseInt(String(router.query.team1)) || null,
 	);
 	const [team2Number, setTeam2Number] = useState<number | null>();
 
@@ -39,8 +39,9 @@ const Compare = () => {
 				<Select
 					searchable
 					label='Team 1'
-					data={teamOptions}
+					data={teamOptions.filter((t) => t !== team2Number?.toString())}
 					value={team1Number?.toString() ?? null}
+					clearable
 					onChange={(v) => setTeam1Number(parseInt(v ?? '') || null)}
 				/>
 				<IconArrowsDiff />

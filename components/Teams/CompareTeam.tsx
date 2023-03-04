@@ -138,14 +138,25 @@ export const CompareTeam = ({ team1, team2 }: Props) => {
 					<Text>Loading in {team2.teamNumber}'s data</Text>
 				</Group>
 			)}
-			<Title>Auto Scores</Title>
+			<Title>
+				{team1.teamNumber} {team1.teamName ? `: ${team1.teamName}` : ''}
+				{team2 && ` Vs. ${team2.teamNumber} ${team2.teamName ? `: ${team2.teamName}` : ''}`}
+			</Title>
+			<Title order={2}>Auto Scores</Title>
 			<ScatterPlot width={800} height={500} data={autoData} {...commonProps(isDarkMode)} />
-			<Title>Teleop Scores</Title>
+			<Title order={2}>Teleop Scores</Title>
 			<ScatterPlot width={800} height={500} data={teleopData} {...commonProps(isDarkMode)} />
-			<Title>Auto Balance %</Title>
+			<Title order={2}>Auto Balance %</Title>
 			<Group align='center' position='center'>
-				<Title order={3}>{calcBalancePercentage(team1Forms)}%</Title>
-				{team2Forms && <Title order={3}>{calcBalancePercentage(team2Forms)}%</Title>}
+				<Title order={3}>
+					{team1.teamNumber}: {calcBalancePercentage(team1Forms)}%
+				</Title>
+				{team2 && team2Forms && (
+					<Title order={3}>
+						{team2.teamNumber}
+						{calcBalancePercentage(team2Forms)}%
+					</Title>
+				)}
 			</Group>
 		</Stack>
 	);

@@ -53,7 +53,7 @@ export const columns = [
 				<Menu.Dropdown>
 					<Menu.Item
 						component={Link}
-						href={`/teams/compare?team=${row.original.teamNumber}`}
+						href={`/teams/compare?team1=${row.original.teamNumber}`}
 						icon={<IconArrowsDiff size={16} />}
 					>
 						Compare
