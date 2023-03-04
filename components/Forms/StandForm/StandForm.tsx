@@ -145,6 +145,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						label='Team Number'
 						data={getTeamsAsArr(match)}
 						disabled={!canEdit}
+						limit={6}
 						required
 					/>
 				</FormSection>

@@ -34,7 +34,7 @@ const Home = () => {
 	return (
 		<>
 			<Title>Your Scouting Times</Title>
-			<Group>
+			<Group align='center' position='center'>
 				{data.length > 0 ? (
 					data.map((block) => {
 						const team = findTeam(block, user._id);

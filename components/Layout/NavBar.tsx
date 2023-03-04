@@ -8,7 +8,16 @@ import {
 	IconMoneybag,
 	IconShirtSport,
 } from '@tabler/icons-react';
-import { Burger, Drawer, Group, NavLink, Paper, Stack, Title } from '@mantine/core';
+import {
+	Burger,
+	Drawer,
+	Group,
+	NavLink,
+	Paper,
+	Stack,
+	Title,
+	useMantineTheme,
+} from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Link } from '../Link';
 import { ThemeSwitch } from './ThemeSwitch';
@@ -79,12 +88,14 @@ const CasinoButton = ({ setMenuOpened }: { setMenuOpened: Dispatch<SetStateActio
 const NavBar = () => {
 	const { user } = useUser({ redirectIfNotFound: false, redirectOnError: false });
 	const [menuOpened, setMenuOpened] = useState(false);
+	const theme = useMantineTheme();
 
 	return (
 		<Paper
 			shadow='xl'
 			radius={0}
-			sx={(theme) => ({
+			bg={theme.primaryColor}
+			sx={{
 				position: 'fixed',
 				top: 0,
 				left: 0,
@@ -96,8 +107,7 @@ const NavBar = () => {
 				padding: '0.5rem 1rem 0.5rem 1rem',
 				h: '3rem',
 				zIndex: 100,
-				backgroundColor: theme.colors[theme.primaryColor][5],
-			})}
+			}}
 		>
 			<Link
 				sx={{

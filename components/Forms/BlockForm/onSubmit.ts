@@ -14,12 +14,12 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 		if (!user || user.banned || !user.administrator) return;
 		data = {
 			...data,
-			blue1: usersMap[data.blue1 ?? '']._id,
-			blue2: usersMap[data.blue2 ?? '']._id,
-			blue3: usersMap[data.blue3 ?? '']._id,
-			red1: usersMap[data.red1 ?? '']._id,
-			red2: usersMap[data.red2 ?? '']._id,
-			red3: usersMap[data.red3 ?? '']._id,
+			blue1: usersMap[data.blue1 ?? '']?._id,
+			blue2: usersMap[data.blue2 ?? '']?._id,
+			blue3: usersMap[data.blue3 ?? '']?._id,
+			red1: usersMap[data.red1 ?? '']?._id,
+			red2: usersMap[data.red2 ?? '']?._id,
+			red3: usersMap[data.red3 ?? '']?._id,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
@@ -33,12 +33,12 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 		if (!user || user.banned || !user.administrator) return;
 		data = {
 			...data,
-			blue1: usersMap[data.blue1 ?? '']._id,
-			blue2: usersMap[data.blue2 ?? '']._id,
-			blue3: usersMap[data.blue3 ?? '']._id,
-			red1: usersMap[data.red1 ?? '']._id,
-			red2: usersMap[data.red2 ?? '']._id,
-			red3: usersMap[data.red3 ?? '']._id,
+			blue1: usersMap[data.blue1 ?? '']?._id,
+			blue2: usersMap[data.blue2 ?? '']?._id,
+			blue3: usersMap[data.blue3 ?? '']?._id,
+			red1: usersMap[data.red1 ?? '']?._id,
+			red2: usersMap[data.red2 ?? '']?._id,
+			red3: usersMap[data.red3 ?? '']?._id,
 			startTime: new Date(data.startTime).valueOf(),
 			endTime: new Date(data.endTime).valueOf(),
 		};
