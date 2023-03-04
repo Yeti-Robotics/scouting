@@ -1,8 +1,16 @@
 import { ReactNode, useState } from 'react';
-import { createStyles, Table, ScrollArea, rem, Box } from '@mantine/core';
+import { createStyles, Table, ScrollArea, rem, Box, Group } from '@mantine/core';
 import { RawTeamData } from '@/models/aggregations/teamData';
-import { Cell, getCoreRowModel, Header, useReactTable } from '@tanstack/react-table';
+import {
+	Cell,
+	getCoreRowModel,
+	getSortedRowModel,
+	Header,
+	SortingState,
+	useReactTable,
+} from '@tanstack/react-table';
 import { columns } from './columns';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -44,10 +52,23 @@ const renderCell = <T, V>(cell: Cell<T, V>) => {
 		: cell.column.columnDef.header;
 };
 
+const sortSymbols: { [key: string]: ReactNode } = {
+	asc: <IconChevronUp />,
+	desc: <IconChevronDown />,
+};
+
 export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	const { classes, cx } = useStyles();
 	const [scrolled, setScrolled] = useState(false);
-	const table = useReactTable<RawTeamData>({ columns, data, getCoreRowModel: getCoreRowModel() });
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const table = useReactTable<RawTeamData>({
+		columns,
+		data,
+		getCoreRowModel: getCoreRowModel(),
+		state: { sorting },
+		onSortingChange: setSorting,
+		getSortedRowModel: getSortedRowModel(),
+	});
 
 	return (
 		<ScrollArea mah={1000} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
@@ -60,8 +81,16 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 									component='th'
 									key={header.id}
 									maw={header.column.columnDef.maxSize}
+									sx={{
+										userSelect: header.column.getCanSort() ? 'none' : undefined,
+										cursor: header.column.getCanSort() ? 'pointer' : undefined,
+									}}
+									onClick={header.column.getToggleSortingHandler()}
 								>
-									{header.isPlaceholder ? null : renderHeader(header)}
+									<Group spacing='xs'>
+										{header.isPlaceholder ? null : renderHeader(header)}
+										{sortSymbols[header.column.getIsSorted() as string] ?? null}
+									</Group>
 								</Box>
 							))}
 						</tr>

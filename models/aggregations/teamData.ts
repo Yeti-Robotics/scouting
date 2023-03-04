@@ -64,13 +64,13 @@ export const teamDataAggregation: PipelineStage[] = [
 				$cond: {
 					if: '$teleopEngaged',
 					then: {
-						$multiply: ['$numOnCharger', 10],
+						$multiply: ['$numberOnCharger', 10],
 					},
 					else: {
 						$cond: {
 							if: '$teleopDocked',
 							then: {
-								$multiply: ['$numOnCharger', 6],
+								$multiply: ['$numberOnCharger', 6],
 							},
 							else: 0,
 						},
