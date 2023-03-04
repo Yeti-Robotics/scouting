@@ -25,7 +25,7 @@ const VerifyForms = () => {
 			o[form.matchNumber].all.push(form.teamNumber);
 			o[form.matchNumber].unique.add(form.teamNumber);
 		} else {
-			o[form.matchNumber] = { all: [form.matchNumber], unique: new Set([form.matchNumber]) };
+			o[form.matchNumber] = { all: [form.teamNumber], unique: new Set([form.teamNumber]) };
 		}
 		return o;
 	}, {});
