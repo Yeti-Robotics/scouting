@@ -4,7 +4,15 @@ import { useUser } from '@/lib/useUser';
 import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
 import { IconTrash } from '@tabler/icons-react';
-import { ActionIcon, AutocompleteItem, Box, Button, Loader, Stack } from '@mantine/core';
+import {
+	ActionIcon,
+	AutocompleteItem,
+	AutocompleteProps,
+	Box,
+	Button,
+	Loader,
+	Stack,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
@@ -60,6 +68,16 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 		return <h1>You&#39;ve been banned you sussy baka.</h1>;
 	}
 
+	const filter: AutocompleteProps['filter'] = (v: string, item) => {
+		const compV = v.toLowerCase().trim();
+		const user = usersMap[item.value];
+		return (
+			user.firstName.toLowerCase().includes(compV) ||
+			user.lastName.toLowerCase().includes(compV) ||
+			user.username.toLowerCase().includes(compV)
+		);
+	};
+
 	return (
 		<Box component='form' onSubmit={handleSubmit(onSubmit(create, user, usersMap))}>
 			{user && user.administrator && !create && id && (
@@ -84,6 +102,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='blue1'
 					label='Blue 1'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledAutocomplete
@@ -92,6 +113,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='blue2'
 					label='Blue 2'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledAutocomplete
@@ -100,6 +124,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='blue3'
 					label='Blue 3'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledAutocomplete
@@ -108,6 +135,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='red1'
 					label='Red 1'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledAutocomplete
@@ -116,6 +146,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='red2'
 					label='Red 2'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledAutocomplete
@@ -124,6 +157,9 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					name='red3'
 					label='Red 3'
 					disabled={!canEdit}
+					maxDropdownHeight={400}
+					limit={8}
+					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
 				<ControlledDateTimePicker
