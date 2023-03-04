@@ -3,7 +3,7 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
-import StandForm, { CreateStandForm } from '@/models/StandForm';
+import StandForm, { CreateStandForm, StandFormI } from '@/models/StandForm';
 import Team from '@/models/Team';
 
 interface TBATeamSimple {
@@ -20,7 +20,8 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		const forms = await paginate(StandForm, req.query);
+		if (req.query.all) return res.status(200).json(await StandForm.find().populate('scouter'));
+		const forms = await paginate<StandFormI>(StandForm, req.query);
 		await StandForm.populate(forms, { path: 'scouter' });
 		return res.status(200).json(forms);
 	})

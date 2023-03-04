@@ -32,6 +32,11 @@ const Records = () => {
 					<MenuCard href='/records/users' text='Users' Icon={<IconUser />} />
 				)}
 			</Group>
+			{user?.administrator && (
+				<Button component={Link} href='/records/verify-forms'>
+					Verify Match Forms
+				</Button>
+			)}
 			<Button
 				leftIcon={<IconFlame />}
 				onClick={() =>
