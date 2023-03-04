@@ -47,15 +47,14 @@ const Compare = () => {
 				<Select
 					searchable
 					label='Team 2'
-					data={teamOptions}
+					data={teamOptions.filter((t) => t !== team1Number?.toString())}
 					value={team2Number?.toString() ?? null}
 					onChange={(v) => setTeam2Number(parseInt(v ?? '') || null)}
+					clearable
 				/>
 			</Group>
 			<Group align='center' position='center'>
-				{team1 ? <CompareTeam team={team1} /> : <Text>Select Team 1</Text>}
-				<IconArrowsDiff />
-				{team2 ? <CompareTeam team={team2} /> : <Text>Select Team 2</Text>}
+				{team1 ? <CompareTeam team1={team1} team2={team2} /> : <Text>Select Team 1</Text>}
 			</Group>
 		</Stack>
 	);

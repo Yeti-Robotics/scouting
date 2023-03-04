@@ -2,6 +2,7 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
+import { matchWForms } from '@/models/aggregations/matchWForms';
 import Match, { MatchI } from '@/models/Match';
 
 export default new RouteHandler<'api', WAuth>()
@@ -10,6 +11,8 @@ export default new RouteHandler<'api', WAuth>()
 	.get(async (req, res) => {
 		if (!req.user || req.user.banned)
 			return res.status(403).json({ message: 'You are not authorized.' });
+
+		if (req.query.withForms) return res.status(200).json(await Match.aggregate(matchWForms));
 
 		const matches = await Match.find({}).sort('matchNumber');
 
