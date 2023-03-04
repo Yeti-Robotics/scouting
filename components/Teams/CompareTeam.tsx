@@ -1,13 +1,6 @@
 import fetcher from '@/lib/fetch';
 import { RawTeamData } from '@/models/aggregations/teamData';
-import { MatchI } from '@/models/Match';
-import {
-	ResponsiveScatterPlot,
-	ScatterPlot,
-	ScatterPlotRawSerie,
-	ScatterPlotSvgProps,
-} from '@nivo/scatterplot';
-import {} from '@nivo/core';
+import { ScatterPlot, ScatterPlotRawSerie, ScatterPlotSvgProps } from '@nivo/scatterplot';
 import useSWR from 'swr';
 import { Group, Loader, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 import { StandFormI } from '@/models/StandForm';
@@ -32,41 +25,6 @@ const calcTeleopScore = (form: StandFormI) =>
 	form.teleopMidCubes * 3 +
 	form.teleopLowCones * 2 +
 	form.teleopLowCubes * 2;
-
-const calcScore = (form: StandFormI) => {
-	let auto =
-		form.autoTopCones * 6 +
-		form.autoTopCubes * 6 +
-		form.autoMidCones * 4 +
-		form.autoMidCubes * 4 +
-		form.autoLowCones * 3 +
-		form.autoLowCubes * 3;
-
-	// add points from auto charging
-	if (form.autoEngaged) {
-		auto += 12;
-	} else if (form.autoDocked) {
-		auto += 8;
-	}
-
-	const teleop =
-		form.teleopTopCones * 5 +
-		form.teleopTopCubes * 5 +
-		form.teleopMidCones * 3 +
-		form.teleopMidCubes * 3 +
-		form.teleopLowCones * 2 +
-		form.teleopLowCubes * 2;
-	let endScore = 0;
-
-	// add points from end charging
-	if (form.teleopEngaged) {
-		endScore += 10 * form.numberOnCharger;
-	} else if (form.teleopDocked) {
-		endScore += 6 * form.numberOnCharger;
-	}
-
-	return auto + teleop + endScore;
-};
 
 const calcBalancePercentage = (forms: StandFormI[]) =>
 	(
