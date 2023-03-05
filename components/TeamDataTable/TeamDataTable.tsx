@@ -71,7 +71,10 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	});
 
 	return (
-		<ScrollArea mah={1000} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+		<ScrollArea
+			mah='calc(100vh - 5rem)'
+			onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+		>
 			<Table striped highlightOnHover>
 				<thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
 					{table.getHeaderGroups().map((headerGroup) => (
