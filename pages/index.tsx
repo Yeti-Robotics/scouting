@@ -29,7 +29,7 @@ const Home = () => {
 	if (data === null || !user) {
 		// Not logged in ✊😔
 		return (
-			<Stack>
+			<Stack align='center' justify='center'>
 				<Title>Not wogged in 🥺</Title>
 				<Text>If you're not on owe teem you don't need to 😁</Text>
 			</Stack>
