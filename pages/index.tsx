@@ -1,7 +1,7 @@
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
-import { Card, Group, Loader, Paper, Text, Title } from '@mantine/core';
+import { Card, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import useSWR from 'swr';
 
 const findTeam = (block: ScheduleBlockI, id: string) => {
@@ -28,7 +28,12 @@ const Home = () => {
 
 	if (data === null || !user) {
 		// Not logged in ✊😔
-		return <h1>Not wogged in 🥺</h1>;
+		return (
+			<Stack>
+				<Title>Not wogged in 🥺</Title>
+				<Text>If you're not on owe teem you don't need to 😁</Text>
+			</Stack>
+		);
 	}
 
 	return (
