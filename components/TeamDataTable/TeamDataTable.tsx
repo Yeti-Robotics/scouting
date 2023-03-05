@@ -81,15 +81,18 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 									component='th'
 									key={header.id}
 									maw={header.column.columnDef.maxSize}
+									colSpan={header.colSpan}
 									sx={{
 										userSelect: header.column.getCanSort() ? 'none' : undefined,
 										cursor: header.column.getCanSort() ? 'pointer' : undefined,
 									}}
 									onClick={header.column.getToggleSortingHandler()}
 								>
-									<Group spacing='xs'>
-										{header.isPlaceholder ? null : renderHeader(header)}
-										{sortSymbols[header.column.getIsSorted() as string] ?? null}
+									<Group spacing='xs' position='center' align='center'>
+										{!header.isPlaceholder && renderHeader(header)}
+										{!header.isPlaceholder &&
+											(sortSymbols[header.column.getIsSorted() as string] ??
+												null)}
 									</Group>
 								</Box>
 							))}
@@ -101,7 +104,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 						<tr key={row.id}>
 							{row.getVisibleCells().map((cell) => (
 								<Box
-									component='th'
+									component='td'
 									key={cell.id}
 									maw={cell.column.columnDef.maxSize}
 								>

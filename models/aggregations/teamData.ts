@@ -82,6 +82,36 @@ export const teamDataAggregation: PipelineStage[] = [
 	{
 		$group: {
 			_id: '$teamNumber',
+			avgTopCones: {
+				$avg: {
+					$add: ['$teleopTopCones', '$autoTopCones'],
+				},
+			},
+			avgMidCones: {
+				$avg: {
+					$add: ['$teleopMidCones', '$autoMidCones'],
+				},
+			},
+			avgLowCones: {
+				$avg: {
+					$add: ['$teleopLowCones', '$autoLowCones'],
+				},
+			},
+			avgTopCubes: {
+				$avg: {
+					$add: ['$teleopTopCubes', '$autoTopCubes'],
+				},
+			},
+			avgMidCubes: {
+				$avg: {
+					$add: ['$teleopMidCubes', '$autoMidCubes'],
+				},
+			},
+			avgLowCubes: {
+				$avg: {
+					$add: ['$teleopLowCubes', '$autoLowCubes'],
+				},
+			},
 			initiationLine: {
 				$avg: {
 					$multiply: [
@@ -123,6 +153,12 @@ export const teamDataAggregation: PipelineStage[] = [
 			initiationLine: {
 				$round: ['$initiationLine', 1],
 			},
+			avgTopCones: 1,
+			avgMidCones: 1,
+			avgLowCones: 1,
+			avgTopCubes: 1,
+			avgMidCubes: 1,
+			avgLowCubes: 1,
 			avgPenalties: 1,
 			avgDefense: 1,
 			avgEndScore: {
@@ -185,6 +221,12 @@ export interface TeamData {
 	avgPenalties: number;
 	avgDefense: number;
 	initiationLine: number;
+	avgTopCones: number;
+	avgMidCones: number;
+	avgLowCones: number;
+	avgTopCubes: number;
+	avgMidCubes: number;
+	avgLowCubes: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {

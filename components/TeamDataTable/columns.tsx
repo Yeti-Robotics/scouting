@@ -26,20 +26,51 @@ export const columns = [
 		cell: (props) => <Text>{props.getValue()}</Text>,
 		maxSize: 288,
 	}),
-	helper.accessor('avgAutoScore', {
-		header: () => <Text fw={700}>Avg. Auto</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
-		maxSize: 160,
+	helper.group({
+		id: 'cones',
+		header: () => (
+			<Text fw={700} align='center'>
+				Avg Cones
+			</Text>
+		),
+		maxSize: 460,
+		columns: [
+			helper.accessor('avgTopCones', {
+				header: () => <Text fw={700}>Top</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+			helper.accessor('avgMidCones', {
+				header: () => <Text fw={700}>Mid</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+			helper.accessor('avgLowCones', {
+				header: () => <Text fw={700}>Low</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+		],
 	}),
-	helper.accessor('avgTeleopScore', {
-		header: () => <Text fw={700}>Avg. Teleop</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
-		maxSize: 160,
-	}),
-	helper.accessor('avgEndScore', {
-		header: () => <Text fw={700}>Avg. End</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
-		maxSize: 160,
+	helper.group({
+		id: 'cubes',
+		header: () => (
+			<Text fw={700} align='center'>
+				Avg Cubes
+			</Text>
+		),
+		maxSize: 460,
+		columns: [
+			helper.accessor('avgTopCubes', {
+				header: () => <Text fw={700}>Top</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+			helper.accessor('avgMidCubes', {
+				header: () => <Text fw={700}>Mid</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+			helper.accessor('avgLowCubes', {
+				header: () => <Text fw={700}>Low</Text>,
+				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+			}),
+		],
 	}),
 	helper.display({
 		id: 'more',
