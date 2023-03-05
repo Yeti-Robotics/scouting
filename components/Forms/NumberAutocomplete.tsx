@@ -45,7 +45,9 @@ export const NumberAutocomplete = <T extends FieldValues>({
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(v) => {
-				if (v === null || v === undefined) return;
+				if (v === null || v === undefined || v === '') {
+					field.onChange(undefined);
+				}
 				const parsed = v.includes('.') ? parseFloat(v) : parseInt(v);
 				if (isNaN(parsed)) return console.log(`Failed to parse ${v} into a number.`);
 				field.onChange(parsed);

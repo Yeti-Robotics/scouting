@@ -73,6 +73,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	return (
 		<ScrollArea
 			mah='calc(100vh - 5rem)'
+			maw='calc(100vw - 2rem)'
 			onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
 		>
 			<Table striped highlightOnHover>
