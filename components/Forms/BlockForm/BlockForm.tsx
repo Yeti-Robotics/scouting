@@ -1,5 +1,4 @@
 import fetcher from '@/lib/fetch';
-import { numToDateTimeInput } from '@/lib/formatDate';
 import { useUser } from '@/lib/useUser';
 import { CreateScheduleBlock, ScheduleBlockI } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
@@ -48,8 +47,6 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 	const { control, handleSubmit } = useForm<CreateScheduleBlock>({
 		defaultValues: {
 			...fullBlockToCreate(defaultBlock),
-			startTime: numToDateTimeInput(defaultBlock.startTime) as any,
-			endTime: numToDateTimeInput(defaultBlock.endTime) as any,
 		},
 	});
 

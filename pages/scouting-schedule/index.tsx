@@ -6,7 +6,6 @@ import { UserI } from '@/models/User';
 import { Card, Divider, Group, Loader, Stack, Text } from '@mantine/core';
 import { Button, Checkbox } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import { useState } from 'react';
 import useSWR from 'swr';
 
 const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) => {
@@ -111,7 +110,11 @@ const ScoutingSchedule = () => {
 			</Stack>
 			<Group px='md' align='center' position='center'>
 				{data
-					.filter(showPastBlocks ? () => true : (match) => match.startTime > Date.now()) // wont show up is match is in next 5 mins (300000 millisecondss)
+					.filter(
+						showPastBlocks
+							? () => true
+							: (match) => new Date(match.startTime).valueOf() > Date.now(),
+					) // wont show up is match is in next 5 mins (300000 millisecondss)
 					.filter(showMyBlocks ? (block) => userIsScouting(user, block) : () => true)
 					.map((block) => (
 						<BlockDisplay key={block._id} user={user} block={block} />

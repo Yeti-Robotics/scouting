@@ -4,7 +4,8 @@ import { ping } from '../utils/ping';
 import { ScheduleBlockI } from '../../models/ScheduleBlock';
 
 export const blockTemplate = async (block: ScheduleBlockI) => {
-	const { blue1, blue2, blue3, red1, red2, red3, startTime, endTime } = block;
+	const { blue1, blue2, blue3, red1, red2, red3, endTime } = block;
+	const startTime = new Date(block.startTime);
 
 	// Transfer User ID's into an Array of GuildMembers
 	const users: (string | undefined)[] = [];
@@ -16,7 +17,7 @@ export const blockTemplate = async (block: ScheduleBlockI) => {
 	users.push(red3 ? `${red3.firstName} ${red3.lastName}` : undefined);
 
 	// Calculate Time Before your scouting session
-	const warnTime = Math.ceil((startTime - Date.now()) / 60000);
+	const warnTime = Math.ceil((startTime.valueOf() - Date.now()) / 60000);
 
 	// Create Embed to send to channel
 	const remindEmbed = new EmbedBuilder()

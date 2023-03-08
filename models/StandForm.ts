@@ -1,19 +1,21 @@
 import { Model, model, models, Schema } from 'mongoose';
 import { UserI } from './User';
 
+export const endPosEnum = ['Nothing', 'Parked', 'On Charger'];
+
 const standFormSchema = new Schema<StandFormI>(
 	{
 		teamNumber: { type: Number, required: true },
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, default: () => 1 },
-		scouter: { type: String, ref: 'user', required: true }, // username
+		scouter: { type: String, ref: 'user', required: true }, // user _id
 		autoTopCubes: { type: Number, required: true },
 		autoTopCones: { type: Number, required: true },
 		autoMidCubes: { type: Number, required: true },
 		autoMidCones: { type: Number, required: true },
 		autoLowCubes: { type: Number, required: true },
 		autoLowCones: { type: Number, required: true },
-		autoDocked: { type: Boolean, required: true },
+		autoDocked: { type: Boolean, default: () => false },
 		autoEngaged: { type: Boolean, default: () => false },
 		teleopTopCubes: { type: Number, required: true },
 		teleopTopCones: { type: Number, required: true },
@@ -21,9 +23,10 @@ const standFormSchema = new Schema<StandFormI>(
 		teleopMidCones: { type: Number, required: true },
 		teleopLowCubes: { type: Number, required: true },
 		teleopLowCones: { type: Number, required: true },
-		teleopDocked: { type: Boolean, required: true },
+		teleopDocked: { type: Boolean, default: () => false },
 		teleopEngaged: { type: Boolean, default: () => false },
 		numberOnCharger: { type: Number, required: true },
+		endPosition: { type: String, enum: endPosEnum, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
 		defense: { type: Number, required: true },
@@ -61,6 +64,7 @@ export interface CreateStandForm {
 	preload: boolean;
 	initiationLine: boolean;
 	links: number;
+	endPosition: string;
 	penalties: number;
 	defense: number;
 	approved: boolean;
@@ -95,6 +99,7 @@ export interface StandFormI {
 	numberOnCharger: number;
 	preload: boolean;
 	initiationLine: boolean;
+	endPosition: string;
 	links: number;
 	penalties: number;
 	defense: number;

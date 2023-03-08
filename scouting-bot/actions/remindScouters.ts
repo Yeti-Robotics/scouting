@@ -10,7 +10,9 @@ const remindScouters = async (client: Client) => {
 	// Get MongoDB Stuff
 	const blocks = await ScheduleBlock.find().sort('startTime').populate(POPULATE_SCOUTERS);
 
-	const possibleBlocks = blocks.filter((block) => block.startTime > Date.now());
+	const possibleBlocks = blocks.filter(
+		(block) => new Date(block.startTime).valueOf() > Date.now(),
+	);
 
 	const nextBlock = possibleBlocks[0] as unknown as Document<ScheduleBlockI> &
 		ScheduleBlockI & { _id: string };
@@ -27,10 +29,11 @@ const remindScouters = async (client: Client) => {
 	)
 		return;
 
-	if (nextBlock.startTime - Date.now() <= 30 * 60 * 1000 && !nextBlock.min30) {
+	const startTime = new Date(nextBlock.startTime);
+	if (startTime.valueOf() - Date.now() <= 30 * 60 * 1000 && !nextBlock.min30) {
 		// within 30mins and hasn't done 30 min warning
 		await nextBlock.updateOne({ min30: true });
-	} else if (nextBlock.startTime - Date.now() <= 10 * 60 * 1000 && !nextBlock.min10) {
+	} else if (startTime.valueOf() - Date.now() <= 10 * 60 * 1000 && !nextBlock.min10) {
 		// within 10 mins and hasn't done 10 min warning
 		await nextBlock.updateOne({ min10: true });
 	} else {

@@ -1,10 +1,12 @@
 import { Model, model, models, Schema } from 'mongoose';
 import { UserI } from './User';
 
-export const scheduleBlockSchema = new Schema<ScheduleBlockI>(
+export const scheduleBlockSchema = new Schema<
+	Omit<ScheduleBlockI, 'startTime' | 'endTime'> & { startTime: Date; endTime: Date }
+>(
 	{
-		startTime: { type: Number, required: true },
-		endTime: { type: Number, required: true },
+		startTime: { type: Date, required: true },
+		endTime: { type: Date, required: true },
 		blue1: { type: Schema.Types.ObjectId, ref: 'user', required: false },
 		blue2: { type: Schema.Types.ObjectId, ref: 'user', required: false },
 		blue3: { type: Schema.Types.ObjectId, ref: 'user', required: false },
@@ -19,8 +21,8 @@ export const scheduleBlockSchema = new Schema<ScheduleBlockI>(
 
 export interface ScheduleBlockI {
 	_id: string;
-	startTime: number;
-	endTime: number;
+	startTime: string;
+	endTime: string;
 	blue1?: UserI;
 	blue2?: UserI;
 	blue3?: UserI;
@@ -35,8 +37,8 @@ export interface ScheduleBlockI {
 
 export interface CreateScheduleBlock {
 	_id: string;
-	startTime: number;
-	endTime: number;
+	startTime: string;
+	endTime: string;
 	blue1?: string;
 	blue2?: string;
 	blue3?: string;
@@ -52,7 +54,8 @@ export interface CreateScheduleBlock {
 export const POPULATE_SCOUTERS = 'blue1 blue2 blue3 red1 red2 red3';
 
 const ScheduleBlock =
-	(models?.scheduleBlock as Model<CreateScheduleBlock>) ||
-	model('scheduleBlock', scheduleBlockSchema);
+	(models?.scheduleBlock as Model<
+		Omit<ScheduleBlockI, 'startTime' | 'endTime'> & { startTime: Date; endTime: Date }
+	>) || model('scheduleBlock', scheduleBlockSchema);
 
 export default ScheduleBlock;
