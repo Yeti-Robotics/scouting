@@ -86,7 +86,7 @@ const CasinoButton = ({ setMenuOpened }: { setMenuOpened: Dispatch<SetStateActio
 };
 
 const NavBar = () => {
-	const { user } = useUser({ redirectIfNotFound: false, redirectOnError: false });
+	const { user } = useUser({ canRedirect: false });
 	const [menuOpened, setMenuOpened] = useState(false);
 	const theme = useMantineTheme();
 
@@ -146,30 +146,36 @@ const NavBar = () => {
 						Icon={<IconUserCircle style={{ margin: 8 }} />}
 						setMenuOpened={setMenuOpened}
 					/>
-					<NavBarButton
-						href='/stand-scouting'
-						text='Stand Scouting Form'
-						Icon={<IconNote style={{ margin: 8 }} />}
-						setMenuOpened={setMenuOpened}
-					/>
-					<NavBarButton
-						href='/pit-scouting'
-						text='Pit Scouting Form'
-						Icon={<IconNote style={{ margin: 8 }} />}
-						setMenuOpened={setMenuOpened}
-					/>
+					{user && (
+						<NavBarButton
+							href='/stand-scouting'
+							text='Stand Scouting Form'
+							Icon={<IconNote style={{ margin: 8 }} />}
+							setMenuOpened={setMenuOpened}
+						/>
+					)}
+					{user && (
+						<NavBarButton
+							href='/pit-scouting'
+							text='Pit Scouting Form'
+							Icon={<IconNote style={{ margin: 8 }} />}
+							setMenuOpened={setMenuOpened}
+						/>
+					)}
 					<NavBarButton
 						href='/teams'
 						text='Team Data'
 						Icon={<IconShirtSport style={{ margin: 8 }} />}
 						setMenuOpened={setMenuOpened}
 					/>
-					<NavBarButton
-						href='/scouting-schedule'
-						text='Stand Scouting Schedule'
-						Icon={<IconCalendar style={{ margin: 8 }} />}
-						setMenuOpened={setMenuOpened}
-					/>
+					{user && (
+						<NavBarButton
+							href='/scouting-schedule'
+							text='Stand Scouting Schedule'
+							Icon={<IconCalendar style={{ margin: 8 }} />}
+							setMenuOpened={setMenuOpened}
+						/>
+					)}
 					<NavBarButton
 						href='/records'
 						text='Records'

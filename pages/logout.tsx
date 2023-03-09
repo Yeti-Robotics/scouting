@@ -9,8 +9,8 @@ const Logout = () => {
 
 	useEffect(() => {
 		fetch('/api/auth/logout').then(() => {
-			mutate();
-			router.push('/');
+			document.cookie = 'access_token="";Max-Age=1';
+			mutate().then(() => router.push('/'));
 		});
 	}, []);
 

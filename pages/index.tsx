@@ -18,9 +18,7 @@ const Home = () => {
 	const { user } = useUser({ canRedirect: false });
 	const { data, error } = useSWR<ScheduleBlockI[] | null>('/api/schedule/me', fetcher);
 
-	if (data === undefined) {
-		return <Loader />;
-	}
+	if (data === undefined) return <Loader />;
 
 	if (error) {
 		return <h1>There was an error getting your data.</h1>;
@@ -30,8 +28,8 @@ const Home = () => {
 		// Not logged in ✊😔
 		return (
 			<Stack align='center' justify='center'>
-				<Title>Not wogged in 🥺</Title>
-				<Text>If you're not on owe teem you don't need to 😁</Text>
+				<Title align='center'>Not wogged in 🥺</Title>
+				<Text align='center'>If you're not on owe teem you don't need to 😁</Text>
 			</Stack>
 		);
 	}
