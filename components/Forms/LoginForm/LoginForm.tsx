@@ -1,5 +1,6 @@
 import { useUser } from '@/lib/useUser';
-import { Box, Button, Paper, PasswordInput, Text, TextInput } from '@mantine/core';
+import { Box, Button, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core';
+import { closeAllModals } from '@mantine/modals';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,7 +10,7 @@ interface FormSchema {
 	password: string;
 }
 
-export const LoginForm = () => {
+export const LoginForm = ({ modal }: { modal: boolean }) => {
 	const router = useRouter();
 	const { mutate } = useUser({ canRedirect: false });
 	const { handleSubmit, register } = useForm<FormSchema>();
@@ -19,14 +20,16 @@ export const LoginForm = () => {
 		setLoginSuccess(undefined);
 		const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) });
 		if (res.ok) {
-			mutate();
-			router.push(String(router.query.from || '/'));
+			await mutate();
+			if (modal) closeAllModals();
+			else router.push(String(router.query.from || '/'));
 		}
 		setLoginSuccess(false);
 	};
 
 	return (
-		<Paper withBorder shadow='xl'>
+		<Paper withBorder={!modal} shadow={!modal ? 'xl' : undefined}>
+			{modal && <Title align='center'>Log Back In</Title>}
 			<Box
 				component='form'
 				p='md'

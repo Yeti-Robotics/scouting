@@ -7,7 +7,7 @@ const Login = () => {
 
 	return (
 		<>
-			<LoginForm />
+			<LoginForm modal={false} />
 			<Link href={`/register?from${String(router.query.from || '/')}`}>
 				Don't have an account? Register Here!
 			</Link>

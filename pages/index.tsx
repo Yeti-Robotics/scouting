@@ -59,7 +59,7 @@ const Home = () => {
 										hour12: true,
 									})}
 								</Title>
-								<Paper bg={isRed ? 'red' : 'blue'} withBorder>
+								<Paper bg={isRed ? 'red' : 'blue'}>
 									<Text align='center' size='xl' fw={600}>
 										{team}
 									</Text>
