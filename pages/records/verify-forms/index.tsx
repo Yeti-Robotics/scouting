@@ -1,7 +1,17 @@
 import fetcher from '@/lib/fetch';
 import { MatchI } from '@/models/Match';
 import { StandFormI } from '@/models/StandForm';
-import { Card, Checkbox, Group, Highlight, Loader, Stack, Text, Title } from '@mantine/core';
+import {
+	Button,
+	Card,
+	Checkbox,
+	Group,
+	Highlight,
+	Loader,
+	Stack,
+	Text,
+	Title,
+} from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import useSWR from 'swr';
 
@@ -32,6 +42,9 @@ const VerifyForms = () => {
 
 	return (
 		<Stack align='center'>
+			<Button onClick={() => fetch('/api/matches/populate-official')}>
+				Get Official Matches
+			</Button>
 			<Checkbox
 				label='Show Good Matches'
 				size='xl'
