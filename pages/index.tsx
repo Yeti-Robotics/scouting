@@ -3,6 +3,7 @@ import { useUser } from '@/lib/useUser';
 import { ScheduleBlockI } from '@/models/ScheduleBlock';
 import { Card, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import useSWR from 'swr';
+import { useRouter } from 'next/router';
 
 const findTeam = (block: ScheduleBlockI, id: string) => {
 	if (id === block.blue1?._id) return 'Blue 1';
@@ -15,6 +16,7 @@ const findTeam = (block: ScheduleBlockI, id: string) => {
 };
 
 const Home = () => {
+	const router = useRouter();
 	const { user } = useUser({ canRedirect: false });
 	const { data, error } = useSWR<ScheduleBlockI[] | null>('/api/schedule/me', fetcher);
 
@@ -26,6 +28,8 @@ const Home = () => {
 
 	if (data === null || !user) {
 		// Not logged in ✊😔
+		//automatically sends them to the login screen
+		router.replace('/login');
 		return (
 			<Stack align='center' justify='center'>
 				<Title align='center'>Not wogged in 🥺</Title>
