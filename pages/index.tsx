@@ -70,7 +70,7 @@ const Home = () => {
 						);
 					})
 				) : (
-					<Text size='xl'>Your not scouting (lucky 🙄)</Text>
+					<Text size='xl'>You're not scouting (lucky 🙄)</Text>
 				)}
 			</Group>
 		</>
