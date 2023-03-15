@@ -76,7 +76,7 @@ const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) =
 
 const ScoutingSchedule = () => {
 	const { user } = useUser({ canRedirect: true });
-	const { data } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
+	const { data, mutate } = useSWR<ScheduleBlockI[]>('/api/schedule', fetcher);
 	const [showMyBlocks, setShowMyBlocks] = useLocalStorage({
 		key: 'showMyBlocks',
 		defaultValue: true,
@@ -95,7 +95,11 @@ const ScoutingSchedule = () => {
 					Create Schedule
 				</Button>
 			)}
-			{user.administrator && <Button>Clear Schedule</Button>}
+			{user.administrator && (
+				<Button onClick={() => fetch('/api/schedule/clear').then(() => mutate())}>
+					Clear Schedule
+				</Button>
+			)}
 			<Stack align='center' justify='center'>
 				<Checkbox
 					onChange={(e) => setShowMyBlocks(e.target.checked)}
