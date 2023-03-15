@@ -1,6 +1,8 @@
 import { MatchData } from '@/models/aggregations/matchData';
+import { MatchWForms } from '@/models/aggregations/matchWForms';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { MatchI } from '@/models/Match';
+import { StandFormI } from '@/models/StandForm';
 
 export const getAllData = (match: MatchData, key: keyof StandFormWithName, ifUndef: any = 0) => {
 	const keys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;
@@ -169,4 +171,43 @@ export const getTeamColor = (match: MatchData, team?: StandFormWithName | number
 			return '#ff0000';
 	}
 	return 'none';
+};
+
+const getPiecesScored = (form: StandFormI | undefined) => {
+	return {
+		lowCubes: (form?.autoLowCubes ?? 0) + (form?.teleopLowCubes ?? 0),
+		lowCones: (form?.autoLowCones ?? 0) + (form?.teleopLowCones ?? 0),
+		midCubes: (form?.autoMidCubes ?? 0) + (form?.teleopMidCubes ?? 0),
+		midCones: (form?.autoMidCones ?? 0) + (form?.teleopMidCones ?? 0),
+		highCubes: (form?.autoTopCubes ?? 0) + (form?.teleopTopCubes ?? 0),
+		highCones: (form?.autoTopCones ?? 0) + (form?.teleopTopCones ?? 0),
+	};
+};
+
+export const aggregatePiecesScored = (match: MatchWForms) => {
+	const blue1 = getPiecesScored(match.blue1);
+	const blue2 = getPiecesScored(match.blue2);
+	const blue3 = getPiecesScored(match.blue3);
+	const red1 = getPiecesScored(match.red1);
+	const red2 = getPiecesScored(match.red2);
+	const red3 = getPiecesScored(match.red3);
+
+	return {
+		blue: {
+			lowCubes: blue1.lowCubes + blue2.lowCubes + blue3.lowCubes,
+			lowCones: blue1.lowCones + blue2.lowCones + blue3.lowCones,
+			midCubes: blue1.midCubes + blue2.midCubes + blue3.midCubes,
+			midCones: blue1.midCones + blue2.midCones + blue3.midCones,
+			highCubes: blue1.highCubes + blue2.highCubes + blue3.highCubes,
+			highCones: blue1.highCones + blue2.highCones + blue3.highCones,
+		},
+		red: {
+			lowCubes: red1.lowCubes + red2.lowCubes + red3.lowCubes,
+			lowCones: red1.lowCones + red2.lowCones + red3.lowCones,
+			midCubes: red1.midCubes + red2.midCubes + red3.midCubes,
+			midCones: red1.midCones + red2.midCones + red3.midCones,
+			highCubes: red1.highCubes + red2.highCubes + red3.highCubes,
+			highCones: red1.highCones + red2.highCones + red3.highCones,
+		},
+	};
 };

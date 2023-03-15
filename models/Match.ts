@@ -34,8 +34,8 @@ type MatchDocumentProps = {
 type MatchModelType = Model<MatchI, {}, MatchDocumentProps>;
 
 const storedAllianceSchema = new Schema<StoredTBAMtch>({
-	teleopGrid: [{ B: [String], M: [String], T: [String] }],
-	autoGrid: [{ B: [String], M: [String], T: [String] }],
+	teleopGrid: { B: [String], M: [String], T: [String] },
+	autoGrid: { B: [String], M: [String], T: [String] },
 	lowCubes: Number,
 	lowCones: Number,
 	midCubes: Number,

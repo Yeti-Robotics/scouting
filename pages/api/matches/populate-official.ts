@@ -62,7 +62,7 @@ export default new RouteHandler<'api', WAuth>()
 							blue: {
 								teleopGrid: match.score_breakdown.blue.teleopCommunity,
 								autoGrid: match.score_breakdown.blue.autoCommunity,
-								...getPiecesScored(match.score_breakdown.red),
+								...getPiecesScored(match.score_breakdown.blue),
 							},
 							red: {
 								teleopGrid: match.score_breakdown.red.teleopCommunity,

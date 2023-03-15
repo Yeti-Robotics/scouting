@@ -1,4 +1,5 @@
 import { PipelineStage } from 'mongoose';
+import { MatchI } from '../Match';
 import { StandFormI } from '../StandForm';
 
 export const matchWForms: PipelineStage[] = [
@@ -58,6 +59,7 @@ export const matchWForms: PipelineStage[] = [
 	{
 		$project: {
 			matchNumber: true,
+			official: true,
 			blue1: {
 				$first: {
 					$filter: {
@@ -131,4 +133,5 @@ export type MatchWForms = {
 	red1?: StandFormI;
 	red2?: StandFormI;
 	red3?: StandFormI;
+	official?: MatchI['official'];
 };

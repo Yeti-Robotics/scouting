@@ -1,3 +1,4 @@
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { MatchI } from '@/models/Match';
 import { StandFormI } from '@/models/StandForm';
@@ -42,8 +43,8 @@ const VerifyForms = () => {
 
 	return (
 		<Stack align='center'>
-			<Button onClick={() => fetch('/api/matches/populate-official')}>
-				Get Official Matches
+			<Button component={Link} href='/records/verify-forms/tba'>
+				Verify against TBA
 			</Button>
 			<Checkbox
 				label='Show Good Matches'
