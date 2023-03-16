@@ -96,6 +96,11 @@ const ScoutingSchedule = () => {
 				</Button>
 			)}
 			{user.administrator && (
+				<Button component={Link} href='/scouting-schedule/create-block'>
+					Create Block
+				</Button>
+			)}
+			{user.administrator && (
 				<Button onClick={() => fetch('/api/schedule/clear').then(() => mutate())}>
 					Clear Schedule
 				</Button>

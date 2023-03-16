@@ -22,7 +22,7 @@ import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
 
 interface Props {
 	create: boolean;
-	defaultBlock: ScheduleBlockI;
+	defaultBlock?: ScheduleBlockI;
 	canEdit?: boolean;
 	id?: string;
 }

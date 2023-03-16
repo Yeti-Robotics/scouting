@@ -109,7 +109,7 @@ const Create = () => {
 						valueAsString
 					/>
 					<ControlledDateTimePicker
-						label='Start Time'
+						label='End Time'
 						name='endTime'
 						required
 						control={control}

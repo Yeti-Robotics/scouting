@@ -26,7 +26,7 @@ const shuffle = <T>(array: T[]): T[] => {
 
 const calcSchedule = (opts: ScheduleOptionsForm) => {
 	const start = new Date(opts.startTime).valueOf(); // ms
-	const end = new Date(opts.endTime).valueOf(); // ms
+	const end = new Date(opts.endTime).valueOf() - 60000; // ms
 	const lunchStart = new Date(opts.lunchStartTime).valueOf(); // ms
 	const lunchEnd = new Date(opts.lunchEndTime).valueOf(); // ms
 	const blockLength = parseInt(String(opts.blockLength)) * 60 * 1000; // ms
@@ -37,7 +37,7 @@ const calcSchedule = (opts: ScheduleOptionsForm) => {
 		})[] = [];
 
 	for (let i = start; i < end; i += blockLength) {
-		if (i >= lunchStart && i < lunchEnd) continue;
+		if (i > lunchStart && i < lunchEnd) continue;
 		const block = new ScheduleBlock({
 			startTime: new Date(i),
 			endTime: new Date(i + blockLength),
