@@ -1,8 +1,6 @@
 import { Model, model, models, Schema } from 'mongoose';
 import { UserI } from './User';
 
-export const endPosEnum = ['Nothing', 'Parked', 'On Charger'];
-
 const standFormSchema = new Schema<StandFormI>(
 	{
 		teamNumber: { type: Number, required: true },
@@ -26,7 +24,6 @@ const standFormSchema = new Schema<StandFormI>(
 		teleopDocked: { type: Boolean, default: () => false },
 		teleopEngaged: { type: Boolean, default: () => false },
 		numberOnCharger: { type: Number, required: true },
-		endPosition: { type: String, enum: endPosEnum, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
 		defense: { type: Number, required: true },
@@ -64,7 +61,6 @@ export interface CreateStandForm {
 	preload: boolean;
 	initiationLine: boolean;
 	links: number;
-	endPosition: string;
 	penalties: number;
 	defense: number;
 	approved: boolean;
@@ -99,7 +95,6 @@ export interface StandFormI {
 	numberOnCharger: number;
 	preload: boolean;
 	initiationLine: boolean;
-	endPosition: string;
 	links: number;
 	penalties: number;
 	defense: number;
