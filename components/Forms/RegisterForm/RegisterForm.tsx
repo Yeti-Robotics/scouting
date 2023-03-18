@@ -31,10 +31,10 @@ export const RegisterForm = () => {
 
 	const password = watch('password');
 
-	const onSubmit = async (data: FormSchema) => {
+	const onSubmit = async ({ username, ...data }: FormSchema) => {
 		const res = await fetch('/api/auth/register', {
 			method: 'POST',
-			body: JSON.stringify(data),
+			body: JSON.stringify({ username: username.trim(), ...data }),
 		});
 		if (res.ok) router.push(String(router.query.from || '/'));
 	};
