@@ -22,7 +22,7 @@ const LinkDiscord = () => {
 			method: 'POST',
 			body: JSON.stringify({
 				at: query.access_token,
-				user: JSON.parse(decodeURIComponent(query.state)),
+				user: JSON.parse(decodeURI(query.state)),
 			}),
 		}).then((res) => {
 			if (res.ok) return router.push('/');
