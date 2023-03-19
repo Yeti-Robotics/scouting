@@ -2,6 +2,7 @@ import { RouteHandler } from '@/lib/api/RouteHandler';
 import { WAuth } from '@/lib/api/types';
 import { auth } from '@/middleware/auth';
 import connectDB from '@/middleware/connect-db';
+import CompKey from '@/models/CompKey';
 import Match, { ScoreBreakdown, TBAMatchRaw } from '@/models/Match';
 
 const getPiecesScored = (breakdown: ScoreBreakdown) => {
@@ -42,6 +43,11 @@ export default new RouteHandler<'api', WAuth>()
 		const headers = new Headers();
 		headers.append('X-TBA-Auth-Key', String(process.env.TBA_SECRET));
 		headers.append('accept', 'application/json');
+		const compKey = await CompKey.findOne({});
+
+		if (!compKey)
+			return res.status(400).json({ message: 'No compKey set, populate matches first.' });
+
 		const apiRes = await fetch(
 			`https://www.thebluealliance.com/api/v3/event/${compKey.compKey}/matches`,
 			{ headers },
