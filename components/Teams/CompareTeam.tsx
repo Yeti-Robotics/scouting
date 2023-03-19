@@ -4,27 +4,12 @@ import { ScatterPlot, ScatterPlotRawSerie, ScatterPlotSvgProps } from '@nivo/sca
 import useSWR from 'swr';
 import { Group, Loader, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 import { StandFormI } from '@/models/StandForm';
+import { calcAutoScore, calcTeleopScore } from '@/lib/graphUtils';
 
 type Props = {
 	team1: RawTeamData;
 	team2: RawTeamData | undefined;
 };
-
-const calcAutoScore = (form: StandFormI) =>
-	form.autoTopCones * 6 +
-	form.autoTopCubes * 6 +
-	form.autoMidCones * 4 +
-	form.autoMidCubes * 4 +
-	form.autoLowCones * 3 +
-	form.autoLowCubes * 3;
-
-const calcTeleopScore = (form: StandFormI) =>
-	form.teleopTopCones * 5 +
-	form.teleopTopCubes * 5 +
-	form.teleopMidCones * 3 +
-	form.teleopMidCubes * 3 +
-	form.teleopLowCones * 2 +
-	form.teleopLowCubes * 2;
 
 const calcBalancePercentage = (forms: StandFormI[]) =>
 	(

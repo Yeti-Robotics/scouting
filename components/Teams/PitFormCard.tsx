@@ -1,7 +1,7 @@
 import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
-import { Box } from '@mantine/core';
-import Link from 'next/link';
+import { Box, Paper } from '@mantine/core';
+import { Link } from '../Link';
 
 interface Props {
 	team: TeamData;
@@ -10,13 +10,15 @@ interface Props {
 
 const PitFormCard = ({ form }: Props) => {
 	return (
-		<Link href={`/records/pit-forms/${form._id}`} passHref={true}>
-			<Box component='a'>
-				<Box>
-					<h4>scouter: {form.scouter}</h4>
-				</Box>
-			</Box>
-		</Link>
+		<Paper
+			component={Link}
+			href={`/records/pit-forms/${form._id}`}
+			passHref={true}
+			withBorder
+			p='md'
+		>
+			<h4>scouter: {form.scouter}</h4>
+		</Paper>
 	);
 };
 
