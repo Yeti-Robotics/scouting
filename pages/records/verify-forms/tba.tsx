@@ -7,8 +7,8 @@ import { useIsomorphicEffect } from '@mantine/hooks';
 import useSWR from 'swr';
 
 const MatchCard = ({ match }: { match: MatchWForms }) => {
-	const blueErrors: string[] = [];
-	const redErrors: string[] = [];
+	const rawBlueErrors: { name: string; value: number }[] = [];
+	const rawRedErrors: { name: string; value: number }[] = [];
 
 	// Our data
 	const { blue, red } = aggregatePiecesScored(match);
@@ -19,24 +19,29 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 	console.log(match.matchNumber, { tbaBlue, tbaRed });
 
 	// ============= Blue Validations =============
-	blue.highCubes !== tbaBlue.highCubes && blueErrors.push('Blue Cubes High');
-	blue.highCones !== tbaBlue.highCones && blueErrors.push('Blue Cones High');
+	rawBlueErrors.push({ name: 'Blue Cubes High', value: blue.highCubes - tbaBlue.highCubes });
+	rawBlueErrors.push({ name: 'Blue Cones High', value: blue.highCones - tbaBlue.highCones });
 
-	blue.midCubes !== tbaBlue.midCubes && blueErrors.push('Blue Cubes Mid');
-	blue.midCones !== tbaBlue.midCones && blueErrors.push('Blue Cones Mid');
+	rawBlueErrors.push({ name: 'Blue Cubes Mid', value: blue.midCubes - tbaBlue.midCubes });
+	rawBlueErrors.push({ name: 'Blue Cones Mid', value: blue.midCones - tbaBlue.midCones });
 
-	blue.lowCubes !== tbaBlue.lowCubes && blueErrors.push('Blue Cubes Low');
-	blue.lowCones !== tbaBlue.lowCones && blueErrors.push('Blue Cones Low');
+	rawBlueErrors.push({ name: 'Blue Cubes Low', value: blue.lowCubes - tbaBlue.lowCubes });
+	rawBlueErrors.push({ name: 'Blue Cones Low', value: blue.lowCones - tbaBlue.lowCones });
 
 	// ============= Red Validations =============
-	red.highCubes !== tbaRed.highCubes && redErrors.push('Red Cubes High');
-	red.highCones !== tbaRed.highCones && redErrors.push('Red Cones High');
+	rawRedErrors.push({ name: 'Red Cubes High', value: red.highCubes - tbaRed.highCubes });
+	rawRedErrors.push({ name: 'Red Cones High', value: red.highCones - tbaRed.highCones });
 
-	red.midCubes !== tbaRed.midCubes && redErrors.push('Red Cubes Mid');
-	red.midCones !== tbaRed.midCones && redErrors.push('Red Cones Mid');
+	rawRedErrors.push({ name: 'Red Cubes Mid', value: red.midCubes - tbaRed.midCubes });
+	rawRedErrors.push({ name: 'Red Cones Mid', value: red.midCones - tbaRed.midCones });
 
-	red.lowCubes !== tbaRed.lowCubes && redErrors.push('Red Cubes Low');
-	red.lowCones !== tbaRed.lowCones && redErrors.push('Red Cones Low');
+	rawRedErrors.push({ name: 'Red Cubes Low', value: red.lowCubes - tbaRed.lowCubes });
+	rawRedErrors.push({ name: 'Red Cones Low', value: red.lowCones - tbaRed.lowCones });
+
+	const blueErrors = rawBlueErrors.filter((err) => err.value !== 0);
+	const redErrors = rawRedErrors.filter((err) => err.value !== 0);
+
+	if (redErrors.length === 0 && blueErrors.length === 0) return null;
 
 	return (
 		<Card withBorder shadow='xl'>
@@ -48,7 +53,11 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 						{blueErrors.length === 0 ? (
 							<Text>No Errors 😁</Text>
 						) : (
-							blueErrors.map((err, i) => <Text key={i}>{err}</Text>)
+							blueErrors.map(({ name, value }, i) => (
+								<Text key={i}>
+									{name} {value < 0 ? 'low by' : 'high by'} {value}
+								</Text>
+							))
 						)}
 					</Stack>
 				</Paper>
@@ -58,7 +67,11 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 						{redErrors.length === 0 ? (
 							<Text>No Errors 😁</Text>
 						) : (
-							redErrors.map((err, i) => <Text key={i}>{err}</Text>)
+							blueErrors.map(({ name, value }, i) => (
+								<Text key={i}>
+									{name} {value < 0 ? 'low by' : 'high by'} {value}
+								</Text>
+							))
 						)}
 					</Stack>
 				</Paper>
