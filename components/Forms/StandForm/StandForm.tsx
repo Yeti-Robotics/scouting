@@ -3,7 +3,17 @@ import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { CreateStandForm } from '@/models/StandForm';
 import { IconTrash } from '@tabler/icons-react';
-import { Box, Button, Loader, Checkbox, Textarea, Stack, Text, ActionIcon } from '@mantine/core';
+import {
+	Box,
+	Button,
+	Loader,
+	Checkbox,
+	Textarea,
+	Stack,
+	Text,
+	ActionIcon,
+	Group,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,6 +28,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
+import { Cone, Cube } from './icons';
 
 interface Props {
 	create: boolean;
@@ -164,54 +175,72 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							disabled={!canEdit}
 						/>
 					</Stack>
-					<ScoreInput
-						control={control}
-						name='autoTopCones'
-						label='Top Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='autoTopCubes'
-						label='Top Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='autoMidCones'
-						label='Mid Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='autoMidCubes'
-						label='Mid Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='autoLowCones'
-						label='Low Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='autoLowCubes'
-						label='Low Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='autoTopCones'
+							label='Top Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='autoTopCubes'
+							label='Top Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='autoMidCones'
+							label='Mid Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='autoMidCubes'
+							label='Mid Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='autoLowCones'
+							label='Low Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='autoLowCubes'
+							label='Low Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
 					<Stack mt='md'>
 						<Checkbox
 							{...register('autoDocked')}
@@ -230,54 +259,72 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					</Stack>
 				</FormSection>
 				<FormSection title='Teleop'>
-					<ScoreInput
-						control={control}
-						name='teleopTopCones'
-						label='Top Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='teleopTopCubes'
-						label='Top Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='teleopMidCones'
-						label='Mid Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='teleopMidCubes'
-						label='Mid Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='teleopLowCones'
-						label='Low Cones Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='teleopLowCubes'
-						label='Low Cubes Scored'
-						disabled={!canEdit}
-						min={0}
-						required
-					/>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='teleopTopCones'
+							label='Top Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='teleopTopCubes'
+							label='Top Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='teleopMidCones'
+							label='Mid Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='teleopMidCubes'
+							label='Mid Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cone />
+						<ScoreInput
+							control={control}
+							name='teleopLowCones'
+							label='Low Cones Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Cube />
+						<ScoreInput
+							control={control}
+							name='teleopLowCubes'
+							label='Low Cubes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
 					<Stack mt='md'>
 						<Checkbox
 							{...register('teleopDocked')}

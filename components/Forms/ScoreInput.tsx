@@ -38,6 +38,7 @@ export const ScoreInput = <T extends FieldValues>({
 				</ActionIcon>
 
 				<NumberInput
+					maw={100}
 					{...props}
 					styles={{ input: { textAlign: 'center' } }}
 					hideControls
