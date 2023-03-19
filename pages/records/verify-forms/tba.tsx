@@ -29,14 +29,14 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 	blue.lowCones !== tbaBlue.lowCones && blueErrors.push('Blue Cones Low');
 
 	// ============= Red Validations =============
-	red.highCubes !== tbaRed.highCubes && redErrors.push('Blue Cubes High');
-	red.highCones !== tbaRed.highCones && redErrors.push('Blue Cones High');
+	red.highCubes !== tbaRed.highCubes && redErrors.push('Red Cubes High');
+	red.highCones !== tbaRed.highCones && redErrors.push('Red Cones High');
 
-	red.midCubes !== tbaRed.midCubes && redErrors.push('Blue Cubes Mid');
-	red.midCones !== tbaRed.midCones && redErrors.push('Blue Cones Mid');
+	red.midCubes !== tbaRed.midCubes && redErrors.push('Red Cubes Mid');
+	red.midCones !== tbaRed.midCones && redErrors.push('Red Cones Mid');
 
-	red.lowCubes !== tbaRed.lowCubes && redErrors.push('Blue Cubes Low');
-	red.lowCones !== tbaRed.lowCones && redErrors.push('Blue Cones Low');
+	red.lowCubes !== tbaRed.lowCubes && redErrors.push('Red Cubes Low');
+	red.lowCones !== tbaRed.lowCones && redErrors.push('Red Cones Low');
 
 	return (
 		<Card withBorder shadow='xl'>
