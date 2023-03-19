@@ -15,8 +15,6 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 	// TBA data, guaranteed to have official prop if this component is rendered
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const { blue: tbaBlue, red: tbaRed } = match.official!;
-	console.log(match.matchNumber, { blue, red });
-	console.log(match.matchNumber, { tbaBlue, tbaRed });
 
 	// ============= Blue Validations =============
 	rawBlueErrors.push({ name: 'Blue Cubes High', value: blue.highCubes - tbaBlue.highCubes });
@@ -55,7 +53,7 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 						) : (
 							blueErrors.map(({ name, value }, i) => (
 								<Text key={i}>
-									{name} {value < 0 ? 'low by' : 'high by'} {value}
+									{name} {value < 0 ? 'low by' : 'high by'} {Math.abs(value)}
 								</Text>
 							))
 						)}
@@ -67,9 +65,9 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 						{redErrors.length === 0 ? (
 							<Text>No Errors 😁</Text>
 						) : (
-							blueErrors.map(({ name, value }, i) => (
+							redErrors.map(({ name, value }, i) => (
 								<Text key={i}>
-									{name} {value < 0 ? 'low by' : 'high by'} {value}
+									{name} {value < 0 ? 'low by' : 'high by'} {Math.abs(value)}
 								</Text>
 							))
 						)}
