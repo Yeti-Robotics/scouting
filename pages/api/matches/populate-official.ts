@@ -49,8 +49,8 @@ export default new RouteHandler<'api', WAuth>()
 		if (!apiRes.ok) return res.status(apiRes.status).send(apiRes.text());
 
 		// Filter out non-qualification matches
-		const matches = ((await apiRes.json()) as TBAMatchRaw[]).filter((match) =>
-			match.key.includes('_qm'),
+		const matches = ((await apiRes.json()) as TBAMatchRaw[]).filter(
+			(match) => match && match.score_breakdown && match.key.includes('_qm'),
 		);
 
 		const updatePromises = matches.map((match) => {
