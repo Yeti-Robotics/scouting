@@ -31,8 +31,13 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 
+	headCell: {
+		backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+	},
+
 	scrolled: {
 		boxShadow: theme.shadows.sm,
+		zIndex: 1,
 	},
 }));
 
@@ -86,6 +91,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 									key={header.id}
 									maw={header.column.columnDef.maxSize}
 									colSpan={header.colSpan}
+									className={classes.headCell}
 									sx={{
 										userSelect: header.column.getCanSort() ? 'none' : undefined,
 										cursor: header.column.getCanSort() ? 'pointer' : undefined,
