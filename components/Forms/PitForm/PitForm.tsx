@@ -93,6 +93,8 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Weight'
 						description='pounds'
 						required
+						hideControls
+						min={1}
 					/>
 					<ControlledNumberInput
 						name='length'
@@ -100,6 +102,8 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Length'
 						description='inches'
 						required
+						hideControls
+						min={1}
 					/>
 					<ControlledNumberInput
 						name='width'
@@ -107,6 +111,8 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Width'
 						description='inches'
 						required
+						hideControls
+						min={1}
 					/>
 					<NumberSelect
 						control={control}
