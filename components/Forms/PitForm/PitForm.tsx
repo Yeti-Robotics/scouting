@@ -79,40 +79,6 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						hideControls
 						min={1}
 					/>
-					<NumberSelect
-						control={control}
-						name='endPosition'
-						label='Where do they end the game?'
-						disabled={!canEdit}
-						rules={{ required: true }}
-						required
-						data={[
-							{
-								value: 0,
-								label: 'Nothing',
-							},
-							{
-								value: 1,
-								label: 'Defense',
-							},
-							{
-								value: 2,
-								label: 'Scoring',
-							},
-							{
-								value: 3,
-								label: 'Parked',
-							},
-							{
-								value: 4,
-								label: 'Charger Unbalanced',
-							},
-							{
-								value: 5,
-								label: 'Charger Balanced',
-							},
-						]}
-					/>
 					<ControlledAutocomplete
 						name='drivetrain'
 						label='What drivetrain do they use?'
@@ -120,6 +86,27 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						rules={{ required: true }}
 						required
 						data={['Swerve', 'West Coast', 'Mechaunum']}
+					/>
+					<ControlledNumberInput
+						name='weight'
+						control={control}
+						label='Weight'
+						description='pounds'
+						required
+					/>
+					<ControlledNumberInput
+						name='length'
+						control={control}
+						label='Length'
+						description='inches'
+						required
+					/>
+					<ControlledNumberInput
+						name='width'
+						control={control}
+						label='Width'
+						description='inches'
+						required
 					/>
 					<NumberSelect
 						control={control}
@@ -132,20 +119,6 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 							{ value: 0, label: "They can't" },
 							{ value: 1, label: 'They can' },
 							{ value: 2, label: 'It is their strategy' },
-						]}
-					/>
-					<NumberSelect
-						control={control}
-						name='shooting'
-						label='Where do they score?'
-						disabled={!canEdit}
-						rules={{ required: true }}
-						required
-						data={[
-							{ value: 0, label: "They don't" },
-							{ value: 1, label: 'Bottom' },
-							{ value: 2, label: 'Middle' },
-							{ value: 3, label: 'Top' },
 						]}
 					/>
 					<Textarea
