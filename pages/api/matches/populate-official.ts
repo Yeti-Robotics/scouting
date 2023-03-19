@@ -16,17 +16,17 @@ const getPiecesScored = (breakdown: ScoreBreakdown) => {
 
 	breakdown.teleopCommunity.B.forEach((cell) => {
 		if (cell === 'Cone') scores.lowCones += 1;
-		if (cell === 'Cube') scores.lowCones += 1;
+		if (cell === 'Cube') scores.lowCubes += 1;
 	});
 
 	breakdown.teleopCommunity.M.forEach((cell) => {
 		if (cell === 'Cone') scores.midCones += 1;
-		if (cell === 'Cube') scores.midCones += 1;
+		if (cell === 'Cube') scores.midCubes += 1;
 	});
 
 	breakdown.teleopCommunity.T.forEach((cell) => {
 		if (cell === 'Cone') scores.highCones += 1;
-		if (cell === 'Cube') scores.highCones += 1;
+		if (cell === 'Cube') scores.highCubes += 1;
 	});
 
 	return scores;
