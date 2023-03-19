@@ -10,7 +10,7 @@ interface Props {
 const Comment = ({ form }: { form: StandFormI }) => {
 	return (
 		<Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
-			<Link href={`/matches/${form.matchNumber}`} passHref>
+			<Link href={`/records/stand-forms/${form._id}`} passHref>
 				Match {form.matchNumber}
 			</Link>
 			<h4 style={{ margin: 0 }}>"{form.notes}"</h4>
