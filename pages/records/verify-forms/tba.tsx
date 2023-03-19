@@ -15,6 +15,8 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 	// TBA data, guaranteed to have official prop if this component is rendered
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const { blue: tbaBlue, red: tbaRed } = match.official!;
+	console.log({ blue, red });
+	console.log({ tbaBlue, tbaRed });
 
 	// ============= Blue Validations =============
 	blue.highCubes !== tbaBlue.highCubes && blueErrors.push('Blue Cubes High');
