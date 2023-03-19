@@ -15,7 +15,7 @@ specifiers:
   '@nivo/scatterplot': 0.80.0
   '@nivo/tooltip': 0.80.0
   '@tabler/icons-react': 2.6.0
-  '@tanstack/react-table': ^8.7.9
+  '@tanstack/react-table': 8.7.9
   '@types/bcrypt': 5.0.0
   '@types/formidable': 2.0.3
   '@types/jsonwebtoken': 9.0.1
@@ -39,7 +39,7 @@ specifiers:
   react-dom: 18.2.0
   react-hook-form: 7.43.2
   sharp: 0.31.3
-  swr: 2.0.4
+  swr: 2.1.0
   typescript: 4.9.4
 
 dependencies:
@@ -68,7 +68,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.43.2_react@18.2.0
   sharp: 0.31.3
-  swr: 2.0.4_react@18.2.0
+  swr: 2.1.0_react@18.2.0
 
 devDependencies:
   '@next/bundle-analyzer': 13.1.6
@@ -4759,8 +4759,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swr/2.0.4_react@18.2.0:
-    resolution: {integrity: sha512-4GUiTjknRUVuw4MWUHR7mzJ9G/DWL+yZz/TgWDfiA0OZ9tL6qyrTkN2wPeboBpL3OJTkej3pexh3mWCnv8cFkQ==}
+  /swr/2.1.0_react@18.2.0:
+    resolution: {integrity: sha512-4hYl5p3/KalQ1MORealM79g/DtLohmud6yyfXw5l4wjtFksYUnocRFudvyaoUtgj3FrVNK9lS25Av9dsZYvz0g==}
     engines: {pnpm: '7'}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
