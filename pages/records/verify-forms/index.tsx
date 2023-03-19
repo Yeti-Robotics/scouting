@@ -1,7 +1,18 @@
+import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { MatchI } from '@/models/Match';
 import { StandFormI } from '@/models/StandForm';
-import { Card, Checkbox, Group, Highlight, Loader, Stack, Text, Title } from '@mantine/core';
+import {
+	Button,
+	Card,
+	Checkbox,
+	Group,
+	Highlight,
+	Loader,
+	Stack,
+	Text,
+	Title,
+} from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import useSWR from 'swr';
 
@@ -32,6 +43,9 @@ const VerifyForms = () => {
 
 	return (
 		<Stack align='center'>
+			<Button component={Link} href='/records/verify-forms/tba'>
+				Verify against TBA
+			</Button>
 			<Checkbox
 				label='Show Good Matches'
 				size='xl'

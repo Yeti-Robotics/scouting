@@ -194,7 +194,7 @@ const NavBar = () => {
 						Icon={<IconCopy style={{ margin: 8 }} />}
 						setMenuOpened={setMenuOpened}
 					/>
-					<CasinoButton setMenuOpened={setMenuOpened} />
+					{user && <CasinoButton setMenuOpened={setMenuOpened} />}
 				</Stack>
 			</Drawer>
 		</Paper>
