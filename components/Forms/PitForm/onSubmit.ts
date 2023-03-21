@@ -1,6 +1,7 @@
 import { PitFormI } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { UserI } from '@/models/User';
+import { notifications } from '@mantine/notifications';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, UseFormReset } from 'react-hook-form';
 
@@ -31,7 +32,14 @@ export const onSubmit: PitFormOnSubmit = (
 			method: 'POST',
 			body: JSON.stringify({ ...data, scouter: user.username }),
 		});
+
+		// Always setSubmitting (loading) to done even if the request failed
+		setSubmitting('done');
 		if (!formDataRes.ok) return;
+
+		// Reset early and submit images in the background
+		reset();
+		setImages([]);
 		const formData: PitFormI = await formDataRes.json();
 		// only submit new images with data properties
 		const filteredImages = images.filter((image) => !image._id && image.data) as {
@@ -39,10 +47,18 @@ export const onSubmit: PitFormOnSubmit = (
 		}[];
 
 		// only atempt img upload if there are any
-		if (filteredImages[0]) {
+		if (filteredImages?.length !== 0) {
 			const uploadedImages = new FormData();
 			filteredImages.forEach((image, i) => {
 				uploadedImages.append(`file${i}`, new Blob([image.data]));
+			});
+			notifications.show({
+				id: formData._id,
+				title: 'Uploading images...',
+				loading: true,
+				autoClose: false,
+				message: `Uploading ${filteredImages.length} images to the database.`,
+				withCloseButton: true,
 			});
 			const imagesRes = await fetch(
 				`/api/forms/pit-image?formId=${formData._id}&teamNumber=${formData.teamNumber}`,
@@ -50,12 +66,9 @@ export const onSubmit: PitFormOnSubmit = (
 					method: 'POST',
 					body: uploadedImages,
 				},
-			);
+			).finally(() => notifications.hide(formData._id));
 			if (!imagesRes.ok) return;
 		}
-		reset();
-		setImages([]);
-		setSubmitting('done');
 	};
 
 	const onUpdate: SubmitHandler<PitFormI> = async (data) => {

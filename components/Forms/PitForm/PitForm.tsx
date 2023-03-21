@@ -1,5 +1,5 @@
 import { useUser } from '@/lib/useUser';
-import { PitFormI } from '@/models/PitForm';
+import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Box, Button, Loader, Stack, Text, Textarea } from '@mantine/core';
@@ -11,8 +11,9 @@ import FormSection from '../FormSection';
 import Images from './Images';
 import { onSubmit } from './onSubmit';
 import { ControlledNumberInput } from '../ControlledNumberInput';
-import { NumberSelect } from '../NumberSelect';
 import { openWarningModal } from '@/lib/warningModal';
+import { ControlledMultiSelect } from '../ControlledMultiSelect';
+import { ControlledSelect } from '../ControlledSelect';
 
 type Props = {
 	create: boolean;
@@ -29,9 +30,17 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
-	const { control, handleSubmit, reset, register } = useForm<PitFormI>({
-		defaultValues: defaultForm,
+	const { control, handleSubmit, reset, register, watch } = useForm<PitFormI>({
+		defaultValues: {
+			pieceSources: [],
+			whereScore: [],
+			priorityScore: undefined,
+			drivetrain: undefined,
+			...defaultForm,
+		},
 	});
+
+	console.log(watch());
 
 	if (!user && create) {
 		return <Loader size='xl' />;
@@ -114,18 +123,24 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						hideControls
 						min={1}
 					/>
-					<NumberSelect
+					<ControlledMultiSelect
+						name='pieceSources'
 						control={control}
-						name='defense'
-						label='Can they play defense?'
-						disabled={!canEdit}
-						rules={{ required: true }}
+						label='Where they get pieces?'
+						data={pieceSourceEnum}
+					/>
+					<ControlledMultiSelect
+						name='whereScore'
+						control={control}
+						label='Where do they score?'
+						data={whereScoreEnum}
+					/>
+					<ControlledSelect
+						name='priorityScore'
+						control={control}
+						label='Preferred scoring location?'
+						data={[...whereScoreEnum, 'None']}
 						required
-						data={[
-							{ value: 0, label: "They can't" },
-							{ value: 1, label: 'They can' },
-							{ value: 2, label: 'It is their strategy' },
-						]}
 					/>
 					<Textarea
 						{...register('notes', { required: true })}

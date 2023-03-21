@@ -1,4 +1,4 @@
-import { Select, SelectItem, SelectProps } from '@mantine/core';
+import { MultiSelect, MultiSelectProps, SelectItem } from '@mantine/core';
 import { Control, useController, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
@@ -6,9 +6,9 @@ type Props<T extends FieldValues> = {
 	name: Path<T>;
 	data: (string | SelectItem)[];
 	rules?: UseControllerProps<T>['rules'];
-} & SelectProps;
+} & MultiSelectProps;
 
-export const ControlledSelect = <T extends FieldValues>({
+export const ControlledMultiSelect = <T extends FieldValues>({
 	name,
 	control,
 	data,
@@ -16,19 +16,15 @@ export const ControlledSelect = <T extends FieldValues>({
 	rules,
 	...props
 }: Props<T>) => {
-	const { field, fieldState } = useController({
-		control,
-		name,
-		rules: { required: props.required, ...rules },
-	});
+	const { field, fieldState } = useController({ control, name, rules });
 
 	return (
-		<Select
+		<MultiSelect
 			{...props}
 			data={data}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value ?? null}
+			value={field.value}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(e) => {

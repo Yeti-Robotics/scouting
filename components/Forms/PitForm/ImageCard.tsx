@@ -40,7 +40,7 @@ const ImageCard = ({ image, setImage, i, removeImage }: Props) => {
 				maw={300}
 				alt='Pit Image'
 			/>
-			{!image._id && (
+			{!image.data && (
 				<>
 					<Dropzone
 						onDrop={(files) => handleFileChange(i, imageRef, files, setImage)}

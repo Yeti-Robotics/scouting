@@ -27,7 +27,7 @@ export const ControlledAutocomplete = <T extends FieldValues>({
 			data={data}
 			name={field.name}
 			onBlur={field.onBlur}
-			value={field.value}
+			value={field.value ?? ''}
 			error={fieldState.error?.message}
 			ref={field.ref}
 			onChange={(e) => {
