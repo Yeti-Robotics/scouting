@@ -7,7 +7,7 @@ interface Props {
 	match: MatchData;
 }
 
-const CommentDisplay: React.VFC<{ team: StandFormWithName; color: string }> = ({ team, color }) => {
+const CommentDisplay = ({ team, color }: { team: StandFormWithName; color?: string }) => {
 	return (
 		<Box
 			sx={{
@@ -26,7 +26,7 @@ const CommentDisplay: React.VFC<{ team: StandFormWithName; color: string }> = ({
 	);
 };
 
-const Comments: React.VFC<Props> = ({ match }) => {
+const Comments = ({ match }: Props) => {
 	return (
 		<>
 			<Box component='h1' sx={{ mt: 6 }}>

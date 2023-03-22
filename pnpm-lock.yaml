@@ -11,6 +11,7 @@ specifiers:
   '@mantine/next': 6.0.2
   '@mantine/notifications': 6.0.2
   '@next/bundle-analyzer': ^13.1.6
+  '@nivo/bar': ^0.80.0
   '@nivo/core': 0.80.0
   '@nivo/scatterplot': 0.80.0
   '@nivo/tooltip': 0.80.0
@@ -52,6 +53,7 @@ dependencies:
   '@mantine/modals': 6.0.2_reujnkpez4ozmj6vonlofpozxe
   '@mantine/next': 6.0.2_pnokhhiiffeanlj7xihut5qdrq
   '@mantine/notifications': 6.0.2_reujnkpez4ozmj6vonlofpozxe
+  '@nivo/bar': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
   '@nivo/core': 0.80.0_5slebnaup4nvgtipiet5bq5l6e
   '@nivo/scatterplot': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
   '@nivo/tooltip': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
@@ -1457,6 +1459,29 @@ packages:
       d3-time-format: 3.0.0
       react: 18.2.0
     transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@nivo/bar/0.80.0_wyuiu3ihipn7hpncy62nqhyrji:
+    resolution: {integrity: sha512-woE/S12Sp+RKQeOHtp302WXfy5usj73cV/gjP95PzJxMv+Rn01i1Uwys3BILzc9h4+OxYuWTFqLADAySAmi7qQ==}
+    peerDependencies:
+      '@nivo/core': 0.80.0
+      react: '>= 16.14.0 < 19.0.0'
+    dependencies:
+      '@nivo/annotations': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
+      '@nivo/axes': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
+      '@nivo/colors': 0.80.0_vpsqasc34janocxdlqh4y4bymy
+      '@nivo/core': 0.80.0_5slebnaup4nvgtipiet5bq5l6e
+      '@nivo/legends': 0.80.0_vpsqasc34janocxdlqh4y4bymy
+      '@nivo/scales': 0.80.0
+      '@nivo/tooltip': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
+      '@react-spring/web': 9.4.5_biqbaboplfbrettd7655fr4n2y
+      d3-scale: 3.3.0
+      d3-shape: 1.3.7
+      lodash: 4.17.21
+      react: 18.2.0
+    transitivePeerDependencies:
+      - prop-types
       - react-dom
     dev: false
 
