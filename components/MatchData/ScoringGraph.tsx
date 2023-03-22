@@ -1,6 +1,5 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { StandFormWithName } from '@/models/aggregations/standFormWithName';
-import { Box, Center, Title, useMantineTheme } from '@mantine/core';
+import { Box, Title, useMantineTheme } from '@mantine/core';
 import { getTitle, selectScoreKey } from '@/lib/matchDataUtils';
 import { ResponsiveBar } from '@nivo/bar';
 
@@ -12,13 +11,6 @@ interface Props {
 }
 
 const teamKeys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;
-const getAllData = <K extends keyof StandFormWithName>(
-	match: MatchData,
-	key: K,
-	ifUndef: StandFormWithName[K],
-): StandFormWithName[K][] => {
-	return teamKeys.map((teamKey) => match[teamKey]?.[key] || ifUndef);
-};
 
 export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 	const isDarkMode = useMantineTheme().colorScheme === 'dark';
@@ -54,7 +46,7 @@ export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 						data={data}
 						keys={[scoreKey]}
 						indexBy='teamNumber'
-						margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+						margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
 						padding={0.3}
 						valueScale={{ type: 'linear' }}
 						indexScale={{ type: 'band', round: true }}

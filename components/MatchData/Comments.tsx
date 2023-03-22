@@ -1,5 +1,5 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box } from '@mantine/core';
+import { Box, Group, Paper, Text, Title } from '@mantine/core';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { getTeamColor } from '@/lib/matchDataUtils';
 
@@ -9,20 +9,14 @@ interface Props {
 
 const CommentDisplay = ({ team, color }: { team: StandFormWithName; color?: string }) => {
 	return (
-		<Box
-			sx={{
-				borderRadius: 2,
-				backgroundColor: color,
-				m: 2,
-				p: 1,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-			}}
-		>
-			<Box component='h2'>{team.teamNumber}</Box>
-			<p style={{ textAlign: 'center' }}>{team.notes}</p>
-		</Box>
+		<Paper bg={color} withBorder p='xs'>
+			<Title order={2} align='center'>
+				{team.teamNumber}
+			</Title>
+			<Text maw={300} style={{ textAlign: 'center' }}>
+				{team.notes}
+			</Text>
+		</Paper>
 	);
 };
 
@@ -32,7 +26,7 @@ const Comments = ({ match }: Props) => {
 			<Box component='h1' sx={{ mt: 6 }}>
 				Comments
 			</Box>
-			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+			<Group align='center' position='center'>
 				{match.blue1 && (
 					<CommentDisplay team={match.blue1} color={getTeamColor(match, match.blue1)} />
 				)}
@@ -51,7 +45,7 @@ const Comments = ({ match }: Props) => {
 				{match.red3 && (
 					<CommentDisplay team={match.red3} color={getTeamColor(match, match.red3)} />
 				)}
-			</Box>
+			</Group>
 		</>
 	);
 };
