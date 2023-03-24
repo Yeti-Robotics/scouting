@@ -28,6 +28,11 @@ export const onSubmit: PitFormOnSubmit = (
 		// we need a user to create a form
 		if (!user || user.banned) return;
 
+		data.whereScore.sort((a, b) => {
+			const aValue = a.includes('Top') ? 3 : a.includes('Middle') ? 2 : 1;
+			const bValue = b.includes('Top') ? 3 : b.includes('Middle') ? 2 : 1;
+			return bValue - aValue;
+		});
 		const formDataRes = await fetch('/api/forms/pit', {
 			method: 'POST',
 			body: JSON.stringify({ ...data, scouter: user.username }),
@@ -76,6 +81,11 @@ export const onSubmit: PitFormOnSubmit = (
 		// must be admin to update
 		if (!user?.administrator || !user || user.banned) return;
 
+		data.whereScore.sort((a, b) => {
+			const aValue = a.includes('Top') ? 3 : a.includes('Middle') ? 2 : 1;
+			const bValue = b.includes('Top') ? 3 : b.includes('Middle') ? 2 : 1;
+			return bValue - aValue;
+		});
 		const formDataRes = await fetch('/api/forms/pit', {
 			method: 'PATCH',
 			body: JSON.stringify({ ...data, scouter: user.username }),

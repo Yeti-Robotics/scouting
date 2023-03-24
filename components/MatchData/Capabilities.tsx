@@ -91,7 +91,7 @@ const TeamPitCapabilities = ({
 			) : (
 				cones.map((pos) => (
 					<Text align='center' key={pos}>
-						{pos}
+						{pos.replace('Cones ', '')}
 					</Text>
 				))
 			)}
@@ -103,7 +103,7 @@ const TeamPitCapabilities = ({
 			) : (
 				cubes.map((pos) => (
 					<Text align='center' key={pos}>
-						{pos}
+						{pos.replace('Cubes', '')}
 					</Text>
 				))
 			)}

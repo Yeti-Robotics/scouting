@@ -30,7 +30,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
-	const { control, handleSubmit, reset, register, watch } = useForm<PitFormI>({
+	const { control, handleSubmit, reset, register } = useForm<PitFormI>({
 		defaultValues: {
 			pieceSources: [],
 			whereScore: [],
@@ -39,8 +39,6 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 			...defaultForm,
 		},
 	});
-
-	console.log(watch());
 
 	if (!user && create) {
 		return <Loader size='xl' />;
