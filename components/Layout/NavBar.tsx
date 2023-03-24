@@ -105,7 +105,7 @@ const NavBar = () => {
 				alignItems: 'center',
 				opacity: 1,
 				padding: '0.5rem 1rem 0.5rem 1rem',
-				h: '3rem',
+				height: 48,
 				zIndex: 100,
 			}}
 		>

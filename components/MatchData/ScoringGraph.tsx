@@ -1,5 +1,5 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box, Title, useMantineTheme } from '@mantine/core';
+import { Title, useMantineTheme } from '@mantine/core';
 import { getTitle, selectScoreKey } from '@/lib/matchDataUtils';
 import { ResponsiveBar } from '@nivo/bar';
 
@@ -13,7 +13,8 @@ interface Props {
 const teamKeys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;
 
 export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
-	const isDarkMode = useMantineTheme().colorScheme === 'dark';
+	const theme = useMantineTheme();
+	const isDarkMode = theme.colorScheme === 'dark';
 	const scoreKey = selectScoreKey({ auto, piece, level });
 	const data: { teamNumber: number; [key: string]: string | number }[] = [];
 	let numNonZero = 0;
@@ -32,9 +33,9 @@ export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 
 	return (
 		<>
-			<Box component='h2' sx={{ m: 2 }}>
+			<Title order={3} mt='md'>
 				{getTitle({ auto, piece, level })}
-			</Box>
+			</Title>
 			{numNonZero <= 0 && (
 				<Title order={4} align='center'>
 					No One Scored Any 💀
@@ -46,7 +47,7 @@ export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 						data={data}
 						keys={[scoreKey]}
 						indexBy='teamNumber'
-						margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
+						margin={{ top: 50, right: 30, bottom: 60, left: 80 }}
 						padding={0.3}
 						valueScale={{ type: 'linear' }}
 						indexScale={{ type: 'band', round: true }}
@@ -54,34 +55,34 @@ export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 						axisRight={null}
 						theme={{
 							textColor: isDarkMode ? 'white' : 'black',
+							fontSize: 16,
 						}}
-						colors={{ scheme: isDarkMode ? 'set1' : 'nivo' }}
+						colors={theme.colors[theme.primaryColor][6]}
 						axisBottom={{
 							tickSize: 5,
 							tickPadding: 5,
 							tickRotation: 0,
-							legend: 'Pieces Scored',
+							legend: 'Team',
 							legendPosition: 'middle',
-							legendOffset: 32,
+							legendOffset: 48,
 						}}
 						axisLeft={{
 							tickRotation: 0,
-							legend: 'Team',
+							legend: 'Pieces Scored',
 							legendPosition: 'middle',
-							legendOffset: -40,
+							legendOffset: -60,
 						}}
 						borderColor={{
 							from: 'color',
 							modifiers: [['darker', 1.6]],
 						}}
 						labelTextColor={{
-							from: 'color',
-							modifiers: [['darker', 1.6]],
+							from: 'custom',
+							modifiers: [['darker', 3]],
 						}}
 						labelSkipWidth={16}
 						labelSkipHeight={16}
 						role='application'
-						ariaLabel='Nivo bar chart demo'
 						barAriaLabel={(e) => {
 							return e.id + ': ' + e.formattedValue + ' ' + e.indexValue;
 						}}

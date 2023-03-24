@@ -1,14 +1,12 @@
 import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
 import { hasTeam } from '@/lib/matchDataUtils';
-import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { UserI } from '@/models/User';
 import { Button, Card, Group, Loader, NumberInput, Paper, Stack, Text, Title } from '@mantine/core';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
-const MatchDisplay = memo(function MatchDisplay({ user, match }: { match: MatchI; user?: UserI }) {
+const MatchDisplay = memo(function MatchDisplay({ match }: { match: MatchI }) {
 	return (
 		<Card component={Link} href={`/matches/${match.matchNumber}`} withBorder shadow='md'>
 			<Stack align='center'>
@@ -50,7 +48,6 @@ const MatchDisplay = memo(function MatchDisplay({ user, match }: { match: MatchI
 
 const MatchData = () => {
 	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const { user } = useUser({ canRedirect: true });
 	const [matchNum, setMatchNum] = useState<number | ''>('');
 	const [teamNum, setTeamNum] = useState<number | ''>('');
 
@@ -59,9 +56,7 @@ const MatchData = () => {
 		setTeamNum('');
 	};
 
-	if (!data || !user) return <Loader size='xl' />;
-
-	if (user.banned) return <h1>You&#39;ve been banned you sussy baka.</h1>;
+	if (!data) return <Loader size='xl' />;
 
 	return (
 		<>
@@ -79,7 +74,7 @@ const MatchData = () => {
 					)
 					.filter(teamNum === '' ? () => true : (match) => hasTeam(match, teamNum))
 					.map((match) => (
-						<MatchDisplay key={match._id} match={match} user={user} />
+						<MatchDisplay key={match._id} match={match} />
 					))}
 			</Group>
 		</>

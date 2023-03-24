@@ -28,7 +28,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
-import { Cone, Cube } from './icons';
+import { Cone, Cube } from '../../icons';
 
 interface Props {
 	create: boolean;
