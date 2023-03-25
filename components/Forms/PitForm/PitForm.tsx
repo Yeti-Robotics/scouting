@@ -106,7 +106,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					<ControlledNumberInput
 						name='length'
 						control={control}
-						label='Length'
+						label='Length (With Bumpers)'
 						description='inches'
 						required
 						hideControls
@@ -115,7 +115,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					<ControlledNumberInput
 						name='width'
 						control={control}
-						label='Width'
+						label='Width (With Bumpers)'
 						description='inches'
 						required
 						hideControls
