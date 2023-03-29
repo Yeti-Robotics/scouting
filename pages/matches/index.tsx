@@ -3,13 +3,13 @@ import fetcher from '@/lib/fetch';
 import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
-import { UserI } from '@/models/User';
 import {
-	Box,
 	Button,
+	Card,
 	Group,
 	Loader,
 	NumberInput,
+	Paper,
 	Stack,
 	Text,
 	TextInput,
@@ -20,97 +20,43 @@ import { notifications } from '@mantine/notifications';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
-const Divider = () => <span style={{ backgroundColor: 'white', padding: '1px 0' }} />;
-
-const MatchDisplay = memo(function MatchDisplay({ user, match }: { match: MatchI; user?: UserI }) {
+const MatchDisplay = memo(function MatchDisplay({ match }: { match: MatchI }) {
 	return (
-		<Link href={`/matches/${match.matchNumber}`} passHref>
-			<Button
-				component='a'
-				variant='contained'
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					textTransform: 'none',
-					flexGrow: 1,
-					padding: 1,
-					margin: 1,
-				}}
-			>
-				<h2 style={{ margin: 0 }}>Match: {match.matchNumber}</h2>
-				<Box
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-						fontWeight: 500,
-					}}
-				>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							backgroundColor: 'blue',
-							padding: 1,
-							margin: 1,
-							borderRadius: '4px',
-						}}
-					>
-						<Box>
+		<Card component={Link} href={`/matches/${match.matchNumber}`} withBorder shadow='md'>
+			<Stack align='center'>
+				<Title order={2}>Match {match.matchNumber}</Title>
+				<Group>
+					<Paper bg='blue' p='xs' withBorder>
+						<Text weight={600}>
 							Blue 1:
 							<br /> {match.blue1}
-						</Box>
-						<Divider />
-						<Box>
+						</Text>
+						<Text weight={600}>
 							Blue 2:
 							<br /> {match.blue2}
-						</Box>
-						<Divider />
-						<Box>
+						</Text>
+						<Text weight={600}>
 							Blue 3:
 							<br /> {match.blue3}
-						</Box>
-					</Box>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							backgroundColor: 'red',
-							padding: 1,
-							margin: 1,
-							borderRadius: '4px',
-						}}
-					>
-						<Box>
+						</Text>
+					</Paper>
+					<Paper bg='red' p='xs' withBorder>
+						<Text weight={600}>
 							Red 1:
 							<br /> {match.red1}
-						</Box>
-						<Divider />
-						<Box>
+						</Text>
+						<Text weight={600}>
 							Red 2:
 							<br /> {match.red2}
-						</Box>
-						<Divider />
-						<Box>
+						</Text>
+						<Text weight={600}>
 							Red 3:
 							<br /> {match.red3}
-						</Box>
-					</Box>
-				</Box>
-				{user?.administrator && (
-					<Link href={`/matches/${match.matchNumber}/edit`} passHref>
-						<Button
-							onClick={(e: { stopPropagation: () => void }) => e.stopPropagation()}
-							component='a'
-							variant='contained'
-						>
-							Edit Match
-						</Button>
-					</Link>
-				)}
-			</Button>
-		</Link>
+						</Text>
+					</Paper>
+				</Group>
+			</Stack>
+		</Card>
 	);
 });
 
@@ -166,16 +112,16 @@ const MatchData = () => {
 				<NumberInput value={teamNum} label='Team Number' onChange={setTeamNum} />
 			</Group>
 			<Button onClick={clearFilters}>Clear Filters</Button>
-			<Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+			<Group align='center' position='center'>
 				{data
 					.filter(
 						matchNum === '' ? () => true : (match) => match.matchNumber === matchNum,
 					)
 					.filter(teamNum === '' ? () => true : (match) => hasTeam(match, teamNum))
 					.map((match) => (
-						<MatchDisplay key={match._id} match={match} user={user} />
+						<MatchDisplay key={match._id} match={match} />
 					))}
-			</Box>
+			</Group>
 		</>
 	);
 };

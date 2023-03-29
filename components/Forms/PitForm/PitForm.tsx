@@ -2,7 +2,7 @@ import { useUser } from '@/lib/useUser';
 import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Box, Button, Loader, Stack, Text, Textarea } from '@mantine/core';
+import { ActionIcon, Box, Button, Checkbox, Loader, Stack, Text, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,17 +30,16 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
-	const { control, handleSubmit, reset, register, watch } = useForm<PitFormI>({
+	const { control, handleSubmit, reset, register } = useForm<PitFormI>({
 		defaultValues: {
 			pieceSources: [],
 			whereScore: [],
 			priorityScore: undefined,
 			drivetrain: undefined,
+			autoBalance: false,
 			...defaultForm,
 		},
 	});
-
-	console.log(watch());
 
 	if (!user && create) {
 		return <Loader size='xl' />;
@@ -108,7 +107,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					<ControlledNumberInput
 						name='length'
 						control={control}
-						label='Length'
+						label='Length (With Bumpers)'
 						description='inches'
 						required
 						hideControls
@@ -117,7 +116,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					<ControlledNumberInput
 						name='width'
 						control={control}
-						label='Width'
+						label='Width (With Bumpers)'
 						description='inches'
 						required
 						hideControls
@@ -141,6 +140,12 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Preferred scoring location?'
 						data={[...whereScoreEnum, 'None']}
 						required
+					/>
+					<Checkbox
+						label='Can Auto Balance'
+						required
+						size='xl'
+						{...register('autoBalance', { required: true })}
 					/>
 					<Textarea
 						{...register('notes', { required: true })}

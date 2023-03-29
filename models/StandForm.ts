@@ -13,6 +13,7 @@ const standFormSchema = new Schema<StandFormI>(
 		autoMidCones: { type: Number, required: true },
 		autoLowCubes: { type: Number, required: true },
 		autoLowCones: { type: Number, required: true },
+		attemptedAutoBalance: { type: Boolean, required: true },
 		autoDocked: { type: Boolean, default: () => false },
 		autoEngaged: { type: Boolean, default: () => false },
 		teleopTopCubes: { type: Number, required: true },
@@ -47,6 +48,7 @@ export interface CreateStandForm {
 	autoMidCones: number;
 	autoLowCubes: number;
 	autoLowCones: number;
+	attemptedAutoBalance: boolean;
 	autoDocked: boolean;
 	autoEngaged: boolean;
 	teleopTopCubes: number;
@@ -82,6 +84,7 @@ export interface StandFormI {
 	autoMidCones: number;
 	autoLowCubes: number;
 	autoLowCones: number;
+	attemptedAutoBalance: boolean;
 	autoDocked: boolean;
 	autoEngaged: boolean;
 	teleopTopCubes: number;

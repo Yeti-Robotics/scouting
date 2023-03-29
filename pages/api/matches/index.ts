@@ -9,9 +9,6 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		if (!req.user || req.user.banned)
-			return res.status(403).json({ message: 'You are not authorized.' });
-
 		if (req.query.withForms) return res.status(200).json(await Match.aggregate(matchWForms));
 
 		const matches = await Match.find({}).sort('matchNumber');

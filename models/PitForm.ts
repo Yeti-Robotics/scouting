@@ -20,6 +20,7 @@ const pitFormSchema = new Schema<PitFormI>(
 		pieceSources: { type: [String], enum: pieceSourceEnum, required: true },
 		whereScore: { type: [String], enum: whereScoreEnum, required: true },
 		priorityScore: { type: String, enum: [...whereScoreEnum, 'None'], required: true },
+		autoBalance: { type: Boolean, required: true },
 		notes: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'pitForms' },
@@ -37,6 +38,7 @@ export interface PitFormI {
 	pieceSources: ('Chute' | 'Double Station' | 'Ground' | 'None')[];
 	whereScore: string[];
 	priorityScore: string;
+	autoBalance: boolean;
 	notes: string;
 	createdAt: string;
 }
