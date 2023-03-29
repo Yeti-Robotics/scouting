@@ -4,7 +4,19 @@ import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import { UserI } from '@/models/User';
-import { Box, Button, Group, Loader, NumberInput, Title } from '@mantine/core';
+import {
+	Box,
+	Button,
+	Group,
+	Loader,
+	NumberInput,
+	Stack,
+	Text,
+	TextInput,
+	Title,
+} from '@mantine/core';
+import { openConfirmModal } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { memo, useState } from 'react';
 import useSWR from 'swr';
 
@@ -104,7 +116,8 @@ const MatchDisplay = memo(function MatchDisplay({ user, match }: { match: MatchI
 
 const MatchData = () => {
 	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
-	const { user } = useUser({ canRedirect: true });
+	const { user } = useUser({ canRedirect: false });
+	const [compKey, setCompKey] = useState('');
 	const [matchNum, setMatchNum] = useState<number | ''>('');
 	const [teamNum, setTeamNum] = useState<number | ''>('');
 
@@ -113,13 +126,40 @@ const MatchData = () => {
 		setTeamNum('');
 	};
 
-	if (!data || !user) return <Loader size='xl' />;
+	if (!data) return <Loader size='xl' />;
 
-	if (user.banned) return <h1>You&#39;ve been banned you sussy baka.</h1>;
+	if (user?.banned) return <h1>You&#39;ve been banned you sussy baka.</h1>;
 
 	return (
 		<>
 			<h1>Match Data</h1>
+			{user?.administrator && (
+				<Stack align='center' justify='center'>
+					<TextInput value={compKey} onChange={(e) => setCompKey(e.target.value)} />
+					<Button
+						onClick={() =>
+							compKey &&
+							openConfirmModal({
+								title: 'Populate matches?',
+								children: (
+									<Text>
+										Are you sure you want to populate the matches, with key:{' '}
+										{compKey}
+									</Text>
+								),
+								onConfirm: () => {
+									fetch(`/api/populate-matches?evKey=${compKey}`).then((res) => {
+										if (res.ok)
+											notifications.show({ message: 'Populated matches 😁' });
+									});
+								},
+							})
+						}
+					>
+						Populate
+					</Button>
+				</Stack>
+			)}
 			<Title order={2}>Filters</Title>
 			<Group position='center'>
 				<NumberInput value={matchNum} label='Match Number' onChange={setMatchNum} />
