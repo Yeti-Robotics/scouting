@@ -8,8 +8,6 @@ export default new RouteHandler<'api', WAuth>()
 	.use(connectDB)
 	.use(auth)
 	.get(async (req, res) => {
-		if (!req.user || req.user.banned)
-			return res.status(403).json({ message: 'You are not authorized.' });
 		const id = String(req.query.id);
 
 		const matchData = await getMatchData(id);

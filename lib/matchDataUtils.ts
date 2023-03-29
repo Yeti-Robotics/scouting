@@ -30,7 +30,7 @@ export const selectScoreKey = ({
 	auto: boolean;
 	level: 'top' | 'mid' | 'low';
 	piece: 'cone' | 'cube';
-}): keyof StandFormWithName => {
+}) => {
 	if (auto) {
 		if (level === 'top') {
 			if (piece === 'cone') {
@@ -149,28 +149,28 @@ export const getTeamColor = (match: MatchData, team?: StandFormWithName | number
 			team?.teamNumber === match.blue2?.teamNumber ||
 			team?.teamNumber === match.blue3?.teamNumber
 		)
-			return '#00ff00';
+			return 'blue';
 		if (
 			team?.teamNumber === match.red1?.teamNumber ||
 			team?.teamNumber === match.red2?.teamNumber ||
 			team?.teamNumber === match.red3?.teamNumber
 		)
-			return '#ff0000';
+			return 'red';
 	} else {
 		if (
 			team === match.blue1?.teamNumber ||
 			team === match.blue2?.teamNumber ||
 			team === match.blue3?.teamNumber
 		)
-			return '#00ff00';
+			return 'blue';
 		if (
 			team === match.red1?.teamNumber ||
 			team === match.red2?.teamNumber ||
 			team === match.red3?.teamNumber
 		)
-			return '#ff0000';
+			return 'red';
 	}
-	return 'none';
+	return undefined;
 };
 
 const getPiecesScored = (form: StandFormI | undefined) => {

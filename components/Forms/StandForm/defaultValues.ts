@@ -16,6 +16,7 @@ export const defaultValues: Partial<CreateStandForm> = {
 	links: 0,
 	penalties: 0,
 	numberOnCharger: 0,
+	attemptedAutoBalance: false,
 	autoDocked: false,
 	autoEngaged: false,
 	teleopDocked: false,
