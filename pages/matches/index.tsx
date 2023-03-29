@@ -61,7 +61,7 @@ const MatchDisplay = memo(function MatchDisplay({ match }: { match: MatchI }) {
 });
 
 const MatchData = () => {
-	const { data } = useSWR<MatchI[]>('/api/matches', fetcher);
+	const { data, mutate } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { user } = useUser({ canRedirect: false });
 	const [compKey, setCompKey] = useState('');
 	const [matchNum, setMatchNum] = useState<number | ''>('');
@@ -93,10 +93,18 @@ const MatchData = () => {
 										{compKey}
 									</Text>
 								),
+								cancelProps: {
+									children: 'No 😈',
+								},
+								confirmProps: {
+									children: 'Yes 👼',
+								},
 								onConfirm: () => {
 									fetch(`/api/populate-matches?evKey=${compKey}`).then((res) => {
-										if (res.ok)
+										if (res.ok) {
 											notifications.show({ message: 'Populated matches 😁' });
+											mutate();
+										}
 									});
 								},
 							})
