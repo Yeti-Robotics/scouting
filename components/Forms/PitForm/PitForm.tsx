@@ -2,7 +2,7 @@ import { useUser } from '@/lib/useUser';
 import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Box, Button, Loader, Stack, Text, Textarea } from '@mantine/core';
+import { ActionIcon, Box, Button, Checkbox, Loader, Stack, Text, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -36,6 +36,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 			whereScore: [],
 			priorityScore: undefined,
 			drivetrain: undefined,
+			autoBalance: false,
 			...defaultForm,
 		},
 	});
@@ -139,6 +140,12 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Preferred scoring location?'
 						data={[...whereScoreEnum, 'None']}
 						required
+					/>
+					<Checkbox
+						label='Can Auto Balance'
+						required
+						size='xl'
+						{...register('autoBalance', { required: true })}
 					/>
 					<Textarea
 						{...register('notes', { required: true })}

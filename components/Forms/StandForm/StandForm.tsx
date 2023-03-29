@@ -62,6 +62,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		},
 	});
 	const matchNumber = watch('matchNumber');
+	const attemptedAutoBalance = watch('attemptedAutoBalance');
 	const autoDocked = watch('autoDocked');
 	const teleopDocked = watch('teleopDocked');
 
@@ -92,11 +93,15 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		if (autoDocked === false) {
 			setValue('autoEngaged', false);
 		}
+		if (attemptedAutoBalance === false) {
+			setValue('autoDocked', false);
+			setValue('autoEngaged', false);
+		}
 		if (teleopDocked === false) {
 			setValue('teleopEngaged', false);
 			setValue('numberOnCharger', 0);
 		}
-	}, [autoDocked, teleopDocked]);
+	}, [attemptedAutoBalance, autoDocked, teleopDocked]);
 
 	useEffect(() => {
 		if (isOffline)
@@ -170,7 +175,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 						<Checkbox
 							{...register('initiationLine')}
-							label='Did they leave their box?'
+							label='Did they leave the community?'
 							size='xl'
 							disabled={!canEdit}
 						/>
@@ -243,11 +248,19 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					</Group>
 					<Stack mt='md'>
 						<Checkbox
-							{...register('autoDocked')}
-							label='On charger'
+							{...register('attemptedAutoBalance')}
+							label='Attempted Balance'
 							size='xl'
 							disabled={!canEdit}
 						/>
+						{attemptedAutoBalance && (
+							<Checkbox
+								{...register('autoDocked')}
+								label='On charger'
+								size='xl'
+								disabled={!canEdit}
+							/>
+						)}
 						{autoDocked && (
 							<Checkbox
 								{...register('autoEngaged')}
@@ -360,6 +373,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						label='# of Links'
 						disabled={!canEdit}
 						min={0}
+						max={9}
 						required
 					/>
 					<NumberSelect

@@ -34,11 +34,11 @@ const TeamCapabilities = ({
 	const noCube = data.avgTopCubes <= 0.2 && data.avgMidCubes <= 0.2;
 
 	return (
-		<Card withBorder shadow='md' bg={color}>
+		<Card withBorder shadow='md' bg={color} sx={{ color: 'white' }}>
 			<Title order={3} align='center'>
 				{teamNumber}
 			</Title>
-			<Title order={5}>
+			<Title align='center' order={5}>
 				<Cone height={24} width={24} /> Cones
 			</Title>
 			{noCone ? (
@@ -49,7 +49,7 @@ const TeamCapabilities = ({
 					{data.avgMidCones >= 0.2 && <Text align='center'>Mid</Text>}
 				</>
 			)}
-			<Title pt='md' order={5}>
+			<Title align='center' pt='md' order={5}>
 				<Cube height={24} width={24} /> Cubes
 			</Title>
 			{noCube ? (
@@ -60,6 +60,11 @@ const TeamCapabilities = ({
 					{data.avgMidCubes >= 0.2 && <Text align='center'>Mid</Text>}
 				</>
 			)}
+			<Title pt='md' align='center' order={5}>
+				Auto
+			</Title>
+			<Text align='center'>Dock: {data.autoDockPercent.toFixed(2)}%</Text>
+			<Text align='center'>Engage: {data.autoEngagePercent.toFixed(2)}%</Text>
 		</Card>
 	);
 };
@@ -79,7 +84,7 @@ const TeamPitCapabilities = ({
 	const cones = form.whereScore.filter((position) => position.includes('Cone'));
 
 	return (
-		<Card withBorder shadow='md' bg={color}>
+		<Card withBorder shadow='md' bg={color} sx={{ color: 'white' }}>
 			<Title order={3} align='center'>
 				{teamNumber}
 			</Title>
@@ -107,6 +112,10 @@ const TeamPitCapabilities = ({
 					</Text>
 				))
 			)}
+			<Title pt='md' align='center' order={5}>
+				Auto
+			</Title>
+			<Text align='center'>{form.autoBalance ? 'Can Balance' : "Can't balance"}</Text>
 		</Card>
 	);
 };

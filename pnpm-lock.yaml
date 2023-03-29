@@ -3,13 +3,13 @@ lockfileVersion: 5.4
 specifiers:
   '@emotion/react': 11.10.6
   '@emotion/server': 11.10.0
-  '@mantine/core': 6.0.4
-  '@mantine/dates': 6.0.4
-  '@mantine/dropzone': 6.0.4
-  '@mantine/hooks': 6.0.4
-  '@mantine/modals': 6.0.4
-  '@mantine/next': 6.0.4
-  '@mantine/notifications': 6.0.4
+  '@mantine/core': 6.0.5
+  '@mantine/dates': 6.0.5
+  '@mantine/dropzone': 6.0.5
+  '@mantine/hooks': 6.0.5
+  '@mantine/modals': 6.0.5
+  '@mantine/next': 6.0.5
+  '@mantine/notifications': 6.0.5
   '@next/bundle-analyzer': ^13.1.6
   '@nivo/bar': ^0.80.0
   '@nivo/core': 0.80.0
@@ -46,13 +46,13 @@ specifiers:
 dependencies:
   '@emotion/react': 11.10.6_3stiutgnnbnfnf3uowm5cip22i
   '@emotion/server': 11.10.0
-  '@mantine/core': 6.0.4_wuupgzbasblscf2nvrxw3ufubm
-  '@mantine/dates': 6.0.4_pkynlvqpeely4khnis6enuhk4a
-  '@mantine/dropzone': 6.0.4_ordvvez6mrxlqyz6sv56zwslmq
-  '@mantine/hooks': 6.0.4_react@18.2.0
-  '@mantine/modals': 6.0.4_ordvvez6mrxlqyz6sv56zwslmq
-  '@mantine/next': 6.0.4_pnokhhiiffeanlj7xihut5qdrq
-  '@mantine/notifications': 6.0.4_ordvvez6mrxlqyz6sv56zwslmq
+  '@mantine/core': 6.0.5_hrcghimvck4yg7lvbq3oxvxoya
+  '@mantine/dates': 6.0.5_iad4dgcql7fsu7pywtgcwm53za
+  '@mantine/dropzone': 6.0.5_6pfxqekc6uqvckei2gzq5evb7y
+  '@mantine/hooks': 6.0.5_react@18.2.0
+  '@mantine/modals': 6.0.5_6pfxqekc6uqvckei2gzq5evb7y
+  '@mantine/next': 6.0.5_pnokhhiiffeanlj7xihut5qdrq
+  '@mantine/notifications': 6.0.5_6pfxqekc6uqvckei2gzq5evb7y
   '@nivo/bar': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
   '@nivo/core': 0.80.0_5slebnaup4nvgtipiet5bq5l6e
   '@nivo/scatterplot': 0.80.0_wyuiu3ihipn7hpncy62nqhyrji
@@ -1129,17 +1129,17 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@mantine/core/6.0.4_wuupgzbasblscf2nvrxw3ufubm:
-    resolution: {integrity: sha512-qF/zQ+BZSrfvzHB1LHEESSKLqYZaQRTgsWt26gn52fyRXtLER1PU4mIafP2C7+3+7z5guUr1ZE25pCuwx4Bbxg==}
+  /@mantine/core/6.0.5_hrcghimvck4yg7lvbq3oxvxoya:
+    resolution: {integrity: sha512-jmP47Fcdw+UvcX1gDG5dNEhdF0QPeMnFZkB6JNAzaIuXKk8AVDh0rXXki0kWHx88gh/f5bGvOoRnKUb6v7UtDQ==}
     peerDependencies:
-      '@mantine/hooks': 6.0.4
+      '@mantine/hooks': 6.0.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react': 0.19.1_5ndqzdd6t4rivxsukjv3i3ak2q
-      '@mantine/hooks': 6.0.4_react@18.2.0
-      '@mantine/styles': 6.0.4_keyspdss4kub3atek752gc6fle
-      '@mantine/utils': 6.0.4_react@18.2.0
+      '@mantine/hooks': 6.0.5_react@18.2.0
+      '@mantine/styles': 6.0.5_keyspdss4kub3atek752gc6fle
+      '@mantine/utils': 6.0.5_react@18.2.0
       '@radix-ui/react-scroll-area': 1.0.2_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1150,69 +1150,69 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/dates/6.0.4_pkynlvqpeely4khnis6enuhk4a:
-    resolution: {integrity: sha512-6uia4B+FOSI7Qx3FLqkJEM4bSqtEutEY2+t2GCeKEHPJRyeA1yC1uFV3IiF6B+Rnx49xCl9ru6rfOyA7MhN79Q==}
+  /@mantine/dates/6.0.5_iad4dgcql7fsu7pywtgcwm53za:
+    resolution: {integrity: sha512-IvHD+P47qt7CX/mc2vrZOTa3LzBkW6BGCwqoVXsfz7839fxPJaGhDrWkE2BuBhqPVTReMZJG4gK2YvT99jNJXA==}
     peerDependencies:
-      '@mantine/core': 6.0.4
-      '@mantine/hooks': 6.0.4
+      '@mantine/core': 6.0.5
+      '@mantine/hooks': 6.0.5
       dayjs: '>=1.0.0'
       react: '>=16.8.0'
     dependencies:
-      '@mantine/core': 6.0.4_wuupgzbasblscf2nvrxw3ufubm
-      '@mantine/hooks': 6.0.4_react@18.2.0
-      '@mantine/utils': 6.0.4_react@18.2.0
+      '@mantine/core': 6.0.5_hrcghimvck4yg7lvbq3oxvxoya
+      '@mantine/hooks': 6.0.5_react@18.2.0
+      '@mantine/utils': 6.0.5_react@18.2.0
       dayjs: 1.11.7
       react: 18.2.0
     dev: false
 
-  /@mantine/dropzone/6.0.4_ordvvez6mrxlqyz6sv56zwslmq:
-    resolution: {integrity: sha512-6XpbtLkqV5+bXHJ6u3GdcrIlCHEd17teMShOrzzOM87KHozzfx3JTL2ZD37wkeH90S5fqHJImUG4kYjHYe1zUQ==}
+  /@mantine/dropzone/6.0.5_6pfxqekc6uqvckei2gzq5evb7y:
+    resolution: {integrity: sha512-OV9RJ9/bsINROhYZYtRe3ZgYTBZGf9+xMPzNKj22J2LFMNxL256iOFRsdsO/tiMTriF7q0ErNnmLI75emrKGXQ==}
     peerDependencies:
-      '@mantine/core': 6.0.4
-      '@mantine/hooks': 6.0.4
+      '@mantine/core': 6.0.5
+      '@mantine/hooks': 6.0.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 6.0.4_wuupgzbasblscf2nvrxw3ufubm
-      '@mantine/hooks': 6.0.4_react@18.2.0
-      '@mantine/utils': 6.0.4_react@18.2.0
+      '@mantine/core': 6.0.5_hrcghimvck4yg7lvbq3oxvxoya
+      '@mantine/hooks': 6.0.5_react@18.2.0
+      '@mantine/utils': 6.0.5_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-dropzone: 14.2.3_react@18.2.0
     dev: false
 
-  /@mantine/hooks/6.0.4_react@18.2.0:
-    resolution: {integrity: sha512-rG+P18vOJcMQGo/3XAzR3f7rtmzjuccTIc10I9F2J49cRKem4wQZQdYeA8Wnxx95SRmVTQtf2hYXjbUliqgmAA==}
+  /@mantine/hooks/6.0.5_react@18.2.0:
+    resolution: {integrity: sha512-PZMGYK1lwKqpyLal6il2XnE19CRWTPPwjG5r5CbL5lGAVmbucd/XhK1abTuBYzid7usJ4pIxlp/gmdcRLg14TQ==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@mantine/modals/6.0.4_ordvvez6mrxlqyz6sv56zwslmq:
-    resolution: {integrity: sha512-4rQyIcGnG5uVepSVxmr8641rJoHiOU34VNfqzBgGcNuwf62w+fp0X4rEuOvN7m1ofV5ohIO/1MoVYrARu7HoXQ==}
+  /@mantine/modals/6.0.5_6pfxqekc6uqvckei2gzq5evb7y:
+    resolution: {integrity: sha512-fTMpAvjFxRwcDqu/eutT0fbxofGBfzwihutISrF7TQxPOpWn7GT6k0n8P3kOvZjU2P0bbOcdfN/cQvKGbbUFAA==}
     peerDependencies:
-      '@mantine/core': 6.0.4
-      '@mantine/hooks': 6.0.4
+      '@mantine/core': 6.0.5
+      '@mantine/hooks': 6.0.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 6.0.4_wuupgzbasblscf2nvrxw3ufubm
-      '@mantine/hooks': 6.0.4_react@18.2.0
-      '@mantine/utils': 6.0.4_react@18.2.0
+      '@mantine/core': 6.0.5_hrcghimvck4yg7lvbq3oxvxoya
+      '@mantine/hooks': 6.0.5_react@18.2.0
+      '@mantine/utils': 6.0.5_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/next/6.0.4_pnokhhiiffeanlj7xihut5qdrq:
-    resolution: {integrity: sha512-/HvAZNe15v8DIjooJ62KKnSPmFlF6Kg9iyFkjTLlPxFIf5/4uCfPPQcIpWAXk7ZfkQSnHbmdNbbizhadBS57qQ==}
+  /@mantine/next/6.0.5_pnokhhiiffeanlj7xihut5qdrq:
+    resolution: {integrity: sha512-+0RsHGn4FZo97qbnDsnxudiFsxVLdCGzi0FBcSnTtAgKdH6IXmAMKFW1SF6Pn3kPwcklXZOmeGJMC17NNuQmNQ==}
     peerDependencies:
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/ssr': 6.0.4_5hf7yutiboqvmzmnlvms67nwwa
-      '@mantine/styles': 6.0.4_keyspdss4kub3atek752gc6fle
+      '@mantine/ssr': 6.0.5_5hf7yutiboqvmzmnlvms67nwwa
+      '@mantine/styles': 6.0.5_keyspdss4kub3atek752gc6fle
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1221,24 +1221,24 @@ packages:
       - '@emotion/server'
     dev: false
 
-  /@mantine/notifications/6.0.4_ordvvez6mrxlqyz6sv56zwslmq:
-    resolution: {integrity: sha512-tbyudxHXKLeHoU1LkSPz1kvgvi0cRje7UdeRME3EyGwDkX2+MsPwFZchWIhyqluxy7PH4subJ+iOOfwkIcXbow==}
+  /@mantine/notifications/6.0.5_6pfxqekc6uqvckei2gzq5evb7y:
+    resolution: {integrity: sha512-JNYKQ24gHMOUVR9rg5piJwjT219pTTy36LoEsbOl8mAK17u/QrFtRVnvChIbvje49ALRuLuRtvHDJfdL8vojvg==}
     peerDependencies:
-      '@mantine/core': 6.0.4
-      '@mantine/hooks': 6.0.4
+      '@mantine/core': 6.0.5
+      '@mantine/hooks': 6.0.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 6.0.4_wuupgzbasblscf2nvrxw3ufubm
-      '@mantine/hooks': 6.0.4_react@18.2.0
-      '@mantine/utils': 6.0.4_react@18.2.0
+      '@mantine/core': 6.0.5_hrcghimvck4yg7lvbq3oxvxoya
+      '@mantine/hooks': 6.0.5_react@18.2.0
+      '@mantine/utils': 6.0.5_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@mantine/ssr/6.0.4_5hf7yutiboqvmzmnlvms67nwwa:
-    resolution: {integrity: sha512-e/ZwBj4+qG0+23MeChCVHUxVeNwplTyvMsqz8JAokaKcebdyuR42YWFbo21cGpulT8lAewd+EmpeKRk3lmZwwg==}
+  /@mantine/ssr/6.0.5_5hf7yutiboqvmzmnlvms67nwwa:
+    resolution: {integrity: sha512-hk+zuoiyvwDqs2qGkY0qj5rc0cNwBge9RNKRwv7Gy5trMPJkACJGmLB1efY1bi+UHo4dhNH0W3cnqZSjjosTIw==}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       '@emotion/server': '>=11.4.0'
@@ -1247,14 +1247,14 @@ packages:
     dependencies:
       '@emotion/react': 11.10.6_3stiutgnnbnfnf3uowm5cip22i
       '@emotion/server': 11.10.0
-      '@mantine/styles': 6.0.4_keyspdss4kub3atek752gc6fle
+      '@mantine/styles': 6.0.5_keyspdss4kub3atek752gc6fle
       html-react-parser: 1.4.12_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/styles/6.0.4_keyspdss4kub3atek752gc6fle:
-    resolution: {integrity: sha512-DbyshlwoCjn3Yw2iMNzo1fv+3TJcZgwjB86JvxcfjJwz6Br5IzsVlJPcK9kcTbzvcN1kMT07y5aK+3pZv7qBFw==}
+  /@mantine/styles/6.0.5_keyspdss4kub3atek752gc6fle:
+    resolution: {integrity: sha512-z4G+xlf4fMFNDx0tSLXQYboyPrkv0s0oK1LFmh/cd3yoZWO9D1BF+p1eylAYAPjGdyzSg60daalWaoWR82oEiQ==}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       react: '>=16.8.0'
@@ -1267,8 +1267,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/utils/6.0.4_react@18.2.0:
-    resolution: {integrity: sha512-oggRX3fC/tsoxEaxJ+3DhFpb4D4YeCg5XvueGsX3AuoHY87bypaI3JyvFbSIV8oLMW6B/heHNu6VPHVSnrim9A==}
+  /@mantine/utils/6.0.5_react@18.2.0:
+    resolution: {integrity: sha512-P2FVcBd2oZ9ANOsZUtTwJ4+FV6NgCRE5B7trsT8gEFUbMeQLietcsZEgAe5xhzEu9Afp5V8X8a+E9yx1blMpNg==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:

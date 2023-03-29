@@ -38,6 +38,9 @@ export const teamDataAggregation: PipelineStage[] = [
 					},
 				],
 			},
+			didAutoBalance: {
+				$and: ['$attemptedAutoBalance', '$autoEngaged'],
+			},
 			teleopScore: {
 				$add: [
 					{
@@ -140,6 +143,39 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgDefense: {
 				$avg: '$defense',
 			},
+			autoDockPercent: {
+				$avg: {
+					$cond: [
+						'$attemptedAutoBalance',
+						{
+							$cond: [
+								{
+									$and: [
+										'$autoDocked',
+										{
+											$not: '$autoEngaged',
+										},
+									],
+								},
+								100,
+								0,
+							],
+						},
+						null,
+					],
+				},
+			},
+			autoEngagePercent: {
+				$avg: {
+					$cond: [
+						'$attemptedAutoBalance',
+						{
+							$cond: ['$autoEngaged', 100, 0],
+						},
+						null,
+					],
+				},
+			},
 		},
 	},
 	{
@@ -152,6 +188,12 @@ export const teamDataAggregation: PipelineStage[] = [
 			_id: 1,
 			initiationLine: {
 				$round: ['$initiationLine', 1],
+			},
+			autoEngagePercent: {
+				$round: ['$autoEngagePercent', 2],
+			},
+			autoDockPercent: {
+				$round: ['$autoDockPercent', 2],
 			},
 			avgTopCones: 1,
 			avgMidCones: 1,
@@ -227,6 +269,8 @@ export interface TeamData {
 	avgTopCubes: number;
 	avgMidCubes: number;
 	avgLowCubes: number;
+	autoDockPercent: number;
+	autoEngagePercent: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
