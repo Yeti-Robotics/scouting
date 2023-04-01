@@ -40,9 +40,10 @@ const calcAvgEndChargerPoints = (teams: RawTeamData[]) => {
 };
 
 const calcAvgAutoChargerPoints = (teams: RawTeamData[]) => {
+	// percent is in x% not 0.xx
 	const highestAutoEngagePercent = Math.max(...teams.map((team) => team?.autoEngagePercent ?? 0));
 	const avgAutoEngage =
-		highestAutoEngagePercent === -Infinity ? 0 : highestAutoEngagePercent * 12;
+		highestAutoEngagePercent === -Infinity ? 0 : (highestAutoEngagePercent / 100) * 12;
 	return avgAutoEngage;
 };
 
