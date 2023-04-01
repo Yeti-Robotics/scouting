@@ -1,4 +1,15 @@
-import { ActionIcon, Box, Center, Group, Loader, Paper, Tabs, Text, Title, useMantineTheme } from '@mantine/core';
+import {
+	ActionIcon,
+	Box,
+	Center,
+	Group,
+	Loader,
+	Paper,
+	Tabs,
+	Text,
+	Title,
+	useMantineTheme,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { Data } from '@/components/MatchData/Data';
 import { useLocalStorage } from '@mantine/hooks';
