@@ -1,7 +1,6 @@
 import Section from '@/components/Section';
 import Comments from '@/components/Teams/Comments';
-import PitFormCard from '@/components/Teams/PitFormCard';
-import StandFormCard from '@/components/Teams/StandFormCard';
+import { PitInfo } from '@/components/Teams/PitInfo';
 import TeamStats from '@/components/Teams/TeamStats';
 import fetcher from '@/lib/fetch';
 import { toBase64 } from '@/lib/toBase64';
@@ -9,7 +8,7 @@ import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
 import { PitImageRes } from '@/models/PitImage';
 import { StandFormI } from '@/models/StandForm';
-import { Box, Group, Loader, Stack, Title } from '@mantine/core';
+import { Box, Loader, Stack, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -61,27 +60,14 @@ const TeamPage = () => {
 	const { team, standForms, pitForms } = data;
 
 	return (
-		<Stack p='md' align='center'>
-			<Title>
-				{team.teamNumber} {team.teamName}
+		<Stack p='md' w='100%'>
+			<Title pb='md' align='center'>
+				{team.teamNumber}
+				{team.teamName ? ': ' + team.teamName : null}
 			</Title>
+			<PitInfo pitForm={pitForms[0]} />
 			<TeamStats team={team} standForms={standForms} />
 			<Comments forms={standForms} />
-			<Section title='Stand Forms' expanded={Boolean(standForms[0])}>
-				<Group position='center'>
-					{standForms.map((form) => (
-						<StandFormCard key={form._id} team={team} form={form} />
-					))}
-				</Group>
-			</Section>
-			<Section title='Pit Forms' expanded={Boolean(pitForms[0])}>
-				<Group position='center'>
-					{!pitForms[0] && <h2>No pit forms for this team.</h2>}
-					{pitForms.map((form) => (
-						<PitFormCard key={form._id} team={team} form={form} />
-					))}
-				</Group>
-			</Section>
 			<Section title='Pit Images' expanded={Boolean(images ? images[0] : images)}>
 				<Box sx={{ display: 'flex', flexFlow: 'row wrap' }}>
 					{images === undefined && <Loader size='xl' />}

@@ -1,8 +1,8 @@
 import { commonProps } from '@/lib/graphUtils';
 import { TeamData } from '@/models/aggregations/teamData';
 import { StandFormI } from '@/models/StandForm';
-import { Stack, Title, useMantineTheme } from '@mantine/core';
-import { ScatterPlot } from '@nivo/scatterplot';
+import { Title, useMantineTheme } from '@mantine/core';
+import { ResponsiveScatterPlot } from '@nivo/scatterplot';
 
 export const TeamTables = ({
 	standForms,
@@ -25,15 +25,17 @@ export const TeamTables = ({
 	return (
 		<>
 			{datas.map((data) => (
-				<Stack key={data[0].title}>
-					<Title order={2}>{data[0].title}</Title>
-					<ScatterPlot
-						width={800}
-						height={500}
-						data={data}
-						{...commonProps(theme.colorScheme === 'dark')}
-					/>
-				</Stack>
+				<div key={data[0].title} style={{ width: '100%' }}>
+					<Title order={2} align='center'>
+						{data[0].title}
+					</Title>
+					<div style={{ height: 500, width: '100%' }}>
+						<ResponsiveScatterPlot
+							data={data}
+							{...commonProps(theme.colorScheme === 'dark')}
+						/>
+					</div>
+				</div>
 			))}
 		</>
 	);

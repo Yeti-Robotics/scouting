@@ -1,7 +1,7 @@
-import { calcAutoScore, calcTeleopScore } from '@/lib/graphUtils';
+import { calcAutoPieces, calcTeleopPieces } from '@/lib/graphUtils';
 import { TeamData } from '@/models/aggregations/teamData';
 import { StandFormI } from '@/models/StandForm';
-import { Box, Title } from '@mantine/core';
+import { Box, Text, Title } from '@mantine/core';
 import Section from '../Section';
 import { TeamTables } from './TeamTables';
 
@@ -10,22 +10,24 @@ interface Props {
 	standForms: StandFormI[];
 }
 
-const percentOptions = { maximumFractionDigits: 2, style: 'decimal' };
-
 const TeamStats = ({ team, standForms }: Props) => {
 	return (
 		<Section title='Team Stats'>
 			<Title order={2}>Scores</Title>
 			<Box>
-				<Title order={4}>Avg Auto: {team.avgAutoScore?.toFixed(2)}</Title>
-				<Title order={4}>Avg Teleop: {team.avgTeleopScore?.toFixed(2)}</Title>
+				<Text>
+					<strong>Avg Auto:</strong> {team.avgAutoScore?.toFixed(2)}
+				</Text>
+				<Text>
+					<strong>Avg Teleop:</strong> {team.avgTeleopScore?.toFixed(2)}
+				</Text>
 			</Box>
 			<TeamTables
 				standForms={standForms}
 				team={team}
 				tableDefs={[
-					{ title: 'Teleop Pieces Scored', dataFn: calcTeleopScore },
-					{ title: 'Auto Pieces Scored', dataFn: calcAutoScore },
+					{ title: 'Teleop Pieces Scored', dataFn: calcTeleopPieces },
+					{ title: 'Auto Pieces Scored', dataFn: calcAutoPieces },
 				]}
 			/>
 		</Section>

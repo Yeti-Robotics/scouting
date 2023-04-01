@@ -14,7 +14,7 @@ const Section = ({ title, expanded = true, children }: Props) => {
 	useEffect(() => setIsExpanded(expanded), [expanded]);
 
 	return (
-		<Card withBorder shadow='xl'>
+		<Card withBorder shadow='xl' w='100%'>
 			<Stack>
 				<Group>
 					<Title>{title}</Title>
