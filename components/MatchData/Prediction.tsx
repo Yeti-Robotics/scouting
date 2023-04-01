@@ -1,8 +1,7 @@
-import fetcher from '@/lib/fetch';
-import useSWRImmutable from 'swr/immutable';
 import { MatchTeamData, useMatchTeamData } from './useMatchTeamData';
 import { Card, Center, Group, Loader, Stack, Title } from '@mantine/core';
 import { RawTeamData } from '@/models/aggregations/teamData';
+import { MatchI } from '@/models/Match';
 
 const filterTeams = (teams: (RawTeamData | undefined)[]) =>
 	teams.filter((team) => team) as RawTeamData[];
@@ -109,12 +108,8 @@ const TeamPrediction = ({
 	);
 };
 
-export const Prediction = ({ matchNumber }: { matchNumber: number }) => {
-	const { data: id } = useSWRImmutable<string>(
-		`/api/matches/num-to-id?number=${matchNumber}`,
-		fetcher,
-	);
-	const data = useMatchTeamData(id);
+export const Prediction = ({ match }: { match: MatchI }) => {
+	const data = useMatchTeamData(match._id);
 
 	if (!data)
 		return (

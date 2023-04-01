@@ -6,7 +6,6 @@ import { PitFormI } from '@/models/PitForm';
 import { Card, Center, Group, Loader, Text, Title } from '@mantine/core';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import useSWRImmutable from 'swr/immutable';
 import { Cone, Cube } from '../icons';
 
 type MatchTeamData = {
@@ -125,17 +124,9 @@ const TeamPitCapabilities = ({
 	);
 };
 
-export const Capabilities = ({ matchNumber }: { matchNumber: number }) => {
-	const { data: id } = useSWRImmutable<string>(
-		`/api/matches/num-to-id?number=${matchNumber}`,
-		fetcher,
-	);
-	const { data: match } = useSWR<MatchI>(id ? `/api/matches/${id}` : null, fetcher);
-	const { data: pitForms } = useSWR<MatchWPit>(
-		id ? `/api/matches/${id}/pit-forms` : null,
-		fetcher,
-	);
-	const { data: teamData } = useSWR<RawTeamData[]>(id ? `/api/team-data` : null, fetcher);
+export const Capabilities = ({ match }: { match: MatchI }) => {
+	const { data: pitForms } = useSWR<MatchWPit>(`/api/matches/${match._id}/pit-forms`, fetcher);
+	const { data: teamData } = useSWR<RawTeamData[]>(`/api/team-data`, fetcher);
 
 	const data = useMemo(
 		() =>

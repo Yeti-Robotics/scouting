@@ -23,7 +23,6 @@ export const Data = ({ matchNumber }: { matchNumber: number }) => {
 
 	return (
 		<>
-			<Title align='center'>Match {matchNumber}</Title>
 			<Title order={2} align='center'>
 				Scoring
 			</Title>

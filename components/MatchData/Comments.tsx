@@ -1,5 +1,5 @@
 import { MatchData } from '@/models/aggregations/matchData';
-import { Box, Group, Paper, Text, Title } from '@mantine/core';
+import { Group, Paper, Text, Title } from '@mantine/core';
 import { StandFormWithName } from '@/models/aggregations/standFormWithName';
 import { getTeamColor } from '@/lib/matchDataUtils';
 
@@ -9,7 +9,7 @@ interface Props {
 
 const CommentDisplay = ({ team, color }: { team: StandFormWithName; color?: string }) => {
 	return (
-		<Paper bg={color} withBorder p='xs'>
+		<Paper sx={{ color: 'white' }} bg={color} withBorder p='xs'>
 			<Title order={2} align='center'>
 				{team.teamNumber}
 			</Title>
@@ -23,9 +23,9 @@ const CommentDisplay = ({ team, color }: { team: StandFormWithName; color?: stri
 const Comments = ({ match }: Props) => {
 	return (
 		<>
-			<Box component='h1' sx={{ mt: 6 }}>
+			<Title align='center' mt='md'>
 				Comments
-			</Box>
+			</Title>
 			<Group align='center' position='center'>
 				{match.blue1 && (
 					<CommentDisplay team={match.blue1} color={getTeamColor(match, match.blue1)} />
