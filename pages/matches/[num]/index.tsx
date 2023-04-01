@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Data } from '@/components/MatchData/Data';
 import { useLocalStorage } from '@mantine/hooks';
 import { Capabilities } from '@/components/MatchData/Capabilities';
+import { Prediction } from '@/components/MatchData/Prediction';
 
 const Match = () => {
 	const [activeTab, setActiveTab] = useLocalStorage<string | null>({
@@ -21,6 +22,9 @@ const Match = () => {
 					<Tabs.Tab value='capabilities' fz='md' fw={600}>
 						Capabilities
 					</Tabs.Tab>
+					<Tabs.Tab value='prediction' fz='md' fw={600}>
+						Prediction
+					</Tabs.Tab>
 				</Tabs.List>
 			</Paper>
 
@@ -36,6 +40,15 @@ const Match = () => {
 			<Tabs.Panel value='capabilities' p='md'>
 				{router.isReady ? (
 					<Capabilities matchNumber={Number(router.query.num)} />
+				) : (
+					<Center>
+						<Loader size='xl' />
+					</Center>
+				)}
+			</Tabs.Panel>
+			<Tabs.Panel value='prediction' p='md'>
+				{router.isReady ? (
+					<Prediction matchNumber={Number(router.query.num)} />
 				) : (
 					<Center>
 						<Loader size='xl' />

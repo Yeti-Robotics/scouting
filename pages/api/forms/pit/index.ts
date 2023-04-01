@@ -19,10 +19,20 @@ export default handler
 			return res.status(401).json({ message: 'You are not authorized.' });
 		const form: PitFormI = JSON.parse(req.body);
 
-		const savedForm = new PitForm(form);
-		const inserted = await savedForm.save();
+		const current = await PitForm.findOne({ teamNumber: form.teamNumber });
+		// Delete existing form for team, if it exists
+		await current?.deleteOne();
 
-		return res.status(200).json(inserted);
+		try {
+			const savedForm = new PitForm(form);
+			const inserted = await savedForm.save();
+
+			return res.status(200).json(inserted);
+		} catch (e) {
+			// If fail to insert the new form, save the old one back to db
+			await current?.save();
+			return res.status(500).json({ message: 'Failed to create :(' });
+		}
 	})
 	.patch(async (req, res) => {
 		if (!req.user.administrator || !req.user || req.user.banned)

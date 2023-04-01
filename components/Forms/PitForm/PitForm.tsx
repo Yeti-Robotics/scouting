@@ -141,12 +141,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						data={[...whereScoreEnum, 'None']}
 						required
 					/>
-					<Checkbox
-						label='Can Auto Balance'
-						required
-						size='xl'
-						{...register('autoBalance', { required: true })}
-					/>
+					<Checkbox label='Can Auto Balance' size='xl' {...register('autoBalance')} />
 					<Textarea
 						{...register('notes', { required: true })}
 						label='Notes'

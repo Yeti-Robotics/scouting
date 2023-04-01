@@ -85,6 +85,42 @@ export const teamDataAggregation: PipelineStage[] = [
 	{
 		$group: {
 			_id: '$teamNumber',
+			avgTeleopTopCones: {
+				$avg: '$teleopTopCones',
+			},
+			avgTeleopMidCones: {
+				$avg: '$teleopMidCones',
+			},
+			avgTeleopLowCones: {
+				$avg: '$teleopLowCones',
+			},
+			avgTeleopTopCubes: {
+				$avg: '$teleopTopCubes',
+			},
+			avgTeleopMidCubes: {
+				$avg: '$teleopMidCubes',
+			},
+			avgTeleopLowCubes: {
+				$avg: '$teleopLowCubes',
+			},
+			avgAutoTopCones: {
+				$avg: '$autoTopCones',
+			},
+			avgAutoMidCones: {
+				$avg: '$autoMidCones',
+			},
+			avgAutoLowCones: {
+				$avg: '$autoLowCones',
+			},
+			avgAutoTopCubes: {
+				$avg: '$autoTopCubes',
+			},
+			avgAutoMidCubes: {
+				$avg: '$autoMidCubes',
+			},
+			avgAutoLowCubes: {
+				$avg: '$autoLowCubes',
+			},
 			avgTopCones: {
 				$avg: {
 					$add: ['$teleopTopCones', '$autoTopCones'],
@@ -176,6 +212,27 @@ export const teamDataAggregation: PipelineStage[] = [
 					],
 				},
 			},
+			avgRobotsDocked: {
+				$avg: {
+					$cond: [
+						{
+							$and: [
+								'$teleopDocked',
+								{
+									$not: '$teleopEngaged',
+								},
+							],
+						},
+						'$numberOnCharger',
+						0,
+					],
+				},
+			},
+			avgRobotsEngaged: {
+				$avg: {
+					$cond: ['$teleopEngaged', 'numberOnCharger', 0],
+				},
+			},
 		},
 	},
 	{
@@ -195,6 +252,18 @@ export const teamDataAggregation: PipelineStage[] = [
 			autoDockPercent: {
 				$round: ['$autoDockPercent', 2],
 			},
+			avgTeleopTopCones: 1,
+			avgTeleopMidCones: 1,
+			avgTeleopLowCones: 1,
+			avgTeleopTopCubes: 1,
+			avgTeleopMidCubes: 1,
+			avgTeleopLowCubes: 1,
+			avgAutoTopCones: 1,
+			avgAutoMidCones: 1,
+			avgAutoLowCones: 1,
+			avgAutoTopCubes: 1,
+			avgAutoMidCubes: 1,
+			avgAutoLowCubes: 1,
 			avgTopCones: 1,
 			avgMidCones: 1,
 			avgLowCones: 1,
@@ -263,14 +332,28 @@ export interface TeamData {
 	avgPenalties: number;
 	avgDefense: number;
 	initiationLine: number;
+	avgTeleopTopCones: number;
+	avgTeleopMidCones: number;
+	avgTeleopLowCones: number;
+	avgTeleopTopCubes: number;
+	avgTeleopMidCubes: number;
+	avgTeleopLowCubes: number;
+	avgAutoTopCones: number;
+	avgAutoMidCones: number;
+	avgAutoLowCones: number;
+	avgAutoTopCubes: number;
+	avgAutoMidCubes: number;
+	avgAutoLowCubes: number;
 	avgTopCones: number;
 	avgMidCones: number;
 	avgLowCones: number;
 	avgTopCubes: number;
 	avgMidCubes: number;
 	avgLowCubes: number;
-	autoDockPercent: number;
-	autoEngagePercent: number;
+	autoDockPercent: number | null;
+	autoEngagePercent: number | null;
+	avgRobotsDocked: number;
+	avgRobotsEngaged: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {

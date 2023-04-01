@@ -27,7 +27,12 @@ const TeamCapabilities = ({
 	color: 'red' | 'blue';
 	data?: RawTeamData;
 }) => {
-	if (!data) return <Title order={2}>No data for {teamNumber}</Title>;
+	if (!data)
+		return (
+			<Card withBorder shadow='md' bg={color} sx={{ color: 'white' }}>
+				No data for {teamNumber}
+			</Card>
+		);
 
 	// If they avg less than 0.2 it dont count
 	const noCone = data.avgTopCones <= 0.2 && data.avgMidCones <= 0.2;
@@ -63,8 +68,8 @@ const TeamCapabilities = ({
 			<Title pt='md' align='center' order={5}>
 				Auto
 			</Title>
-			<Text align='center'>Dock: {data.autoDockPercent.toFixed(2)}%</Text>
-			<Text align='center'>Engage: {data.autoEngagePercent.toFixed(2)}%</Text>
+			<Text align='center'>Dock: {data.autoDockPercent?.toFixed(2) ?? 0}%</Text>
+			<Text align='center'>Engage: {data.autoEngagePercent?.toFixed(2) ?? 0}%</Text>
 		</Card>
 	);
 };
