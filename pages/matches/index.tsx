@@ -26,7 +26,7 @@ const MatchDisplay = memo(function MatchDisplay({ match }: { match: MatchI }) {
 			<Stack align='center'>
 				<Title order={2}>Match {match.matchNumber}</Title>
 				<Group>
-					<Paper bg='blue' p='xs' withBorder>
+					<Paper sx={{ color: 'white' }} bg='blue' p='xs' withBorder>
 						<Text weight={600}>
 							Blue 1:
 							<br /> {match.blue1}
@@ -40,7 +40,7 @@ const MatchDisplay = memo(function MatchDisplay({ match }: { match: MatchI }) {
 							<br /> {match.blue3}
 						</Text>
 					</Paper>
-					<Paper bg='red' p='xs' withBorder>
+					<Paper sx={{ color: 'white' }} bg='red' p='xs' withBorder>
 						<Text weight={600}>
 							Red 1:
 							<br /> {match.red1}
