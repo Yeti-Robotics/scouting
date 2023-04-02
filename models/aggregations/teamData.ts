@@ -177,7 +177,15 @@ export const teamDataAggregation: PipelineStage[] = [
 				$avg: '$penalties',
 			},
 			avgDefense: {
-				$avg: '$defense',
+				$avg: {
+					$cond: [
+						{
+							$ne: ['$defense', 0],
+						},
+						'$defense',
+						null,
+					],
+				},
 			},
 			autoDockPercent: {
 				$avg: {
@@ -230,7 +238,7 @@ export const teamDataAggregation: PipelineStage[] = [
 			},
 			avgRobotsEngaged: {
 				$avg: {
-					$cond: ['$teleopEngaged', 'numberOnCharger', 0],
+					$cond: ['$teleopEngaged', '$numberOnCharger', 0],
 				},
 			},
 		},
@@ -330,7 +338,7 @@ export interface TeamData {
 	avgTeleopScore: number;
 	avgEndScore: number;
 	avgPenalties: number;
-	avgDefense: number;
+	avgDefense: number | null;
 	initiationLine: number;
 	avgTeleopTopCones: number;
 	avgTeleopMidCones: number;

@@ -79,7 +79,7 @@ export const columns = [
 	}),
 	helper.accessor('avgDefense', {
 		header: () => <Text fw={700}>Defense</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		cell: (props) => <Text>{truncDecimals(props.getValue() ?? 0) || 'none'}</Text>,
 		maxSize: 160,
 	}),
 	helper.display({
