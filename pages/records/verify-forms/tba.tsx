@@ -1,6 +1,5 @@
 import fetcher from '@/lib/fetch';
 import { aggregatePiecesScored } from '@/lib/matchDataUtils';
-import { useUser } from '@/lib/useUser';
 import { MatchWForms } from '@/models/aggregations/matchWForms';
 import { Card, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { useIsomorphicEffect } from '@mantine/hooks';
@@ -79,7 +78,6 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 };
 
 const TBA = () => {
-	useUser();
 	const { data, mutate } = useSWR<MatchWForms[]>('/api/matches?withForms=true', fetcher);
 
 	useIsomorphicEffect(() => {
