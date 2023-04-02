@@ -2,7 +2,17 @@ import { useUser } from '@/lib/useUser';
 import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Box, Button, Checkbox, Loader, Stack, Text, Textarea } from '@mantine/core';
+import {
+	ActionIcon,
+	Box,
+	Button,
+	Checkbox,
+	Group,
+	Loader,
+	Stack,
+	Text,
+	Textarea,
+} from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,7 +40,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	const [images, setImages] = useState<Partial<PitImageI & { listId: number }>[]>(
 		defaultImages || [],
 	);
-	const { control, handleSubmit, reset, register } = useForm<PitFormI>({
+	const { control, handleSubmit, reset, register, setValue } = useForm<PitFormI>({
 		defaultValues: {
 			pieceSources: [],
 			whereScore: [],
@@ -128,12 +138,15 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						label='Where they get pieces?'
 						data={pieceSourceEnum}
 					/>
-					<ControlledMultiSelect
-						name='whereScore'
-						control={control}
-						label='Where do they score?'
-						data={whereScoreEnum}
-					/>
+					<Group align='end'>
+						<ControlledMultiSelect
+							name='whereScore'
+							control={control}
+							label='Where do they score?'
+							data={whereScoreEnum}
+						/>
+						<Button onClick={() => setValue('whereScore', whereScoreEnum)}>All</Button>
+					</Group>
 					<ControlledSelect
 						name='priorityScore'
 						control={control}
