@@ -44,7 +44,7 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 		<Card withBorder shadow='xl'>
 			<Title align='center'>Match {match.matchNumber}</Title>
 			<Group align='flex' position='center'>
-				<Paper bg='red' p='xs' withBorder>
+				<Paper bg='red' p='xs' withBorder sx={{ color: 'white' }}>
 					<Stack>
 						<Title order={2}>Red</Title>
 						{redErrors.length === 0 ? (
@@ -58,7 +58,7 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 						)}
 					</Stack>
 				</Paper>
-				<Paper bg='blue' p='xs' withBorder>
+				<Paper bg='blue' p='xs' withBorder sx={{ color: 'white' }}>
 					<Stack>
 						<Title order={2}>Blue</Title>
 						{blueErrors.length === 0 ? (
