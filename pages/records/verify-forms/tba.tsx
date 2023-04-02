@@ -44,20 +44,6 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 		<Card withBorder shadow='xl'>
 			<Title align='center'>Match {match.matchNumber}</Title>
 			<Group align='flex' position='center'>
-				<Paper bg='blue' p='xs' withBorder>
-					<Stack>
-						<Title order={2}>Blue</Title>
-						{blueErrors.length === 0 ? (
-							<Text>No Errors 😁</Text>
-						) : (
-							blueErrors.map(({ name, value }, i) => (
-								<Text key={i}>
-									{name} {value < 0 ? 'low by' : 'high by'} {Math.abs(value)}
-								</Text>
-							))
-						)}
-					</Stack>
-				</Paper>
 				<Paper bg='red' p='xs' withBorder>
 					<Stack>
 						<Title order={2}>Red</Title>
@@ -65,6 +51,20 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 							<Text>No Errors 😁</Text>
 						) : (
 							redErrors.map(({ name, value }, i) => (
+								<Text key={i}>
+									{name} {value < 0 ? 'low by' : 'high by'} {Math.abs(value)}
+								</Text>
+							))
+						)}
+					</Stack>
+				</Paper>
+				<Paper bg='blue' p='xs' withBorder>
+					<Stack>
+						<Title order={2}>Blue</Title>
+						{blueErrors.length === 0 ? (
+							<Text>No Errors 😁</Text>
+						) : (
+							blueErrors.map(({ name, value }, i) => (
 								<Text key={i}>
 									{name} {value < 0 ? 'low by' : 'high by'} {Math.abs(value)}
 								</Text>
