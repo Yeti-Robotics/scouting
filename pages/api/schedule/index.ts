@@ -24,8 +24,6 @@ export default new RouteHandler<'api', WAuth>()
 
 		const savedBlock = new ScheduleBlock({
 			...block,
-			startTime: new Date(block.startTime).valueOf(),
-			endTime: new Date(block.endTime).valueOf(),
 		});
 		await savedBlock.save();
 

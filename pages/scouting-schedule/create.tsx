@@ -7,7 +7,9 @@ import { Box, Checkbox, Divider, Button } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import { ControlledDateTimePicker } from '@/components/Forms/ControlledDateTimePicker';
+import { ControlledNumberInput } from '@/components/Forms/ControlledNumberInput';
+import { useRouter } from 'next/router';
+import { notifications } from '@mantine/notifications';
 
 const UserDisplay = ({
 	user,
@@ -53,13 +55,12 @@ const resultsDefaults = (users: UserI[] | undefined) => {
 
 export interface ScheduleOptionsForm {
 	blockLength: number;
-	startTime: string;
-	endTime: string;
-	lunchStartTime: string;
-	lunchEndTime: string;
+	startMatch: number;
+	lastMatch: number;
 }
 
 const Create = () => {
+	const router = useRouter();
 	const { user } = useUser({ canRedirect: true, redirectIfNotAdmin: true });
 	const { data: users } = useSWR<UserI[]>('/api/auth/users?normal=true', fetcher);
 	const [results, setResults] = useState<Record<string, boolean>>({});
@@ -69,21 +70,24 @@ const Create = () => {
 
 	const submitCanScouts = async (data: ScheduleOptionsForm) => {
 		setFetching('fetching');
-		console.log(data);
-		await fetch(`/api/create-schedule?auto=${auto}`, {
+		const res = await fetch(`/api/create-schedule?auto=${auto}`, {
 			method: 'POST',
 			body: JSON.stringify({
 				users: { ...resultsDefaults(users), ...results },
 				options: {
 					...data,
-					startTime: new Date(data.startTime).valueOf(),
-					endTime: new Date(data.endTime).valueOf(),
-					lunchStartTime: new Date(data.lunchStartTime).valueOf(),
-					lunchEndTime: new Date(data.lunchEndTime).valueOf(),
 				},
 			}),
 		});
 		setFetching('done');
+		if (res.ok) {
+			router.push('/scouting-schedule');
+		} else {
+			notifications.show({
+				title: 'An error ocurred',
+				message: 'This is so sad',
+			});
+		}
 	};
 
 	if (!user || !users) return <Loader size='xl' />;
@@ -99,35 +103,23 @@ const Create = () => {
 						label='Block Length'
 						control={control}
 						required
-						data={[15, 30, 45, 60]}
+						data={[3, 5, 10, 15, 20]}
 					/>
-					<ControlledDateTimePicker
-						label='Start Time'
-						name='startTime'
+					<ControlledNumberInput
+						label='Start Match'
+						name='startMatch'
 						required
+						hideControls
+						min={1}
 						control={control}
-						valueAsString
 					/>
-					<ControlledDateTimePicker
-						label='End Time'
-						name='endTime'
+					<ControlledNumberInput
+						label='Last Match'
+						name='lastMatch'
 						required
+						hideControls
+						min={1}
 						control={control}
-						valueAsString
-					/>
-					<ControlledDateTimePicker
-						label='Lunch Start Time'
-						name='lunchStartTime'
-						required
-						control={control}
-						valueAsString
-					/>
-					<ControlledDateTimePicker
-						label='Lunch End Time'
-						name='lunchEndTime'
-						required
-						control={control}
-						valueAsString
 					/>
 
 					<Checkbox

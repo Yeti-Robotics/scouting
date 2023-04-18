@@ -25,27 +25,29 @@ const shuffle = <T>(array: T[]): T[] => {
 };
 
 const calcSchedule = (opts: ScheduleOptionsForm) => {
-	const start = new Date(opts.startTime).valueOf(); // ms
-	const end = new Date(opts.endTime).valueOf() - 60000; // ms
-	const lunchStart = new Date(opts.lunchStartTime).valueOf(); // ms
-	const lunchEnd = new Date(opts.lunchEndTime).valueOf(); // ms
-	const blockLength = parseInt(String(opts.blockLength)) * 60 * 1000; // ms
+	const start = opts.startMatch;
+	const end = opts.lastMatch;
+	const blockLength = opts.blockLength; // num matches they scout in a row
 
 	const blocks: (Document<unknown, any, any> &
-		Omit<CreateScheduleBlock, 'startTime' | 'endTime'> & { startTime: Date; endTime: Date } & {
+		CreateScheduleBlock & {
 			_id: string;
 		})[] = [];
 
 	for (let i = start; i < end; i += blockLength) {
-		if (i > lunchStart && i < lunchEnd) continue;
-		const block = new ScheduleBlock({
-			startTime: new Date(i),
-			endTime: new Date(i + blockLength),
-		});
-		console.log({
-			start: new Date(i).toLocaleTimeString(),
-			end: new Date(i + blockLength).toLocaleTimeString(),
-		});
+		let block;
+		if (i + (blockLength - 1) < end)
+			block = new ScheduleBlock({
+				startMatch: i,
+				lastMatch: (i + (blockLength - 1)) % end,
+			});
+		else {
+			block = new ScheduleBlock({
+				startMatch: i,
+				lastMatch: end,
+			});
+		}
+		console.log({ start: block.startMatch, end: block.lastMatch });
 		blocks.push(block as any);
 	}
 

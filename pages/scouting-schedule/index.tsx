@@ -21,15 +21,7 @@ const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) =
 			}}
 		>
 			<h2 style={{ margin: 0 }}>
-				{new Date(block.startTime).toLocaleTimeString(undefined, {
-					hour: '2-digit',
-					minute: '2-digit',
-				})}{' '}
-				-{' '}
-				{new Date(block.endTime).toLocaleTimeString(undefined, {
-					hour: '2-digit',
-					minute: '2-digit',
-				})}
+				{block.startMatch} - {block.lastMatch}
 			</h2>
 			<Group position='center' align='center'>
 				<Stack p='md'>
@@ -81,10 +73,6 @@ const ScoutingSchedule = () => {
 		key: 'showMyBlocks',
 		defaultValue: true,
 	});
-	const [showPastBlocks, setShowPastBlocks] = useLocalStorage({
-		key: 'showPastBlocks',
-		defaultValue: false,
-	});
 
 	if (!user || !data) return <Loader size='xl' />;
 
@@ -111,19 +99,10 @@ const ScoutingSchedule = () => {
 					label='Show My Blocks'
 					checked={showMyBlocks}
 				/>
-				<Checkbox
-					onChange={(e) => setShowPastBlocks(e.target.checked)}
-					label='Show Past Blocks'
-					checked={showPastBlocks}
-				/>
 			</Stack>
 			<Group px='md' align='center' position='center'>
 				{data
-					.filter(
-						showPastBlocks
-							? () => true
-							: (match) => new Date(match.startTime).valueOf() > Date.now(),
-					) // wont show up is match is in next 5 mins (300000 millisecondss)
+					.sort((a, b) => a.startMatch - b.startMatch)
 					.filter(showMyBlocks ? (block) => userIsScouting(user, block) : () => true)
 					.map((block) => (
 						<BlockDisplay key={block._id} user={user} block={block} />

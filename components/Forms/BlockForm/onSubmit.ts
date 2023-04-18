@@ -1,5 +1,6 @@
 import { CreateScheduleBlock } from '@/models/ScheduleBlock';
 import { UserI } from '@/models/User';
+import { notifications } from '@mantine/notifications';
 import { SubmitHandler } from 'react-hook-form';
 
 type MatchFormOnSubmit = (
@@ -20,12 +21,12 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 			red1: usersMap[data.red1 ?? '']?._id,
 			red2: usersMap[data.red2 ?? '']?._id,
 			red3: usersMap[data.red3 ?? '']?._id,
-			startTime: new Date(data.startTime).toUTCString(),
-			endTime: new Date(data.endTime).toUTCString(),
 		};
 		fetch('/api/schedule', {
 			method: 'POST',
 			body: JSON.stringify(data),
+		}).then((res) => {
+			notifications.show({ message: res.ok ? 'Created' : 'Failed' });
 		});
 	};
 
@@ -39,12 +40,12 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 			red1: usersMap[data.red1 ?? '']?._id,
 			red2: usersMap[data.red2 ?? '']?._id,
 			red3: usersMap[data.red3 ?? '']?._id,
-			startTime: new Date(data.startTime).toUTCString(),
-			endTime: new Date(data.endTime).toUTCString(),
 		};
 		fetch('/api/schedule', {
 			method: 'PATCH',
 			body: JSON.stringify(data),
+		}).then((res) => {
+			notifications.show({ message: res.ok ? 'Updated' : 'Failed' });
 		});
 	};
 

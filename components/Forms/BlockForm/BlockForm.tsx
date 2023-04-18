@@ -9,8 +9,10 @@ import {
 	AutocompleteProps,
 	Box,
 	Button,
+	Group,
 	Loader,
 	Stack,
+	Text,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -18,7 +20,7 @@ import useSWR from 'swr';
 import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import FormSection from '../FormSection';
 import { onSubmit } from './onSubmit';
-import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
+import { ControlledNumberInput } from '../ControlledNumberInput';
 
 interface Props {
 	create: boolean;
@@ -159,22 +161,27 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					filter={filter}
 					rules={{ required: false, validate: undefined }}
 				/>
-				<ControlledDateTimePicker
-					control={control}
-					name='startTime'
-					label='Start Time'
-					disabled={!canEdit}
-					rules={{ required: true }}
-					valueAsString
-				/>
-				<ControlledDateTimePicker
-					control={control}
-					name='endTime'
-					label='End Time'
-					disabled={!canEdit}
-					rules={{ required: true }}
-					valueAsString
-				/>
+				<Group align='center'>
+					<ControlledNumberInput
+						control={control}
+						name='startMatch'
+						label='Start Match'
+						disabled={!canEdit}
+						hideControls
+						min={1}
+						rules={{ required: true }}
+					/>
+					<Text weight='bold'>-</Text>
+					<ControlledNumberInput
+						control={control}
+						name='lastMatch'
+						label='Last Match'
+						disabled={!canEdit}
+						hideControls
+						min={1}
+						rules={{ required: true }}
+					/>
+				</Group>
 			</FormSection>
 			<Stack align='center' mt='md'>
 				<Button type='submit' disabled={!canEdit}>

@@ -44,24 +44,17 @@ const Home = () => {
 						const isRed = team.includes('Red');
 						return (
 							<Card withBorder shadow='xl' key={block._id}>
-								<Title order={5}>
-									{new Date(block.startTime).toLocaleTimeString(undefined, {
-										hour: '2-digit',
-										minute: '2-digit',
-										hour12: true,
-									})}{' '}
-									-{' '}
-									{new Date(block.endTime).toLocaleTimeString(undefined, {
-										hour: '2-digit',
-										minute: '2-digit',
-										hour12: true,
-									})}
-								</Title>
-								<Paper bg={isRed ? 'red' : 'blue'}>
-									<Text align='center' size='xl' fw={600}>
-										{team}
-									</Text>
-								</Paper>
+								<Stack align='center' spacing={0}>
+									<Title order={5}>Matches</Title>
+									<Title order={5}>
+										{block.startMatch} - {block.lastMatch}
+									</Title>
+									<Paper p={4} bg={isRed ? 'red' : 'blue'}>
+										<Text align='center' size='xl' fw={600}>
+											{team}
+										</Text>
+									</Paper>
+								</Stack>
 							</Card>
 						);
 					})
