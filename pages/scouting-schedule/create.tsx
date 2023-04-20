@@ -103,7 +103,7 @@ const Create = () => {
 						label='Block Length'
 						control={control}
 						required
-						data={[3, 5, 10, 15, 20]}
+						data={[3, 5, 6, 10, 15, 20]}
 					/>
 					<ControlledNumberInput
 						label='Start Match'

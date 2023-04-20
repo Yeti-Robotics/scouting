@@ -30,7 +30,7 @@ export const useUser = ({
 		error,
 		mutate,
 		isLoading,
-	} = useSWR<UserI>('/api/auth/decode', fetcher, { refreshInterval: 1000 });
+	} = useSWR<UserI>('/api/auth/decode', fetcher, { refreshInterval: 5000 });
 	const redirectUrl = `${redirectTo}?from=${router.asPath || '/'}`;
 	const handleFail = () => {
 		if (modal)
