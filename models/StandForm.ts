@@ -22,6 +22,12 @@ const standFormSchema = new Schema<StandFormI>(
 		teleopMidCones: { type: Number, required: true },
 		teleopLowCubes: { type: Number, required: true },
 		teleopLowCones: { type: Number, required: true },
+		superchargedTopCubes: { type: Number, default: () => 0 },
+		superchargedTopCones: { type: Number, default: () => 0 },
+		superchargedMidCubes: { type: Number, default: () => 0 },
+		superchargedMidCones: { type: Number, default: () => 0 },
+		superchargedLowCubes: { type: Number, default: () => 0 },
+		superchargedLowCones: { type: Number, default: () => 0 },
 		teleopDocked: { type: Boolean, default: () => false },
 		teleopEngaged: { type: Boolean, default: () => false },
 		numberOnCharger: { type: Number, required: true },
@@ -61,6 +67,12 @@ export interface CreateStandForm {
 	teleopDocked: boolean;
 	teleopEngaged: boolean;
 	numberOnCharger: number;
+	superchargedTopCubes: number;
+	superchargedTopCones: number;
+	superchargedMidCubes: number;
+	superchargedMidCones: number;
+	superchargedLowCubes: number;
+	superchargedLowCones: number;
 	preload: boolean;
 	initiationLine: boolean;
 	links: number;
@@ -98,6 +110,12 @@ export interface StandFormI {
 	teleopDocked: boolean;
 	teleopEngaged: boolean;
 	numberOnCharger: number;
+	superchargedTopCubes: number;
+	superchargedTopCones: number;
+	superchargedMidCubes: number;
+	superchargedMidCones: number;
+	superchargedLowCubes: number;
+	superchargedLowCones: number;
 	preload: boolean;
 	initiationLine: boolean;
 	links: number;

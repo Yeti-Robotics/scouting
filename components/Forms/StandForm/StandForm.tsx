@@ -65,6 +65,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	const attemptedAutoBalance = watch('attemptedAutoBalance');
 	const autoDocked = watch('autoDocked');
 	const teleopDocked = watch('teleopDocked');
+	const gridFull = watch('gridFull');
 
 	const handleOnline = useCallback(
 		() => setOnline(isOffline, setIsOffline)(),
@@ -372,6 +373,76 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						disabled={!canEdit}
 					/>
 				</FormSection>
+				{!create && canEdit && gridFull && (
+					<FormSection title='Supercharge'>
+						<Group align='center'>
+							<Cone />
+							<ScoreInput
+								control={control}
+								name='superchargedTopCones'
+								label='Top Cones Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Cube />
+							<ScoreInput
+								control={control}
+								name='superchargedTopCubes'
+								label='Top Cubes Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Cone />
+							<ScoreInput
+								control={control}
+								name='superchargedMidCones'
+								label='Mid Cones Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Cube />
+							<ScoreInput
+								control={control}
+								name='superchargedMidCubes'
+								label='Mid Cubes Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Cone />
+							<ScoreInput
+								control={control}
+								name='superchargedLowCones'
+								label='Low Cones Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Cube />
+							<ScoreInput
+								control={control}
+								name='superchargedLowCubes'
+								label='Low Cubes Supercharged'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+					</FormSection>
+				)}
 				<FormSection title='Misc.'>
 					<ScoreInput
 						control={control}
