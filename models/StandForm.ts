@@ -30,6 +30,7 @@ const standFormSchema = new Schema<StandFormI>(
 		defense: { type: Number, required: true },
 		links: { type: Number, required: true },
 		penalties: { type: Number, required: true },
+		gridFull: { type: Boolean, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
 	},
@@ -64,6 +65,7 @@ export interface CreateStandForm {
 	initiationLine: boolean;
 	links: number;
 	penalties: number;
+	gridFull: boolean;
 	defense: number;
 	approved: boolean;
 	notes: string;
@@ -100,6 +102,7 @@ export interface StandFormI {
 	initiationLine: boolean;
 	links: number;
 	penalties: number;
+	gridFull: boolean;
 	defense: number;
 	approved: boolean;
 	notes: string;

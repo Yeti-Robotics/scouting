@@ -30,14 +30,20 @@ const VerifyForms = () => {
 		matches.map((match) => [match.matchNumber.toString(), match]),
 	);
 	const matchNumToNumFormsMap = forms.reduce<
-		Record<number, { unique: Set<number>; all: number[] }>
+		Record<number, { unique: Set<number>; all: number[]; gridFull: boolean }>
 	>((o, form) => {
 		if (o[form.matchNumber] !== undefined) {
 			o[form.matchNumber].all.push(form.teamNumber);
 			o[form.matchNumber].unique.add(form.teamNumber);
 		} else {
-			o[form.matchNumber] = { all: [form.teamNumber], unique: new Set([form.teamNumber]) };
+			o[form.matchNumber] = {
+				all: [form.teamNumber],
+				unique: new Set([form.teamNumber]),
+				gridFull: false,
+			};
 		}
+		// If current gridFull is falsy, set it to this forms (keeps going until one is true)
+		o[form.matchNumber].gridFull ||= form.gridFull;
 		return o;
 	}, {});
 
@@ -112,6 +118,19 @@ const VerifyForms = () => {
 											.filter((teamNum) => teamNum === match.red3)
 											.join(', ') || 'None'}
 									</Highlight>
+									{numForms.gridFull && (
+										<Text fz={12}>
+											<Highlight
+												fw={800}
+												fz={24}
+												highlight='Full Grid'
+												highlightColor='red'
+											>
+												Full Grid
+											</Highlight>{' '}
+											(check for supercharges)
+										</Text>
+									)}
 									{notInMatch && (
 										<>
 											<Title order={4}>Not In Match</Title>

@@ -365,6 +365,12 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							required
 						/>
 					)}
+					<Checkbox
+						{...register('gridFull')}
+						label='Grid Full'
+						size='xl'
+						disabled={!canEdit}
+					/>
 				</FormSection>
 				<FormSection title='Misc.'>
 					<ScoreInput
