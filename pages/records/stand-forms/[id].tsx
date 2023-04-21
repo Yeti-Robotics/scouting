@@ -27,11 +27,13 @@ const StandFormPage = () => {
 		return <h1>No form was found with this id.</h1>;
 	}
 
+	console.log(user?._id === data.scouter?._id);
+
 	return (
 		<Layout>
 			<StandForm
 				create={false}
-				canEdit={user?.administrator}
+				canEdit={user?.administrator || user?._id === data.scouter?._id}
 				defaultForm={data as unknown as CreateStandForm}
 				id={String(router.query.id)}
 			/>

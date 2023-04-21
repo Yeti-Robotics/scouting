@@ -58,9 +58,16 @@ export default new RouteHandler<'api', WAuth>()
 		}
 	})
 	.patch(async (req, res) => {
-		if (!req.user.administrator || !req.user || req.user.banned)
+		if (!req.user || req.user.banned)
 			return res.status(401).json({ message: 'You are not authorized to update forms.' });
 		const form: CreateStandForm = JSON.parse(req.body);
+		const savedForm = await StandForm.findById(form._id).populate('scouter');
+
+		if (!savedForm)
+			return res.status(400).json({ message: 'Cannot update a non-existent form.' });
+
+		if (!req.user.administrator && savedForm.scouter?._id !== req.user._id)
+			return res.status(401).json({ message: 'You are not authorized to update forms.' });
 
 		await StandForm.updateOne({ _id: form._id }, form);
 		return res.status(200).json({ message: 'Form successfully updated.' });
