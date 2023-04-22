@@ -67,6 +67,7 @@ const VerifyForms = () => {
 					)
 					.map(([matchNum, numForms]) => {
 						const match = matchNumMap[matchNum];
+						if (!match) return null;
 						const notInMatch = numForms.all
 							.filter(
 								(n) =>
