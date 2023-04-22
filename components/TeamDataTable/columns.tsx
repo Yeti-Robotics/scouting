@@ -72,6 +72,11 @@ export const columns = [
 			}),
 		],
 	}),
+	helper.accessor('epa', {
+		header: () => <Text fw={700}>EPA</Text>,
+		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		maxSize: 160,
+	}),
 	helper.accessor('avgPenalties', {
 		header: () => <Text fw={700}>Avg. Penalties</Text>,
 		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,

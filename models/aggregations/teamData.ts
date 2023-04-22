@@ -151,6 +151,9 @@ export const teamDataAggregation: PipelineStage[] = [
 					$add: ['$teleopLowCubes', '$autoLowCubes'],
 				},
 			},
+			avgLinks: {
+				$avg: '$links',
+			},
 			initiationLine: {
 				$avg: {
 					$multiply: [
@@ -280,6 +283,7 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgLowCubes: 1,
 			avgPenalties: 1,
 			avgDefense: 1,
+			avgLinks: 1,
 			avgEndScore: {
 				$round: ['$avgEndScore', 1],
 			},
@@ -319,6 +323,15 @@ export const teamDataAggregation: PipelineStage[] = [
 	{
 		$addFields: {
 			teamName: '$team_name',
+			epa: {
+				$add: [
+					'$avgAutoScore',
+					'$avgTeleopScore',
+					{
+						$multiply: ['$avgLinks', 5],
+					},
+				],
+			},
 		},
 	},
 	{
@@ -358,6 +371,8 @@ export interface TeamData {
 	avgTopCubes: number;
 	avgMidCubes: number;
 	avgLowCubes: number;
+	avgLinks: number;
+	epa: number;
 	autoDockPercent: number | null;
 	autoEngagePercent: number | null;
 	avgRobotsDocked: number;
