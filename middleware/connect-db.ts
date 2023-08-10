@@ -14,9 +14,8 @@ export const connectToDbB = async () => {
 		// use the current connection
 	} else {
 		//use a new connection
-		await mongoose
-			.connect(uri, { dbName: process.env.DEFAULT_DB })
-			.catch((err: unknown) => console.error(err));
+		mongoose.set('strictQuery', false);
+		await mongoose.connect(uri, { dbName: process.env.DEFAULT_DB });
 	}
 
 	if (!global.compKey) {
