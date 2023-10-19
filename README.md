@@ -1,4 +1,4 @@
-# Yeti Scouting
+# YETI Robotics Scouting
 
 ## Getting Started
 
@@ -19,6 +19,20 @@ Next, you'll need a The Blue Alliance API Key, we use their API to obtain the ma
 
 ```
 TBA_SECRET=<Your API Key>
+```
+
+Ensure pnpm is installed, run in a terminal:
+
+```bash
+pnpm -v
+```
+
+If pnpm is not installed, follow the installation directions found [here](https://pnpm.io/installation).
+
+Install dependencies via:
+
+```bash
+pnpm i
 ```
 
 Finally, you can now run the development server:
