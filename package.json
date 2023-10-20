@@ -17,6 +17,9 @@
 			"eslint --fix",
 			"prettier --write",
 			"tsc --noEmit"
+		],
+		"**/*.{json}": [
+			"prettier --write"
 		]
 	},
 	"dependencies": {
