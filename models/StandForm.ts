@@ -7,36 +7,19 @@ const standFormSchema = new Schema<StandFormI>(
 		matchNumber: { type: Number, required: true },
 		setNumber: { type: Number, default: () => 1 },
 		scouter: { type: String, ref: 'user', required: true }, // user _id
-		autoTopCubes: { type: Number, required: true },
-		autoTopCones: { type: Number, required: true },
-		autoMidCubes: { type: Number, required: true },
-		autoMidCones: { type: Number, required: true },
-		autoLowCubes: { type: Number, required: true },
-		autoLowCones: { type: Number, required: true },
-		attemptedAutoBalance: { type: Boolean, required: true },
-		autoDocked: { type: Boolean, default: () => false },
-		autoEngaged: { type: Boolean, default: () => false },
-		teleopTopCubes: { type: Number, required: true },
-		teleopTopCones: { type: Number, required: true },
-		teleopMidCubes: { type: Number, required: true },
-		teleopMidCones: { type: Number, required: true },
-		teleopLowCubes: { type: Number, required: true },
-		teleopLowCones: { type: Number, required: true },
-		superchargedTopCubes: { type: Number, default: () => 0 },
-		superchargedTopCones: { type: Number, default: () => 0 },
-		superchargedMidCubes: { type: Number, default: () => 0 },
-		superchargedMidCones: { type: Number, default: () => 0 },
-		superchargedLowCubes: { type: Number, default: () => 0 },
-		superchargedLowCones: { type: Number, default: () => 0 },
-		teleopDocked: { type: Boolean, default: () => false },
-		teleopEngaged: { type: Boolean, default: () => false },
-		numberOnCharger: { type: Number, required: true },
+		autoAmpNotes: { type: Number, required: true },
+		autoSpeakerNotes: { type: Number, required: true },
+		teleopAmpNotes: { type: Number, required: true },
+		teleopSpeakerNotes: { type: Number, required: true },
+		teleopAmplifiedSpeakerNotes: { type: Number, required: true },
+		trapNotes: { type: Number, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
+		climb: { type: Boolean, required: true },
+		spotlight: { type: Boolean, required: true },
+		numberOnChain: { type: Number, required: true },
 		defense: { type: Number, required: true },
-		links: { type: Number, required: true },
 		penalties: { type: Number, required: true },
-		gridFull: { type: Boolean, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
 	},
@@ -49,35 +32,18 @@ export interface CreateStandForm {
 	matchNumber: number;
 	setNumber: number;
 	scouter: string;
-	autoTopCubes: number;
-	autoTopCones: number;
-	autoMidCubes: number;
-	autoMidCones: number;
-	autoLowCubes: number;
-	autoLowCones: number;
-	attemptedAutoBalance: boolean;
-	autoDocked: boolean;
-	autoEngaged: boolean;
-	teleopTopCubes: number;
-	teleopTopCones: number;
-	teleopMidCubes: number;
-	teleopMidCones: number;
-	teleopLowCubes: number;
-	teleopLowCones: number;
-	teleopDocked: boolean;
-	teleopEngaged: boolean;
-	numberOnCharger: number;
-	superchargedTopCubes: number;
-	superchargedTopCones: number;
-	superchargedMidCubes: number;
-	superchargedMidCones: number;
-	superchargedLowCubes: number;
-	superchargedLowCones: number;
+	autoAmpNotes: number;
+	autoSpeakerNotes: number;
+	teleopAmpNotes: number;
+	teleopSpeakerNotes: number;
+	teleopAmplifiedSpeakerNotes: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
-	links: number;
+	climb: boolean;
+	spotlight: boolean;
+	numberOnChain: number;
 	penalties: number;
-	gridFull: boolean;
 	defense: number;
 	approved: boolean;
 	notes: string;
@@ -92,35 +58,18 @@ export interface StandFormI {
 	matchNumber: number;
 	setNumber: number;
 	scouter?: UserI;
-	autoTopCubes: number;
-	autoTopCones: number;
-	autoMidCubes: number;
-	autoMidCones: number;
-	autoLowCubes: number;
-	autoLowCones: number;
-	attemptedAutoBalance: boolean;
-	autoDocked: boolean;
-	autoEngaged: boolean;
-	teleopTopCubes: number;
-	teleopTopCones: number;
-	teleopMidCubes: number;
-	teleopMidCones: number;
-	teleopLowCubes: number;
-	teleopLowCones: number;
-	teleopDocked: boolean;
-	teleopEngaged: boolean;
-	numberOnCharger: number;
-	superchargedTopCubes: number;
-	superchargedTopCones: number;
-	superchargedMidCubes: number;
-	superchargedMidCones: number;
-	superchargedLowCubes: number;
-	superchargedLowCones: number;
+	autoAmpNotes: number;
+	autoSpeakerNotes: number;
+	teleopAmpNotes: number;
+	teleopSpeakerNotes: number;
+	teleopAmplifiedSpeakerNotes: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
-	links: number;
+	climb: boolean;
+	spotlight: boolean;
+	numberOnChain: number;
 	penalties: number;
-	gridFull: boolean;
 	defense: number;
 	approved: boolean;
 	notes: string;

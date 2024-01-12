@@ -62,10 +62,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		},
 	});
 	const matchNumber = watch('matchNumber');
-	const attemptedAutoBalance = watch('attemptedAutoBalance');
-	const autoDocked = watch('autoDocked');
-	const teleopDocked = watch('teleopDocked');
-	const gridFull = watch('gridFull');
+	const climb = watch('climb');
 
 	const handleOnline = useCallback(
 		() => setOnline(isOffline, setIsOffline)(),
@@ -91,18 +88,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}, [matchNumber]);
 
 	useEffect(() => {
-		if (autoDocked === false) {
-			setValue('autoEngaged', false);
+		if (climb === false) {
+			setValue('spotlight', false);
 		}
-		if (attemptedAutoBalance === false) {
-			setValue('autoDocked', false);
-			setValue('autoEngaged', false);
-		}
-		if (teleopDocked === false) {
-			setValue('teleopEngaged', false);
-			setValue('numberOnCharger', 0);
-		}
-	}, [attemptedAutoBalance, autoDocked, teleopDocked]);
+	}, [climb]);
 
 	useEffect(() => {
 		if (isOffline)
@@ -176,7 +165,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 						<Checkbox
 							{...register('initiationLine')}
-							label='Did they leave the community?'
+							label='Did they go past the white line?'
 							size='xl'
 							disabled={!canEdit}
 						/>
@@ -185,8 +174,8 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						<Cone />
 						<ScoreInput
 							control={control}
-							name='autoTopCones'
-							label='Top Cones Scored'
+							name='autoSpeakerNotes'
+							label='Speaker Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
@@ -196,89 +185,21 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						<Cube />
 						<ScoreInput
 							control={control}
-							name='autoTopCubes'
-							label='Top Cubes Scored'
+							name='autoAmpNotes'
+							label='Amp Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
 						/>
 					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='autoMidCones'
-							label='Mid Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='autoMidCubes'
-							label='Mid Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='autoLowCones'
-							label='Low Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='autoLowCubes'
-							label='Low Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Stack mt='md'>
-						<Checkbox
-							{...register('attemptedAutoBalance')}
-							label='Attempted Balance'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						{attemptedAutoBalance && (
-							<Checkbox
-								{...register('autoDocked')}
-								label='On charger'
-								size='xl'
-								disabled={!canEdit}
-							/>
-						)}
-						{autoDocked && (
-							<Checkbox
-								{...register('autoEngaged')}
-								label='On charger and balanced'
-								size='xl'
-								disabled={!canEdit}
-							/>
-						)}
-					</Stack>
 				</FormSection>
 				<FormSection title='Teleop'>
 					<Group align='center'>
 						<Cone />
 						<ScoreInput
 							control={control}
-							name='teleopTopCones'
-							label='Top Cones Scored'
+							name='teleopAmpNotes'
+							label='Amp Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
@@ -288,8 +209,8 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						<Cube />
 						<ScoreInput
 							control={control}
-							name='teleopTopCubes'
-							label='Top Cubes Scored'
+							name='teleopSpeakerNotes'
+							label='Speaker Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
@@ -299,41 +220,20 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						<Cone />
 						<ScoreInput
 							control={control}
-							name='teleopMidCones'
-							label='Mid Cones Scored'
+							name='teleopAmplifiedSpeakerNotes'
+							label='Amped Speaker Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
 						/>
 					</Group>
-					<Group align='center'>
-						<Cube />
+				</FormSection>
+				<FormSection title='EndGame'>
+					<Group>
 						<ScoreInput
 							control={control}
-							name='teleopMidCubes'
-							label='Mid Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='teleopLowCones'
-							label='Low Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='teleopLowCubes'
-							label='Low Cubes Scored'
+							name='trapNotes'
+							label='Trap Notes Scored'
 							disabled={!canEdit}
 							min={0}
 							required
@@ -341,118 +241,33 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					</Group>
 					<Stack mt='md'>
 						<Checkbox
-							{...register('teleopDocked')}
-							label='On charger'
+							{...register('climb')}
+							label='Climbed?'
 							size='xl'
 							disabled={!canEdit}
 						/>
-						{teleopDocked && (
+						{climb && (
 							<Checkbox
-								{...register('teleopEngaged')}
-								label='On charger and balanced'
+								{...register('spotlight')}
+								label='Spotlit?'
 								size='xl'
 								disabled={!canEdit}
 							/>
 						)}
+						{climb && (
+							<ScoreInput
+								control={control}
+								name='numberOnChain'
+								label='# of robots on your chain'
+								disabled={!canEdit}
+								min={0}
+								max={3}
+								required
+							/>
+						)}
 					</Stack>
-					{teleopDocked && (
-						<ScoreInput
-							control={control}
-							name='numberOnCharger'
-							label='Number of Robots on Charger'
-							disabled={!canEdit}
-							min={0}
-							max={3}
-							required
-						/>
-					)}
-					<Checkbox
-						{...register('gridFull')}
-						label='Grid Full'
-						size='xl'
-						disabled={!canEdit}
-					/>
 				</FormSection>
-				{!create && canEdit && gridFull && (
-					<FormSection title='Supercharge'>
-						<Group align='center'>
-							<Cone />
-							<ScoreInput
-								control={control}
-								name='superchargedTopCones'
-								label='Top Cones Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cube />
-							<ScoreInput
-								control={control}
-								name='superchargedTopCubes'
-								label='Top Cubes Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cone />
-							<ScoreInput
-								control={control}
-								name='superchargedMidCones'
-								label='Mid Cones Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cube />
-							<ScoreInput
-								control={control}
-								name='superchargedMidCubes'
-								label='Mid Cubes Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cone />
-							<ScoreInput
-								control={control}
-								name='superchargedLowCones'
-								label='Low Cones Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cube />
-							<ScoreInput
-								control={control}
-								name='superchargedLowCubes'
-								label='Low Cubes Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-					</FormSection>
-				)}
 				<FormSection title='Misc.'>
-					<ScoreInput
-						control={control}
-						name='links'
-						label='# of Links'
-						disabled={!canEdit}
-						min={0}
-						max={9}
-						required
-					/>
 					<NumberSelect
 						control={control}
 						data={[

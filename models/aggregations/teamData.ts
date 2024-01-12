@@ -6,60 +6,23 @@ export const teamDataAggregation: PipelineStage[] = [
 			autoScore: {
 				$add: [
 					{
-						$multiply: ['$autoTopCones', 6],
+						$multiply: ['$autoSpeakerNotes', 5],
 					},
 					{
-						$multiply: ['$autoTopCubes', 6],
-					},
-					{
-						$multiply: ['$autoMidCones', 4],
-					},
-					{
-						$multiply: ['$autoMidCubes', 4],
-					},
-					{
-						$multiply: ['$autoLowCones', 3],
-					},
-					{
-						$multiply: ['$autoLowCubes', 3],
-					},
-					{
-						$cond: {
-							if: '$autoEngaged',
-							then: 12,
-							else: {
-								$cond: {
-									if: '$autoDocked',
-									then: 8,
-									else: 0,
-								},
-							},
-						},
+						$multiply: ['$autoAmpNotes', 2],
 					},
 				],
-			},
-			didAutoBalance: {
-				$and: ['$attemptedAutoBalance', '$autoEngaged'],
 			},
 			teleopScore: {
 				$add: [
 					{
-						$multiply: ['$teleopTopCones', 5],
+						$multiply: ['$teleopAmpNotes', 1],
 					},
 					{
-						$multiply: ['$teleopTopCubes', 5],
+						$multiply: ['$teleopSpeakerNotes', 2],
 					},
 					{
-						$multiply: ['$teleopMidCones', 3],
-					},
-					{
-						$multiply: ['$teleopMidCubes', 3],
-					},
-					{
-						$multiply: ['$teleopLowCones', 2],
-					},
-					{
-						$multiply: ['$teleopLowCubes', 2],
+						$multiply: ['$teleopAmpedSpeakerNotes', 5],
 					},
 				],
 			},
@@ -103,8 +66,8 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgTeleopLowCubes: {
 				$avg: '$teleopLowCubes',
 			},
-			avgAutoTopCones: {
-				$avg: '$autoTopCones',
+			avgAutoSpeakerNotes: {
+				$avg: '$autoSpeakerNotes',
 			},
 			avgAutoMidCones: {
 				$avg: '$autoMidCones',
@@ -123,7 +86,7 @@ export const teamDataAggregation: PipelineStage[] = [
 			},
 			avgTopCones: {
 				$avg: {
-					$add: ['$teleopTopCones', '$autoTopCones'],
+					$add: ['$teleopTopCones', '$autoSpeakerNotes'],
 				},
 			},
 			avgMidCones: {
@@ -269,7 +232,7 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgTeleopTopCubes: 1,
 			avgTeleopMidCubes: 1,
 			avgTeleopLowCubes: 1,
-			avgAutoTopCones: 1,
+			avgAutoSpeakerNotes: 1,
 			avgAutoMidCones: 1,
 			avgAutoLowCones: 1,
 			avgAutoTopCubes: 1,
@@ -359,12 +322,8 @@ export interface TeamData {
 	avgTeleopTopCubes: number;
 	avgTeleopMidCubes: number;
 	avgTeleopLowCubes: number;
-	avgAutoTopCones: number;
-	avgAutoMidCones: number;
-	avgAutoLowCones: number;
-	avgAutoTopCubes: number;
-	avgAutoMidCubes: number;
-	avgAutoLowCubes: number;
+	avgAutoSpeakerNotes: number;
+	avgAutoAmpNotes: number;
 	avgTopCones: number;
 	avgMidCones: number;
 	avgLowCones: number;
