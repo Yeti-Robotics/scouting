@@ -9,10 +9,13 @@ const standFormSchema = new Schema<StandFormI>(
 		scouter: { type: String, ref: 'user', required: true }, // user _id
 		autoAmpNotes: { type: Number, required: true },
 		autoSpeakerNotes: { type: Number, required: true },
+		autoNotesMissed: { type: Number, required: true },
 		teleopAmpNotes: { type: Number, required: true },
 		teleopSpeakerNotes: { type: Number, required: true },
 		teleopAmplifiedSpeakerNotes: { type: Number, required: true },
-		trapNotes: { type: Number, required: true },
+		teleopNotesMissed: { type: Number, required: true },
+		trapAttempt: { type: Boolean, required: true },
+		trapScored: { type: Boolean, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
 		climb: { type: Boolean, required: true },
@@ -34,10 +37,13 @@ export interface CreateStandForm {
 	scouter: string;
 	autoAmpNotes: number;
 	autoSpeakerNotes: number;
+	autoNotesMissed: number;
 	teleopAmpNotes: number;
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
-	trapNotes: number;
+	teleopNotesMissed: number;
+	trapAttempt: boolean;
+	trapScored: boolean;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;
@@ -60,10 +66,13 @@ export interface StandFormI {
 	scouter?: UserI;
 	autoAmpNotes: number;
 	autoSpeakerNotes: number;
+	autoNotesMissed: number;
 	teleopAmpNotes: number;
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
-	trapNotes: number;
+	teleopNotesMissed: number;
+	trapAttempt: boolean;
+	trapScored: boolean;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;

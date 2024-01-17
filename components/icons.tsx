@@ -3,20 +3,31 @@ type Props = {
 	height?: number | string;
 };
 
-export const Cube = ({ width = 48, height = 48 }: Props) => (
-	<svg width={width} height={height} viewBox='0 0 19 19' style={{ marginRight: 8 }}>
+export const Amp = ({ width = 48, height = 48 }: Props) => (
+	<svg width={width} height={height} viewBox='0 0 20 20'>
 		<polygon
-			points='6,6 6,18 18,18, 18,6'
-			style={{ fill: 'rgb(150,0,255)', strokeWidth: 1, stroke: 'rgb(0,0,0)' }}
+			points='2,1 2,19 18,19, 18,1'
+			style={{ fill: 'rgb(0,0,255)', strokeWidth: 0.5, stroke: 'rgb(0,0,0)' }}
+		/>
+		<polygon
+			points='5,4 5,10 15,10, 15,4'
+			style={{ fill: 'rgb(0,0,0)', strokeWidth: 1, stroke: 'rgb(0,0,0)' }}
 		/>
 	</svg>
 );
 
-export const Cone = ({ width = 48, height = 48 }: Props) => (
-	<svg width={width} height={height} viewBox='0 0 15 21'>
+export const MissedNote = ({ width = 48, height = 48 }: Props) => (
+	<svg width={width} height={height} viewBox='0 0 20 20'>
+		<defs>
+			<mask id='bigmask'>
+				<rect width='100%' height='100%' fill='white' />
+				<circle cx='10' cy='10' r='6' />
+			</mask>
+		</defs>
+		<circle id='donut' cx='10' cy='10' r='8' mask='url(#bigmask)' fill='rgb(255,103,0)' />
 		<polygon
-			points='12.5,5 10.5,5 7,20 5,20 18,20 15.5,20'
-			style={{ fill: 'rgb(255,200,0)', strokeWidth: 1, stroke: 'rgb(0,0,0)' }}
+			points='19,19 17,19 1,3 1,1 3,1 19,17'
+			style={{ fill: 'rgb(250,0,0)', strokeWidth: 0.5, stroke: 'rgb(0,0,0)' }}
 		/>
 	</svg>
 );

@@ -27,50 +27,51 @@ export const columns = [
 		maxSize: 288,
 	}),
 	helper.group({
-		id: 'cones',
+		id: 'ampNotes',
 		header: () => (
 			<Text fw={700} align='center'>
-				Avg Cones
+				Avg Amp Notes
 			</Text>
 		),
 		maxSize: 460,
 		columns: [
-			helper.accessor('avgTopCones', {
-				header: () => <Text fw={700}>Top</Text>,
+			helper.accessor('avgAutoAmpNotes', {
+				header: () => <Text fw={700}>Auto</Text>,
 				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
 			}),
-			helper.accessor('avgMidCones', {
-				header: () => <Text fw={700}>Mid</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
-			}),
-			helper.accessor('avgLowCones', {
-				header: () => <Text fw={700}>Low</Text>,
+			helper.accessor('avgTeleopAmpNotes', {
+				header: () => <Text fw={700}>Teleop</Text>,
 				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
 			}),
 		],
 	}),
 	helper.group({
-		id: 'cubes',
+		id: 'speakerNotes',
 		header: () => (
 			<Text fw={700} align='center'>
-				Avg Cubes
+				Avg Speaker Notes
 			</Text>
 		),
 		maxSize: 460,
 		columns: [
-			helper.accessor('avgTopCubes', {
-				header: () => <Text fw={700}>Top</Text>,
+			helper.accessor('avgAutoSpeakerNotes', {
+				header: () => <Text fw={700}>Auto</Text>,
 				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
 			}),
-			helper.accessor('avgMidCubes', {
-				header: () => <Text fw={700}>Mid</Text>,
+			helper.accessor('avgTeleopSpeakerNotes', {
+				header: () => <Text fw={700}>Teleop</Text>,
 				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
 			}),
-			helper.accessor('avgLowCubes', {
-				header: () => <Text fw={700}>Low</Text>,
+			helper.accessor('avgTeleopAmplifiedSpeakerNotes', {
+				header: () => <Text fw={700}>Teleop Amped</Text>,
 				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
 			}),
 		],
+	}),
+	helper.accessor('avgNotesMissed', {
+		header: () => <Text fw={700}>Avg. Notes Missed</Text>,
+		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		maxSize: 160,
 	}),
 	helper.accessor('epa', {
 		header: () => <Text fw={700}>EPA</Text>,

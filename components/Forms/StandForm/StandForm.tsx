@@ -13,6 +13,7 @@ import {
 	Text,
 	ActionIcon,
 	Group,
+	Image,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,7 +29,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
-import { Cone, Cube } from '../../icons';
+import { Amp, MissedNote } from '@/components/icons';
 
 interface Props {
 	create: boolean;
@@ -171,7 +172,24 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 					</Stack>
 					<Group align='center'>
-						<Cone />
+						<Image src='/amp-icon.png' alt='amp' width={48} height={48} fit='contain' />
+						<ScoreInput
+							control={control}
+							name='autoAmpNotes'
+							label='Amp Notes Scored'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<Image
+							src='/speaker-icon.png'
+							alt='speaker'
+							width={48}
+							height={48}
+							fit='contain'
+						/>
 						<ScoreInput
 							control={control}
 							name='autoSpeakerNotes'
@@ -182,11 +200,11 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 					</Group>
 					<Group align='center'>
-						<Cube />
+						<MissedNote />
 						<ScoreInput
 							control={control}
-							name='autoAmpNotes'
-							label='Amp Notes Scored'
+							name='autoNotesMissed'
+							label='Notes Missed'
 							disabled={!canEdit}
 							min={0}
 							required
@@ -195,7 +213,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				</FormSection>
 				<FormSection title='Teleop'>
 					<Group align='center'>
-						<Cone />
+						<Image src='/amp-icon.png' alt='amp' width={48} height={48} fit='contain' />
 						<ScoreInput
 							control={control}
 							name='teleopAmpNotes'
@@ -206,7 +224,13 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 					</Group>
 					<Group align='center'>
-						<Cube />
+						<Image
+							src='/speaker-icon.png'
+							alt='speaker'
+							width={48}
+							height={48}
+							fit='contain'
+						/>
 						<ScoreInput
 							control={control}
 							name='teleopSpeakerNotes'
@@ -217,27 +241,50 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 						/>
 					</Group>
 					<Group align='center'>
-						<Cone />
+						<Image
+							src='/amped-speaker-icon.png'
+							alt='amped-speaker'
+							width={48}
+							height={48}
+							fit='contain'
+						/>
 						<ScoreInput
 							control={control}
 							name='teleopAmplifiedSpeakerNotes'
-							label='Amped Speaker Notes Scored'
+							label='Amped Speaker Notes'
+							disabled={!canEdit}
+							min={0}
+							required
+						/>
+					</Group>
+					<Group align='center'>
+						<MissedNote />
+						<ScoreInput
+							control={control}
+							name='teleopNotesMissed'
+							label='Notes Missed'
 							disabled={!canEdit}
 							min={0}
 							required
 						/>
 					</Group>
 				</FormSection>
-				<FormSection title='EndGame'>
+				<FormSection title='Endgame'>
 					<Group>
-						<ScoreInput
-							control={control}
-							name='trapNotes'
-							label='Trap Notes Scored'
+						<Checkbox
+							{...register('trapAttempt')}
+							label='Trap attempted?'
+							size='xl'
 							disabled={!canEdit}
-							min={0}
-							required
 						/>
+						{climb && (
+							<Checkbox
+								{...register('trapScored')}
+								label='Trap scored?'
+								size='xl'
+								disabled={!canEdit}
+							/>
+						)}
 					</Group>
 					<Stack mt='md'>
 						<Checkbox
@@ -260,7 +307,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 								name='numberOnChain'
 								label='# of robots on your chain'
 								disabled={!canEdit}
-								min={0}
+								min={1}
 								max={3}
 								required
 							/>

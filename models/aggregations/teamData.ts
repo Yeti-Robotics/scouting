@@ -22,100 +22,71 @@ export const teamDataAggregation: PipelineStage[] = [
 						$multiply: ['$teleopSpeakerNotes', 2],
 					},
 					{
-						$multiply: ['$teleopAmpedSpeakerNotes', 5],
+						$multiply: ['$teleopAmplifiedSpeakerNotes', 5],
 					},
 				],
 			},
 			endScore: {
-				$cond: {
-					if: '$teleopEngaged',
-					then: {
-						$multiply: ['$numberOnCharger', 10],
-					},
-					else: {
+				$add: [
+					{
 						$cond: {
-							if: '$teleopDocked',
+							if: '$climb',
 							then: {
-								$multiply: ['$numberOnCharger', 6],
+								$add: [
+									{
+										$cond: ['$spotlight', 4, 3],
+									},
+									{
+										$multiply: [{ $subtract: ['$numberOnChain', 1] }, 2],
+									},
+								],
 							},
 							else: 0,
 						},
 					},
-				},
+					{
+						$cond: [{ $and: ['$trapAttempt', '$trapScored'] }, 5, 0],
+					},
+				],
 			},
 		},
 	},
 	{
 		$group: {
 			_id: '$teamNumber',
-			avgTeleopTopCones: {
-				$avg: '$teleopTopCones',
+			avgTeleopAmpNotes: {
+				$avg: '$teleopAmpNotes',
 			},
-			avgTeleopMidCones: {
-				$avg: '$teleopMidCones',
+			avgTeleopSpeakerNotes: {
+				$avg: '$teleopSpeakerNotes',
 			},
-			avgTeleopLowCones: {
-				$avg: '$teleopLowCones',
+			avgTeleopAmplifiedSpeakerNotes: {
+				$avg: '$teleopAmplifiedSpeakerNotes',
 			},
-			avgTeleopTopCubes: {
-				$avg: '$teleopTopCubes',
-			},
-			avgTeleopMidCubes: {
-				$avg: '$teleopMidCubes',
-			},
-			avgTeleopLowCubes: {
-				$avg: '$teleopLowCubes',
+			avgAutoAmpNotes: {
+				$avg: '$autoAmpNotes',
 			},
 			avgAutoSpeakerNotes: {
 				$avg: '$autoSpeakerNotes',
 			},
-			avgAutoMidCones: {
-				$avg: '$autoMidCones',
-			},
-			avgAutoLowCones: {
-				$avg: '$autoLowCones',
-			},
-			avgAutoTopCubes: {
-				$avg: '$autoTopCubes',
-			},
-			avgAutoMidCubes: {
-				$avg: '$autoMidCubes',
-			},
-			avgAutoLowCubes: {
-				$avg: '$autoLowCubes',
-			},
-			avgTopCones: {
+			avgAmpNotes: {
 				$avg: {
-					$add: ['$teleopTopCones', '$autoSpeakerNotes'],
+					$add: ['$teleopAmpNotes', '$autoAmpNotes'],
 				},
 			},
-			avgMidCones: {
+			avgSpeakerNotes: {
 				$avg: {
-					$add: ['$teleopMidCones', '$autoMidCones'],
+					$add: [
+						'$teleopSpeakerNotes',
+						'$teleopAmplifiedSpeakerNotes',
+						'$autoSpeakerNotes',
+					],
 				},
 			},
-			avgLowCones: {
+			avgNotesMissed: {
 				$avg: {
-					$add: ['$teleopLowCones', '$autoLowCones'],
+					$add: ['$teleopNotesMissed', '$autoNotesMissed'],
 				},
-			},
-			avgTopCubes: {
-				$avg: {
-					$add: ['$teleopTopCubes', '$autoTopCubes'],
-				},
-			},
-			avgMidCubes: {
-				$avg: {
-					$add: ['$teleopMidCubes', '$autoMidCubes'],
-				},
-			},
-			avgLowCubes: {
-				$avg: {
-					$add: ['$teleopLowCubes', '$autoLowCubes'],
-				},
-			},
-			avgLinks: {
-				$avg: '$links',
 			},
 			initiationLine: {
 				$avg: {
@@ -153,60 +124,6 @@ export const teamDataAggregation: PipelineStage[] = [
 					],
 				},
 			},
-			autoDockPercent: {
-				$avg: {
-					$cond: [
-						'$attemptedAutoBalance',
-						{
-							$cond: [
-								{
-									$and: [
-										'$autoDocked',
-										{
-											$not: '$autoEngaged',
-										},
-									],
-								},
-								100,
-								0,
-							],
-						},
-						null,
-					],
-				},
-			},
-			autoEngagePercent: {
-				$avg: {
-					$cond: [
-						'$attemptedAutoBalance',
-						{
-							$cond: ['$autoEngaged', 100, 0],
-						},
-						null,
-					],
-				},
-			},
-			avgRobotsDocked: {
-				$avg: {
-					$cond: [
-						{
-							$and: [
-								'$teleopDocked',
-								{
-									$not: '$teleopEngaged',
-								},
-							],
-						},
-						'$numberOnCharger',
-						0,
-					],
-				},
-			},
-			avgRobotsEngaged: {
-				$avg: {
-					$cond: ['$teleopEngaged', '$numberOnCharger', 0],
-				},
-			},
 		},
 	},
 	{
@@ -220,33 +137,16 @@ export const teamDataAggregation: PipelineStage[] = [
 			initiationLine: {
 				$round: ['$initiationLine', 1],
 			},
-			autoEngagePercent: {
-				$round: ['$autoEngagePercent', 2],
-			},
-			autoDockPercent: {
-				$round: ['$autoDockPercent', 2],
-			},
-			avgTeleopTopCones: 1,
-			avgTeleopMidCones: 1,
-			avgTeleopLowCones: 1,
-			avgTeleopTopCubes: 1,
-			avgTeleopMidCubes: 1,
-			avgTeleopLowCubes: 1,
+			avgTeleopAmpNotes: 1,
+			avgTeleopSpeakerNotes: 1,
+			avgTeleopAmplifiedSpeakerNotes: 1,
+			avgAutoAmpNotes: 1,
 			avgAutoSpeakerNotes: 1,
-			avgAutoMidCones: 1,
-			avgAutoLowCones: 1,
-			avgAutoTopCubes: 1,
-			avgAutoMidCubes: 1,
-			avgAutoLowCubes: 1,
-			avgTopCones: 1,
-			avgMidCones: 1,
-			avgLowCones: 1,
-			avgTopCubes: 1,
-			avgMidCubes: 1,
-			avgLowCubes: 1,
+			avgAmpNotes: 1,
+			avgSpeakerNotes: 1,
+			avgNotesMissed: 1,
 			avgPenalties: 1,
 			avgDefense: 1,
-			avgLinks: 1,
 			avgEndScore: {
 				$round: ['$avgEndScore', 1],
 			},
@@ -287,13 +187,7 @@ export const teamDataAggregation: PipelineStage[] = [
 		$addFields: {
 			teamName: '$team_name',
 			epa: {
-				$add: [
-					'$avgAutoScore',
-					'$avgTeleopScore',
-					{
-						$multiply: ['$avgLinks', 5],
-					},
-				],
+				$add: ['$avgAutoScore', '$avgTeleopScore'],
 			},
 		},
 	},
@@ -316,26 +210,15 @@ export interface TeamData {
 	avgPenalties: number;
 	avgDefense: number | null;
 	initiationLine: number;
-	avgTeleopTopCones: number;
-	avgTeleopMidCones: number;
-	avgTeleopLowCones: number;
-	avgTeleopTopCubes: number;
-	avgTeleopMidCubes: number;
-	avgTeleopLowCubes: number;
+	avgTeleopAmpNotes: number;
+	avgTeleopSpeakerNotes: number;
+	avgTeleopAmplifiedSpeakerNotes: number;
 	avgAutoSpeakerNotes: number;
 	avgAutoAmpNotes: number;
-	avgTopCones: number;
-	avgMidCones: number;
-	avgLowCones: number;
-	avgTopCubes: number;
-	avgMidCubes: number;
-	avgLowCubes: number;
-	avgLinks: number;
+	avgAmpNotes: number;
+	avgSpeakerNotes: number;
+	avgNotesMissed: number;
 	epa: number;
-	autoDockPercent: number | null;
-	autoEngagePercent: number | null;
-	avgRobotsDocked: number;
-	avgRobotsEngaged: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
