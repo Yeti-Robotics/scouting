@@ -122,7 +122,7 @@ const NavBar = () => {
 						color: theme.colorScheme === 'light' ? 'black' : 'white',
 					})}
 				>
-					Yeti Scouting
+					YETI Scouting
 				</Title>
 			</Link>
 			<Burger opened={menuOpened} onClick={() => setMenuOpened((prev) => !prev)} />
