@@ -29,8 +29,8 @@ export const onSubmit: PitFormOnSubmit = (
 		if (!user || user.banned) return;
 
 		data.whereScore.sort((a, b) => {
-			const aValue = a.includes('Top') ? 3 : a.includes('Middle') ? 2 : 1;
-			const bValue = b.includes('Top') ? 3 : b.includes('Middle') ? 2 : 1;
+			const aValue = a.includes('Amp') ? 3 : a.includes('Speaker') ? 2 : 1;
+			const bValue = b.includes('Amp') ? 3 : b.includes('Speaker') ? 2 : 1;
 			return bValue - aValue;
 		});
 		const formDataRes = await fetch('/api/forms/pit', {
@@ -82,8 +82,8 @@ export const onSubmit: PitFormOnSubmit = (
 		if (!user?.administrator || !user || user.banned) return;
 
 		data.whereScore.sort((a, b) => {
-			const aValue = a.includes('Top') ? 3 : a.includes('Middle') ? 2 : 1;
-			const bValue = b.includes('Top') ? 3 : b.includes('Middle') ? 2 : 1;
+			const aValue = a.includes('Amp') ? 3 : a.includes('Speaker') ? 2 : 1;
+			const bValue = b.includes('Amp') ? 3 : b.includes('Speaker') ? 2 : 1;
 			return bValue - aValue;
 		});
 		const formDataRes = await fetch('/api/forms/pit', {

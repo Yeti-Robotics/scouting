@@ -30,14 +30,12 @@ const StandFormPage = () => {
 	console.log(user?._id === data.scouter?._id);
 
 	return (
-		<Layout>
-			<StandForm
-				create={false}
-				canEdit={user?.administrator || user?._id === data.scouter?._id}
-				defaultForm={data as unknown as CreateStandForm}
-				id={String(router.query.id)}
-			/>
-		</Layout>
+		<StandForm
+			create={false}
+			canEdit={user?.administrator || user?._id === data.scouter?._id}
+			defaultForm={data as unknown as CreateStandForm}
+			id={String(router.query.id)}
+		/>
 	);
 };
 

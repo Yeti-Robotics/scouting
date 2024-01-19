@@ -1,5 +1,5 @@
 import { useUser } from '@/lib/useUser';
-import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
+import { PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
 import {
@@ -42,11 +42,11 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	);
 	const { control, handleSubmit, reset, register, setValue } = useForm<PitFormI>({
 		defaultValues: {
-			pieceSources: [],
 			whereScore: [],
 			priorityScore: undefined,
 			drivetrain: undefined,
-			autoBalance: false,
+			climb: false,
+			trapScore: false,
 			...defaultForm,
 		},
 	});
@@ -132,12 +132,6 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						hideControls
 						min={1}
 					/>
-					<ControlledMultiSelect
-						name='pieceSources'
-						control={control}
-						label='Where they get pieces?'
-						data={pieceSourceEnum}
-					/>
 					<Group align='end'>
 						<ControlledMultiSelect
 							name='whereScore'
@@ -154,7 +148,10 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						data={[...whereScoreEnum, 'None']}
 						required
 					/>
-					<Checkbox label='Can Auto Balance' size='xl' {...register('autoBalance')} />
+					<Stack>
+						<Checkbox label='Can Climb' size='xl' {...register('climb')} />
+						<Checkbox label='Can Score Trap' size='xl' {...register('trapScore')} />
+					</Stack>
 					<Textarea
 						{...register('notes', { required: true })}
 						label='Notes'
