@@ -37,11 +37,11 @@ export const columns = [
 		columns: [
 			helper.accessor('avgAutoAmpNotes', {
 				header: () => <Text fw={700}>Auto</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 			}),
 			helper.accessor('avgTeleopAmpNotes', {
 				header: () => <Text fw={700}>Teleop</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 			}),
 		],
 	}),
@@ -56,36 +56,32 @@ export const columns = [
 		columns: [
 			helper.accessor('avgAutoSpeakerNotes', {
 				header: () => <Text fw={700}>Auto</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 			}),
 			helper.accessor('avgTeleopSpeakerNotes', {
 				header: () => <Text fw={700}>Teleop</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
-			}),
-			helper.accessor('avgTeleopAmplifiedSpeakerNotes', {
-				header: () => <Text fw={700}>Teleop Amped</Text>,
-				cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 			}),
 		],
 	}),
 	helper.accessor('avgNotesMissed', {
 		header: () => <Text fw={700}>Avg. Notes Missed</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 		maxSize: 160,
 	}),
 	helper.accessor('epa', {
 		header: () => <Text fw={700}>EPA</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 		maxSize: 160,
 	}),
 	helper.accessor('avgPenalties', {
 		header: () => <Text fw={700}>Avg. Penalties</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue())}</Text>,
+		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
 		maxSize: 160,
 	}),
 	helper.accessor('avgDefense', {
 		header: () => <Text fw={700}>Defense</Text>,
-		cell: (props) => <Text>{truncDecimals(props.getValue() ?? 0) || 'none'}</Text>,
+		cell: (props) => <Text align='center'>{truncDecimals(props.getValue() ?? 0) || 'none'}</Text>,
 		maxSize: 160,
 	}),
 	helper.display({

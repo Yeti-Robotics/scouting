@@ -58,10 +58,9 @@ export const teamDataAggregation: PipelineStage[] = [
 				$avg: '$teleopAmpNotes',
 			},
 			avgTeleopSpeakerNotes: {
-				$avg: '$teleopSpeakerNotes',
-			},
-			avgTeleopAmplifiedSpeakerNotes: {
-				$avg: '$teleopAmplifiedSpeakerNotes',
+				$avg: {
+					$add: ['$teleopSpeakerNotes', '$teleopAmplifiedSpeakerNotes'],
+				},
 			},
 			avgAutoAmpNotes: {
 				$avg: '$autoAmpNotes',

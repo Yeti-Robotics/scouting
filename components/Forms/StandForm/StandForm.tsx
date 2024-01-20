@@ -360,10 +360,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							control={control}
 							data={[
 								{ label: 'No Defense', value: 0 },
-								{ label: '1 - Many Penalties', value: 1 },
-								{ label: '2 - Few Penalties', value: 2 },
-								{ label: '3 - Pretty Effective', value: 3 },
-								{ label: '4 - Very Effective', value: 4 },
+								{ label: '1 - Bad', value: 1 },
+								{ label: '2', value: 2 },
+								{ label: '3', value: 3 },
+								{ label: '4', value: 4 },
 								{ label: '5 - Perfect', value: 5 },
 							]}
 							name='defense'
