@@ -56,7 +56,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	}
 
 	if (user && create && user.banned) {
-		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned.</h1>;
 	}
 
 	return (
@@ -136,7 +136,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						<ControlledMultiSelect
 							name='whereScore'
 							control={control}
-							label='Where do they score?'
+							label='Where can they score?'
 							data={whereScoreEnum}
 						/>
 						<Button onClick={() => setValue('whereScore', whereScoreEnum)}>All</Button>
@@ -155,12 +155,10 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 					<Textarea
 						{...register('notes', { required: true })}
 						label='Notes'
+						description='Give some more insight into the team such as cycle times.'
 						disabled={!canEdit}
 						required
 					/>
-					<Text align='center'>
-						Give some more insight into the team such as cycle times.
-					</Text>
 				</FormSection>
 				{Boolean(canEdit) && (
 					<Stack align='center'>

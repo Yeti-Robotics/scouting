@@ -170,10 +170,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			</Group>
 			<Tabs defaultValue='auto'>
 				<Tabs.List grow>
-					<Tabs.Tab value='auto'>Autonomous</Tabs.Tab>
-					<Tabs.Tab value='teleop'>Teleoperated</Tabs.Tab>
+					<Tabs.Tab value='auto'>Auto</Tabs.Tab>
+					<Tabs.Tab value='teleop'>Teleop</Tabs.Tab>
 					<Tabs.Tab value='endgame'>Endgame</Tabs.Tab>
-					<Tabs.Tab value='misc'>Miscellaneous</Tabs.Tab>
+					<Tabs.Tab value='misc'>Misc.</Tabs.Tab>
 				</Tabs.List>
 
 				<Tabs.Panel value='auto'>
@@ -187,7 +187,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							/>
 							<Checkbox
 								{...register('initiationLine')}
-								label='Pass the white line?'
+								label='Passed the white line?'
 								size='lg'
 								disabled={!canEdit}
 							/>
