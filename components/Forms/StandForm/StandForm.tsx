@@ -170,10 +170,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			</Group>
 			<Tabs defaultValue='auto'>
 				<Tabs.List grow>
-					<Tabs.Tab value='auto'>Auto</Tabs.Tab>
-					<Tabs.Tab value='teleop'>Teleop</Tabs.Tab>
+					<Tabs.Tab value='auto'>Autonomous</Tabs.Tab>
+					<Tabs.Tab value='teleop'>Teleoperated</Tabs.Tab>
 					<Tabs.Tab value='endgame'>Endgame</Tabs.Tab>
-					<Tabs.Tab value='misc'>Misc.</Tabs.Tab>
+					<Tabs.Tab value='misc'>Miscellaneous</Tabs.Tab>
 				</Tabs.List>
 
 				<Tabs.Panel value='auto'>
@@ -187,7 +187,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							/>
 							<Checkbox
 								{...register('initiationLine')}
-								label='Did they go past the white line?'
+								label='Pass the white line?'
 								size='lg'
 								disabled={!canEdit}
 							/>
@@ -311,14 +311,14 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							<Stack>
 								<Checkbox
 									{...register('trapAttempt')}
-									label='Trap attempted?'
+									label='Attempted to score in Trap?'
 									size='xl'
 									disabled={!canEdit}
 								/>
 								{trapAttempt && (
 									<Checkbox
 										{...register('trapScored')}
-										label='Trap scored?'
+										label='Scored in Trap?'
 										size='xl'
 										disabled={!canEdit}
 									/>
@@ -327,10 +327,18 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							<Stack>
 								<Checkbox
 									{...register('climb')}
-									label='Climbed?'
+									label='Attempted Climb?'
 									size='xl'
 									disabled={!canEdit}
 								/>
+								{climb && (
+									<Checkbox
+										{...register('spotlight')}
+										label='Succesfully Climbed?'
+										size='xl'
+										disabled={!canEdit}
+									/>
+								)}
 								{climb && (
 									<Checkbox
 										{...register('spotlight')}
@@ -343,7 +351,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 									<ScoreInput
 										control={control}
 										name='numberOnChain'
-										label='# of robots on your chain'
+										label='Number of robots on the chain'
 										disabled={!canEdit}
 										min={1}
 										max={3}
