@@ -56,7 +56,7 @@ export const UserForm = ({ create, defaultUser, canEdit, id }: Props) => {
 	}
 
 	if (user.banned) {
-		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned.</h1>;
 	}
 
 	return (
