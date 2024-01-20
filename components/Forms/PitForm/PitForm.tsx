@@ -2,17 +2,7 @@ import { useUser } from '@/lib/useUser';
 import { PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import {
-	ActionIcon,
-	Box,
-	Button,
-	Checkbox,
-	Group,
-	Loader,
-	Stack,
-	Text,
-	Textarea,
-} from '@mantine/core';
+import { ActionIcon, Box, Button, Checkbox, Group, Loader, Stack, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
