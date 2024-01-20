@@ -327,18 +327,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							<Stack>
 								<Checkbox
 									{...register('climb')}
-									label='Attempted Climb?'
+									label='Successfully Climbed?'
 									size='xl'
 									disabled={!canEdit}
 								/>
-								{climb && (
-									<Checkbox
-										{...register('spotlight')}
-										label='Succesfully Climbed?'
-										size='xl'
-										disabled={!canEdit}
-									/>
-								)}
 								{climb && (
 									<Checkbox
 										{...register('spotlight')}
