@@ -311,15 +311,15 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							<Stack>
 								<Checkbox
 									{...register('trapAttempt')}
-									label='Attempted to score in Trap?'
-									size='xl'
+									label='Trap attempted?'
+									size='lg'
 									disabled={!canEdit}
 								/>
 								{trapAttempt && (
 									<Checkbox
 										{...register('trapScored')}
 										label='Scored in Trap?'
-										size='xl'
+										size='lg'
 										disabled={!canEdit}
 									/>
 								)}
@@ -328,30 +328,30 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 								<Checkbox
 									{...register('climb')}
 									label='Successfully Climbed?'
-									size='xl'
+									size='lg'
 									disabled={!canEdit}
 								/>
 								{climb && (
 									<Checkbox
 										{...register('spotlight')}
 										label='Spotlit?'
-										size='xl'
+										size='lg'
 										disabled={!canEdit}
-									/>
-								)}
-								{climb && (
-									<ScoreInput
-										control={control}
-										name='numberOnChain'
-										label='Number of robots on the chain'
-										disabled={!canEdit}
-										min={1}
-										max={3}
-										required
 									/>
 								)}
 							</Stack>
 						</Stack>
+						{climb && (
+							<ScoreInput
+								control={control}
+								name='numberOnChain'
+								label='# of robots on the chain'
+								disabled={!canEdit}
+								min={1}
+								max={3}
+								required
+							/>
+						)}
 					</FormSection>
 				</Tabs.Panel>
 				<Tabs.Panel value='misc'>
