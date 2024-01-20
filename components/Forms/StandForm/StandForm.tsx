@@ -105,10 +105,10 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	useEffect(() => {
 		if (isOffline)
 			notifications.show({
-				title: isOffline ? 'You went offline 😔' : 'Back online 😁',
+				title: isOffline ? 'You went offline' : 'Back online',
 				message: isOffline
-					? 'You just went offline. Any forms you submit will be saved on your device and submitted when you have an internet connection. Be sure to keep this page open. Click me to dismiss.'
-					: 'You are back online, any forms you may have submitted while offline were automagically submitted. Click me to dismiss.',
+					? 'You just went offline. Any forms you submit will be saved on your device and submitted when you have an internet connection. Be sure to keep this page open. Click here to dismiss.'
+					: 'You are back online, any forms you may have submitted while offline were automagically submitted. Click here to dismiss.',
 				autoClose: 10000,
 			});
 	}, [isOffline]);
@@ -119,7 +119,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	//const matchOptions = matches.filter((match) => userIsScouting(user, match));
 
 	if (create && user?.banned) {
-		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned.</h1>;
 	}
 
 	return (
