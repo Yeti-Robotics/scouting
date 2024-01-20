@@ -2,36 +2,15 @@ import { StandFormI } from '@/models/StandForm';
 import { ScatterPlotDatum, ScatterPlotSvgProps } from '@nivo/scatterplot';
 
 export const calcAutoScore = (form: StandFormI) =>
-	form.autoTopCones * 6 +
-	form.autoTopCubes * 6 +
-	form.autoMidCones * 4 +
-	form.autoMidCubes * 4 +
-	form.autoLowCones * 3 +
-	form.autoLowCubes * 3;
+	form.autoAmpNotes * 2 + form.autoSpeakerNotes * 5;
 
 export const calcTeleopScore = (form: StandFormI) =>
-	form.teleopTopCones * 5 +
-	form.teleopTopCubes * 5 +
-	form.teleopMidCones * 3 +
-	form.teleopMidCubes * 3 +
-	form.teleopLowCones * 2 +
-	form.teleopLowCubes * 2;
+	form.teleopAmpNotes * 5 + form.teleopSpeakerNotes * 5 + form.teleopAmplifiedSpeakerNotes * 3;
 
-export const calcAutoPieces = (form: StandFormI) =>
-	form.autoTopCones +
-	form.autoTopCubes +
-	form.autoMidCones +
-	form.autoMidCubes +
-	form.autoLowCones +
-	form.autoLowCubes;
+export const calcAutoPieces = (form: StandFormI) => form.autoAmpNotes + form.autoSpeakerNotes;
 
 export const calcTeleopPieces = (form: StandFormI) =>
-	form.teleopTopCones +
-	form.teleopTopCubes +
-	form.teleopMidCones +
-	form.teleopMidCubes +
-	form.teleopLowCones +
-	form.teleopLowCubes;
+	form.teleopAmpNotes + form.teleopSpeakerNotes + form.teleopAmplifiedSpeakerNotes;
 
 export const commonProps = <T extends ScatterPlotDatum>(
 	isDarkMode: boolean,
