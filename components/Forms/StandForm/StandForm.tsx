@@ -14,6 +14,7 @@ import {
 	ActionIcon,
 	Group,
 	Image,
+	Tabs,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -29,7 +30,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
-import { Amp, MissedNote } from '@/components/icons';
+import { MissedNote } from '@/components/icons';
 
 interface Props {
 	create: boolean;
@@ -64,6 +65,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	});
 	const matchNumber = watch('matchNumber');
 	const climb = watch('climb');
+	const trapAttempt = watch('trapAttempt');
 
 	const handleOnline = useCallback(
 		() => setOnline(isOffline, setIsOffline)(),
@@ -95,6 +97,12 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}, [climb]);
 
 	useEffect(() => {
+		if (trapAttempt === false) {
+			setValue('trapScored', false);
+		}
+	}, [trapAttempt]);
+
+	useEffect(() => {
 		if (isOffline)
 			notifications.show({
 				title: isOffline ? 'You went offline 😔' : 'Back online 😁',
@@ -117,6 +125,9 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	return (
 		<Box
 			component='form'
+			p={16}
+			w='100%'
+			maw={540}
 			onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}
 		>
 			{user && user.administrator && !create && id && (
@@ -136,219 +147,250 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					<IconTrash />
 				</ActionIcon>
 			)}
-			<Stack align='flex' mx='md'>
-				<FormSection title='Match Info'>
-					<ControlledNumberInput
-						label='Match Number'
-						disabled={!canEdit}
-						required
-						control={control}
-						name='matchNumber'
-						hideControls
-					/>
-					<NumberAutocomplete
-						control={control}
-						name='teamNumber'
-						label='Team Number'
-						data={getTeamsAsArr(match)}
-						disabled={!canEdit}
-						limit={6}
-						required
-					/>
-				</FormSection>
-				<FormSection title='Autonomous'>
-					<Stack pb='md'>
-						<Checkbox
-							{...register('preload')}
-							label='Preloaded?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						<Checkbox
-							{...register('initiationLine')}
-							label='Did they go past the white line?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-					</Stack>
-					<Group align='center'>
-						<Image src='/amp-icon.png' alt='amp' width={48} height={48} fit='contain' />
-						<ScoreInput
-							control={control}
-							name='autoAmpNotes'
-							label='Amp Notes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Image
-							src='/speaker-icon.png'
-							alt='speaker'
-							width={48}
-							height={48}
-							fit='contain'
-						/>
-						<ScoreInput
-							control={control}
-							name='autoSpeakerNotes'
-							label='Speaker Notes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<MissedNote />
-						<ScoreInput
-							control={control}
-							name='autoNotesMissed'
-							label='Notes Missed'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-				</FormSection>
-				<FormSection title='Teleop'>
-					<Group align='center'>
-						<Image src='/amp-icon.png' alt='amp' width={48} height={48} fit='contain' />
-						<ScoreInput
-							control={control}
-							name='teleopAmpNotes'
-							label='Amp Notes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Image
-							src='/speaker-icon.png'
-							alt='speaker'
-							width={48}
-							height={48}
-							fit='contain'
-						/>
-						<ScoreInput
-							control={control}
-							name='teleopSpeakerNotes'
-							label='Speaker Notes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Image
-							src='/amped-speaker-icon.png'
-							alt='amped-speaker'
-							width={48}
-							height={48}
-							fit='contain'
-						/>
-						<ScoreInput
-							control={control}
-							name='teleopAmplifiedSpeakerNotes'
-							label='Amped Speaker Notes'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<MissedNote />
-						<ScoreInput
-							control={control}
-							name='teleopNotesMissed'
-							label='Notes Missed'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-				</FormSection>
-				<FormSection title='Endgame'>
-					<Group>
-						<Checkbox
-							{...register('trapAttempt')}
-							label='Trap attempted?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						{climb && (
+			<Group style={{ justifyContent: 'space-between' }} mb='md'>
+				<ControlledNumberInput
+					label='Match Number'
+					disabled={!canEdit}
+					required
+					control={control}
+					name='matchNumber'
+					hideControls
+					w='47%'
+				/>
+				<NumberAutocomplete
+					control={control}
+					name='teamNumber'
+					label='Team Number'
+					data={getTeamsAsArr(match)}
+					disabled={!canEdit}
+					limit={6}
+					required
+					w='47%'
+				/>
+			</Group>
+			<Tabs defaultValue='auto'>
+				<Tabs.List grow>
+					<Tabs.Tab value='auto'>Auto</Tabs.Tab>
+					<Tabs.Tab value='teleop'>Teleop</Tabs.Tab>
+					<Tabs.Tab value='endgame'>Endgame</Tabs.Tab>
+					<Tabs.Tab value='misc'>Misc.</Tabs.Tab>
+				</Tabs.List>
+
+				<Tabs.Panel value='auto'>
+					<FormSection title='Autonomous'>
+						<Stack pb='md'>
 							<Checkbox
-								{...register('trapScored')}
-								label='Trap scored?'
-								size='xl'
+								{...register('preload')}
+								label='Preloaded?'
+								size='lg'
 								disabled={!canEdit}
 							/>
-						)}
-					</Group>
-					<Stack mt='md'>
-						<Checkbox
-							{...register('climb')}
-							label='Climbed?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						{climb && (
 							<Checkbox
-								{...register('spotlight')}
-								label='Spotlit?'
-								size='xl'
+								{...register('initiationLine')}
+								label='Did they go past the white line?'
+								size='lg'
 								disabled={!canEdit}
 							/>
-						)}
-						{climb && (
+						</Stack>
+						<Group align='center'>
+							<Image
+								src='/amp-icon.png'
+								alt='amp'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
 							<ScoreInput
 								control={control}
-								name='numberOnChain'
-								label='# of robots on your chain'
+								name='autoAmpNotes'
+								label='Amp Notes Scored'
 								disabled={!canEdit}
-								min={1}
-								max={3}
+								min={0}
 								required
 							/>
-						)}
-					</Stack>
-				</FormSection>
-				<FormSection title='Misc.'>
-					<NumberSelect
-						control={control}
-						data={[
-							{ label: 'No Defense', value: 0 },
-							{ label: '1 - Many Penalties', value: 1 },
-							{ label: '2 - Few Penalties', value: 2 },
-							{ label: '3 - Pretty Effective', value: 3 },
-							{ label: '4 - Very Effective', value: 4 },
-							{ label: '5 - Perfect', value: 5 },
-						]}
-						name='defense'
-						label='Rate Defense'
-						disabled={!canEdit}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='penalties'
-						label='# of penalties'
-						min={0}
-						disabled={!canEdit}
-					/>
-					<Textarea
-						label='Notes'
-						disabled={!canEdit}
-						{...register('notes', { required: true })}
-						required
-					/>
-					<Text>
-						Give some more insight into the match such as: strategy, robot status
-						(disabled, broken), and human players. Don't write too much, be concise!
-					</Text>
-				</FormSection>
-			</Stack>
+						</Group>
+						<Group align='center'>
+							<Image
+								src='/speaker-icon.png'
+								alt='speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='autoSpeakerNotes'
+								label='Speaker Notes Scored'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<MissedNote />
+							<ScoreInput
+								control={control}
+								name='autoNotesMissed'
+								label='Notes Missed'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+					</FormSection>
+				</Tabs.Panel>
+				<Tabs.Panel value='teleop'>
+					<FormSection title='Teleop'>
+						<Group align='center'>
+							<Image
+								src='/amp-icon.png'
+								alt='amp'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopAmpNotes'
+								label='Amp Notes Scored'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Image
+								src='/speaker-icon.png'
+								alt='speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopSpeakerNotes'
+								label='Speaker Notes Scored'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Image
+								src='/amped-speaker-icon.png'
+								alt='amped-speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopAmplifiedSpeakerNotes'
+								label='Amped Speaker Notes'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<MissedNote />
+							<ScoreInput
+								control={control}
+								name='teleopNotesMissed'
+								label='Notes Missed'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+					</FormSection>
+				</Tabs.Panel>
+				<Tabs.Panel value='endgame'>
+					<FormSection title='Endgame'>
+						<Stack mt='md'>
+							<Stack>
+								<Checkbox
+									{...register('trapAttempt')}
+									label='Trap attempted?'
+									size='xl'
+									disabled={!canEdit}
+								/>
+								{trapAttempt && (
+									<Checkbox
+										{...register('trapScored')}
+										label='Trap scored?'
+										size='xl'
+										disabled={!canEdit}
+									/>
+								)}
+							</Stack>
+							<Stack>
+								<Checkbox
+									{...register('climb')}
+									label='Climbed?'
+									size='xl'
+									disabled={!canEdit}
+								/>
+								{climb && (
+									<Checkbox
+										{...register('spotlight')}
+										label='Spotlit?'
+										size='xl'
+										disabled={!canEdit}
+									/>
+								)}
+								{climb && (
+									<ScoreInput
+										control={control}
+										name='numberOnChain'
+										label='# of robots on your chain'
+										disabled={!canEdit}
+										min={1}
+										max={3}
+										required
+									/>
+								)}
+							</Stack>
+						</Stack>
+					</FormSection>
+				</Tabs.Panel>
+				<Tabs.Panel value='misc'>
+					<FormSection title='Misc.'>
+						<NumberSelect
+							control={control}
+							data={[
+								{ label: 'No Defense', value: 0 },
+								{ label: '1 - Many Penalties', value: 1 },
+								{ label: '2 - Few Penalties', value: 2 },
+								{ label: '3 - Pretty Effective', value: 3 },
+								{ label: '4 - Very Effective', value: 4 },
+								{ label: '5 - Perfect', value: 5 },
+							]}
+							name='defense'
+							label='Rate Defense'
+							disabled={!canEdit}
+							required
+						/>
+						<ScoreInput
+							control={control}
+							name='penalties'
+							label='# of penalties'
+							min={0}
+							disabled={!canEdit}
+						/>
+						<Textarea
+							label='Notes'
+							disabled={!canEdit}
+							{...register('notes', { required: true })}
+							required
+						/>
+						<Text>
+							Give some more insight into the match such as: strategy, robot status
+							(disabled, broken), and human players. Don't write too much, be concise!
+						</Text>
+					</FormSection>
+				</Tabs.Panel>
+			</Tabs>
 
 			<Stack align='center' mt='md'>
 				{Boolean(canEdit) && !create && !defaultForm?.approved && (

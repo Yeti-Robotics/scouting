@@ -1,13 +1,8 @@
 import { Model, model, models, Schema } from 'mongoose';
 
-export const pieceSourceEnum = ['Chute', 'Double Station', 'Ground'];
+const scoreSpots = ['Amp', 'Speaker'] as const;
 
-const pieces = ['Cubes', 'Cones'] as const;
-const scoreSpots = ['Bottom', 'Middle', 'Top'] as const;
-
-export const whereScoreEnum = pieces.flatMap((piece) =>
-	scoreSpots.map((scoreSopt) => `${piece} ${scoreSopt}`),
-);
+export const whereScoreEnum = scoreSpots.map((scoreSpot) => `${scoreSpot}`);
 
 const pitFormSchema = new Schema<PitFormI>(
 	{
@@ -17,10 +12,10 @@ const pitFormSchema = new Schema<PitFormI>(
 		weight: { type: Number, required: true },
 		width: { type: Number, required: true },
 		length: { type: Number, required: true },
-		pieceSources: { type: [String], enum: pieceSourceEnum, required: true },
 		whereScore: { type: [String], enum: whereScoreEnum, required: true },
 		priorityScore: { type: String, enum: [...whereScoreEnum, 'None'], required: true },
-		autoBalance: { type: Boolean, required: true },
+		climb: { type: Boolean, required: true },
+		trapScore: { type: Boolean, required: true },
 		notes: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'pitForms' },
@@ -35,10 +30,10 @@ export interface PitFormI {
 	weight: number;
 	width: number;
 	length: number;
-	pieceSources: ('Chute' | 'Double Station' | 'Ground' | 'None')[];
 	whereScore: string[];
 	priorityScore: string;
-	autoBalance: boolean;
+	climb: boolean;
+	trapScore: boolean;
 	notes: string;
 	createdAt: string;
 }

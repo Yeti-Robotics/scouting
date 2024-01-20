@@ -27,6 +27,8 @@ const FormSection = ({ title, color, children }: Props) => {
 						fontSize: '1.75rem',
 						fontWeight: 'bold',
 						backgroundColor: color || 'primary.main',
+						marginBottom: '1rem',
+						textAlign: 'center',
 					}}
 				>
 					{title}
