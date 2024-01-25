@@ -1,6 +1,6 @@
 import { TeamData } from '@/models/aggregations/teamData';
 import { PitFormI } from '@/models/PitForm';
-import { Box, Paper } from '@mantine/core';
+import { Paper } from '@mantine/core';
 import { Link } from '../Link';
 
 interface Props {

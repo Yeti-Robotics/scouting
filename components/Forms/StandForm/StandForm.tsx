@@ -13,6 +13,8 @@ import {
 	Text,
 	ActionIcon,
 	Group,
+	Image,
+	Tabs,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,7 +30,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
-import { Cone, Cube } from '../../icons';
+import { MissedNote } from '@/components/icons';
 
 interface Props {
 	create: boolean;
@@ -62,10 +64,8 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 		},
 	});
 	const matchNumber = watch('matchNumber');
-	const attemptedAutoBalance = watch('attemptedAutoBalance');
-	const autoDocked = watch('autoDocked');
-	const teleopDocked = watch('teleopDocked');
-	const gridFull = watch('gridFull');
+	const climb = watch('climb');
+	const trapAttempt = watch('trapAttempt');
 
 	const handleOnline = useCallback(
 		() => setOnline(isOffline, setIsOffline)(),
@@ -91,26 +91,24 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}, [matchNumber]);
 
 	useEffect(() => {
-		if (autoDocked === false) {
-			setValue('autoEngaged', false);
+		if (climb === false) {
+			setValue('spotlight', false);
 		}
-		if (attemptedAutoBalance === false) {
-			setValue('autoDocked', false);
-			setValue('autoEngaged', false);
+	}, [climb]);
+
+	useEffect(() => {
+		if (trapAttempt === false) {
+			setValue('trapScored', false);
 		}
-		if (teleopDocked === false) {
-			setValue('teleopEngaged', false);
-			setValue('numberOnCharger', 0);
-		}
-	}, [attemptedAutoBalance, autoDocked, teleopDocked]);
+	}, [trapAttempt]);
 
 	useEffect(() => {
 		if (isOffline)
 			notifications.show({
-				title: isOffline ? 'You went offline 😔' : 'Back online 😁',
+				title: isOffline ? 'You went offline' : 'Back online',
 				message: isOffline
-					? 'You just went offline. Any forms you submit will be saved on your device and submitted when you have an internet connection. Be sure to keep this page open. Click me to dismiss.'
-					: 'You are back online, any forms you may have submitted while offline were automagically submitted. Click me to dismiss.',
+					? 'You just went offline. Any forms you submit will be saved on your device and submitted when you have an internet connection. Be sure to keep this page open. Click here to dismiss.'
+					: 'You are back online, any forms you may have submitted while offline were automagically submitted. Click here to dismiss.',
 				autoClose: 10000,
 			});
 	}, [isOffline]);
@@ -121,12 +119,15 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	//const matchOptions = matches.filter((match) => userIsScouting(user, match));
 
 	if (create && user?.banned) {
-		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned.</h1>;
 	}
 
 	return (
 		<Box
 			component='form'
+			p={16}
+			w='100%'
+			maw={540}
 			onSubmit={handleSubmit(onSubmit(create, user, reset, isOffline, setSubmitting))}
 		>
 			{user && user.administrator && !create && id && (
@@ -146,347 +147,250 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					<IconTrash />
 				</ActionIcon>
 			)}
-			<Stack align='flex' mx='md'>
-				<FormSection title='Match Info'>
-					<ControlledNumberInput
-						label='Match Number'
-						disabled={!canEdit}
-						required
-						control={control}
-						name='matchNumber'
-						hideControls
-					/>
-					<NumberAutocomplete
-						control={control}
-						name='teamNumber'
-						label='Team Number'
-						data={getTeamsAsArr(match)}
-						disabled={!canEdit}
-						limit={6}
-						required
-					/>
-				</FormSection>
-				<FormSection title='Autonomous'>
-					<Stack pb='md'>
-						<Checkbox
-							{...register('preload')}
-							label='Preloaded?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						<Checkbox
-							{...register('initiationLine')}
-							label='Did they leave the community?'
-							size='xl'
-							disabled={!canEdit}
-						/>
-					</Stack>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='autoTopCones'
-							label='Top Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='autoTopCubes'
-							label='Top Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='autoMidCones'
-							label='Mid Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='autoMidCubes'
-							label='Mid Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='autoLowCones'
-							label='Low Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='autoLowCubes'
-							label='Low Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Stack mt='md'>
-						<Checkbox
-							{...register('attemptedAutoBalance')}
-							label='Attempted Balance'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						{attemptedAutoBalance && (
+			<Group style={{ justifyContent: 'space-between' }} mb='md'>
+				<ControlledNumberInput
+					label='Match Number'
+					disabled={!canEdit}
+					required
+					control={control}
+					name='matchNumber'
+					hideControls
+					w='47%'
+				/>
+				<NumberAutocomplete
+					control={control}
+					name='teamNumber'
+					label='Team Number'
+					data={getTeamsAsArr(match)}
+					disabled={!canEdit}
+					limit={6}
+					required
+					w='47%'
+				/>
+			</Group>
+			<Tabs defaultValue='auto'>
+				<Tabs.List grow>
+					<Tabs.Tab value='auto'>Auto</Tabs.Tab>
+					<Tabs.Tab value='teleop'>Teleop</Tabs.Tab>
+					<Tabs.Tab value='endgame'>Endgame</Tabs.Tab>
+					<Tabs.Tab value='misc'>Misc.</Tabs.Tab>
+				</Tabs.List>
+
+				<Tabs.Panel value='auto'>
+					<FormSection title='Autonomous'>
+						<Stack pb='md'>
 							<Checkbox
-								{...register('autoDocked')}
-								label='On charger'
-								size='xl'
+								{...register('preload')}
+								label='Preloaded?'
+								size='lg'
 								disabled={!canEdit}
 							/>
-						)}
-						{autoDocked && (
 							<Checkbox
-								{...register('autoEngaged')}
-								label='On charger and balanced'
-								size='xl'
+								{...register('initiationLine')}
+								label='Passed the white line?'
+								size='lg'
 								disabled={!canEdit}
 							/>
-						)}
-					</Stack>
-				</FormSection>
-				<FormSection title='Teleop'>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='teleopTopCones'
-							label='Top Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='teleopTopCubes'
-							label='Top Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='teleopMidCones'
-							label='Mid Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='teleopMidCubes'
-							label='Mid Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cone />
-						<ScoreInput
-							control={control}
-							name='teleopLowCones'
-							label='Low Cones Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Group align='center'>
-						<Cube />
-						<ScoreInput
-							control={control}
-							name='teleopLowCubes'
-							label='Low Cubes Scored'
-							disabled={!canEdit}
-							min={0}
-							required
-						/>
-					</Group>
-					<Stack mt='md'>
-						<Checkbox
-							{...register('teleopDocked')}
-							label='On charger'
-							size='xl'
-							disabled={!canEdit}
-						/>
-						{teleopDocked && (
-							<Checkbox
-								{...register('teleopEngaged')}
-								label='On charger and balanced'
-								size='xl'
-								disabled={!canEdit}
-							/>
-						)}
-					</Stack>
-					{teleopDocked && (
-						<ScoreInput
-							control={control}
-							name='numberOnCharger'
-							label='Number of Robots on Charger'
-							disabled={!canEdit}
-							min={0}
-							max={3}
-							required
-						/>
-					)}
-					<Checkbox
-						{...register('gridFull')}
-						label='Grid Full'
-						size='xl'
-						disabled={!canEdit}
-					/>
-				</FormSection>
-				{!create && canEdit && gridFull && (
-					<FormSection title='Supercharge'>
+						</Stack>
 						<Group align='center'>
-							<Cone />
+							<Image
+								src='/amp-icon.png'
+								alt='amp'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
 							<ScoreInput
 								control={control}
-								name='superchargedTopCones'
-								label='Top Cones Supercharged'
+								name='autoAmpNotes'
+								label='Amp Notes Scored'
 								disabled={!canEdit}
 								min={0}
 								required
 							/>
 						</Group>
 						<Group align='center'>
-							<Cube />
+							<Image
+								src='/speaker-icon.png'
+								alt='speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
 							<ScoreInput
 								control={control}
-								name='superchargedTopCubes'
-								label='Top Cubes Supercharged'
+								name='autoSpeakerNotes'
+								label='Speaker Notes Scored'
 								disabled={!canEdit}
 								min={0}
 								required
 							/>
 						</Group>
 						<Group align='center'>
-							<Cone />
+							<MissedNote />
 							<ScoreInput
 								control={control}
-								name='superchargedMidCones'
-								label='Mid Cones Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cube />
-							<ScoreInput
-								control={control}
-								name='superchargedMidCubes'
-								label='Mid Cubes Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cone />
-							<ScoreInput
-								control={control}
-								name='superchargedLowCones'
-								label='Low Cones Supercharged'
-								disabled={!canEdit}
-								min={0}
-								required
-							/>
-						</Group>
-						<Group align='center'>
-							<Cube />
-							<ScoreInput
-								control={control}
-								name='superchargedLowCubes'
-								label='Low Cubes Supercharged'
+								name='autoNotesMissed'
+								label='Notes Missed'
 								disabled={!canEdit}
 								min={0}
 								required
 							/>
 						</Group>
 					</FormSection>
-				)}
-				<FormSection title='Misc.'>
-					<ScoreInput
-						control={control}
-						name='links'
-						label='# of Links'
-						disabled={!canEdit}
-						min={0}
-						max={9}
-						required
-					/>
-					<NumberSelect
-						control={control}
-						data={[
-							{ label: 'No Defense', value: 0 },
-							{ label: '1 - Many Penalties', value: 1 },
-							{ label: '2 - Few Penalties', value: 2 },
-							{ label: '3 - Pretty Effective', value: 3 },
-							{ label: '4 - Very Effective', value: 4 },
-							{ label: '5 - Perfect', value: 5 },
-						]}
-						name='defense'
-						label='Rate Defense'
-						disabled={!canEdit}
-						required
-					/>
-					<ScoreInput
-						control={control}
-						name='penalties'
-						label='# of penalties'
-						min={0}
-						disabled={!canEdit}
-					/>
-					<Textarea
-						label='Notes'
-						disabled={!canEdit}
-						{...register('notes', { required: true })}
-						required
-					/>
-					<Text>
-						Give some more insight into the match such as: strategy, robot status
-						(disabled, broken), and human players. Don't write too much, be concise!
-					</Text>
-				</FormSection>
-			</Stack>
+				</Tabs.Panel>
+				<Tabs.Panel value='teleop'>
+					<FormSection title='Teleop'>
+						<Group align='center'>
+							<Image
+								src='/amp-icon.png'
+								alt='amp'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopAmpNotes'
+								label='Amp Notes Scored'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Image
+								src='/speaker-icon.png'
+								alt='speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopSpeakerNotes'
+								label='Speaker Notes Scored'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<Image
+								src='/amped-speaker-icon.png'
+								alt='amped-speaker'
+								width={48}
+								height={48}
+								fit='contain'
+							/>
+							<ScoreInput
+								control={control}
+								name='teleopAmplifiedSpeakerNotes'
+								label='Amped Speaker Notes'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+						<Group align='center'>
+							<MissedNote />
+							<ScoreInput
+								control={control}
+								name='teleopNotesMissed'
+								label='Notes Missed'
+								disabled={!canEdit}
+								min={0}
+								required
+							/>
+						</Group>
+					</FormSection>
+				</Tabs.Panel>
+				<Tabs.Panel value='endgame'>
+					<FormSection title='Endgame'>
+						<Stack mt='md'>
+							<Stack>
+								<Checkbox
+									{...register('trapAttempt')}
+									label='Trap attempted?'
+									size='lg'
+									disabled={!canEdit}
+								/>
+								{trapAttempt && (
+									<Checkbox
+										{...register('trapScored')}
+										label='Scored in Trap?'
+										size='lg'
+										disabled={!canEdit}
+									/>
+								)}
+							</Stack>
+							<Stack>
+								<Checkbox
+									{...register('climb')}
+									label='Successfully Climbed?'
+									size='lg'
+									disabled={!canEdit}
+								/>
+								{climb && (
+									<Checkbox
+										{...register('spotlight')}
+										label='Spotlit?'
+										size='lg'
+										disabled={!canEdit}
+									/>
+								)}
+							</Stack>
+						</Stack>
+						{climb && (
+							<ScoreInput
+								control={control}
+								name='numberOnChain'
+								label='# of robots on the chain'
+								disabled={!canEdit}
+								min={1}
+								max={3}
+								required
+							/>
+						)}
+					</FormSection>
+				</Tabs.Panel>
+				<Tabs.Panel value='misc'>
+					<FormSection title='Misc.'>
+						<NumberSelect
+							control={control}
+							data={[
+								{ label: 'No Defense', value: 0 },
+								{ label: '1 - Bad', value: 1 },
+								{ label: '2', value: 2 },
+								{ label: '3', value: 3 },
+								{ label: '4', value: 4 },
+								{ label: '5 - Perfect', value: 5 },
+							]}
+							name='defense'
+							label='Rate Defense'
+							disabled={!canEdit}
+							required
+						/>
+						<ScoreInput
+							control={control}
+							name='penalties'
+							label='# of penalties'
+							min={0}
+							disabled={!canEdit}
+						/>
+						<Textarea
+							label='Notes'
+							disabled={!canEdit}
+							{...register('notes', { required: true })}
+							required
+						/>
+						<Text>
+							Give some more insight into the match such as: strategy, robot status
+							(disabled, broken), and human players. Don't write too much, be concise!
+						</Text>
+					</FormSection>
+				</Tabs.Panel>
+			</Tabs>
 
 			<Stack align='center' mt='md'>
 				{Boolean(canEdit) && !create && !defaultForm?.approved && (

@@ -20,6 +20,7 @@ import { UserI } from '@/models/User';
 import fetcher from '@/lib/fetch';
 import { DatesProvider } from '@mantine/dates';
 import { Notifications } from '@mantine/notifications';
+import './global.css';
 
 interface _App<P> {
 	(props: AppProps & P): ReactNode;
@@ -33,6 +34,8 @@ const getTheme = (
 	...DEFAULT_THEME,
 	colorScheme,
 	primaryColor,
+	headings: { fontFamily: 'Open Sans, sans-serif' },
+	fontFamily: 'Open Sans, sans-serif',
 	cursorType: 'pointer',
 });
 

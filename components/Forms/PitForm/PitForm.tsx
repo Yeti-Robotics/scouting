@@ -1,18 +1,8 @@
 import { useUser } from '@/lib/useUser';
-import { pieceSourceEnum, PitFormI, whereScoreEnum } from '@/models/PitForm';
+import { PitFormI, whereScoreEnum } from '@/models/PitForm';
 import { PitImageI } from '@/models/PitImage';
 import { IconTrash } from '@tabler/icons-react';
-import {
-	ActionIcon,
-	Box,
-	Button,
-	Checkbox,
-	Group,
-	Loader,
-	Stack,
-	Text,
-	Textarea,
-} from '@mantine/core';
+import { ActionIcon, Box, Button, Checkbox, Group, Loader, Stack, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -42,11 +32,11 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	);
 	const { control, handleSubmit, reset, register, setValue } = useForm<PitFormI>({
 		defaultValues: {
-			pieceSources: [],
 			whereScore: [],
 			priorityScore: undefined,
 			drivetrain: undefined,
-			autoBalance: false,
+			climb: false,
+			trapScore: false,
 			...defaultForm,
 		},
 	});
@@ -56,7 +46,7 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 	}
 
 	if (user && create && user.banned) {
-		return <h1>You&#39;ve been banned you sussy baka.</h1>;
+		return <h1>You&#39;ve been banned.</h1>;
 	}
 
 	return (
@@ -132,17 +122,11 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						hideControls
 						min={1}
 					/>
-					<ControlledMultiSelect
-						name='pieceSources'
-						control={control}
-						label='Where they get pieces?'
-						data={pieceSourceEnum}
-					/>
 					<Group align='end'>
 						<ControlledMultiSelect
 							name='whereScore'
 							control={control}
-							label='Where do they score?'
+							label='Where can they score?'
 							data={whereScoreEnum}
 						/>
 						<Button onClick={() => setValue('whereScore', whereScoreEnum)}>All</Button>
@@ -154,16 +138,17 @@ export const PitForm = ({ create, defaultForm, canEdit, defaultImages, id }: Pro
 						data={[...whereScoreEnum, 'None']}
 						required
 					/>
-					<Checkbox label='Can Auto Balance' size='xl' {...register('autoBalance')} />
+					<Stack>
+						<Checkbox label='Can Climb' size='xl' {...register('climb')} />
+						<Checkbox label='Can Score Trap' size='xl' {...register('trapScore')} />
+					</Stack>
 					<Textarea
 						{...register('notes', { required: true })}
 						label='Notes'
+						description='Give some more insight into the team such as cycle times.'
 						disabled={!canEdit}
 						required
 					/>
-					<Text align='center'>
-						Give some more insight into the team such as cycle times.
-					</Text>
 				</FormSection>
 				{Boolean(canEdit) && (
 					<Stack align='center'>

@@ -20,12 +20,6 @@ export const PitInfo = ({ pitForm }: { pitForm: PitFormI | undefined }) => {
 						{pitForm.length} x {pitForm.width}
 					</Text>
 					<Text>
-						<strong>Intakes From: </strong>
-						{pitForm.pieceSources.length > 0
-							? pitForm.pieceSources.join(', ')
-							: 'Nowhere 😢'}
-					</Text>
-					<Text>
 						<strong>Can Score: </strong>
 						{pitForm.whereScore.length > 0
 							? pitForm.whereScore.join(', ')
