@@ -7,6 +7,7 @@ import {
 	IconNote,
 	IconMoneybag,
 	IconShirtSport,
+	Icon123,
 } from '@tabler/icons-react';
 import {
 	Burger,
@@ -159,6 +160,14 @@ const NavBar = () => {
 							href='/pit-scouting'
 							text='Pit Scouting Form'
 							Icon={<IconNote style={{ margin: 8 }} />}
+							setMenuOpened={setMenuOpened}
+						/>
+					)}
+					{user && (
+						<NavBarButton
+							href='/scout-error-ranking'
+							text='Scout Ranking'
+							Icon={<Icon123 style={{ margin: 8 }} />}
 							setMenuOpened={setMenuOpened}
 						/>
 					)}
