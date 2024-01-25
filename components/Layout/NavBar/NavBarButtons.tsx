@@ -5,6 +5,7 @@ import {
 	IconFile,
 	IconNote,
 	IconShirtSport,
+	Icon123,
 } from '@tabler/icons-react';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -19,45 +20,52 @@ export default function NavBarButtons({ setMenuOpened, isLoggedIn }: NavBarButto
 			href: isLoggedIn ? '/logout' : '/login',
 			text: isLoggedIn ? 'Logout' : 'Login',
 			Icon: <IconUserCircle style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/stand-scouting',
 			text: 'Stand Scouting Form',
 			Icon: <IconNote style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/pit-scouting',
 			text: 'Pit Scouting Form',
 			Icon: <IconNote style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/teams',
 			text: 'Team Data',
 			Icon: <IconShirtSport style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/scouting-schedule',
 			text: 'Stand Scouting Schedule',
 			Icon: <IconCalendar style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/records',
 			text: 'Records',
 			Icon: <IconFile style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 		{
 			href: '/matches',
 			text: 'Records',
 			Icon: <IconShirtSport style={{ margin: 8 }} />,
-			setMenuOpened: setMenuOpened,
+			setMenuOpened,
 		},
 	];
+	isLoggedIn &&
+		navButtons.push({
+			href: '/scout-error-ranking',
+			text: 'Scout Ranking',
+			Icon: <Icon123 style={{ margin: 8 }} />,
+			setMenuOpened,
+		});
 
 	return (
 		<>
