@@ -9,7 +9,18 @@
 		"start": "next start",
 		"lint": "next lint",
 		"analyze": "ANALYZE=true next build",
-		"check": "tsc --noEmit"
+		"check": "tsc --noEmit",
+		"prepare": "husky install"
+	},
+	"lint-staged": {
+		"**/*.{js,jsx,ts,tsx}": [
+			"eslint --fix",
+			"prettier --write",
+			"tsc --noEmit"
+		],
+		"**/*.{json}": [
+			"prettier --write"
+		]
 	},
 	"dependencies": {
 		"@emotion/react": "11.11.1",
@@ -53,6 +64,8 @@
 		"eslint-config-next": "12.3.1",
 		"eslint-config-prettier": "8.6.0",
 		"eslint-plugin-prettier": "4.2.1",
+		"husky": "^8.0.0",
+		"lint-staged": "^15.0.2",
 		"prettier": "2.8.3",
 		"typescript": "4.9.4"
 	}
