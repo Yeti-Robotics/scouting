@@ -54,7 +54,7 @@ export default function NavBarButtons({ setMenuOpened, isLoggedIn }: NavBarButto
 		},
 		{
 			href: '/matches',
-			text: 'Records',
+			text: 'Match Data',
 			Icon: <IconShirtSport style={{ margin: 8 }} />,
 			setMenuOpened,
 		},
