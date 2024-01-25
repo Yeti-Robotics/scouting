@@ -5,6 +5,7 @@ import { Link } from '../../Link';
 import { ThemeSwitch } from '../ThemeSwitch';
 import { ColorPicker } from '../ColorPicker';
 import NavBarButtons from './NavBarButtons';
+import Image from 'next/image';
 
 const NavBar = () => {
 	const { user } = useUser({ canRedirect: false });
@@ -14,7 +15,7 @@ const NavBar = () => {
 	return (
 		<Paper
 			radius={0}
-			bg={theme.primaryColor}
+			bg={theme.colorScheme === 'light' ? theme.white : '#1A1B1E'}
 			sx={{
 				position: 'fixed',
 				top: 0,
@@ -27,21 +28,22 @@ const NavBar = () => {
 				padding: '0.5rem 1rem 0.5rem 1rem',
 				height: 48,
 				zIndex: 100,
+				borderBottom: `1px solid ${
+					theme.colorScheme === 'light' ? '#1A1B1E11' : '#FFFFFF11'
+				}`,
 			}}
 		>
 			<Link
 				sx={{
 					'&:visited': { color: 'inherit' },
 					textDecoration: 'none',
+					display: 'flex',
+					alignItems: 'center',
 				}}
 				href='/'
 			>
-				<Title
-					sx={(theme) => ({
-						fontSize: '1.5rem',
-						color: theme.colorScheme === 'light' ? 'black' : 'white',
-					})}
-				>
+				<Image src='/yeti-logo.png' alt='Yeti Roboics Logo' height={35} width={35} />
+				<Title order={3} ml={8} color={theme.colorScheme === 'light' ? 'black' : 'white'}>
 					YETI Scouting
 				</Title>
 			</Link>
