@@ -45,7 +45,7 @@ export const teamDataAggregation: PipelineStage[] = [
 						},
 					},
 					{
-						$cond: [{ $and: ['$trapAttempt', '$trapScored'] }, 5, 0],
+						$multiply: ['$trapNotes', 5],
 					},
 				],
 			},

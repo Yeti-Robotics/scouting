@@ -14,8 +14,8 @@ const standFormSchema = new Schema<StandFormI>(
 		teleopSpeakerNotes: { type: Number, required: true },
 		teleopAmplifiedSpeakerNotes: { type: Number, required: true },
 		teleopNotesMissed: { type: Number, required: true },
-		trapAttempt: { type: Boolean, required: true },
-		trapScored: { type: Boolean, required: true },
+		trapAttempts: { type: Number, required: true },
+		trapNotes: { type: Number, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
 		climb: { type: Boolean, required: true },
@@ -25,6 +25,8 @@ const standFormSchema = new Schema<StandFormI>(
 		penalties: { type: Number, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
+		scoutScore: { type: Number, required: true },
+		eventID: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
 );
@@ -42,8 +44,8 @@ export interface CreateStandForm {
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
 	teleopNotesMissed: number;
-	trapAttempt: boolean;
-	trapScored: boolean;
+	trapAttempts: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;
@@ -55,6 +57,8 @@ export interface CreateStandForm {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	scoutScore: number;
+	eventID: string;
 }
 
 // i stands for interface
@@ -71,8 +75,8 @@ export interface StandFormI {
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
 	teleopNotesMissed: number;
-	trapAttempt: boolean;
-	trapScored: boolean;
+	trapAttempts: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;
@@ -84,6 +88,8 @@ export interface StandFormI {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	scoutScore: number;
+	eventID: string;
 }
 
 const StandForm = (models?.standForm as Model<StandFormI>) || model('standForm', standFormSchema);

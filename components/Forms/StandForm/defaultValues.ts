@@ -10,4 +10,8 @@ export const defaultValues: Partial<CreateStandForm> = {
 	teleopNotesMissed: 0,
 	numberOnChain: 1,
 	penalties: 0,
+	trapAttempts: 0,
+	trapNotes: 0,
+	scoutScore: 0,
+	eventID: '2024ncwak',
 };
