@@ -4,7 +4,9 @@ const testData = {
 	frc4290: ['scout5', 'scout6'],
 };
 
-const getScoutCombinations = (data: typeof testData) => {
+const getScoutCombinations = <ValidScoutT extends string>(data: {
+	[K in keyof typeof testData]: ValidScoutT[];
+}) => {
 	const scoutTeams = Object.values(data);
 	const combinations = [];
 
@@ -19,10 +21,6 @@ const getScoutCombinations = (data: typeof testData) => {
 	return combinations;
 };
 
-type ScoutScoreMap<Type> = {
-	[Property in keyof Type]: number;
-};
-
 const scoutScores = {
 	scout1: 15,
 	scout2: 15,
@@ -32,8 +30,12 @@ const scoutScores = {
 	scout6: 12,
 };
 
-const avgError = (scores: Record<string, number>, combinations: string[][], tbaScore: number) => {
-	const averageError = {} as Record<string, number>;
+const avgError = <ValidScoutT extends string>(
+	scores: Record<ValidScoutT, number>,
+	combinations: ValidScoutT[][],
+	tbaScore: number,
+) => {
+	const averageError = {} as Record<ValidScoutT, number>;
 	combinations.forEach((combo) => {
 		const combined = scores[combo[0]] + scores[combo[1]] + scores[combo[2]];
 		const error = tbaScore - combined;
@@ -47,3 +49,11 @@ const avgError = (scores: Record<string, number>, combinations: string[][], tbaS
 	});
 	return averageError;
 };
+
+/*
+When calling functions, need to use something like:
+type MatchScouts = keyof typeof scoutScores;
+type MatchData<T extends string> = {
+	[K in keyof typeof testData]: T[]
+}
+*/
