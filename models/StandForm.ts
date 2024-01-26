@@ -25,6 +25,8 @@ const standFormSchema = new Schema<StandFormI>(
 		penalties: { type: Number, required: true },
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
+		scoutScore: { type: Number, required: true },
+		eventID: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
 );
@@ -55,6 +57,8 @@ export interface CreateStandForm {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	scoutScore: number;
+	eventID: string;
 }
 
 // i stands for interface
@@ -84,6 +88,8 @@ export interface StandFormI {
 	notes: string;
 	createdAt: string;
 	updatedAt: string;
+	scoutScore: number;
+	eventID: string;
 }
 
 const StandForm = (models?.standForm as Model<StandFormI>) || model('standForm', standFormSchema);

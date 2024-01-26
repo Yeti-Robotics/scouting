@@ -1,6 +1,7 @@
 import { CreateStandForm } from '@/models/StandForm';
 import { UserI } from '@/models/User';
 import { SubmitHandler, UseFormReset } from 'react-hook-form';
+import { computeScore } from './computeScore';
 
 type StandFormOnSubmit = (
 	create: boolean,
@@ -18,7 +19,11 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline, setS
 			setSubmitting('fetching');
 			fetch('/api/forms/stand', {
 				method: 'POST',
-				body: JSON.stringify({ ...data, scouter: user._id }),
+				body: JSON.stringify({
+					...data,
+					scouter: user._id,
+					scoutScore: computeScore(data),
+				}),
 			}).then(async (res) => {
 				setSubmitting('done');
 				if (res.ok) reset();
@@ -29,7 +34,7 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline, setS
 			const savedForms: CreateStandForm[] = JSON.parse(
 				sessionStorage.getItem('standForms') || '[]', // use saved forms or a new array
 			);
-			savedForms.push({ ...data, scouter: user._id });
+			savedForms.push({ ...data, scouter: user._id, scoutScore: computeScore(data) });
 			sessionStorage.setItem('standForms', JSON.stringify(savedForms));
 			setSubmitting('done');
 			reset();
@@ -38,6 +43,7 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline, setS
 
 	const onUpdate: SubmitHandler<CreateStandForm> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
+		data.scoutScore = computeScore(data);
 		setSubmitting('fetching');
 		fetch('/api/forms/stand', {
 			method: 'PATCH',
