@@ -65,7 +65,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	});
 	const matchNumber = watch('matchNumber');
 	const climb = watch('climb');
-	const trapAttempt = watch('trapAttempt');
 
 	const handleOnline = useCallback(
 		() => setOnline(isOffline, setIsOffline)(),
@@ -95,12 +94,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 			setValue('spotlight', false);
 		}
 	}, [climb]);
-
-	useEffect(() => {
-		if (trapAttempt === false) {
-			setValue('trapScored', false);
-		}
-	}, [trapAttempt]);
 
 	useEffect(() => {
 		if (isOffline)
@@ -308,21 +301,23 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				<Tabs.Panel value='endgame'>
 					<FormSection title='Endgame'>
 						<Stack mt='md'>
-							<Stack>
-								<Checkbox
-									{...register('trapAttempt')}
-									label='Trap attempted?'
-									size='lg'
+							<Stack align='center'>
+								<ScoreInput
+									control={control}
+									name='trapAttempts'
+									label='Trap Attempts'
 									disabled={!canEdit}
+									min={0}
+									required
 								/>
-								{trapAttempt && (
-									<Checkbox
-										{...register('trapScored')}
-										label='Scored in Trap?'
-										size='lg'
-										disabled={!canEdit}
-									/>
-								)}
+								<ScoreInput
+									control={control}
+									name='trapNotes'
+									label='Traps Scored'
+									disabled={!canEdit}
+									min={0}
+									required
+								/>
 							</Stack>
 							<Stack>
 								<Checkbox

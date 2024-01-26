@@ -14,8 +14,8 @@ const standFormSchema = new Schema<StandFormI>(
 		teleopSpeakerNotes: { type: Number, required: true },
 		teleopAmplifiedSpeakerNotes: { type: Number, required: true },
 		teleopNotesMissed: { type: Number, required: true },
-		trapAttempt: { type: Boolean, required: true },
-		trapScored: { type: Boolean, required: true },
+		trapAttempts: { type: Number, required: true },
+		trapNotes: { type: Number, required: true },
 		preload: { type: Boolean, required: true },
 		initiationLine: { type: Boolean, required: true },
 		climb: { type: Boolean, required: true },
@@ -42,8 +42,8 @@ export interface CreateStandForm {
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
 	teleopNotesMissed: number;
-	trapAttempt: boolean;
-	trapScored: boolean;
+	trapAttempts: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;
@@ -71,8 +71,8 @@ export interface StandFormI {
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
 	teleopNotesMissed: number;
-	trapAttempt: boolean;
-	trapScored: boolean;
+	trapAttempts: number;
+	trapNotes: number;
 	preload: boolean;
 	initiationLine: boolean;
 	climb: boolean;
