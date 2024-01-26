@@ -19,6 +19,10 @@ const getScoutCombinations = (data: typeof testData) => {
 	return combinations;
 };
 
+type ScoutScoreMap<Type> = {
+	[Property in keyof Type]: number;
+};
+
 const scoutScores = {
 	scout1: 15,
 	scout2: 15,
@@ -28,8 +32,8 @@ const scoutScores = {
 	scout6: 12,
 };
 
-const avgError = (combinations: string[][], scores: typeof scoutScores, tbaScore: number) => {
-	const averageError = {};
+const avgError = (scores: Record<string, number>, combinations: string[][], tbaScore: number) => {
+	const averageError = {} as Record<string, number>;
 	combinations.forEach((combo) => {
 		const combined = scores[combo[0]] + scores[combo[1]] + scores[combo[2]];
 		const error = tbaScore - combined;
