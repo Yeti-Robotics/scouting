@@ -7,5 +7,6 @@
 	"bracketSpacing": true,
 	"singleQuote": true,
 	"jsxSingleQuote": true,
-	"semi": true
+	"semi": true,
+	"plugins": ["prettier-plugin-tailwindcss"]
 }
