@@ -31,7 +31,7 @@ import { ControlledNumberInput } from '../ControlledNumberInput';
 import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
-import { MissedNote } from '@/components/icons';
+import { MissedNote, MissedNoteTeleop } from '@/components/icons';
 import { Dropzone } from '@mantine/dropzone';
 
 interface Props {
@@ -297,7 +297,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 							/>
 						</Group>
 						<Group align='center'>
-							<MissedNote />
+							<MissedNoteTeleop />
 							<ScoreInput
 								control={control}
 								name='teleopNotesMissed'
