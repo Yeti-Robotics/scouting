@@ -32,7 +32,6 @@ import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
 import { MissedNote, MissedNoteTeleop } from '@/components/icons';
-import { Dropzone } from '@mantine/dropzone';
 
 interface Props {
 	create: boolean;
