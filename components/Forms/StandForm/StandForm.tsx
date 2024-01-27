@@ -15,6 +15,7 @@ import {
 	Group,
 	Image,
 	Tabs,
+	Select,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -31,6 +32,7 @@ import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
 import { MissedNote } from '@/components/icons';
+import { Dropzone } from '@mantine/dropzone';
 
 interface Props {
 	create: boolean;
@@ -140,27 +142,36 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 					<IconTrash />
 				</ActionIcon>
 			)}
-			<Group style={{ justifyContent: 'space-between' }} mb='md'>
-				<ControlledNumberInput
-					label='Match Number'
-					disabled={!canEdit}
+			<Stack>
+				<Group style={{ justifyContent: 'space-between' }} mb='md'>
+					<ControlledNumberInput
+						label='Match Number'
+						disabled={!canEdit}
+						required
+						control={control}
+						name='matchNumber'
+						hideControls
+						w='47%'
+					/>
+					<NumberAutocomplete
+						control={control}
+						name='teamNumber'
+						label='Team Number'
+						data={getTeamsAsArr(match)}
+						disabled={!canEdit}
+						limit={6}
+						required
+						w='47%'
+					/>
+				</Group>
+				<Select
+					name='alliance'
+					defaultValue={'Red'}
+					label='Alliance Color'
+					data={['Red', 'Blue']}
 					required
-					control={control}
-					name='matchNumber'
-					hideControls
-					w='47%'
 				/>
-				<NumberAutocomplete
-					control={control}
-					name='teamNumber'
-					label='Team Number'
-					data={getTeamsAsArr(match)}
-					disabled={!canEdit}
-					limit={6}
-					required
-					w='47%'
-				/>
-			</Group>
+			</Stack>
 			<Tabs defaultValue='auto'>
 				<Tabs.List grow>
 					<Tabs.Tab value='auto'>Auto</Tabs.Tab>

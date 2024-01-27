@@ -27,6 +27,7 @@ const standFormSchema = new Schema<StandFormI>(
 		notes: { type: String, required: true },
 		scoutScore: { type: Number, required: true },
 		eventID: { type: String, required: true },
+		alliance: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
 );
@@ -59,6 +60,7 @@ export interface CreateStandForm {
 	updatedAt: string;
 	scoutScore: number;
 	eventID: string;
+	alliance: string;
 }
 
 // i stands for interface
@@ -90,6 +92,7 @@ export interface StandFormI {
 	updatedAt: string;
 	scoutScore: number;
 	eventID: string;
+	alliance: string;
 }
 
 const StandForm = (models?.standForm as Model<StandFormI>) || model('standForm', standFormSchema);

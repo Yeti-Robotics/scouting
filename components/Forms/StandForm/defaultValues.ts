@@ -14,4 +14,5 @@ export const defaultValues: Partial<CreateStandForm> = {
 	trapNotes: 0,
 	scoutScore: 0,
 	eventID: '2024ncwak',
+	alliance: 'Red',
 };
