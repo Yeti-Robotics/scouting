@@ -4,6 +4,7 @@ import { UserI } from './User';
 const SPRSchema = new Schema<SPRI>({
 	eventKey: { type: String, required: true },
 	matchNumber: { type: Number, required: true },
+	alliance: { type: String, required: true },
 	scouter: { type: String, ref: 'user', required: true },
 	matchSPR: { type: Number, required: true },
 });
@@ -11,6 +12,7 @@ const SPRSchema = new Schema<SPRI>({
 export interface SPRI {
 	eventKey: string;
 	matchNumber: number;
+	alliance: string;
 	scouter: UserI;
 	matchSPR: number;
 }
