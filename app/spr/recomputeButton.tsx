@@ -1,14 +1,17 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 function RecomputeButton() {
+	const router = useRouter();
 	return (
 		<button
-			className='bg-slate-500 border-red-100 border-1 dark:bg-red-500'
+			className='rounded-lg bg-yeti-blue p-2 font-bold text-white transition-all duration-200 hover:bg-bubble-gum hover:shadow-xl'
 			onClick={() => {
-				fetch('/api/spr/recompute', { method: 'POST' });
+				fetch('/api/spr/recompute', { method: 'POST' }).then(() => router.refresh());
 			}}
 		>
-			Recompute SPR
+			RECOMPUTE SPR
 		</button>
 	);
 }

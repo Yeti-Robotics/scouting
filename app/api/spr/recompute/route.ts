@@ -5,10 +5,11 @@ import SPR from '@/models/SPR';
 import { connectToDbB } from '@/middleware/connect-db';
 import verifyAdmin from '@/middleware/app-router/verify-admin';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 async function recomputeSPR() {
 	await connectToDbB();
-	SPR.deleteMany({});
+	await SPR.deleteMany({});
 	const alliances: any[] = await StandForm.aggregate(sprDataAggregation);
 	const teamScoutMap = {};
 	const scoutScoreMap = {};
@@ -32,8 +33,6 @@ async function recomputeSPR() {
 			}),
 		);
 	});
-	console.log(updatedSPRS);
-
 	SPR.insertMany(updatedSPRS);
 }
 
