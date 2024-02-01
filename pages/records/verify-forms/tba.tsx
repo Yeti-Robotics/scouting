@@ -16,24 +16,18 @@ const MatchCard = ({ match }: { match: MatchWForms }) => {
 	const { blue: tbaBlue, red: tbaRed } = match.official!;
 
 	// ============= Blue Validations =============
-	rawBlueErrors.push({ name: 'Blue Cubes High', value: blue.highCubes - tbaBlue.highCubes });
-	rawBlueErrors.push({ name: 'Blue Cones High', value: blue.highCones - tbaBlue.highCones });
-
-	rawBlueErrors.push({ name: 'Blue Cubes Mid', value: blue.midCubes - tbaBlue.midCubes });
-	rawBlueErrors.push({ name: 'Blue Cones Mid', value: blue.midCones - tbaBlue.midCones });
-
-	rawBlueErrors.push({ name: 'Blue Cubes Low', value: blue.lowCubes - tbaBlue.lowCubes });
-	rawBlueErrors.push({ name: 'Blue Cones Low', value: blue.lowCones - tbaBlue.lowCones });
+	rawBlueErrors.push({ name: 'Blue Amp Notes', value: blue.ampNotes - tbaBlue.highCubes });
+	rawBlueErrors.push({
+		name: 'Blue Speaker Notes',
+		value: blue.speakerNotes - tbaBlue.highCones,
+	});
 
 	// ============= Red Validations =============
-	rawRedErrors.push({ name: 'Red Cubes High', value: red.highCubes - tbaRed.highCubes });
-	rawRedErrors.push({ name: 'Red Cones High', value: red.highCones - tbaRed.highCones });
-
-	rawRedErrors.push({ name: 'Red Cubes Mid', value: red.midCubes - tbaRed.midCubes });
-	rawRedErrors.push({ name: 'Red Cones Mid', value: red.midCones - tbaRed.midCones });
-
-	rawRedErrors.push({ name: 'Red Cubes Low', value: red.lowCubes - tbaRed.lowCubes });
-	rawRedErrors.push({ name: 'Red Cones Low', value: red.lowCones - tbaRed.lowCones });
+	rawBlueErrors.push({ name: 'Red Amp Notes', value: red.ampNotes - tbaRed.highCubes });
+	rawBlueErrors.push({
+		name: 'red Speaker Notes',
+		value: red.speakerNotes - tbaRed.highCones,
+	});
 
 	const blueErrors = rawBlueErrors.filter((err) => err.value !== 0);
 	const redErrors = rawRedErrors.filter((err) => err.value !== 0);

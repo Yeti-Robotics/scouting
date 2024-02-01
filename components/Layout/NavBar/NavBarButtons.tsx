@@ -61,7 +61,7 @@ export default function NavBarButtons({ setMenuOpened, isLoggedIn }: NavBarButto
 	];
 	isLoggedIn &&
 		navButtons.push({
-			href: '/scout-error-ranking',
+			href: '/spr',
 			text: 'Scout Ranking',
 			Icon: <Icon123 style={{ margin: 8 }} />,
 			setMenuOpened,

@@ -6,20 +6,45 @@ import { connectToDbB } from '@/middleware/connect-db';
 import verifyAdmin from '@/middleware/app-router/verify-admin';
 import { NextRequest, NextResponse } from 'next/server';
 
+type TeamScoutMapT = Record<string, string[]>;
+
+type ScoutScoreMapT = Record<string, number>;
+
+interface AggregationSPRDataI {
+	_id: {
+		eventID: string;
+		matchNumber: number;
+		alliance: string;
+	};
+	scoutScores: {
+		scoutID: string;
+		teamScouted: number;
+		scoutScore: number;
+	}[];
+}
+
+interface updatedSPRSI {
+	eventKey: string;
+	matchNumber: number;
+	alliance: string;
+	scouter: string;
+	matchSPR: number;
+}
+
 async function recomputeSPR() {
 	await connectToDbB();
-	SPR.deleteMany({});
-	const alliances: any[] = await StandForm.aggregate(sprDataAggregation);
-	const teamScoutMap = {};
-	const scoutScoreMap = {};
-	const updatedSPRS = [];
+	await SPR.deleteMany({});
+	const alliances = await StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
+	const teamScoutMap: TeamScoutMapT = {};
+	const scoutScoreMap: ScoutScoreMapT = {};
+	const updatedSPRS: updatedSPRSI[] = [];
 
 	alliances.forEach((alliance) => {
 		alliance.scoutScores.forEach((scout) => {
 			teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
 				? [...teamScoutMap[scout.teamScouted], scout.scoutID]
 				: [scout.scoutID];
-			scoutScoreMap[scout.scoutID] = scout.scoutscore;
+			scoutScoreMap[scout.scoutID] = scout.scoutScore;
 		});
 		const result = scoutExpectedContribution(scoutScoreMap, teamScoutMap, 42);
 		Object.keys(result).forEach((scoutID) =>
@@ -32,8 +57,6 @@ async function recomputeSPR() {
 			}),
 		);
 	});
-	console.log(updatedSPRS);
-
 	SPR.insertMany(updatedSPRS);
 }
 

@@ -43,7 +43,6 @@ const VerifyForms = () => {
 			};
 		}
 		// If current gridFull is falsy, set it to this forms (keeps going until one is true)
-		o[form.matchNumber].gridFull ||= form.gridFull;
 		return o;
 	}, {});
 

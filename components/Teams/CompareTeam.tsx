@@ -11,9 +11,9 @@ type Props = {
 	team2: RawTeamData | undefined;
 };
 
-const calcBalancePercentage = (forms: StandFormI[]) =>
+const calcClimbPercentage = (forms: StandFormI[]) =>
 	(
-		(forms.reduce((acc, form) => (form.autoEngaged ? (acc += 1) : acc), 0) /
+		(forms.reduce((acc, form) => (form.climb ? (acc += 1) : acc), 0) /
 			(forms.length || 1)) *
 		100
 	).toFixed(1);
@@ -134,11 +134,11 @@ export const CompareTeam = ({ team1, team2 }: Props) => {
 			<Title order={2}>Auto Balance %</Title>
 			<Group align='center' position='center'>
 				<Title order={3}>
-					{team1.teamNumber}: {calcBalancePercentage(team1Forms)}%
+					{team1.teamNumber}: {calcClimbPercentage(team1Forms)}%
 				</Title>
 				{team2 && team2Forms && (
 					<Title order={3}>
-						{team2.teamNumber}: {calcBalancePercentage(team2Forms)}%
+						{team2.teamNumber}: {calcClimbPercentage(team2Forms)}%
 					</Title>
 				)}
 			</Group>

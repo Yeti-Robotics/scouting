@@ -28,18 +28,10 @@ export const Data = ({ matchNumber }: { matchNumber: number }) => {
 			</Title>
 
 			<Box w='100%' ta='center'>
-				<ScoringGraph match={data} auto={false} level='top' piece='cone' />
-				<ScoringGraph match={data} auto={false} level='top' piece='cube' />
-				<ScoringGraph match={data} auto={false} level='mid' piece='cone' />
-				<ScoringGraph match={data} auto={false} level='mid' piece='cube' />
-				<ScoringGraph match={data} auto={false} level='low' piece='cone' />
-				<ScoringGraph match={data} auto={false} level='low' piece='cube' />
-				<ScoringGraph match={data} auto level='top' piece='cone' />
-				<ScoringGraph match={data} auto level='top' piece='cube' />
-				<ScoringGraph match={data} auto level='mid' piece='cone' />
-				<ScoringGraph match={data} auto level='mid' piece='cube' />
-				<ScoringGraph match={data} auto level='low' piece='cone' />
-				<ScoringGraph match={data} auto level='low' piece='cube' />
+				<ScoringGraph match={data} auto={false} level='amp' />
+				<ScoringGraph match={data} auto={false} level='speaker' />
+				<ScoringGraph match={data} auto level='amp' />
+				<ScoringGraph match={data} auto level='speaker' />
 			</Box>
 
 			<Taxis match={data} />

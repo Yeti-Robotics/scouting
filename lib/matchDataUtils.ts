@@ -22,106 +22,34 @@ export const filterTeams = (match: MatchData, func: (team?: StandFormWithName) =
 	return keys.filter((key) => func(match[key])).map((key) => match[key]);
 };
 
-export const selectScoreKey = ({
-	auto,
-	level,
-	piece,
-}: {
-	auto: boolean;
-	level: 'top' | 'mid' | 'low';
-	piece: 'cone' | 'cube';
-}) => {
+export const selectScoreKey = ({ auto, level }: { auto: boolean; level: 'speaker' | 'amp' }) => {
 	if (auto) {
-		if (level === 'top') {
-			if (piece === 'cone') {
-				return 'autoTopCones';
-			} else {
-				return 'autoTopCubes';
-			}
-		} else if (level === 'mid') {
-			if (piece === 'cone') {
-				return 'autoMidCones';
-			} else {
-				return 'autoMidCubes';
-			}
+		if (level === 'speaker') {
+			return 'autoSpeakerNotes';
 		} else {
-			if (piece === 'cone') {
-				return 'autoLowCones';
-			} else {
-				return 'autoLowCubes';
-			}
+			return 'autoAmpNotes';
 		}
 	} else {
-		if (level === 'top') {
-			if (piece === 'cone') {
-				return 'teleopTopCones';
-			} else {
-				return 'teleopTopCubes';
-			}
-		} else if (level === 'mid') {
-			if (piece === 'cone') {
-				return 'teleopMidCones';
-			} else {
-				return 'teleopMidCubes';
-			}
+		if (level === 'speaker') {
+			return 'teleopSpeakerNotes';
 		} else {
-			if (piece === 'cone') {
-				return 'teleopLowCones';
-			} else {
-				return 'teleopLowCubes';
-			}
+			return 'teleopAmpNotes';
 		}
 	}
 };
 
-export const getTitle = ({
-	auto,
-	level,
-	piece,
-}: {
-	auto: boolean;
-	level: 'top' | 'mid' | 'low';
-	piece: 'cone' | 'cube';
-}) => {
+export const getTitle = ({ auto, level }: { auto: boolean; level: 'speaker' | 'amp' }) => {
 	if (auto) {
-		if (level === 'top') {
-			if (piece === 'cone') {
-				return 'Top Cones Auto';
-			} else {
-				return 'Top Cubes Auto';
-			}
-		} else if (level === 'mid') {
-			if (piece === 'cone') {
-				return 'Mid Cones Auto';
-			} else {
-				return 'Mid Cubes Auto';
-			}
+		if (level === 'speaker') {
+			return 'autoSpeakerNotes';
 		} else {
-			if (piece === 'cone') {
-				return 'Low Cones Auto';
-			} else {
-				return 'Low Cubes Auto';
-			}
+			return 'autoAmpNotes';
 		}
 	} else {
-		if (level === 'top') {
-			if (piece === 'cone') {
-				return 'Top Cones Teleop';
-			} else {
-				return 'Top Cubes Teleop';
-			}
-		} else if (level === 'mid') {
-			if (piece === 'cone') {
-				return 'Mid Cones Teleop';
-			} else {
-				return 'Mid Cubes Teleop';
-			}
+		if (level === 'speaker') {
+			return 'teleopSpeakerNotes';
 		} else {
-			if (piece === 'cone') {
-				return 'Low Cones Teleop';
-			} else {
-				return 'Low Cubes Teleop';
-			}
+			return 'teleopAmpNotes';
 		}
 	}
 };
@@ -175,12 +103,11 @@ export const getTeamColor = (match: MatchData, team?: StandFormWithName | number
 
 const getPiecesScored = (form: StandFormI | undefined) => {
 	return {
-		lowCubes: (form?.autoLowCubes ?? 0) + (form?.teleopLowCubes ?? 0),
-		lowCones: (form?.autoLowCones ?? 0) + (form?.teleopLowCones ?? 0),
-		midCubes: (form?.autoMidCubes ?? 0) + (form?.teleopMidCubes ?? 0),
-		midCones: (form?.autoMidCones ?? 0) + (form?.teleopMidCones ?? 0),
-		highCubes: (form?.autoTopCubes ?? 0) + (form?.teleopTopCubes ?? 0),
-		highCones: (form?.autoTopCones ?? 0) + (form?.teleopTopCones ?? 0),
+		ampNotes: (form?.autoAmpNotes ?? 0) + (form?.teleopAmpNotes ?? 0),
+		speakerNotes:
+			(form?.autoSpeakerNotes ?? 0) +
+			(form?.teleopSpeakerNotes ?? 0) +
+			(form?.teleopAmplifiedSpeakerNotes ?? 0),
 	};
 };
 
@@ -194,20 +121,12 @@ export const aggregatePiecesScored = (match: MatchWForms) => {
 
 	return {
 		blue: {
-			lowCubes: blue1.lowCubes + blue2.lowCubes + blue3.lowCubes,
-			lowCones: blue1.lowCones + blue2.lowCones + blue3.lowCones,
-			midCubes: blue1.midCubes + blue2.midCubes + blue3.midCubes,
-			midCones: blue1.midCones + blue2.midCones + blue3.midCones,
-			highCubes: blue1.highCubes + blue2.highCubes + blue3.highCubes,
-			highCones: blue1.highCones + blue2.highCones + blue3.highCones,
+			ampNotes: blue1.ampNotes + blue2.ampNotes + blue3.ampNotes,
+			speakerNotes: blue1.speakerNotes + blue2.speakerNotes + blue3.speakerNotes,
 		},
 		red: {
-			lowCubes: red1.lowCubes + red2.lowCubes + red3.lowCubes,
-			lowCones: red1.lowCones + red2.lowCones + red3.lowCones,
-			midCubes: red1.midCubes + red2.midCubes + red3.midCubes,
-			midCones: red1.midCones + red2.midCones + red3.midCones,
-			highCubes: red1.highCubes + red2.highCubes + red3.highCubes,
-			highCones: red1.highCones + red2.highCones + red3.highCones,
+			ampNotes: red1.ampNotes + red2.ampNotes + red3.ampNotes,
+			speakerNotes: red1.speakerNotes + red2.speakerNotes + red3.speakerNotes,
 		},
 	};
 };
