@@ -12,7 +12,7 @@ export const sprDataAggregation: PipelineStage[] = [
 				$push: {
 					scoutID: '$scouter',
 					teamScouted: '$teamNumber',
-					scoutscore: '$scoutScore',
+					scoutScore: '$scoutScore',
 				},
 			},
 		},

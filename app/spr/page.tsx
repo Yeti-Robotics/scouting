@@ -5,12 +5,23 @@ import SPRLeaderboard from './sprLeaderboard';
 import { Suspense } from 'react';
 import { connectToDbB } from '@/middleware/connect-db';
 import SPR from '@/models/SPR';
-import { cache } from 'react';
+import { UserI } from '@/models/User';
 
-const getData = cache(async () => {
+export interface ScoutI {
+	firstName: string;
+	lastName: string;
+	avgSPR: number;
+}
+
+interface AggregationScoutI {
+	_id: string;
+	avgSPR: number;
+	scouter: UserI[];
+}
+
+const getData = async () => {
 	await connectToDbB();
-	console.log('query ran');
-	const data = await SPR.aggregate([
+	const data = await SPR.aggregate<AggregationScoutI>([
 		{
 			$group: {
 				_id: '$scouter',
@@ -27,20 +38,17 @@ const getData = cache(async () => {
 		},
 	]);
 
-	const table = data.map((scout) => {
-		if (scout.scouter.length === 1) {
+	const table: ScoutI[] = data
+		.filter((scout) => scout.scouter !== undefined)
+		.map((scout) => {
 			return {
 				firstName: scout.scouter[0].firstName,
 				lastName: scout.scouter[0].lastName,
 				avgSPR: scout.avgSPR,
 			};
-		}
-	});
-
+		});
 	return table;
-});
-
-export const revalidate = 3600;
+};
 
 export default async function SPRDashboard() {
 	const access_token = cookies().get('access_token');
@@ -48,8 +56,8 @@ export default async function SPRDashboard() {
 	const data = await getData();
 	if (isAdmin) {
 		return (
-			<main className='mx-auto max-w-[540px] flex-wrap flex items-center'>
-				<h1 className='text-yeti-blue my-0'>SPR Leaderboard</h1>
+			<main className='mx-auto flex max-w-[540px] flex-wrap items-center'>
+				<h1 className='my-0 text-yeti-blue'>SPR Leaderboard</h1>
 				<div className='w-full'>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SPRLeaderboard data={data} />

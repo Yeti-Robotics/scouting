@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { ScoutI } from './page';
 
-const SPRLeaderboard = ({ data }: any) => {
-	const [sortColumn, setSortColumn] = useState('avgSPR');
+type ColumnsT = keyof ScoutI;
+
+const SPRLeaderboard = ({ data }: { data: ScoutI[] }) => {
+	const [sortColumn, setSortColumn] = useState<ColumnsT>('avgSPR');
 	const [ascending, setAscending] = useState(false);
 
-	function handleHeaderClick(column) {
-		console.log(ascending);
+	function handleHeaderClick(column: ColumnsT) {
 		if (column === sortColumn) {
 			setAscending((curr) => !curr);
 		} else {

@@ -8,43 +8,19 @@ const filterTeams = (teams: (RawTeamData | undefined)[]) =>
 
 const calcAvgAutoPieceScore = (teamData: RawTeamData) => {
 	return (
-		teamData.avgAutoTopCones * 6 +
-		teamData.avgAutoMidCones * 4 +
-		teamData.avgAutoLowCones * 3 +
-		teamData.avgAutoTopCubes * 6 +
-		teamData.avgAutoMidCubes * 4 +
-		teamData.avgAutoLowCubes * 3
+		teamData.avgAutoAmpNotes * 2 +
+		teamData.avgAutoSpeakerNotes * 5
 	);
 };
 
 const calcAvgTeleopPieceScore = (teamData: RawTeamData) => {
 	return (
-		teamData.avgTeleopTopCones * 5 +
-		teamData.avgTeleopMidCones * 3 +
-		teamData.avgTeleopLowCones * 2 +
-		teamData.avgTeleopTopCubes * 5 +
-		teamData.avgTeleopMidCubes * 3 +
-		teamData.avgTeleopLowCubes * 2
+		teamData.avgTeleopAmpNotes * 1 +
+		teamData.avgTeleopSpeakerNotes * 2 +
+		teamData.avgTeleopAmplifiedSpeakerNotes * 5
 	);
 };
 
-const calcAvgEndChargerPoints = (teams: RawTeamData[]) => {
-	// Boffa these might be NaN
-	const avgDocked =
-		teams.map((team) => team.avgRobotsDocked * 6).reduce((acc, v) => acc + v, 0) / teams.length;
-	const avgEngaged =
-		teams.map((team) => team.avgRobotsEngaged * 10).reduce((acc, v) => acc + v, 0) /
-		teams.length;
-	return ((avgDocked || 0) + (avgEngaged || 0)) / 2;
-};
-
-const calcAvgAutoChargerPoints = (teams: RawTeamData[]) => {
-	// percent is in x% not 0.xx
-	const highestAutoEngagePercent = Math.max(...teams.map((team) => team?.autoEngagePercent ?? 0));
-	const avgAutoEngage =
-		highestAutoEngagePercent === -Infinity ? 0 : (highestAutoEngagePercent / 100) * 12;
-	return avgAutoEngage;
-};
 
 const calcPredictedMatchScores = (matchTeamData: MatchTeamData) => {
 	const blues = filterTeams([matchTeamData.blue1, matchTeamData.blue2, matchTeamData.blue3]);
@@ -59,15 +35,11 @@ const calcPredictedMatchScores = (matchTeamData: MatchTeamData) => {
 	return {
 		blue: {
 			auto: blueAuto,
-			autoCharger: calcAvgAutoChargerPoints(blues),
 			teleop: blueTeleop,
-			teleopCharger: calcAvgEndChargerPoints(blues),
 		},
 		red: {
 			auto: redAuto,
-			autoCharger: calcAvgAutoChargerPoints(reds),
 			teleop: redTeleop,
-			teleopCharger: calcAvgEndChargerPoints(reds),
 		},
 	};
 };
@@ -78,7 +50,7 @@ const TeamPrediction = ({
 	teams,
 }: {
 	color: 'blue' | 'red';
-	prediction: { auto: number; autoCharger: number; teleop: number; teleopCharger: number };
+	prediction: { auto: number; teleop: number};
 	teams: (RawTeamData | undefined)[];
 }) => {
 	const teamNumbers = teams
@@ -91,16 +63,12 @@ const TeamPrediction = ({
 				<Title sx={{ flexGrow: 1 }}>{color === 'blue' ? 'Blue' : 'Red'}</Title>
 				{teamNumbers.length > 0 ? <Title order={3}>{teamNumbers}</Title> : <></>}
 				<Title order={4}>Auto: {Math.round(prediction.auto)}</Title>
-				<Title order={4}>Auto Charger: {Math.round(prediction.autoCharger)}</Title>
 				<Title order={4}>Teleop: {Math.round(prediction.teleop)}</Title>
-				<Title order={4}>End Charger: {Math.round(prediction.teleopCharger)}</Title>
 				<Title order={2}>
 					Total:{' '}
 					{Math.round(
 						prediction.auto +
-							prediction.autoCharger +
-							prediction.teleop +
-							prediction.teleopCharger,
+							prediction.teleop
 					)}
 				</Title>
 			</Stack>

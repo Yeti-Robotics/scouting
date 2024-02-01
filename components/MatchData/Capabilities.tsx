@@ -6,7 +6,6 @@ import { PitFormI } from '@/models/PitForm';
 import { Card, Center, Group, Loader, Text, Title } from '@mantine/core';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { Cone, Cube } from '../icons';
 
 type MatchTeamData = {
 	blue1?: RawTeamData;
@@ -16,7 +15,7 @@ type MatchTeamData = {
 	red2?: RawTeamData;
 	red3?: RawTeamData;
 };
-
+/*
 const TeamCapabilities = ({
 	teamNumber,
 	color,
@@ -42,9 +41,7 @@ const TeamCapabilities = ({
 			<Title order={3} align='center'>
 				{teamNumber}
 			</Title>
-			<Title align='center' order={5}>
-				<Cone height={24} width={24} /> Cones
-			</Title>
+			<Title align='center' order={5}></Title>
 			{noCone ? (
 				<Text align='center'>Only Low</Text>
 			) : (
@@ -67,11 +64,10 @@ const TeamCapabilities = ({
 			<Title pt='md' align='center' order={5}>
 				Auto
 			</Title>
-			<Text align='center'>Dock: {data.autoDockPercent?.toFixed(2) ?? 0}%</Text>
-			<Text align='center'>Engage: {data.autoEngagePercent?.toFixed(2) ?? 0}%</Text>
 		</Card>
 	);
 };
+*/
 
 const TeamPitCapabilities = ({
 	teamNumber,
@@ -93,7 +89,7 @@ const TeamPitCapabilities = ({
 				{teamNumber}
 			</Title>
 			<Title order={5}>
-				<Cone height={24} width={24} /> Cones
+			
 			</Title>
 			{cones.length === 0 ? (
 				<Text align='center'>They can't</Text>
@@ -105,7 +101,7 @@ const TeamPitCapabilities = ({
 				))
 			)}
 			<Title pt='md' order={5}>
-				<Cube height={24} width={24} /> Cubes
+			
 			</Title>
 			{cubes.length === 0 ? (
 				<Text align='center'>They can't</Text>
@@ -119,7 +115,6 @@ const TeamPitCapabilities = ({
 			<Title pt='md' align='center' order={5}>
 				Auto
 			</Title>
-			<Text align='center'>{form.autoBalance ? 'Can Balance' : "Can't balance"}</Text>
 		</Card>
 	);
 };
@@ -147,7 +142,7 @@ export const Capabilities = ({ match }: { match: MatchI }) => {
 						}
 
 						return acc;
-				  }, {})
+					}, {})
 				: null,
 		[teamData, match],
 	);
@@ -180,6 +175,7 @@ export const Capabilities = ({ match }: { match: MatchI }) => {
 			) : (
 				<>
 					<Title align='center'>Scouted Data</Title>
+					{/*
 					<Group align='center' position='center'>
 						{match.blue1 !== undefined && (
 							<TeamCapabilities
@@ -225,6 +221,7 @@ export const Capabilities = ({ match }: { match: MatchI }) => {
 							/>
 						)}
 					</Group>
+						*/}
 					<Text align='center'>
 						Average must be at least 0.2 pieces in that spot per match to be considered
 						as capable, all robots are capable of low scoring

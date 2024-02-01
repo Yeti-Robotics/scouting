@@ -6,16 +6,15 @@ import { ResponsiveBar } from '@nivo/bar';
 interface Props {
 	match: MatchData;
 	auto: boolean;
-	level: 'top' | 'mid' | 'low';
-	piece: 'cone' | 'cube';
+	level: 'speaker' | 'amp';
 }
 
 const teamKeys = ['blue1', 'blue2', 'blue3', 'red1', 'red2', 'red3'] as const;
 
-export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
+export const ScoringGraph = ({ match, auto, level }: Props) => {
 	const theme = useMantineTheme();
 	const isDarkMode = theme.colorScheme === 'dark';
-	const scoreKey = selectScoreKey({ auto, piece, level });
+	const scoreKey = selectScoreKey({ auto, level });
 	const data: { teamNumber: number; [key: string]: string | number }[] = [];
 	let numNonZero = 0;
 
@@ -34,7 +33,7 @@ export const ScoringGraph = ({ match, auto, piece, level }: Props) => {
 	return (
 		<>
 			<Title order={3} mt='md'>
-				{getTitle({ auto, piece, level })}
+				{getTitle({ auto, level })}
 			</Title>
 			{numNonZero <= 0 && (
 				<Title order={4} align='center'>
