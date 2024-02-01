@@ -7,11 +7,12 @@ module.exports = {
 				'yeti-blue': '#54B6E5',
 				'bubble-gum': '#ff77e9',
 				bermuda: '#78dcca',
+				'eerie-black': '#1A1B1E',
 			},
 			fontFamily: {
 				sans: ['Open Sans', 'sans-serif'],
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/typography')],
 };

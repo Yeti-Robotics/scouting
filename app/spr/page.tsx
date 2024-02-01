@@ -7,8 +7,6 @@ import { connectToDbB } from '@/middleware/connect-db';
 import SPR from '@/models/SPR';
 import { cache } from 'react';
 
-const getTime = cache(async () => new Date().toISOString());
-
 const getData = cache(async () => {
 	await connectToDbB();
 	console.log('query ran');
@@ -48,17 +46,16 @@ export default async function SPRDashboard() {
 	const access_token = cookies().get('access_token');
 	const isAdmin = await verifyAdmin(access_token?.value);
 	const data = await getData();
-	const time = getTime();
 	if (isAdmin) {
 		return (
-			<main className='mx-auto max-w-[540px]'>
-				<div>{await time}</div>
-				<RecomputeButton />
-				<div>
+			<main className='mx-auto max-w-[540px] flex-wrap flex items-center'>
+				<h1 className='text-yeti-blue my-0'>SPR Leaderboard</h1>
+				<div className='w-full'>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SPRLeaderboard data={data} />
 					</Suspense>
 				</div>
+				<RecomputeButton />
 			</main>
 		); // Component for admin users
 	} else {
