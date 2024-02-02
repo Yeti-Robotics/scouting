@@ -13,9 +13,9 @@ handler.use(connectDB).get(async (req, res) => {
 		...teamDataAggregation,
 		{ $match: { teamNumber: parseInt(filter) } },
 	]);
-	const standForms = await StandForm.find({ teamNumber: parseInt(filter) })
-		.sort({ matchNumber: 1 })
-		.populate('scouter');
+	const standForms = await StandForm.find({ teamNumber: parseInt(filter) }).sort({
+		matchNumber: 1,
+	});
 	const pitForms = await PitForm.find({ teamNumber: parseInt(filter) });
 	return res.status(200).json({ team: team[0], standForms, pitForms });
 });
