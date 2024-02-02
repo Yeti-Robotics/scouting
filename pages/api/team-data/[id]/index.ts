@@ -13,7 +13,6 @@ handler.use(connectDB).get(async (req, res) => {
 		...teamDataAggregation,
 		{ $match: { teamNumber: parseInt(filter) } },
 	]);
-	console.log('trying');
 	const standForms = await StandForm.find({ teamNumber: parseInt(filter) }).sort({
 		matchNumber: 1,
 	});

@@ -48,6 +48,7 @@ last_names = [
     "Penguin",
     "Quokka",
     "Racoon",
+    "Snake",
     "Tortoise",
     "Umbrellabird",
     "Vulture",
