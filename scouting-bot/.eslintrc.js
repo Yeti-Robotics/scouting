@@ -1,6 +1,0 @@
-module.exports = {
-	rules: {
-		'react-hooks/rules-of-hooks': 'off',
-		'no-var-requires': 'off',
-	},
-};
