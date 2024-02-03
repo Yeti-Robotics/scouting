@@ -58,6 +58,7 @@ async function recomputeSPR() {
 		);
 	});
 	SPR.insertMany(updatedSPRS);
+	
 }
 
 export async function POST(req: NextRequest) {
