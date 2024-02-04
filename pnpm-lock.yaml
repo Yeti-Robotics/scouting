@@ -41,9 +41,6 @@ dependencies:
   '@mantine/notifications':
     specifier: 6.0.19
     version: 6.0.19(@mantine/core@6.0.19)(@mantine/hooks@6.0.19)(react-dom@18.2.0)(react@18.2.0)
-  '@next/font':
-    specifier: ^14.0.4
-    version: 14.0.4(next@14.0.4)
   '@nivo/bar':
     specifier: 0.80.0
     version: 0.80.0(@nivo/core@0.80.0)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -661,14 +658,6 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
-
-  /@next/font@14.0.4(next@14.0.4):
-    resolution: {integrity: sha512-anSlBJxaSlJ2S1mhfN/zddg8RsWvUCS6vMn9Sqjem3EukD6Z44lsj1lwXFdifUgwsJvw5Uf8MKupksAfRmDbeQ==}
-    peerDependencies:
-      next: '*'
-    dependencies:
-      next: 14.0.4(react-dom@18.2.0)(react@18.2.0)
-    dev: false
 
   /@next/swc-darwin-arm64@14.0.4:
     resolution: {integrity: sha512-mF05E/5uPthWzyYDyptcwHptucf/jj09i2SXBPwNzbgBNc+XnwzrL0U6BmPjQeOL+FiB+iG1gwBeq7mlDjSRPg==}

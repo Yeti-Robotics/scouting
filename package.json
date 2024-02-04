@@ -24,7 +24,6 @@
 		"@mantine/modals": "6.0.19",
 		"@mantine/next": "6.0.19",
 		"@mantine/notifications": "6.0.19",
-		"@next/font": "^14.0.4",
 		"@nivo/bar": "0.80.0",
 		"@nivo/core": "0.80.0",
 		"@nivo/scatterplot": "0.80.0",
