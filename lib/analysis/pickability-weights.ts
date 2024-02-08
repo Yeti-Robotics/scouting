@@ -4,8 +4,10 @@
  * @todo fine tune weights post week1 competitions
  */
 
+import { PickabilityWeightsI } from '../types/Pickability';
+
 // First pickability -- weight speaker heavier
-export const firstPickWeights = {
+export const firstPickWeights: PickabilityWeightsI = {
 	autoAmpNotes: 1.5,
 	autoSpeakerNotes: 3,
 	teleopAmpNotes: 2.5,
@@ -17,7 +19,7 @@ export const firstPickWeights = {
 };
 
 // Second pickability -- weight amp heavier
-export const secondPickWeights = {
+export const secondPickWeights: PickabilityWeightsI = {
 	autoAmpNotes: 2.5,
 	autoSpeakerNotes: 1,
 	teleopAmpNotes: 3,

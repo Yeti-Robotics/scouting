@@ -17,9 +17,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import { TeamDerivedStatsI } from './page';
-import { CreateForm, SelectPickList, UpdateButton } from './CUElements';
-import { NewPicklistI, PickListI } from '@/models/PickList';
+// import { CreateForm, SelectPickList, UpdateButton } from './CUElements';
+import { NewPicklistI } from '@/models/PickList';
+import { TeamDerivedStatsI } from '@/lib/types/Pickability';
 
 function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -45,7 +45,13 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 	);
 }
 
-export default function PickListTable({ data, picklists }: { data: TeamDerivedStatsI[], picklists: NewPicklistI[] }) {
+export default function PickListTable({
+	data,
+	picklists,
+}: {
+	data: TeamDerivedStatsI[];
+	picklists: NewPicklistI[];
+}) {
 	const [teams, setTeams] = useState(data);
 	// Whenever teams updates, get the new id mapping
 	const items = useMemo(() => teams?.map(({ _id }) => _id), [teams]);
@@ -73,26 +79,28 @@ export default function PickListTable({ data, picklists }: { data: TeamDerivedSt
 
 	return (
 		<>
-		<CreateForm ordering={items}/>
-		<SelectPickList ordering={items} setTeams={setTeams} picklists={picklists} />
-		<DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
-			<table className='max-w-540'>
-				<thead>
-					<tr>
-						<th>Number</th>
-						<th>First Pickability</th>
-						<th>Second Pickability</th>
-					</tr>
-				</thead>
-				<tbody>
-					<SortableContext items={items} strategy={verticalListSortingStrategy}>
-						{teams.map((team) => (
-							<DraggableRow key={team._id} teamData={team} />
-						))}
-					</SortableContext>
-				</tbody>
-			</table>
-		</DndContext>
+			<DndContext
+				sensors={sensors}
+				onDragEnd={handleDragEnd}
+				collisionDetection={closestCenter}
+			>
+				<table className='max-w-540'>
+					<thead>
+						<tr>
+							<th>Number</th>
+							<th>First Pickability</th>
+							<th>Second Pickability</th>
+						</tr>
+					</thead>
+					<tbody>
+						<SortableContext items={items} strategy={verticalListSortingStrategy}>
+							{teams.map((team) => (
+								<DraggableRow key={team._id} teamData={team} />
+							))}
+						</SortableContext>
+					</tbody>
+				</table>
+			</DndContext>
 		</>
 	);
 }
