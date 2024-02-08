@@ -1,32 +1,10 @@
 import StandForm from '@/models/StandForm';
-import PickList, { PickListI } from '@/models/PickList';
+import PickList from '@/models/PickList';
+import PickListTable from '@/components/PicklistTable';
+import { TeamAvgsI, PickabilityWeightsI } from '@/lib/types/Pickability';
 import { avgDataPipeline } from '@/models/aggregations/averageData';
-import { firstPickWeights, secondPickWeights } from './weights';
-import PickListTable from './PickabilityTable';
-import { CreateForm } from './CUElements';
+import { firstPickWeights, secondPickWeights } from '../../lib/analysis/pickability-weights';
 import { connectToDbB } from '@/middleware/connect-db';
-
-interface PickabilityWeightsI {
-	autoAmpNotes: number;
-	autoSpeakerNotes: number;
-	teleopAmpNotes: number;
-	teleopSpeakerNotes: number;
-	teleopAmplifiedSpeakerNotes: number;
-	trapNotes: number;
-	climbRate: number;
-	defense: number;
-}
-
-export interface TeamAvgsI extends PickabilityWeightsI {
-	_id: number;
-	climbSuccess: number;
-	forms: number;
-}
-
-export interface TeamDerivedStatsI extends TeamAvgsI {
-	firstPickability: number;
-	secondPickability: number;
-}
 
 /**
  * Computes pickability using specified weights -- essentially computes a weighted sum
@@ -65,7 +43,7 @@ export default async function PickListPage() {
 			}))
 			.sort((b, a) => a.firstPickability - b.firstPickability),
 	);
-	const picklists = ((await PickList.find({})))?.map(({ name, ordering }) => ({ name, ordering }));
+	const picklists = (await PickList.find({}))?.map(({ name, ordering }) => ({ name, ordering }));
 
 	return (
 		<main className='mx-auto max-w-[540px]'>
