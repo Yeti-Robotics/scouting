@@ -47,6 +47,7 @@ export default async function PickListPage() {
 
 	return (
 		<main className='mx-auto max-w-[540px]'>
+			<h1>Picklist</h1>
 			<PickListTable data={averages} picklists={picklists} />
 		</main>
 	);
