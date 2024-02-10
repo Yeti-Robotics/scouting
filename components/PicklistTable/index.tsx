@@ -31,7 +31,7 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 		transform: CSS.Transform.toString(transform),
 		transition,
 	};
-	
+
 	return (
 		<TableRow
 			className='relative active:z-50 hover:cursor-grab active:cursor-grabbing active:bg-primary'
@@ -70,6 +70,18 @@ export default function PickListTable({
 		}),
 	);
 
+	type ColumnsT = keyof TeamDerivedStatsI;
+	const [sortColumn, setSortColumn] = useState<ColumnsT>('firstPickability');
+	const [ascending, setAscending] = useState(false);
+
+	function handleHeaderClick(column: ColumnsT) {
+		if (column === sortColumn) {
+			setAscending((curr) => !curr);
+		} else {
+			setSortColumn(column);
+		}
+	}
+
 	/**
 	 * On end of drag, update teams to match new teams
 	 * @param event
@@ -103,20 +115,28 @@ export default function PickListTable({
 						</TableRow>
 						<TableRow>
 							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Number</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>First Pickability</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Second Pickability</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amp</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amp</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amplified Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Climb Rate</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Trap Notes</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('firstPickability')}>First Pickability</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('secondPickability')}>Second Pickability</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('autoAmpNotes')}>Amp</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('autoSpeakerNotes')}>Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopAmpNotes')}>Amp</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopSpeakerNotes')}>Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopAmplifiedSpeakerNotes')}>Amplified Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('climbRate')}>Climb Rate</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('trapNotes')}>Trap Notes</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						<SortableContext items={items} strategy={verticalListSortingStrategy}>
-							{teams.map((team) => (
+							{teams.filter((team) => team !== undefined).sort((teamA, teamB) => {
+							return ascending
+								? teamA[sortColumn] < teamB[sortColumn]
+									? -1
+									: 1
+								: teamA[sortColumn] < teamB[sortColumn]
+									? 1
+									: -1;
+						}).map((team) => (
 								<DraggableRow key={team._id} teamData={team} />
 							))}
 						</SortableContext>
