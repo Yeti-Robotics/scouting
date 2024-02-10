@@ -34,7 +34,7 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 
 	return (
 		<TableRow
-			className='hover:cursor-grab active:cursor-grabbing'
+			className='relative active:z-50 hover:cursor-grab active:cursor-grabbing active:bg-primary'
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
@@ -43,13 +43,19 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 			<TableCell>{teamData._id}</TableCell>
 			<TableCell>{Math.round(teamData.firstPickability * 100) / 100}</TableCell>
 			<TableCell>{Math.round(teamData.secondPickability * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.autoAmpNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.autoSpeakerNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.teleopAmpNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.teleopSpeakerNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.teleopAmplifiedSpeakerNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.climbRate * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.trapNotes * 100) / 100}</TableCell>
 		</TableRow>
 	);
 }
 
 export default function PickListTable({
 	data,
-	picklists,
 }: {
 	data: TeamDerivedStatsI[];
 	picklists: NewPicklistI[];
@@ -89,10 +95,23 @@ export default function PickListTable({
 			>
 				<Table className='max-w-540'>
 					<TableHeader>
+					<TableRow >
+							<TableHead colSpan={3}></TableHead>
+							<TableHead className='text-center' colSpan={2}>Auto</TableHead>
+							<TableHead className='text-center' colSpan={3}>TeleOp</TableHead>
+							<TableHead className='text-center' colSpan={2}>Endgame</TableHead>
+						</TableRow>
 						<TableRow>
 							<TableHead>Number</TableHead>
 							<TableHead>First Pickability</TableHead>
 							<TableHead>Second Pickability</TableHead>
+							<TableHead>Amp</TableHead>
+							<TableHead>Speaker</TableHead>
+							<TableHead>Amp</TableHead>
+							<TableHead>Speaker</TableHead>
+							<TableHead>Amplified Speaker</TableHead>
+							<TableHead>Climb Rate</TableHead>
+							<TableHead>Trap Notes</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
