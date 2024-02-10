@@ -47,7 +47,7 @@ export default async function PickListPage() {
 
 	return (
 		<main className='mx-auto p-6 mt-16'>
-			<h1>Picklist</h1>
+			<h1>YETI Scouting Picklist</h1>
 			<PickListTable data={averages} picklists={picklists} />
 		</main>
 	);

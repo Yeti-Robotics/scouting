@@ -126,7 +126,7 @@ export default function PickListTable({
 							<TableHead className='text-center font-semibold' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
-							{headers.map(({id, title}) => <TableHead key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>{title}</TableHead>)}
+							{headers.map(({id, title}) => <TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>{title}</TableHead>)}
 						</TableRow>
 					</TableHeader>
 					<TableBody>
