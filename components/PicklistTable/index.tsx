@@ -97,9 +97,9 @@ export default function PickListTable({
 					<TableHeader>
 					<TableRow >
 							<TableHead colSpan={3}></TableHead>
-							<TableHead className='text-center' colSpan={2}>Auto</TableHead>
-							<TableHead className='text-center' colSpan={3}>TeleOp</TableHead>
-							<TableHead className='text-center' colSpan={2}>Endgame</TableHead>
+							<TableHead className='text-center font-semibold' colSpan={2}>Auto</TableHead>
+							<TableHead className='text-center font-semibold' colSpan={3}>TeleOp</TableHead>
+							<TableHead className='text-center font-semibold' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
 							<TableHead>Number</TableHead>
