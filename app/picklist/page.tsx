@@ -46,7 +46,8 @@ export default async function PickListPage() {
 	const picklists = (await PickList.find({}))?.map(({ name, ordering }) => ({ name, ordering }));
 
 	return (
-		<main className='mx-auto max-w-[540px]'>
+		<main className='mx-auto max-w-[540px] mt-16'>
+			<h1>Picklist</h1>
 			<PickListTable data={averages} picklists={picklists} />
 		</main>
 	);
