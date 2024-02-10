@@ -31,7 +31,7 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 		transform: CSS.Transform.toString(transform),
 		transition,
 	};
-
+	
 	return (
 		<TableRow
 			className='relative active:z-50 hover:cursor-grab active:cursor-grabbing active:bg-primary'
@@ -102,16 +102,16 @@ export default function PickListTable({
 							<TableHead className='text-center font-semibold' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
-							<TableHead>Number</TableHead>
-							<TableHead>First Pickability</TableHead>
-							<TableHead>Second Pickability</TableHead>
-							<TableHead>Amp</TableHead>
-							<TableHead>Speaker</TableHead>
-							<TableHead>Amp</TableHead>
-							<TableHead>Speaker</TableHead>
-							<TableHead>Amplified Speaker</TableHead>
-							<TableHead>Climb Rate</TableHead>
-							<TableHead>Trap Notes</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Number</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>First Pickability</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Second Pickability</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amp</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amp</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Amplified Speaker</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Climb Rate</TableHead>
+							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Trap Notes</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
