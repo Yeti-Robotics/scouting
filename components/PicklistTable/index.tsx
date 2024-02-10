@@ -48,6 +48,8 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 			<TableCell>{Math.round(teamData.teleopAmpNotes * 100) / 100}</TableCell>
 			<TableCell>{Math.round(teamData.teleopSpeakerNotes * 100) / 100}</TableCell>
 			<TableCell>{Math.round(teamData.teleopAmplifiedSpeakerNotes * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.climbRate * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.trapNotes * 100) / 100}</TableCell>
 		</TableRow>
 	);
 }
@@ -97,6 +99,7 @@ export default function PickListTable({
 							<TableHead colSpan={3}></TableHead>
 							<TableHead className='text-center' colSpan={2}>Auto</TableHead>
 							<TableHead className='text-center' colSpan={3}>TeleOp</TableHead>
+							<TableHead className='text-center' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
 							<TableHead>Number</TableHead>
@@ -107,6 +110,8 @@ export default function PickListTable({
 							<TableHead>Amp</TableHead>
 							<TableHead>Speaker</TableHead>
 							<TableHead>Amplified Speaker</TableHead>
+							<TableHead>Climb Rate</TableHead>
+							<TableHead>Trap Notes</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
