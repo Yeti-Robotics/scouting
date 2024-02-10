@@ -70,6 +70,18 @@ export default function PickListTable({
 		}),
 	);
 
+	const headers = [
+		{ id: "firstPickability", title: "First Pickability"},
+		{ id: "secondPickability", title: "Second Pickability"},
+		{ id: "autoAmpNotes", title: "Amp"},
+		{ id: "autoSpeakerNotes", title: "Speaker"},
+		{ id: "teleopAmpNotes", title: "Amp"},
+		{ id: "teleopSpeakerNotes", title: "Speaker"},
+		{ id: "teleopAmplifiedSpeakerNotes", title: "Amplified Notes"},
+		{ id: "climbRate", title: "Climb Rate"},
+		{ id: "trapNotes", title: "Trap Notes"}
+	]
+
 	type ColumnsT = keyof TeamDerivedStatsI;
 	const [sortColumn, setSortColumn] = useState<ColumnsT>('firstPickability');
 	const [ascending, setAscending] = useState(false);
@@ -114,16 +126,7 @@ export default function PickListTable({
 							<TableHead className='text-center font-semibold' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary'>Number</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('firstPickability')}>First Pickability</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('secondPickability')}>Second Pickability</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('autoAmpNotes')}>Amp</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('autoSpeakerNotes')}>Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopAmpNotes')}>Amp</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopSpeakerNotes')}>Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('teleopAmplifiedSpeakerNotes')}>Amplified Speaker</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('climbRate')}>Climb Rate</TableHead>
-							<TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' onClick={() => handleHeaderClick('trapNotes')}>Trap Notes</TableHead>
+							{headers.map(({id, title}) => <TableHead key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>{title}</TableHead>)}
 						</TableRow>
 					</TableHeader>
 					<TableBody>
