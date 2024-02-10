@@ -11,8 +11,8 @@ const openSans = Open_Sans({ subsets: ['latin'] });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
-			<body className={`min-h-screen bg-eerie-black ${openSans.className} max-w-full`}>{children}</body>
-		</html>
+			<body className={`min-h-screen bg-eerie-black font-${openSans.className} prose dark:prose-invert max-w-full`}>{children}</body>
+	</html>
 	);
 }
 
