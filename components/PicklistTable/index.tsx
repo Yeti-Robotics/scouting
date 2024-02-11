@@ -83,7 +83,7 @@ export default function PickListTable({
 	]
 
 	type ColumnsT = keyof TeamDerivedStatsI;
-	const [sortColumn, setSortColumn] = useState<ColumnsT>('firstPickability');
+	const [sortColumn, setSortColumn] = useState<ColumnsT|undefined>('firstPickability');
 	const [ascending, setAscending] = useState(false);
 
 	function handleHeaderClick(column: ColumnsT) {
@@ -100,6 +100,7 @@ export default function PickListTable({
 	 */
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event;
+		sortColumn == null;
 		if (active && over && active.id !== over.id) {
 			setTeams((oldTeams) => {
 				const oldIndex = items.indexOf(active.id as number);
@@ -133,10 +134,10 @@ export default function PickListTable({
 						<SortableContext items={items} strategy={verticalListSortingStrategy}>
 							{teams.filter((team) => team !== undefined).sort((teamA, teamB) => {
 							return ascending
-								? teamA[sortColumn] < teamB[sortColumn]
+								? teamA[sortColumn as ColumnsT] < teamB[sortColumn as ColumnsT]
 									? -1
 									: 1
-								: teamA[sortColumn] < teamB[sortColumn]
+								: teamA[sortColumn as ColumnsT] < teamB[sortColumn as ColumnsT]
 									? 1
 									: -1;
 						}).map((team) => (

@@ -46,8 +46,8 @@ export default async function PickListPage() {
 	const picklists = (await PickList.find({}))?.map(({ name, ordering }) => ({ name, ordering }));
 
 	return (
-		<main className='mx-auto p-6 mt-16'>
-			<h1>YETI Scouting Picklist</h1>
+		<main className='mx-auto p-6 mt-16 ml-4'>
+			<h1 className='text-primary'>YETI Scouting Picklist</h1>
 			<PickListTable data={averages} picklists={picklists} />
 		</main>
 	);
