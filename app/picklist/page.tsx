@@ -40,6 +40,7 @@ export default async function PickListPage() {
 				...team,
 				firstPickability: computeTeamPickability(team, firstPickWeights),
 				secondPickability: computeTeamPickability(team, secondPickWeights),
+				climbRate: 100 * (team.climbSuccess / team.forms)
 			}))
 			.sort((b, a) => a.firstPickability - b.firstPickability),
 	);
@@ -47,7 +48,7 @@ export default async function PickListPage() {
 
 	return (
 		<main className='mx-auto p-6 mt-16 ml-4'>
-			<h1 className='text-primary'>YETI Scouting Picklist</h1>
+			<h1 className='text-primary mb-4'>YETI Scouting Picklist</h1>
 			<PickListTable data={averages} picklists={picklists} />
 		</main>
 	);

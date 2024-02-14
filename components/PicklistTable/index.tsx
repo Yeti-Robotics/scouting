@@ -22,6 +22,22 @@ import { useSortable } from '@dnd-kit/sortable';
 import { NewPicklistI } from '@/models/PickList';
 import { TeamDerivedStatsI } from '@/lib/types/Pickability';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '../ui/button';
+import { IconArrowsUpDown } from '@tabler/icons-react';
+
+const headers = [
+	{id: "_id", title: "Team Number"},
+	{ id: "firstPickability", title: "First Pickability"},
+	{ id: "secondPickability", title: "Second Pickability"},
+	{ id: "autoAmpNotes", title: "Amp"},
+	{ id: "autoSpeakerNotes", title: "Speaker"},
+	{ id: "teleopAmpNotes", title: "Amp"},
+	{ id: "teleopSpeakerNotes", title: "Speaker"},
+	{ id: "teleopAmplifiedSpeakerNotes", title: "Amplified Notes"},
+	{ id: "climbRate", title: "Climb Rate"},
+	{ id: "trapNotes", title: "Trap Notes"}
+]
+
 
 function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -48,10 +64,23 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 			<TableCell>{Math.round(teamData.teleopAmpNotes * 100) / 100}</TableCell>
 			<TableCell>{Math.round(teamData.teleopSpeakerNotes * 100) / 100}</TableCell>
 			<TableCell>{Math.round(teamData.teleopAmplifiedSpeakerNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.climbRate * 100) / 100}</TableCell>
+			<TableCell>{Math.round(teamData.climbRate * 100) / 100}%</TableCell>
 			<TableCell>{Math.round(teamData.trapNotes * 100) / 100}</TableCell>
 		</TableRow>
 	);
+}
+type ColumnsT = keyof TeamDerivedStatsI;
+
+function sortTeams(data: TeamDerivedStatsI[], columnName: ColumnsT, ascending: boolean) {
+	return [...data].sort((teamA, teamB) => {
+		return ascending
+			? teamA[columnName] < teamB[columnName]
+				? -1
+				: 1
+			: teamA[columnName] < teamB[columnName]
+				? 1
+				: -1;
+	});
 }
 
 export default function PickListTable({
@@ -60,7 +89,12 @@ export default function PickListTable({
 	data: TeamDerivedStatsI[];
 	picklists: NewPicklistI[];
 }) {
-	const [teams, setTeams] = useState(data);
+	
+	const [sortColumn, setSortColumn] = useState<ColumnsT|undefined>('firstPickability');
+	const [ascending, setAscending] = useState(false);
+	const [teams, setTeams] = useState(
+		data.sort((a, b) => b.firstPickability - a.firstPickability),
+		);
 	// Whenever teams updates, get the new id mapping
 	const items = useMemo(() => teams?.map(({ _id }) => _id), [teams]);
 	const sensors = useSensors(
@@ -70,29 +104,16 @@ export default function PickListTable({
 		}),
 	);
 
-	const headers = [
-		{ id: "firstPickability", title: "First Pickability"},
-		{ id: "secondPickability", title: "Second Pickability"},
-		{ id: "autoAmpNotes", title: "Amp"},
-		{ id: "autoSpeakerNotes", title: "Speaker"},
-		{ id: "teleopAmpNotes", title: "Amp"},
-		{ id: "teleopSpeakerNotes", title: "Speaker"},
-		{ id: "teleopAmplifiedSpeakerNotes", title: "Amplified Notes"},
-		{ id: "climbRate", title: "Climb Rate"},
-		{ id: "trapNotes", title: "Trap Notes"}
-	]
-
-	type ColumnsT = keyof TeamDerivedStatsI;
-	const [sortColumn, setSortColumn] = useState<ColumnsT|undefined>('firstPickability');
-	const [ascending, setAscending] = useState(false);
-
-	function handleHeaderClick(column: ColumnsT) {
-		if (column === sortColumn) {
-			setAscending((curr) => !curr);
-		} else {
-			setSortColumn(column);
-		}
-	}
+    function handleHeaderClick(column: ColumnsT) {
+        if (column === sortColumn) {
+            setTeams(sortTeams(teams, sortColumn, !ascending));
+            setAscending((curr) => !curr);
+        } else {
+            setTeams(sortTeams(teams, column, false));
+            setAscending(false);
+            setSortColumn(column);
+        }
+    }
 
 	/**
 	 * On end of drag, update teams to match new teams
@@ -100,53 +121,52 @@ export default function PickListTable({
 	 */
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event;
-		sortColumn == null;
 		if (active && over && active.id !== over.id) {
 			setTeams((oldTeams) => {
 				const oldIndex = items.indexOf(active.id as number);
 				const newIndex = items.indexOf(over.id as number);
 				return arrayMove(oldTeams, oldIndex, newIndex);
 			});
+			setSortColumn(undefined);
 		}
 	}
 
 	return (
-		<>
+		<div className="border rounded-md">
 			<DndContext
 				sensors={sensors}
 				onDragEnd={handleDragEnd}
 				collisionDetection={closestCenter}
 				modifiers={[restrictToVerticalAxis]}
 			>
-				<Table className='max-w-540'>
+				<Table>
 					<TableHeader>
 					<TableRow >
 							<TableHead colSpan={3}></TableHead>
-							<TableHead className='text-center font-semibold' colSpan={2}>Auto</TableHead>
-							<TableHead className='text-center font-semibold' colSpan={3}>TeleOp</TableHead>
-							<TableHead className='text-center font-semibold' colSpan={2}>Endgame</TableHead>
+							<TableHead className='text-center font-semibold border-x' colSpan={2}>Auto</TableHead>
+							<TableHead className='text-center font-semibold border-x' colSpan={3}>TeleOp</TableHead>
+							<TableHead className='text-center font-semibold border-x' colSpan={2}>Endgame</TableHead>
 						</TableRow>
 						<TableRow>
-							{headers.map(({id, title}) => <TableHead className='hover:bg-accent hover:text-accent-foreground hover:cursor-grab active:cursor-grabbing active:bg-primary' key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>{title}</TableHead>)}
+
+							{headers.map(({id, title}) => <TableHead key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>
+								<Button variant="ghost">
+				
+								{title}
+								<IconArrowsUpDown className="ml-2 h-4 w-4"/>
+								</Button>
+								</TableHead>)}
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						<SortableContext items={items} strategy={verticalListSortingStrategy}>
-							{teams.filter((team) => team !== undefined).sort((teamA, teamB) => {
-							return ascending
-								? teamA[sortColumn as ColumnsT] < teamB[sortColumn as ColumnsT]
-									? -1
-									: 1
-								: teamA[sortColumn as ColumnsT] < teamB[sortColumn as ColumnsT]
-									? 1
-									: -1;
-						}).map((team) => (
+							{teams.map((team) => (
 								<DraggableRow key={team._id} teamData={team} />
 							))}
 						</SortableContext>
 					</TableBody>
 				</Table>
 			</DndContext>
-		</>
+		</div>
 	);
 }
