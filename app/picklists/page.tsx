@@ -13,6 +13,7 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import { Button } from '@/components/ui/button';
   
 
 export default async function PicklistPage() {
@@ -25,14 +26,13 @@ export default async function PicklistPage() {
       <Card>
   <CardHeader>
     <CardTitle>{picklist.name}</CardTitle>
-    <CardDescription>Card Description</CardDescription>
+    <CardDescription>
+      <p>Updated at: {picklist.updatedAt.toDateString()}</p>
+    </CardDescription>
   </CardHeader>
   <CardContent>
-    <p>Card Content</p>
+    <Button variant="outline">View</Button>
   </CardContent>
-  <CardFooter>
-    <p>Card Footer</p>
-  </CardFooter>
 </Card>
 
     </Card>
