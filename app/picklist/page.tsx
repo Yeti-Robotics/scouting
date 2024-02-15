@@ -40,16 +40,16 @@ export default async function PickListPage() {
 				...team,
 				firstPickability: computeTeamPickability(team, firstPickWeights),
 				secondPickability: computeTeamPickability(team, secondPickWeights),
-				climbRate: 100 * (team.climbSuccess / team.forms)
+				climbRate: 100 * (team.climbSuccess / team.forms),
 			}))
 			.sort((b, a) => a.firstPickability - b.firstPickability),
 	);
 	const picklists = (await PickList.find({}))?.map(({ name, ordering }) => ({ name, ordering }));
 
 	return (
-		<main className='mx-auto p-6 mt-16 ml-4'>
-			<h1 className='text-primary mb-4'>YETI Scouting Picklist</h1>
-			<PickListTable data={averages} picklists={picklists} />
+		<main className='mx-auto ml-4 mt-16 p-6'>
+			<h1 className='mb-4 text-primary'>YETI Scouting Picklist</h1>
+			<div>picklist selector interface</div>
 		</main>
 	);
 }

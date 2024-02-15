@@ -11,35 +11,36 @@ export async function GET(req: NextRequest) {
 		return NextResponse.json({ message: 'Access Forbidden' }, { status: 403 });
 	}
 
-    await connectToDbB();
-    const pickList=await PickList.find({});
+	await connectToDbB();
+	const pickList = await PickList.find({});
 	return NextResponse.json(pickList);
 }
 
 export async function POST(req: NextRequest) {
-    const access_token = req.cookies.get('access_token')?.value;
+	const access_token = req.cookies.get('access_token')?.value;
 	const isAdmin = verifyAdmin(access_token);
 
 	if (!isAdmin) {
 		return NextResponse.json({ message: 'Access Forbidden' }, { status: 403 });
 	}
-    
-    await connectToDbB()
-    const body: NewPicklistI = await req.json()
-    await PickList.create(body);
+
+	await connectToDbB();
+	const body: NewPicklistI = await req.json();
+	const np = new PickList(body);
+	await np.save();
 	return NextResponse.json({ message: 'success' });
 }
 
 export async function PATCH(req: NextRequest) {
-    const access_token = req.cookies.get('access_token')?.value;
+	const access_token = req.cookies.get('access_token')?.value;
 	const isAdmin = verifyAdmin(access_token);
 
 	if (!isAdmin) {
 		return NextResponse.json({ message: 'Access Forbidden' }, { status: 403 });
 	}
-    
-    await connectToDbB()
-    const body: NewPicklistI = await req.json()
-    await PickList.updateOne({name: body.name}, body);
+
+	await connectToDbB();
+	const body: NewPicklistI = await req.json();
+	await PickList.updateOne({ name: body.name }, body);
 	return NextResponse.json({ message: 'success' });
 }

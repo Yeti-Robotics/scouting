@@ -9,7 +9,7 @@ import {
 	useSensors,
 	DragEndEvent,
 } from '@dnd-kit/core';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
 	arrayMove,
 	SortableContext,
@@ -19,25 +19,31 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 // import { CreateForm, SelectPickList, UpdateButton } from './CUElements';
-import { NewPicklistI } from '@/models/PickList';
+import PickList, { NewPicklistI } from '@/models/PickList';
 import { TeamDerivedStatsI } from '@/lib/types/Pickability';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table';
 import { Button } from '../ui/button';
 import { IconArrowsUpDown } from '@tabler/icons-react';
 
 const headers = [
-	{id: "_id", title: "Team Number"},
-	{ id: "firstPickability", title: "First Pickability"},
-	{ id: "secondPickability", title: "Second Pickability"},
-	{ id: "autoAmpNotes", title: "Amp"},
-	{ id: "autoSpeakerNotes", title: "Speaker"},
-	{ id: "teleopAmpNotes", title: "Amp"},
-	{ id: "teleopSpeakerNotes", title: "Speaker"},
-	{ id: "teleopAmplifiedSpeakerNotes", title: "Amplified Notes"},
-	{ id: "climbRate", title: "Climb Rate"},
-	{ id: "trapNotes", title: "Trap Notes"}
-]
-
+	{ id: '_id', title: 'Team Number' },
+	{ id: 'firstPickability', title: 'First Pickability' },
+	{ id: 'secondPickability', title: 'Second Pickability' },
+	{ id: 'autoAmpNotes', title: 'Amp' },
+	{ id: 'autoSpeakerNotes', title: 'Speaker' },
+	{ id: 'teleopAmpNotes', title: 'Amp' },
+	{ id: 'teleopSpeakerNotes', title: 'Speaker' },
+	{ id: 'teleopAmplifiedSpeakerNotes', title: 'Amplified Notes' },
+	{ id: 'climbRate', title: 'Climb Rate' },
+	{ id: 'trapNotes', title: 'Trap Notes' },
+];
 
 function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -50,7 +56,7 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 
 	return (
 		<TableRow
-			className='relative active:z-50 hover:cursor-grab active:cursor-grabbing active:bg-primary'
+			className='relative hover:cursor-grab active:z-50 active:cursor-grabbing active:bg-primary'
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
@@ -87,14 +93,11 @@ export default function PickListTable({
 	data,
 }: {
 	data: TeamDerivedStatsI[];
-	picklists: NewPicklistI[];
+	picklist: NewPicklistI;
 }) {
-	
-	const [sortColumn, setSortColumn] = useState<ColumnsT|undefined>('firstPickability');
+	const [sortColumn, setSortColumn] = useState<ColumnsT | undefined>(undefined);
 	const [ascending, setAscending] = useState(false);
-	const [teams, setTeams] = useState(
-		data.sort((a, b) => b.firstPickability - a.firstPickability),
-		);
+	const [teams, setTeams] = useState(data);
 	// Whenever teams updates, get the new id mapping
 	const items = useMemo(() => teams?.map(({ _id }) => _id), [teams]);
 	const sensors = useSensors(
@@ -104,16 +107,18 @@ export default function PickListTable({
 		}),
 	);
 
-    function handleHeaderClick(column: ColumnsT) {
-        if (column === sortColumn) {
-            setTeams(sortTeams(teams, sortColumn, !ascending));
-            setAscending((curr) => !curr);
-        } else {
-            setTeams(sortTeams(teams, column, false));
-            setAscending(false);
-            setSortColumn(column);
-        }
-    }
+	console.log(teams);
+
+	function handleHeaderClick(column: ColumnsT) {
+		if (column === sortColumn) {
+			setTeams(sortTeams(teams, sortColumn, !ascending));
+			setAscending((curr) => !curr);
+		} else {
+			setTeams(sortTeams(teams, column, false));
+			setAscending(false);
+			setSortColumn(column);
+		}
+	}
 
 	/**
 	 * On end of drag, update teams to match new teams
@@ -132,7 +137,8 @@ export default function PickListTable({
 	}
 
 	return (
-		<div className="border rounded-md">
+		<div className='rounded-md border'>
+			<Button variant='outline'>Click</Button>
 			<DndContext
 				sensors={sensors}
 				onDragEnd={handleDragEnd}
@@ -141,21 +147,30 @@ export default function PickListTable({
 			>
 				<Table>
 					<TableHeader>
-					<TableRow >
+						<TableRow>
 							<TableHead colSpan={3}></TableHead>
-							<TableHead className='text-center font-semibold border-x' colSpan={2}>Auto</TableHead>
-							<TableHead className='text-center font-semibold border-x' colSpan={3}>TeleOp</TableHead>
-							<TableHead className='text-center font-semibold border-x' colSpan={2}>Endgame</TableHead>
+							<TableHead className='border-x text-center font-semibold' colSpan={2}>
+								Auto
+							</TableHead>
+							<TableHead className='border-x text-center font-semibold' colSpan={3}>
+								TeleOp
+							</TableHead>
+							<TableHead className='border-x text-center font-semibold' colSpan={2}>
+								Endgame
+							</TableHead>
 						</TableRow>
 						<TableRow>
-
-							{headers.map(({id, title}) => <TableHead key={id} onClick={() => handleHeaderClick(id as ColumnsT)}>
-								<Button variant="ghost">
-				
-								{title}
-								<IconArrowsUpDown className="ml-2 h-4 w-4"/>
-								</Button>
-								</TableHead>)}
+							{headers.map(({ id, title }) => (
+								<TableHead
+									key={id}
+									onClick={() => handleHeaderClick(id as ColumnsT)}
+								>
+									<Button variant='ghost'>
+										{title}
+										<IconArrowsUpDown className='ml-2 h-4 w-4' />
+									</Button>
+								</TableHead>
+							))}
 						</TableRow>
 					</TableHeader>
 					<TableBody>
