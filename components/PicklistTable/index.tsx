@@ -138,7 +138,6 @@ export default function PickListTable({
 
 	return (
 		<div className='rounded-md border'>
-			<Button variant='outline'>Click</Button>
 			<DndContext
 				sensors={sensors}
 				onDragEnd={handleDragEnd}

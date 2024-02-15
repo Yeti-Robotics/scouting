@@ -61,7 +61,7 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 		averages.sort((a, b) => indices[a._id as TeamNumber] - indices[b._id as TeamNumber]);
 		return (
 			<main className='mx-auto ml-4 mt-16 p-6'>
-				<h1 className='mb-4 text-primary'>{name}</h1>
+				<h1 className='typography mb-4 text-primary'>{name}</h1>
 				<PickListTable data={averages} picklist={parsedPicklist} />
 			</main>
 		);
