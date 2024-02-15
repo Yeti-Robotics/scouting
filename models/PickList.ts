@@ -15,8 +15,8 @@ export interface NewPicklistI {
 
 export interface PickListI extends NewPicklistI {
 	_id: string;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 const PickList = (models?.pickList as Model<PickListI>) || model('pickList', pickListSchema);
