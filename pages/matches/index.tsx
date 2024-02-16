@@ -1,6 +1,5 @@
 import { Link } from '@/components/Link';
 import fetcher from '@/lib/fetch';
-import { hasTeam } from '@/lib/matchDataUtils';
 import { useUser } from '@/lib/useUser';
 import { MatchI } from '@/models/Match';
 import {
@@ -125,7 +124,6 @@ const MatchData = () => {
 					.filter(
 						matchNum === '' ? () => true : (match) => match.matchNumber === matchNum,
 					)
-					.filter(teamNum === '' ? () => true : (match) => hasTeam(match, teamNum))
 					.map((match) => (
 						<MatchDisplay key={match._id} match={match} />
 					))}

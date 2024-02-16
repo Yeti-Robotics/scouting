@@ -2,33 +2,7 @@
 import { Subdocument } from '@/lib/api/types';
 import { Model, model, models, Schema, Types } from 'mongoose';
 
-const betSchema = new Schema<Bet>(
-	{
-		username: { type: String, required: true },
-		paid: { type: Boolean, default: () => false },
-		winner: {
-			bet: { type: String },
-			amount: { type: Number },
-			won: { type: Boolean },
-		},
-		topScorer: {
-			bet: { type: Number },
-			amount: { type: Number },
-			won: { type: Boolean },
-		},
-		bottomScorer: {
-			bet: { type: Number },
-			amount: { type: Number },
-			won: { type: Boolean },
-		},
-	},
-	{ timestamps: true, collection: 'bets' },
-);
-
-type MatchDocumentProps = {
-	bets: Types.DocumentArray<Bet> & Subdocument<Bet, MatchI>[];
-};
-type MatchModelType = Model<MatchI, {}, MatchDocumentProps>;
+type MatchModelType = Model<MatchI, {}>;
 
 const storedAllianceSchema = new Schema<StoredTBAMtch>({
 	teleopGrid: { B: [String], M: [String], T: [String] },
@@ -57,7 +31,6 @@ const matchSchema = new Schema<MatchI, MatchModelType>(
 		setNumber: { type: Number, required: true },
 		compYear: { type: Number, required: true },
 		compKey: { type: String, required: true },
-		bets: [betSchema],
 		official: {
 			red: storedAllianceSchema,
 			blue: storedAllianceSchema,
@@ -74,7 +47,6 @@ export interface MatchI {
 	red1?: number;
 	red2?: number;
 	red3?: number;
-	bets: Bet[];
 	open: boolean;
 	winner: 'red' | 'blue' | 'tie';
 	topScorer?: number;
@@ -100,7 +72,6 @@ export interface MatchSchedule {
 	red1?: number;
 	red2?: number;
 	red3?: number;
-	bets: Bet[];
 	open: boolean;
 	winner: 'red' | 'blue' | 'tie';
 	topScorer?: number;
@@ -116,33 +87,6 @@ export interface MatchSchedule {
 		red: StoredTBAMtch;
 		blue: StoredTBAMtch;
 	};
-}
-
-export interface Bet {
-	_id: string;
-	/** username of better */
-	username: string;
-	paid: boolean;
-	winner?: {
-		/** what they bet on, red or blue win */
-		bet: 'red' | 'blue';
-		amount: number;
-		won: boolean;
-	};
-	topScorer?: {
-		/** who they bet on, team number */
-		bet: number;
-		amount: number;
-		won: boolean;
-	};
-	bottomScorer?: {
-		/** who they bet on, team number */
-		bet: number;
-		amount: number;
-		won: boolean;
-	};
-	createdAt: string;
-	updatedAt: string;
 }
 
 export type StoredTBAMtch = {
