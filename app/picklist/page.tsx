@@ -64,3 +64,5 @@ export default async function PicklistPage() {
 		</main>
 	);
 }
+
+export const dynamic = 'force-dynamic';

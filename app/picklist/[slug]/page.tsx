@@ -134,3 +134,5 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 		</main>
 	);
 }
+
+export const dynamic = 'force-dynamic';
