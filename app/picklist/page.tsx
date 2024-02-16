@@ -1,21 +1,19 @@
-import StandForm from '@/models/StandForm';
-import PickList from '@/models/PickList';
-import PickListTable from '@/components/PicklistTable';
-import { TeamAvgsI, PickabilityWeightsI } from '@/lib/types/Pickability';
-import { avgDataPipeline } from '@/models/aggregations/averageData';
-import { firstPickWeights, secondPickWeights } from '../../lib/analysis/pickability-weights';
 import { connectToDbB } from '@/middleware/connect-db';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { CreateForm } from './crud-components';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import PickList from '@/models/PickList';
 
 export default async function PicklistPage() {
 	await connectToDbB();
 	const picklists = await PickList.find({});
-	console.log(picklists);
 	return (
 		<main className='mx-auto mt-12 max-w-[540px]'>
 			<h1 className='typography mb-6'>YETI Picklists</h1>
+			<div className='my-4'>
+				<CreateForm />
+			</div>
 			<div className='grid grid-cols-1 gap-5'>
 				{picklists
 					.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1))
