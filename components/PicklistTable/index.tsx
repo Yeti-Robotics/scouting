@@ -56,7 +56,7 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 
 	return (
 		<TableRow
-			className='relative hover:cursor-grab active:z-50 active:cursor-grabbing active:bg-primary'
+			className='relative hover:cursor-grab active:z-50 active:cursor-grabbing active:bg-primary active:text-background'
 			ref={setNodeRef}
 			style={style}
 			{...attributes}

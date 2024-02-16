@@ -119,7 +119,7 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 	// Render the PicklistPage component
 	return (
 		<main className='container'>
-			<div className='flex-1 space-y-4 border p-8 py-6'>
+			<div className='flex-1 space-y-4 p-8 py-6'>
 				<TeamContextProvider initialState={derivedStatistics}>
 					<header className='flex-1 space-y-4'>
 						<div className='flex items-center justify-between space-y-2'>
