@@ -1,4 +1,4 @@
-import verifyAdmin from '@/middleware/app-router/verify-admin';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 import { connectToDbB } from '@/middleware/connect-db';
 import CompKey from '@/models/CompKey';
 import PickList, { NewPicklistI, PickListI } from '@/models/PickList';
