@@ -1,29 +1,50 @@
 'use client';
 
-import { NewPicklistI, PickListI } from '@/models/PickList';
-import { useState, FormEvent, Dispatch, SetStateAction, ChangeEvent } from 'react';
-import { arrayMove } from '@dnd-kit/sortable';
+import { NewPicklistI } from '@/models/PickList';
+import { FormEvent, Dispatch, SetStateAction, ChangeEvent, useContext } from 'react';
 import { TeamDerivedStatsI } from '@/lib/types/Pickability';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { TeamsContext } from './[slug]/team-context-provider';
+import {
+	DialogContent,
+	DialogTitle,
+	Dialog,
+	DialogHeader,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 
-export function CreateForm({ ordering }: { ordering: number[] }) {
+export function CreateForm() {
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
+
 		fetch('/api/picklist', {
 			method: 'POST',
 			body: JSON.stringify({
 				name: data.get('pickList_name'),
-				ordering,
 			}),
 		});
 		event;
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<input type='text' name='pickList_name' />
-			<button type='submit'>Create Picklist</button>
-		</form>
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button variant='outline'>Create Picklist</Button>
+			</DialogTrigger>
+			<DialogContent className='sm:max-w-[425px]'>
+				<DialogHeader>
+					<DialogTitle>Create a Picklist</DialogTitle>
+				</DialogHeader>
+				<form className='grid gap-4' onSubmit={handleSubmit}>
+					<Input type='text' name='pickList_name' placeholder='Name' />
+					<Button className='w-min' type='submit'>
+						Create Picklist
+					</Button>
+				</form>
+			</DialogContent>
+		</Dialog>
 	);
 }
 
@@ -61,4 +82,18 @@ export function SelectPickList({ ordering, setTeams, picklists }: SelectPickList
 	);
 }
 
-export function UpdateButton() {}
+export function UpdateButton({ mongoId }: { mongoId: string }) {
+	const { items } = useContext(TeamsContext);
+	return (
+		<Button
+			onClick={() =>
+				fetch('/api/picklist', {
+					method: 'PATCH',
+					body: JSON.stringify({ ordering: items, _id: mongoId }),
+				})
+			}
+		>
+			Save
+		</Button>
+	);
+}
