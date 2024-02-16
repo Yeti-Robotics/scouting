@@ -118,13 +118,19 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 		.sort((a, b) => (indices.get(a._id) as number) - (indices.get(b._id) as number));
 	// Render the PicklistPage component
 	return (
-		<main className='mx-auto mt-16 p-6'>
-			<h1 className='typography mb-4 text-primary'>{name}</h1>
-			<p className='lead mb-6'>Last Updated • {updatedAt.toDateString()}</p>
-			<TeamContextProvider initialState={derivedStatistics}>
-				<UpdateButton mongoId={params.slug} />
-				<PickListTable />
-			</TeamContextProvider>
+		<main className='container'>
+			<div className='flex-1 space-y-4 border p-8 py-6'>
+				<TeamContextProvider initialState={derivedStatistics}>
+					<header className='flex-1 space-y-4'>
+						<div className='flex items-center justify-between space-y-2'>
+							<h1 className='typography'>{name}</h1>
+							<UpdateButton mongoId={params.slug} />
+						</div>
+						<p className='lead'>Last Updated • {updatedAt.toDateString()}</p>
+					</header>
+					<PickListTable />
+				</TeamContextProvider>
+			</div>
 		</main>
 	);
 }

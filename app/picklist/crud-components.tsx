@@ -78,6 +78,7 @@ export function UpdateButton({ mongoId }: { mongoId: string }) {
 	const router = useRouter();
 	return (
 		<Button
+			variant={'default'}
 			onClick={() =>
 				fetch('/api/picklist', {
 					method: 'PATCH',
@@ -89,7 +90,7 @@ export function UpdateButton({ mongoId }: { mongoId: string }) {
 					)
 			}
 		>
-			Save
+			Save Picklist
 		</Button>
 	);
 }
