@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import {
 	DndContext,
 	closestCenter,
@@ -18,8 +18,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-// import { CreateForm, SelectPickList, UpdateButton } from './CUElements';
-import PickList, { NewPicklistI } from '@/models/PickList';
+import { NewPicklistI } from '@/models/PickList';
 import { TeamDerivedStatsI } from '@/lib/types/Pickability';
 import {
 	Table,
@@ -31,6 +30,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '../ui/button';
 import { IconArrowsUpDown } from '@tabler/icons-react';
+import { TeamsContext } from '@/app/picklist/[slug]/team-context-provider';
 
 const headers = [
 	{ id: '_id', title: 'Team Number' },
@@ -89,17 +89,12 @@ function sortTeams(data: TeamDerivedStatsI[], columnName: ColumnsT, ascending: b
 	});
 }
 
-export default function PickListTable({
-	data,
-}: {
-	data: TeamDerivedStatsI[];
-	picklist: NewPicklistI;
-}) {
+export default function PickListTable() {
 	const [sortColumn, setSortColumn] = useState<ColumnsT | undefined>(undefined);
 	const [ascending, setAscending] = useState(false);
-	const [teams, setTeams] = useState(data);
+	const { teams, setTeams, items } = useContext(TeamsContext);
 	// Whenever teams updates, get the new id mapping
-	const items = useMemo(() => teams?.map(({ _id }) => _id), [teams]);
+
 	const sensors = useSensors(
 		useSensor(PointerSensor),
 		useSensor(KeyboardSensor, {
@@ -107,13 +102,11 @@ export default function PickListTable({
 		}),
 	);
 
-	console.log(teams);
-
 	function handleHeaderClick(column: ColumnsT) {
-		if (column === sortColumn) {
+		if (column === sortColumn && setTeams) {
 			setTeams(sortTeams(teams, sortColumn, !ascending));
 			setAscending((curr) => !curr);
-		} else {
+		} else if (setTeams) {
 			setTeams(sortTeams(teams, column, false));
 			setAscending(false);
 			setSortColumn(column);
@@ -126,7 +119,7 @@ export default function PickListTable({
 	 */
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event;
-		if (active && over && active.id !== over.id) {
+		if (active && over && active.id !== over.id && setTeams) {
 			setTeams((oldTeams) => {
 				const oldIndex = items.indexOf(active.id as number);
 				const newIndex = items.indexOf(over.id as number);
