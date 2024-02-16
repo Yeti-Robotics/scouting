@@ -19,7 +19,7 @@ export default async function PicklistPage() {
 					.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1))
 					.map((picklist) => {
 						return (
-							<Card>
+							<Card key={picklist._id.toString()}>
 								<CardHeader>
 									<div className='flex'>
 										<div className='grow'>
@@ -32,9 +32,6 @@ export default async function PicklistPage() {
 												Updated • {picklist.updatedAt.toDateString()}
 											</CardDescription>
 										</div>
-										<Link href={`/picklist/${picklist._id.toString()}`}>
-											<Button variant='link'>View</Button>
-										</Link>
 									</div>
 								</CardHeader>
 							</Card>
