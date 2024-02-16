@@ -111,6 +111,7 @@ export function SelectPickList({ ordering, setTeams, picklists }: SelectPickList
 
 export function UpdateButton({ mongoId }: { mongoId: string }) {
 	const { items } = useContext(TeamsContext);
+	const router = useRouter();
 	return (
 		<Button
 			onClick={() =>
@@ -118,6 +119,10 @@ export function UpdateButton({ mongoId }: { mongoId: string }) {
 					method: 'PATCH',
 					body: JSON.stringify({ ordering: items, _id: mongoId }),
 				})
+					.then(() => router.refresh())
+					.catch(() =>
+						alert('There was an error updating the picklist. Please try again.'),
+					)
 			}
 		>
 			Save
