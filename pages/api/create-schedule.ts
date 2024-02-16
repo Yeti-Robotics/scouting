@@ -86,42 +86,84 @@ export default new RouteHandler<'api', WAuth>()
 
 			const saves = slots.map((block) => {
 				let shouldShuffle = false;
-				block.blue1 = currentUsers[usersIndex]._id;
+				block.blue1a = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
 					usersIndex = 0;
 				}
 
-				block.blue2 = currentUsers[usersIndex]._id;
+				block.blue1b = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
 					usersIndex = 0;
 				}
 
-				block.blue3 = currentUsers[usersIndex]._id;
+				block.blue2a = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
 					usersIndex = 0;
 				}
 
-				block.red1 = currentUsers[usersIndex]._id;
+				block.blue2b = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
 					usersIndex = 0;
 				}
 
-				block.red2 = currentUsers[usersIndex]._id;
+				block.blue3a = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
 					usersIndex = 0;
 				}
 
-				block.red3 = currentUsers[usersIndex]._id;
+				block.blue3b = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red1a = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red1b = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red2a = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red2b = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red3a = currentUsers[usersIndex]._id;
+				usersIndex++;
+				if (usersIndex >= currentUsers.length) {
+					shouldShuffle = true;
+					usersIndex = 0;
+				}
+
+				block.red3b = currentUsers[usersIndex]._id;
 				usersIndex++;
 				if (usersIndex >= currentUsers.length) {
 					shouldShuffle = true;
