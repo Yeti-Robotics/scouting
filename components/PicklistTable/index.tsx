@@ -62,22 +62,22 @@ function DraggableRow({ teamData }: { teamData: TeamDerivedStatsI }) {
 			{...attributes}
 			{...listeners}
 		>
-			<TableCell>{teamData._id}</TableCell>
-			<TableCell>{Math.round(teamData.firstPickability * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.secondPickability * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.autoAmpNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.autoSpeakerNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.teleopAmpNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.teleopSpeakerNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.teleopAmplifiedSpeakerNotes * 100) / 100}</TableCell>
-			<TableCell>{Math.round(teamData.climbRate * 100) / 100}%</TableCell>
-			<TableCell>{Math.round(teamData.trapNotes * 100) / 100}</TableCell>
+			{headers.map(({ id }) => (
+				<TableCell key={id}>
+					{id === '_id'
+						? teamData['_id']
+						: Math.round(100 * teamData[id as keyof TeamDerivedStatsI]) / 100}
+				</TableCell>
+			))}
 		</TableRow>
 	);
 }
-type ColumnsT = keyof TeamDerivedStatsI;
 
-function sortTeams(data: TeamDerivedStatsI[], columnName: ColumnsT, ascending: boolean) {
+function sortTeams(
+	data: TeamDerivedStatsI[],
+	columnName: keyof TeamDerivedStatsI,
+	ascending: boolean,
+) {
 	return [...data].sort((teamA, teamB) => {
 		return ascending
 			? teamA[columnName] < teamB[columnName]
@@ -90,7 +90,7 @@ function sortTeams(data: TeamDerivedStatsI[], columnName: ColumnsT, ascending: b
 }
 
 export default function PickListTable() {
-	const [sortColumn, setSortColumn] = useState<ColumnsT | undefined>(undefined);
+	const [sortColumn, setSortColumn] = useState<keyof TeamDerivedStatsI | undefined>(undefined);
 	const [ascending, setAscending] = useState(false);
 	const { teams, setTeams, items } = useContext(TeamsContext);
 	// Whenever teams updates, get the new id mapping
@@ -102,7 +102,7 @@ export default function PickListTable() {
 		}),
 	);
 
-	function handleHeaderClick(column: ColumnsT) {
+	function handleHeaderClick(column: keyof TeamDerivedStatsI) {
 		if (column === sortColumn && setTeams) {
 			setTeams(sortTeams(teams, sortColumn, !ascending));
 			setAscending((curr) => !curr);
@@ -155,7 +155,7 @@ export default function PickListTable() {
 							{headers.map(({ id, title }) => (
 								<TableHead
 									key={id}
-									onClick={() => handleHeaderClick(id as ColumnsT)}
+									onClick={() => handleHeaderClick(id as keyof TeamDerivedStatsI)}
 								>
 									<Button variant='ghost'>
 										{title}
