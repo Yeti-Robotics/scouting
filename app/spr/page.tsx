@@ -1,4 +1,4 @@
-import verifyAdmin from '@/middleware/app-router/verify-admin';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 import { cookies } from 'next/headers';
 import RecomputeButton from './recomputeButton';
 import SPRLeaderboard from './sprLeaderboard';
@@ -57,7 +57,7 @@ export default async function SPRDashboard() {
 	if (isAdmin) {
 		return (
 			<main className='mx-auto flex max-w-[540px] flex-wrap items-center'>
-				<h1 className='my-0 text-yeti-blue'>SPR Leaderboard</h1>
+				<h1 className='text-yeti-blue my-0'>SPR Leaderboard</h1>
 				<div className='w-full'>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SPRLeaderboard data={data} />

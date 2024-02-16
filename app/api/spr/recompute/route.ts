@@ -3,7 +3,7 @@ import StandForm from '@/models/StandForm';
 import scoutExpectedContribution from '@/lib/analysis/sprCalculation';
 import SPR from '@/models/SPR';
 import { connectToDbB } from '@/middleware/connect-db';
-import verifyAdmin from '@/middleware/app-router/verify-admin';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 import { NextRequest, NextResponse } from 'next/server';
 
 type TeamScoutMapT = Record<string, string[]>;
@@ -58,7 +58,6 @@ async function recomputeSPR() {
 		);
 	});
 	SPR.insertMany(updatedSPRS);
-	
 }
 
 export async function POST(req: NextRequest) {

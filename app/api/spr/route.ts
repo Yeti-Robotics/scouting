@@ -1,4 +1,4 @@
-import verifyAdmin from '@/middleware/app-router/verify-admin';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
