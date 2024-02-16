@@ -1,55 +1,68 @@
-import StandForm from '@/models/StandForm';
-import PickList from '@/models/PickList';
-import PickListTable from '@/components/PicklistTable';
-import { TeamAvgsI, PickabilityWeightsI } from '@/lib/types/Pickability';
-import { avgDataPipeline } from '@/models/aggregations/averageData';
-import { firstPickWeights, secondPickWeights } from '../../lib/analysis/pickability-weights';
 import { connectToDbB } from '@/middleware/connect-db';
+import { CreateForm } from './crud-components';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import PickList, { PickListI } from '@/models/PickList';
 
 /**
- * Computes pickability using specified weights -- essentially computes a weighted sum
- * @param team - team number
- * @param weights - weights, examples defined in weights.ts
- * @see weights.ts
- *
- * @returns pickability generated using weights
+ * Renders a card for a picklist with a link to the picklist's page.
+ * @param props.picklist - the picklist to display
+ * @returns The rendered PicklistCard component.
  */
-function computeTeamPickability(team: TeamAvgsI, weights: PickabilityWeightsI) {
-	return Object.keys(weights).reduce((prev: number, key: string | number) => {
-		if (key === 'climbRate') {
-			return prev + (team.climbSuccess * weights.climbRate) / team.forms;
-		} else {
-			return (
-				prev +
-				team[key as keyof PickabilityWeightsI] * weights[key as keyof PickabilityWeightsI]
-			);
-		}
-	}, 0);
+function PicklistCard({ picklist }: { picklist: PickListI }) {
+	return (
+		<Card key={picklist._id.toString()}>
+			<CardHeader>
+				<div className='flex'>
+					<div className='grow'>
+						<CardTitle className='duration-250 transition-colors hover:text-primary'>
+							<Link href={`/picklist/${picklist._id.toString()}`}>
+								{picklist.name}
+							</Link>
+						</CardTitle>
+						<CardDescription>
+							Updated • {picklist.updatedAt.toDateString()}
+						</CardDescription>
+					</div>
+				</div>
+			</CardHeader>
+		</Card>
+	);
 }
 
 /**
- * RSC responsible for obtaining initial data and returning the picklist table.
- * @returns page containing DnD picklist
+ * Renders a list of picklists with links to each picklist's page.
+ * @param props.picklists - the picklists to display
+ * @returns The rendered PicklistList component.
  */
-export default async function PickListPage() {
-	// Connect to DB, get AVGs, sort by first
-	await connectToDbB();
-	const averages = await StandForm.aggregate<TeamAvgsI>(avgDataPipeline).then((res) =>
-		res
-			.map((team) => ({
-				...team,
-				firstPickability: computeTeamPickability(team, firstPickWeights),
-				secondPickability: computeTeamPickability(team, secondPickWeights),
-				climbRate: 100 * (team.climbSuccess / team.forms)
-			}))
-			.sort((b, a) => a.firstPickability - b.firstPickability),
-	);
-	const picklists = (await PickList.find({}))?.map(({ name, ordering }) => ({ name, ordering }));
-
+function PicklistList({ picklists }: { picklists: PickListI[] }) {
 	return (
-		<main className='mx-auto p-6 mt-16 ml-4'>
-			<h1 className='text-primary mb-4'>YETI Scouting Picklist</h1>
-			<PickListTable data={averages} picklists={picklists} />
+		<div className='grid grid-cols-1 gap-5'>
+			{picklists
+				.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1))
+				.map((picklist) => {
+					return <PicklistCard key={picklist._id.toString()} picklist={picklist} />;
+				})}
+		</div>
+	);
+}
+
+/**
+ * Responsible for rendering the Picklist management page.
+ * @returns rendered PicklistPage component.
+ */
+export default async function PicklistPage() {
+	await connectToDbB();
+	const picklists = await PickList.find({});
+	return (
+		<main className='mx-auto mt-12 max-w-[540px]'>
+			<h1 className='typography mb-6'>YETI Picklists</h1>
+			<div className='my-4'>
+				<CreateForm />
+			</div>
+			<PicklistList picklists={picklists} />
 		</main>
 	);
 }
+
+export const dynamic = 'force-dynamic';
