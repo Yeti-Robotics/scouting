@@ -32,12 +32,18 @@ interface Props {
 const fullBlockToCreate = (fullBlock: ScheduleBlockI | undefined): CreateScheduleBlock => {
 	(fullBlock as unknown) = {
 		...fullBlock,
-		blue1: fullBlock?.blue1?.username,
-		blue2: fullBlock?.blue2?.username,
-		blue3: fullBlock?.blue3?.username,
-		red1: fullBlock?.red1?.username,
-		red2: fullBlock?.red2?.username,
-		red3: fullBlock?.red3?.username,
+		blue1a: fullBlock?.blue1a?.username,
+		blue1b: fullBlock?.blue1b?.username,
+		blue2a: fullBlock?.blue2a?.username,
+		blue2b: fullBlock?.blue2b?.username,
+		blue3a: fullBlock?.blue3a?.username,
+		blue3b: fullBlock?.blue3b?.username,
+		red1a: fullBlock?.red1a?.username,
+		red1b: fullBlock?.red1b?.username,
+		red2a: fullBlock?.red2a?.username,
+		red2b: fullBlock?.red2b?.username,
+		red3a: fullBlock?.red3a?.username,
+		red3b: fullBlock?.red3b?.username,
 	};
 	return fullBlock as CreateScheduleBlock;
 };
@@ -94,73 +100,151 @@ export const BlockForm = ({ create, defaultBlock, canEdit, id }: Props) => {
 					<IconTrash />
 				</ActionIcon>
 			)}
-			<FormSection title='Info'>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='blue1'
-					label='Blue 1'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='blue2'
-					label='Blue 2'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='blue3'
-					label='Blue 3'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='red1'
-					label='Red 1'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='red2'
-					label='Red 2'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
-				<ControlledAutocomplete
-					control={control}
-					data={options}
-					name='red3'
-					label='Red 3'
-					disabled={!canEdit}
-					maxDropdownHeight={400}
-					limit={8}
-					filter={filter}
-					rules={{ required: false, validate: undefined }}
-				/>
+			<FormSection title='Schedule'>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue1a'
+						label='Blue 1A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue1b'
+						label='Blue 1B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue2a'
+						label='Blue 2A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue2b'
+						label='Blue 2B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue3a'
+						label='Blue 3A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='blue3b'
+						label='Blue 3B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red1a'
+						label='Red 1A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red1b'
+						label='Red 1B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red2a'
+						label='Red 2A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red2b'
+						label='Red 2B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
+				<Group>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red3a'
+						label='Red 3A'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+					<ControlledAutocomplete
+						control={control}
+						data={options}
+						name='red3b'
+						label='Red 3B'
+						disabled={!canEdit}
+						maxDropdownHeight={400}
+						limit={8}
+						filter={filter}
+						rules={{ required: false, validate: undefined }}
+					/>
+				</Group>
 				<Group align='center'>
 					<ControlledNumberInput
 						control={control}

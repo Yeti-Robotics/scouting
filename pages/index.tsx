@@ -5,12 +5,18 @@ import { Card, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import useSWR from 'swr';
 
 const findTeam = (block: ScheduleBlockI, id: string) => {
-	if (id === block.blue1?._id) return 'Blue 1';
-	if (id === block.blue2?._id) return 'Blue 2';
-	if (id === block.blue3?._id) return 'Blue 3';
-	if (id === block.red1?._id) return 'Red 1';
-	if (id === block.red2?._id) return 'Red 2';
-	if (id === block.red3?._id) return 'Red 3';
+	if (id === block.blue1a?._id) return 'Blue 1';
+	if (id === block.blue1b?._id) return 'Blue 1';
+	if (id === block.blue2a?._id) return 'Blue 2';
+	if (id === block.blue2b?._id) return 'Blue 2';
+	if (id === block.blue3a?._id) return 'Blue 3';
+	if (id === block.blue3b?._id) return 'Blue 3';
+	if (id === block.red1a?._id) return 'Red 1';
+	if (id === block.red1b?._id) return 'Red 1';
+	if (id === block.red2a?._id) return 'Red 2';
+	if (id === block.red2b?._id) return 'Red 2';
+	if (id === block.red3a?._id) return 'Red 3';
+	if (id === block.red3b?._id) return 'Red 3';
 	return 'This should not happen, if this happens please report it to Isaiah Gamble.';
 };
 

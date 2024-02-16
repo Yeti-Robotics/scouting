@@ -12,7 +12,7 @@ export default new RouteHandler<'api', WAuth>()
 			return res.status(403).json({ message: 'You are not authorized.' });
 
 		const block = await ScheduleBlock.findById(String(req.query.id)).populate(
-			'blue1 blue2 blue3 red1 red2 red3',
+			'blue1a blue1b blue2a blue2b blue3a blue3b red1a red1b red2a red2b red3a red3b',
 		);
 
 		return res.status(200).json(block);

@@ -13,7 +13,7 @@ export default new RouteHandler<'api', WAuth>()
 
 		const blocks = await ScheduleBlock.find({})
 			.sort('startTime')
-			.populate('blue1 blue2 blue3 red1 red2 red3');
+			.populate('blue1a blue1b blue2a blue2b blue3a blue3b red1a red1b red2a red2b red3a red3b');
 
 		return res.status(200).json(blocks);
 	})
