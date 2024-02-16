@@ -12,7 +12,9 @@ import {
 	Dialog,
 	DialogHeader,
 	DialogTrigger,
+	DialogDescription,
 } from '@/components/ui/dialog';
+import { Label } from '@radix-ui/react-label';
 
 export function CreateForm() {
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -36,8 +38,12 @@ export function CreateForm() {
 			<DialogContent className='sm:max-w-[425px]'>
 				<DialogHeader>
 					<DialogTitle>Create a Picklist</DialogTitle>
+					<DialogDescription>
+						Once you choose a name you will be unable to change it.
+					</DialogDescription>
 				</DialogHeader>
 				<form className='grid gap-4' onSubmit={handleSubmit}>
+					<Label htmlFor='pickList_name'>Picklist Name</Label>
 					<Input type='text' name='pickList_name' placeholder='Name' />
 					<Button className='w-min' type='submit'>
 						Create Picklist
