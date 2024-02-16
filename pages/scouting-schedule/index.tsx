@@ -26,34 +26,64 @@ const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) =
 			<Group position='center' align='center'>
 				<Stack p='md'>
 					<Text fw={600}>
-						Blue 1:
-						<br /> {block.blue1?.firstName} {block.blue1?.lastName[0]}
+						Blue 1A:
+						<br /> {block.blue1a?.firstName} {block.blue1a?.lastName[0]}
 					</Text>
 					<Divider />
 					<Text fw={600}>
-						Blue 2:
-						<br /> {block.blue2?.firstName} {block.blue2?.lastName[0]}
+						Blue 1B:
+						<br /> {block.blue1b?.firstName} {block.blue1b?.lastName[0]}
 					</Text>
 					<Divider />
 					<Text fw={600}>
-						Blue 3:
-						<br /> {block.blue3?.firstName} {block.blue3?.lastName[0]}
+						Blue 2A:
+						<br /> {block.blue2a?.firstName} {block.blue2b?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Blue 2B:
+						<br /> {block.blue2b?.firstName} {block.blue2b?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Blue 3A:
+						<br /> {block.blue3a?.firstName} {block.blue3a?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Blue 3B:
+						<br /> {block.blue3b?.firstName} {block.blue3b?.lastName[0]}
 					</Text>
 				</Stack>
 				<Stack p='md'>
 					<Text fw={600}>
-						Red 1:
-						<br /> {block.red1?.firstName} {block.red1?.lastName[0]}
+						Red 1A:
+						<br /> {block.red1a?.firstName} {block.red1a?.lastName[0]}
 					</Text>
 					<Divider />
 					<Text fw={600}>
-						Red 2:
-						<br /> {block.red2?.firstName} {block.red2?.lastName[0]}
+						Red 1B:
+						<br /> {block.red1b?.firstName} {block.red1b?.lastName[0]}
 					</Text>
 					<Divider />
 					<Text fw={600}>
-						Red 3:
-						<br /> {block.red3?.firstName} {block.red3?.lastName[0]}
+						Red 2A:
+						<br /> {block.red2a?.firstName} {block.red2a?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Red 2B:
+						<br /> {block.red2b?.firstName} {block.red2b?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Red 3A:
+						<br /> {block.red3a?.firstName} {block.red3a?.lastName[0]}
+					</Text>
+					<Divider />
+					<Text fw={600}>
+						Red 3B:
+						<br /> {block.red3b?.firstName} {block.red3b?.lastName[0]}
 					</Text>
 				</Stack>
 			</Group>
@@ -114,12 +144,18 @@ const ScoutingSchedule = () => {
 
 const userIsScouting = (user: UserI, match: ScheduleBlockI) => {
 	return (
-		match.blue1?.username === user.username ||
-		match.blue2?.username === user.username ||
-		match.blue3?.username === user.username ||
-		match.red1?.username === user.username ||
-		match.red2?.username === user.username ||
-		match.red3?.username === user.username
+		match.blue1a?.username === user.username ||
+		match.blue1b?.username === user.username ||
+		match.blue2a?.username === user.username ||
+		match.blue2b?.username === user.username ||
+		match.blue3a?.username === user.username ||
+		match.blue3b?.username === user.username ||
+		match.red1a?.username === user.username ||
+		match.red1b?.username === user.username ||
+		match.red2a?.username === user.username ||
+		match.red2b?.username === user.username ||
+		match.red3a?.username === user.username ||
+		match.red3b?.username === user.username
 	);
 };
 

@@ -15,12 +15,18 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 		if (!user || user.banned || !user.administrator) return;
 		data = {
 			...data,
-			blue1: usersMap[data.blue1 ?? '']?._id,
-			blue2: usersMap[data.blue2 ?? '']?._id,
-			blue3: usersMap[data.blue3 ?? '']?._id,
-			red1: usersMap[data.red1 ?? '']?._id,
-			red2: usersMap[data.red2 ?? '']?._id,
-			red3: usersMap[data.red3 ?? '']?._id,
+			blue1a: usersMap[data.blue1a ?? '']?._id,
+			blue1b: usersMap[data.blue1b ?? '']?._id,
+			blue2a: usersMap[data.blue2a ?? '']?._id,
+			blue2b: usersMap[data.blue2b ?? '']?._id,
+			blue3a: usersMap[data.blue3a ?? '']?._id,
+			blue3b: usersMap[data.blue3b ?? '']?._id,
+			red1a: usersMap[data.red1a ?? '']?._id,
+			red1b: usersMap[data.red1b ?? '']?._id,
+			red2a: usersMap[data.red2a ?? '']?._id,
+			red2b: usersMap[data.red2b ?? '']?._id,
+			red3a: usersMap[data.red3a ?? '']?._id,
+			red3b: usersMap[data.red3b ?? '']?._id,
 		};
 		fetch('/api/schedule', {
 			method: 'POST',
@@ -34,12 +40,18 @@ export const onSubmit: MatchFormOnSubmit = (create, user, usersMap) => {
 		if (!user || user.banned || !user.administrator) return;
 		data = {
 			...data,
-			blue1: usersMap[data.blue1 ?? '']?._id,
-			blue2: usersMap[data.blue2 ?? '']?._id,
-			blue3: usersMap[data.blue3 ?? '']?._id,
-			red1: usersMap[data.red1 ?? '']?._id,
-			red2: usersMap[data.red2 ?? '']?._id,
-			red3: usersMap[data.red3 ?? '']?._id,
+			blue1a: usersMap[data.blue1a ?? '']?._id,
+			blue1b: usersMap[data.blue1b ?? '']?._id,
+			blue2a: usersMap[data.blue2a ?? '']?._id,
+			blue2b: usersMap[data.blue2b ?? '']?._id,
+			blue3a: usersMap[data.blue3a ?? '']?._id,
+			blue3b: usersMap[data.blue3b ?? '']?._id,
+			red1a: usersMap[data.red1a ?? '']?._id,
+			red1b: usersMap[data.red1b ?? '']?._id,
+			red2a: usersMap[data.red2a ?? '']?._id,
+			red2b: usersMap[data.red2b ?? '']?._id,
+			red3a: usersMap[data.red3a ?? '']?._id,
+			red3b: usersMap[data.red3b ?? '']?._id,
 		};
 		fetch('/api/schedule', {
 			method: 'PATCH',
