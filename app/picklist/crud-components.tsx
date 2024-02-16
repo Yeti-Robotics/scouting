@@ -1,8 +1,6 @@
 'use client';
 
-import { NewPicklistI } from '@/models/PickList';
-import { FormEvent, Dispatch, SetStateAction, ChangeEvent, useContext, useState } from 'react';
-import { TeamDerivedStatsI } from '@/lib/types/Pickability';
+import { FormEvent, useContext, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TeamsContext } from './[slug]/team-context-provider';
@@ -72,40 +70,6 @@ export function CreateForm() {
 				</form>
 			</DialogContent>
 		</Dialog>
-	);
-}
-
-interface SelectPickListPropsI {
-	ordering: number[];
-	setTeams: Dispatch<SetStateAction<TeamDerivedStatsI[]>>;
-	picklists: NewPicklistI[];
-}
-
-export function SelectPickList({ ordering, setTeams, picklists }: SelectPickListPropsI) {
-	const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setTeams((teams) => {
-			const newTeams = Array(teams.length);
-			const newOrdering = picklists[parseInt(e.target.value)].ordering;
-			for (let i = 0; i < teams.length; i += 1) {
-				newTeams[i] = teams[ordering.indexOf(newOrdering[i])];
-			}
-			return newTeams;
-		});
-	};
-
-	return (
-		<select defaultValue={-1} onChange={handleChange}>
-			<option key={-1} disabled value={-1}>
-				select a picklist
-			</option>
-			{picklists.map((picklist, index) => {
-				return (
-					<option key={index} value={`${index}`}>
-						{picklist.name}
-					</option>
-				);
-			})}
-		</select>
 	);
 }
 
