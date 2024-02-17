@@ -1,5 +1,14 @@
+'use client';
+
 import { ReactNode, useState } from 'react';
-import { createStyles, Table, ScrollArea, rem, Box, Group } from '@mantine/core';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import {
 	Cell,
@@ -10,36 +19,9 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { columns } from './columns';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-
-const useStyles = createStyles((theme) => ({
-	header: {
-		position: 'sticky',
-		top: 0,
-		backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-		transition: 'box-shadow 150ms ease',
-
-		'&::after': {
-			content: '""',
-			position: 'absolute',
-			left: 0,
-			right: 0,
-			bottom: 0,
-			borderBottom: `${rem(1)} solid ${
-				theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-			}`,
-		},
-	},
-
-	headCell: {
-		backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-	},
-
-	scrolled: {
-		boxShadow: theme.shadows.sm,
-		zIndex: 1,
-	},
-}));
+import { Button } from '../ui/button';
+import { CaretSortIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { IconArrowsUpDown } from '@tabler/icons-react';
 
 interface TableScrollAreaProps {
 	data: RawTeamData[];
@@ -58,13 +40,12 @@ const renderCell = <T, V>(cell: Cell<T, V>) => {
 };
 
 const sortSymbols: { [key: string]: ReactNode } = {
-	asc: <IconChevronUp />,
-	desc: <IconChevronDown />,
+	false: <CaretSortIcon />,
+	asc: <ChevronUpIcon />,
+	desc: <ChevronDownIcon />,
 };
 
 export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
-	const { classes, cx } = useStyles();
-	const [scrolled, setScrolled] = useState(false);
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable<RawTeamData>({
 		columns,
@@ -76,55 +57,52 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	});
 
 	return (
-		<ScrollArea
-			h='calc(100vh - 6rem)'
-			maw='calc(100vw - 2rem)'
-			onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-		>
-			<Table cellSpacing={0} striped highlightOnHover>
-				<thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-					{table.getHeaderGroups().map((headerGroup) => (
-						<tr key={headerGroup.id}>
-							{headerGroup.headers.map((header) => (
-								<Box
-									component='th'
-									key={header.id}
-									maw={header.column.columnDef.maxSize}
-									colSpan={header.colSpan}
-									className={classes.headCell}
-									sx={{
-										userSelect: header.column.getCanSort() ? 'none' : undefined,
-										cursor: header.column.getCanSort() ? 'pointer' : undefined,
-									}}
-									onClick={header.column.getToggleSortingHandler()}
-								>
-									<Group spacing='xs' position='center' align='center'>
-										{!header.isPlaceholder && renderHeader(header)}
-										{!header.isPlaceholder &&
-											(sortSymbols[header.column.getIsSorted() as string] ??
-												null)}
-									</Group>
-								</Box>
-							))}
-						</tr>
-					))}
-				</thead>
-				<tbody>
-					{table.getRowModel().rows.map((row) => (
-						<tr key={row.id}>
-							{row.getVisibleCells().map((cell) => (
-								<Box
-									component='td'
-									key={cell.id}
-									maw={cell.column.columnDef.maxSize}
-								>
-									{renderCell(cell)}
-								</Box>
-							))}
-						</tr>
-					))}
-				</tbody>
-			</Table>
-		</ScrollArea>
+		<div className=' overflow-x-auto p-6'>
+			<div className='rounded-md border'>
+				<Table>
+					<TableHeader>
+						{table.getHeaderGroups().map((headerGroup, i) => (
+							<TableRow key={headerGroup.id}>
+								{headerGroup.headers.map((header) => (
+									<TableHead
+										key={header.id}
+										colSpan={header.colSpan}
+										className={`px-0 ${header.column.getCanSort() ? 'cursor-pointer' : ''}`}
+										onClick={header.column.getToggleSortingHandler()}
+									>
+										{!header.isPlaceholder && (
+											<div
+												className={`flex h-full items-center border-x p-2 ${(header.column.columnDef.meta as any)?.align === 'left' ? 'justify-start' : 'justify-end'} whitespace-nowrap`}
+											>
+												{renderHeader(header)}
+												{header.column.getCanSort() &&
+													(sortSymbols[
+														header.column.getIsSorted() as string
+													] ??
+														null)}
+											</div>
+										)}
+									</TableHead>
+								))}
+							</TableRow>
+						))}
+					</TableHeader>
+					<TableBody>
+						{table.getRowModel().rows.map((row) => (
+							<TableRow key={row.id}>
+								{row.getVisibleCells().map((cell) => (
+									<TableCell
+										align={(cell.column.columnDef.meta as any)?.align}
+										key={cell.id}
+									>
+										{renderCell(cell)}
+									</TableCell>
+								))}
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			</div>
+		</div>
 	);
 };
