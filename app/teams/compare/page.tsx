@@ -1,17 +1,19 @@
+'use client';
+
 import { CompareTeam } from '@/components/Teams/CompareTeam';
 import fetcher from '@/lib/fetch';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import { Center, Group, Loader, Select, Stack, Title } from '@mantine/core';
 import { IconArrowsDiff } from '@tabler/icons-react';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import useSWR from 'swr';
 
 const Compare = () => {
-	const router = useRouter();
+	const params = useSearchParams();
 	const { data: rawTeams, error } = useSWR<RawTeamData[]>('/api/team-data', fetcher);
 	const [team1Number, setTeam1Number] = useState<number | null>(
-		parseInt(String(router.query.team1)) || null,
+		parseInt(String(params?.get('team1'))) || null,
 	);
 	const [team2Number, setTeam2Number] = useState<number | null>();
 
