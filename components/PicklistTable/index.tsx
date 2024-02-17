@@ -8,6 +8,7 @@ import {
 	useSensor,
 	useSensors,
 	DragEndEvent,
+	TouchSensor,
 } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
@@ -100,6 +101,13 @@ export default function PickListTable() {
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		}),
+		useSensor(TouchSensor, {
+			activationConstraint: {
+				delay: 150,
+				tolerance: 10,
+				distance: 25
+			}
+		}),
 	);
 
 	function handleHeaderClick(column: keyof TeamDerivedStatsI) {
@@ -130,7 +138,7 @@ export default function PickListTable() {
 	}
 
 	return (
-		<div className='rounded-md border'>
+		<div className='rounded-md border touch-pan-y'>
 			<DndContext
 				sensors={sensors}
 				onDragEnd={handleDragEnd}
