@@ -1,7 +1,9 @@
-import { Button } from '@mantine/core';
+'use client';
+
+import { Button } from '@/components/ui/button';
 import { MouseEventHandler } from 'react';
 
-const exporter = (route: string, fileName: string): MouseEventHandler<HTMLAnchorElement> => {
+const exporter = (route: string, fileName: string) => {
 	return async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -29,15 +31,23 @@ const exporter = (route: string, fileName: string): MouseEventHandler<HTMLAnchor
 
 const Export = () => {
 	return (
-		<>
-			<h1>Export</h1>
-			<Button component='a' onClick={exporter('/api/export-team-data', 'team-data')}>
-				Team Data
-			</Button>
-			<Button component='a' onClick={exporter('/api/export-stand-forms', 'stand-forms')}>
+		<main className='mx-auto mt-12 max-w-[540px]'>
+			<h1 className='typography mb-6 ml-2'>Export</h1>
+			<div>
+				<Button
+					variant='outline'
+					className='m-2'
+					onClick={exporter('/api/export-team-data', 'team-data')}
+				>
+					Team Data
+				</Button>
+			</div>
+			<div>
+			<Button variant='outline' className='m-2' onClick={exporter('/api/export-stand-forms', 'stand-forms')}>
 				Stand Form Data
 			</Button>
-		</>
+			</div>
+		</main>
 	);
 };
 
