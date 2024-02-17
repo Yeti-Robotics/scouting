@@ -74,3 +74,5 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 	);
 };
 */
+
+export const revalidate = 60;

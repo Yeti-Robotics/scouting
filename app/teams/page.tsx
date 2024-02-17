@@ -20,4 +20,4 @@ const Teams = async () => {
 
 export default Teams;
 
-// export const revalidate = 60;
+export const revalidate = 60;
