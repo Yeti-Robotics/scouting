@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { MouseEventHandler } from 'react';
+import { MouseEvent } from 'react';
+
 
 const exporter = (route: string, fileName: string) => {
-	return async (e) => {
+	return async (e: MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		const a = document.createElement('a');
