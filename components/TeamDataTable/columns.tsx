@@ -1,5 +1,6 @@
+'use client';
+
 import { RawTeamData } from '@/models/aggregations/teamData';
-import { ActionIcon, Menu, Text } from '@mantine/core';
 import { IconArrowsDiff, IconDots } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Link } from '../Link';
@@ -16,74 +17,105 @@ const helper = createColumnHelper<RawTeamData>();
 
 export const columns = [
 	helper.accessor('teamNumber', {
-		header: () => <Text fw={700}>Team #</Text>,
+		header: () => <div className='font-bold'>Team #</div>,
 		cell: (props) => <Link href={`/teams/${props.getValue()}`}>{props.getValue()}</Link>,
 		// in px
 		maxSize: 112,
+		meta: {
+			align: 'left',
+		},
 	}),
 	helper.accessor('teamName', {
-		header: () => <Text fw={700}>Name</Text>,
-		cell: (props) => <Text>{props.getValue()}</Text>,
+		header: () => <div className='font-bold'>Name</div>,
+		cell: (props) => <>{props.getValue()}</>,
 		maxSize: 288,
+		meta: {
+			align: 'left',
+		},
 	}),
 	helper.group({
 		id: 'ampNotes',
 		header: () => (
-			<Text fw={700} align='center'>
+			<div className=' flex h-full w-full items-center justify-center text-center font-bold'>
 				Avg Amp Notes
-			</Text>
+			</div>
 		),
 		maxSize: 460,
 		columns: [
 			helper.accessor('avgAutoAmpNotes', {
-				header: () => <Text fw={700}>Auto</Text>,
-				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+				header: () => <div className='font-bold'>Auto</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				meta: {
+					align: 'right',
+				},
 			}),
 			helper.accessor('avgTeleopAmpNotes', {
-				header: () => <Text fw={700}>Teleop</Text>,
-				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+				header: () => <div className='font-bold'>Teleop</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				meta: {
+					align: 'right',
+				},
 			}),
 		],
 	}),
 	helper.group({
 		id: 'speakerNotes',
 		header: () => (
-			<Text fw={700} align='center'>
+			<div className='  flex h-full w-full items-center justify-center text-center font-bold'>
 				Avg Speaker Notes
-			</Text>
+			</div>
 		),
 		maxSize: 460,
 		columns: [
 			helper.accessor('avgAutoSpeakerNotes', {
-				header: () => <Text fw={700}>Auto</Text>,
-				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+				header: () => <div className='font-bold'>Auto</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				meta: {
+					align: 'right',
+				},
 			}),
 			helper.accessor('avgTeleopSpeakerNotes', {
-				header: () => <Text fw={700}>Teleop</Text>,
-				cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+				header: () => <div className='font-bold'>Teleop</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				meta: {
+					align: 'right',
+				},
 			}),
 		],
 	}),
 	helper.accessor('avgNotesMissed', {
-		header: () => <Text fw={700}>Avg. Notes Missed</Text>,
-		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+		header: () => <div className='font-bold'>Avg. Notes Missed</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+		meta: {
+			align: 'right',
+		},
 		maxSize: 160,
 	}),
 	helper.accessor('epa', {
-		header: () => <Text fw={700}>EPA</Text>,
-		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+		header: () => <div className='font-bold'>EPA</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
 		maxSize: 160,
+		meta: {
+			align: 'right',
+		},
 	}),
 	helper.accessor('avgPenalties', {
-		header: () => <Text fw={700}>Avg. Penalties</Text>,
-		cell: (props) => <Text align='center'>{truncDecimals(props.getValue())}</Text>,
+		header: () => <div className='font-bold'>Avg. Penalties</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
 		maxSize: 160,
+		meta: {
+			align: 'right',
+		},
 	}),
 	helper.accessor('avgDefense', {
-		header: () => <Text fw={700}>Defense</Text>,
-		cell: (props) => <Text align='center'>{truncDecimals(props.getValue() ?? 0) || 'none'}</Text>,
+		header: () => <div className='font-bold'>Defense</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue() ?? 0) || 'none'}</div>,
 		maxSize: 160,
+		meta: {
+			align: 'right',
+		},
 	}),
+	/*
 	helper.display({
 		id: 'more',
 		cell: ({ row }) => (
@@ -105,4 +137,5 @@ export const columns = [
 			</Menu>
 		),
 	}),
+	*/
 ];
