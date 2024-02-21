@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useContext, useState } from 'react';
+import { FormEvent, useContext, useState, useTransition } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TeamsContext } from './[slug]/team-context-provider';
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
+import { updatePicklist } from './[slug]/PicklistTable/actions';
 
 interface CreateFormResponseI {
 	insert_id: string;
@@ -75,22 +76,21 @@ export function CreateForm() {
 
 export function UpdateButton({ mongoId }: { mongoId: string }) {
 	const { items } = useContext(TeamsContext);
-	const router = useRouter();
+	const [isPending, startTransition] = useTransition();
 	return (
-		<Button
-			variant={'default'}
-			onClick={() =>
-				fetch('/api/picklist', {
-					method: 'PATCH',
-					body: JSON.stringify({ ordering: items, _id: mongoId }),
-				})
-					.then(() => router.refresh())
-					.catch(() =>
-						alert('There was an error updating the picklist. Please try again.'),
-					)
-			}
-		>
-			Save Picklist
-		</Button>
+		<>
+			<Button
+				variant={'default'}
+				disabled={isPending}
+				className='w-32'
+				onClick={async () => {
+					startTransition(() => {
+						updatePicklist(items, mongoId);
+					});
+				}}
+			>
+				{isPending ? 'Saving...' : 'Save Picklist'}
+			</Button>
+		</>
 	);
 }

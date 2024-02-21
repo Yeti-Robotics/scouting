@@ -1,5 +1,5 @@
 import PickList, { PickListI } from '@/models/PickList';
-import PickListTable from '@/components/PicklistTable';
+import PickListTable from './PicklistTable';
 import StandForm from '@/models/StandForm';
 import TeamContextProvider from './team-context-provider';
 import { avgDataPipeline } from '@/models/aggregations/averageData';
@@ -7,6 +7,8 @@ import { connectToDbB } from '@/middleware/connect-db';
 import { firstPickWeights, secondPickWeights } from '@/lib/analysis/pickability-weights';
 import { PickabilityWeightsI, TeamAvgsI, TeamDerivedStatsI } from '@/lib/types/Pickability';
 import { UpdateButton } from '../crud-components';
+import TeamAlliance from '@/models/TeamAlliance';
+import BestAvailable from './BestAvailable';
 
 /**
  * Computes pickability using specified weights -- essentially computes a weighted sum
@@ -94,6 +96,11 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 	// Retrieve the derived statistics and picklist
 	let derivedStatistics = await getDerivedStatistics();
 	const picklist = await getPicklist(params.slug);
+	const selected = new Set(
+		(await TeamAlliance.find({ compKey: global.compKey.compKey }, { team_number: 1 })).map(
+			({ team_number }) => team_number,
+		),
+	);
 	// Return error if problem fetching data
 	if (!picklist || !derivedStatistics) {
 		return <div>Error fetching data, or picklist does not exist</div>;
@@ -119,18 +126,23 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 	// Render the PicklistPage component
 	return (
 		<main className='container'>
-			<div className='flex-1 space-y-4 sm:p-8 py-6'>
-				<TeamContextProvider initialState={derivedStatistics}>
+			<div className='flex-1 space-y-4 py-6 sm:p-8'>
+				<TeamContextProvider initialState={derivedStatistics} selectedTeams={selected}>
 					<header className='flex-1 space-y-4'>
-						<div className='flex items-center justify-between space-y-2 flex-wrap'>
+						<div className='flex flex-wrap items-center justify-between space-y-2'>
 							<h1 className='typography'>{name}</h1>
-							<div className="w-full sm:w-min">
-							<UpdateButton mongoId={params.slug} />
+							<div className='w-full sm:w-min'>
+								<UpdateButton mongoId={params.slug} />
 							</div>
 						</div>
 						<p className='lead'>Last Updated • {updatedAt.toDateString()}</p>
 					</header>
-					<PickListTable />
+					<section>
+						<BestAvailable />
+					</section>
+					<section>
+						<PickListTable />
+					</section>
 				</TeamContextProvider>
 			</div>
 		</main>
