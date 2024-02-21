@@ -26,6 +26,7 @@ export const ControlledDateTimePicker = <T extends FieldValues>({
 
 	return (
 		<DateTimePicker
+			placeholder={undefined}
 			{...props}
 			name={field.name}
 			onBlur={field.onBlur}
