@@ -96,11 +96,15 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 	// Retrieve the derived statistics and picklist
 	let derivedStatistics = await getDerivedStatistics();
 	const picklist = await getPicklist(params.slug);
-	const selected = new Set(
-		(await TeamAlliance.find({ compKey: global.compKey.compKey }, { team_number: 1 })).map(
-			({ team_number }) => team_number,
-		),
-	);
+	const selected = new Map();
+	await TeamAlliance.find(
+		{ compKey: global.compKey.compKey },
+		{ team_number: 1, alliance_number: 1 },
+	).then((res) => {
+		res.forEach(({ team_number, alliance_number }) => {
+			selected.set(team_number, alliance_number);
+		});
+	});
 	// Return error if problem fetching data
 	if (!picklist || !derivedStatistics) {
 		return <div>Error fetching data, or picklist does not exist</div>;

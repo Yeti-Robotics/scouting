@@ -17,3 +17,14 @@ export const headerGroups = [
 	{ title: 'TeleOp', colSpan: 3 },
 	{ title: 'Endgame', colSpan: 2 },
 ];
+
+export const allianceBgColors = [
+	'bg-primary/80',
+	'bg-primary/70',
+	'bg-primary/60',
+	'bg-primary/50',
+	'bg-primary/40',
+	'bg-primary/30',
+	'bg-primary/20',
+	'bg-primary/10',
+];

@@ -15,15 +15,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { CheckIcon, Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 import { onMarkSelected, onMarkUnselected } from './actions';
-import { headers } from './constants';
+import { headers, allianceBgColors } from './constants';
+import { Button } from '@/components/ui/button';
 
-function SelectedDropdown({
-	children,
-	onClick,
-}: {
-	children: React.ReactNode;
-	onClick: (() => void) | (() => Promise<void>);
-}) {
+function SelectedDropdown({ children }: { children: React.ReactNode }) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -32,7 +27,7 @@ function SelectedDropdown({
 			<DropdownMenuContent>
 				<DropdownMenuLabel>Edit Availability</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={onClick}>{children}</DropdownMenuItem>
+				{children}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
@@ -40,14 +35,14 @@ function SelectedDropdown({
 
 export default function DraggableRow({
 	teamData,
-	isSelected,
+	alliance,
 	optimisticallyChangeSelected,
 	setSelected,
 }: {
 	teamData: TeamDerivedStatsI;
-	isSelected: boolean;
-	optimisticallyChangeSelected: (action: (c: Set<number>) => void) => void;
-	setSelected: Dispatch<SetStateAction<Set<number>>> | undefined;
+	alliance: number | undefined;
+	optimisticallyChangeSelected: (action: (c: Map<number, number>) => void) => void;
+	setSelected: Dispatch<SetStateAction<Map<number, number>>> | undefined;
 }) {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
 		id: teamData._id,
@@ -57,13 +52,13 @@ export default function DraggableRow({
 		transition,
 	};
 
-	const handleSelect = async () => {
+	const handleSelect = async (allianceNumber: number) => {
 		startTransition(() => {
 			optimisticallyChangeSelected((sel) => {
-				sel.add(teamData._id);
+				sel.set(teamData._id, allianceNumber);
 			});
 		});
-		setSelected && setSelected(await onMarkSelected(teamData._id));
+		setSelected && setSelected(await onMarkSelected(teamData._id, allianceNumber));
 	};
 
 	const handleUnselect = async () => {
@@ -77,24 +72,34 @@ export default function DraggableRow({
 
 	return (
 		<TableRow
-			className={`relative ${isSelected && 'bg-destructive'} z-0 hover:cursor-grab hover:bg-muted active:z-50 active:cursor-grabbing`}
+			className={` relative transition-colors duration-500 ${alliance && allianceBgColors[alliance - 1]} z-0 hover:cursor-grab hover:bg-muted active:z-50 active:cursor-grabbing`}
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
 			{...listeners}
 		>
 			<TableCell className=''>
-				<SelectedDropdown onClick={isSelected ? handleUnselect : handleSelect}>
-					{isSelected ? (
-						<>
-							<TrashIcon className='mr-1 h-4 w-4' />
-							Remove Selected
-						</>
+				<SelectedDropdown>
+					{alliance ? (
+						<DropdownMenuItem onClick={handleUnselect}>
+							<TrashIcon className='h-4 w-4 hover:cursor-pointer hover:stroke-destructive' />
+							<span className='ml-2'>Remove Alliance</span>
+						</DropdownMenuItem>
 					) : (
-						<>
-							<CheckIcon className='mr-1 h-4 w-4' />
-							Mark as Selected
-						</>
+						[1, 2, 3, 4, 5, 6, 7, 8].map((allianceNumber) => {
+							return (
+								<DropdownMenuItem
+									key={allianceNumber}
+									onClick={() => handleSelect(allianceNumber)}
+									className='flex items-center hover:cursor-pointer'
+								>
+									<span
+										className={`mr-2 h-4 w-4 rounded-sm hover:cursor-pointer ${allianceBgColors[allianceNumber - 1]}`}
+									/>
+									Alliance {allianceNumber}
+								</DropdownMenuItem>
+							);
+						})
 					)}
 				</SelectedDropdown>
 			</TableCell>
