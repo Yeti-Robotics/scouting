@@ -45,9 +45,9 @@ export default function PickListTable() {
 	const { teams, setTeams, items, selected, setSelected } = useContext(TeamsContext);
 	const [optimisticSelected, optimisticallyChangeSelected] = useOptimistic(
 		selected,
-		(current: Set<number>, action: (c: Set<number>) => void) => {
+		(current: Map<number, number>, action: (c: Map<number, number>) => void) => {
 			action(current);
-			return new Set(current);
+			return new Map(current);
 		},
 	);
 
@@ -112,7 +112,7 @@ export default function PickListTable() {
 								<DraggableRow
 									key={team._id}
 									teamData={team}
-									isSelected={optimisticSelected.has(team._id)}
+									alliance={optimisticSelected.get(team._id)}
 									setSelected={setSelected}
 									optimisticallyChangeSelected={optimisticallyChangeSelected}
 								/>

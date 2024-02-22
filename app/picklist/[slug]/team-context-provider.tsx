@@ -6,12 +6,12 @@ export const TeamsContext = createContext<{
 	teams: TeamDerivedStatsI[];
 	setTeams?: Dispatch<SetStateAction<TeamDerivedStatsI[]>>;
 	items: number[];
-	selected: Set<number>;
-	setSelected?: Dispatch<SetStateAction<Set<number>>>;
+	selected: Map<number, number>;
+	setSelected?: Dispatch<SetStateAction<Map<number, number>>>;
 }>({
 	teams: [],
 	items: [],
-	selected: new Set(),
+	selected: new Map(),
 });
 
 export default function TeamContextProvider({
@@ -20,7 +20,7 @@ export default function TeamContextProvider({
 	children,
 }: {
 	initialState: TeamDerivedStatsI[];
-	selectedTeams: Set<number>;
+	selectedTeams: Map<number, number>;
 	children: ReactNode;
 }) {
 	const [teams, setTeams] = useState(initialState);
