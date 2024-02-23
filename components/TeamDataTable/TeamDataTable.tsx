@@ -57,7 +57,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	});
 
 	return (
-		<div className=' overflow-x-auto p-6'>
+		<div className=' overflow-x-auto'>
 			<div className='rounded-md border'>
 				<Table>
 					<TableHeader>
@@ -87,7 +87,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 							</TableRow>
 						))}
 					</TableHeader>
-					<TableBody>
+					<TableBody className='c [&>*:nth-child(odd)]:bg-muted/25'>
 						{table.getRowModel().rows.map((row) => (
 							<TableRow key={row.id}>
 								{row.getVisibleCells().map((cell) => (
