@@ -17,7 +17,7 @@ import {
 	Tabs,
 	Select,
 } from '@mantine/core';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
@@ -32,6 +32,7 @@ import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
 import { MissedNote, MissedNoteTeleop } from '@/components/icons';
+import { Input } from '@/components/ui/input';
 
 interface Props {
 	create: boolean;
@@ -86,17 +87,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (!create || !matches || !user) return;
-		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
-	}, [matchNumber]);
-
-	useEffect(() => {
-		if (climb === false) {
-			setValue('spotlight', false);
-		}
-	}, [climb]);
-
-	useEffect(() => {
 		if (isOffline)
 			notifications.show({
 				title: isOffline ? 'You went offline' : 'Back online',
@@ -106,6 +96,17 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				autoClose: 10000,
 			});
 	}, [isOffline]);
+
+	useEffect(() => {
+		if (!create || !matches || !user) return;
+		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
+	}, [matchNumber]);
+
+	useEffect(() => {
+		if (climb === false) {
+			setValue('spotlight', false);
+		}
+	}, [climb]);
 
 	if (!user && create) {
 		return <Loader />;
@@ -211,6 +212,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 								min={0}
 								required
 							/>
+							<Input type='number' placeholder='Amp Notes Scored' />
 						</Group>
 						<Group align='center'>
 							<Image

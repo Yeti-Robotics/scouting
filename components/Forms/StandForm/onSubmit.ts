@@ -21,7 +21,7 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline, setS
 				method: 'POST',
 				body: JSON.stringify({
 					...data,
-					scouter: user.username,
+					scouter: user._id,
 					scoutScore: computeScore(data),
 				}),
 			}).then(async (res) => {
@@ -34,7 +34,7 @@ export const onSubmit: StandFormOnSubmit = (create, user, reset, isOffline, setS
 			const savedForms: CreateStandForm[] = JSON.parse(
 				sessionStorage.getItem('standForms') || '[]', // use saved forms or a new array
 			);
-			savedForms.push({ ...data, scouter: user.username, scoutScore: computeScore(data) });
+			savedForms.push({ ...data, scouter: user._id, scoutScore: computeScore(data) });
 			sessionStorage.setItem('standForms', JSON.stringify(savedForms));
 			setSubmitting('done');
 			reset();

@@ -26,7 +26,6 @@ const standFormSchema = new Schema<StandFormI>(
 		approved: { type: Boolean, default: () => false },
 		notes: { type: String, required: true },
 		scoutScore: { type: Number, required: true },
-		eventID: { type: String, required: true },
 		alliance: { type: String, required: true },
 	},
 	{ timestamps: true, collection: 'standForms' },
@@ -59,7 +58,6 @@ export interface CreateStandForm {
 	createdAt: string;
 	updatedAt: string;
 	scoutScore: number;
-	eventID: string;
 	alliance: string;
 }
 
@@ -91,7 +89,6 @@ export interface StandFormI {
 	createdAt: string;
 	updatedAt: string;
 	scoutScore: number;
-	eventID: string;
 	alliance: string;
 }
 
