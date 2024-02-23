@@ -1,6 +1,6 @@
-import { CreateStandForm } from '@/models/StandForm';
-
-export const defaultValues: Partial<CreateStandForm> = {
+export const defaultValues = {
+	matchNumber: undefined,
+	teamNumber: undefined,
 	autoSpeakerNotes: 0,
 	autoAmpNotes: 0,
 	autoNotesMissed: 0,

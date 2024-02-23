@@ -17,7 +17,7 @@ import {
 	Tabs,
 	Select,
 } from '@mantine/core';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
@@ -32,6 +32,7 @@ import { notifications } from '@mantine/notifications';
 import { defaultValues } from './defaultValues';
 import { openWarningModal } from '@/lib/warningModal';
 import { MissedNote, MissedNoteTeleop } from '@/components/icons';
+import { Input } from '@/components/ui/input';
 
 interface Props {
 	create: boolean;
@@ -211,6 +212,7 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 								min={0}
 								required
 							/>
+							<Input type='number' placeholder='Amp Notes Scored' />
 						</Group>
 						<Group align='center'>
 							<Image
