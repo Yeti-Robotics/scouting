@@ -55,8 +55,11 @@ export default async function PicklistPage() {
 	await connectToDbB();
 	const picklists = await PickList.find({});
 	return (
-		<main className='mx-auto mt-12 max-w-[540px]'>
-			<h1 className='typography mb-6'>YETI Picklists</h1>
+		<main className='mx-auto mt-12 max-w-[540px] px-4'>
+			<h1 className='typography'>YETI Picklists</h1>
+			<p className='lead'>
+				Links to picklists
+			</p>
 			<div className='my-4'>
 				<CreateForm />
 			</div>
