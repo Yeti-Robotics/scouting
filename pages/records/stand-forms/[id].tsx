@@ -1,4 +1,4 @@
-import { StandForm } from '@/components/Forms/StandForm';
+import { StandForm } from '@/components/Forms/StandForm/StandForm-DEPRECATED';
 import Layout from '@/components/Layout';
 import fetcher from '@/lib/fetch';
 import { useUser } from '@/lib/useUser';

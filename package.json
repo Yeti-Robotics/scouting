@@ -18,6 +18,7 @@
 		"@dnd-kit/utilities": "^3.2.2",
 		"@emotion/react": "11.11.1",
 		"@emotion/server": "11.11.0",
+		"@hookform/resolvers": "^3.3.4",
 		"@mantine/core": "6.0.19",
 		"@mantine/dates": "6.0.19",
 		"@mantine/dropzone": "6.0.19",
@@ -54,13 +55,13 @@
 		"next": "14.0.4",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
-		"react-hook-form": "7.43.2",
-		"recharts": "^2.12.0",
+		"react-hook-form": "7.50.1",
 		"sharp": "0.32.4",
 		"swr": "2.2.0",
 		"tailwind-merge": "^2.2.1",
 		"tailwindcss-animate": "^1.0.7",
-		"vaul": "^0.9.0"
+		"vaul": "^0.9.0",
+		"zod": "^3.22.4"
 	},
 	"devDependencies": {
 		"@next/bundle-analyzer": "^13.1.6",

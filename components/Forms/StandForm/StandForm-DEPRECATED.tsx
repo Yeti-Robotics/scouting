@@ -87,17 +87,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (!create || !matches || !user) return;
-		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
-	}, [matchNumber]);
-
-	useEffect(() => {
-		if (climb === false) {
-			setValue('spotlight', false);
-		}
-	}, [climb]);
-
-	useEffect(() => {
 		if (isOffline)
 			notifications.show({
 				title: isOffline ? 'You went offline' : 'Back online',
@@ -107,6 +96,17 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 				autoClose: 10000,
 			});
 	}, [isOffline]);
+
+	useEffect(() => {
+		if (!create || !matches || !user) return;
+		setMatch(matches.find((match) => match.matchNumber === matchNumber) || null);
+	}, [matchNumber]);
+
+	useEffect(() => {
+		if (climb === false) {
+			setValue('spotlight', false);
+		}
+	}, [climb]);
 
 	if (!user && create) {
 		return <Loader />;

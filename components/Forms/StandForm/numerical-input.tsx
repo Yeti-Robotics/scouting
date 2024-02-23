@@ -1,51 +1,55 @@
-import { useContext } from 'react';
-import { FormContext, ValueKeysT } from '@/components/Forms/StandForm/Tabs/index';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+'use client';
 
-export default function NumericalInput({
+import { Button } from '@/components/ui/button';
+import { FormField, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@radix-ui/react-label';
+import { InputHTMLAttributes } from 'react';
+import { FieldValues, UseControllerProps, useController } from 'react-hook-form';
+
+type Props<T extends FieldValues> = InputHTMLAttributes<HTMLInputElement> &
+	UseControllerProps<T> & { label?: string };
+
+export default function NumericalInput<T extends FieldValues>({
 	name,
-	category,
-	placeholder,
-}: {
-	name: string;
-	category: ValueKeysT;
-	placeholder: string;
-}) {
-	const { values, setValues } = useContext(FormContext);
-	type NameT = keyof (typeof values)[typeof category];
-	function handleChange(didDecrement: boolean = false) {
-		if (setValues) {
-			setValues((curr: typeof values) => {
-				const cat = curr[category];
-				return {
-					...curr,
-					[category]: {
-						...cat,
-						[name as NameT]: didDecrement
-							? Math.max(0, curr[category][name as NameT] - 1)
-							: curr[category][name as NameT] + 1,
-					},
-				};
-			});
-		}
+	control,
+	required,
+	...props
+}: Props<T>) {
+	const { field } = useController({
+		name,
+		control,
+		rules: { required, min: props.min, max: props.max },
+	});
+
+	function handleChange(v: number) {
+		if (props.min !== undefined && v < Number(props.min)) return;
+		if (props.max !== undefined && v > Number(props.max)) return;
+		field.onChange(v);
 	}
 
 	return (
-		<div className='space-y-1'>
-			<Label htmlFor='ampNotes'>{placeholder}</Label>
-			<div className='flex space-x-3'>
-				<Button type='button' variant='outline' onClick={() => handleChange(true)}>
+		<div className='w-full space-y-1'>
+			{props.label && <FormLabel htmlFor={name}>{props.label}</FormLabel>}
+			<div className='flex w-full items-end space-x-2'>
+				<Button
+					onClick={() => handleChange(field.value - 1)}
+					type='button'
+					variant='outline'
+				>
 					-
 				</Button>
-				<Input
-					name={name}
-					className='w-32 text-center'
-					disabled
-					value={values[category][name as NameT]}
-				/>
-				<Button type='button' onClick={() => handleChange()}>
+				<div className='grid grow gap-1'>
+					<Input
+						type='number'
+						name={name}
+						className='block w-full grow text-center text-foreground'
+						value={field.value}
+						disabled
+						{...props}
+					/>
+				</div>
+				<Button onClick={() => handleChange(field.value + 1)} type='button'>
 					+
 				</Button>
 			</div>
