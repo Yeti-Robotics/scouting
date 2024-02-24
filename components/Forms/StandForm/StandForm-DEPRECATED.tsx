@@ -212,7 +212,6 @@ export const StandForm = ({ create, canEdit, defaultForm, id }: Props) => {
 								min={0}
 								required
 							/>
-							<Input type='number' placeholder='Amp Notes Scored' />
 						</Group>
 						<Group align='center'>
 							<Image
