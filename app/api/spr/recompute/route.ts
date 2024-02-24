@@ -42,7 +42,12 @@ async function recomputeSPR() {
 		},
 	)
 		.then((res) => res.json())
-		.catch((err) => []);
+		.then((res) =>
+			res
+				.filter(({ actual_time }: { actual_time: number }) => actual_time > 0)
+				.sort((a: any, b: any) => a.actual_time - b.actual_time),
+		)
+		.catch(() => []);
 	await SPR.deleteMany({});
 	const alliances = await StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
 	const teamScoutMap: TeamScoutMapT = {};
@@ -52,7 +57,8 @@ async function recomputeSPR() {
 	alliances.forEach((alliance) => {
 		if (alliance.scoutScores.length === 6) {
 			const { matchNumber, alliance: color } = alliance._id;
-			if (apiRes[matchNumber]?.post_result_time > 0) {
+
+			if (apiRes[matchNumber - 1]?.post_result_time > 0) {
 				alliance.scoutScores.forEach((scout) => {
 					teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
 						? [...teamScoutMap[scout.teamScouted], scout.scoutID]
@@ -60,7 +66,8 @@ async function recomputeSPR() {
 					scoutScoreMap[scout.scoutID] = scout.scoutScore;
 				});
 
-				const allianceBreakdown = apiRes[matchNumber].score_breakdown[color];
+				const allianceBreakdown = apiRes[matchNumber - 1].score_breakdown[color];
+
 				const result = scoutExpectedContribution(
 					scoutScoreMap,
 					teamScoutMap,
