@@ -11,6 +11,7 @@ export const defaultValues: Partial<CreateStandForm> = {
 	numberOnChain: 0,
 	preload: true,
 	spotlight: false,
+	park: false,
 	teleopAmpNotes: 0,
 	teleopSpeakerNotes: 0,
 	teleopAmplifiedSpeakerNotes: 0,

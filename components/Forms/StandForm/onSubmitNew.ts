@@ -23,6 +23,9 @@ export const onSubmit: StandFormOnSubmit = (
 ) => {
 	const onCreate: SubmitHandler<CreateStandForm> = (data) => {
 		if (alliance === '') return;
+		if (data.climb === true) {
+			data.park = false;
+		}
 		if (!user || user.banned) return;
 		if (isOnline) {
 			setSubmitting('fetching');
