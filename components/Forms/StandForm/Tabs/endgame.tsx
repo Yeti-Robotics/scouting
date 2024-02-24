@@ -37,6 +37,11 @@ export default function Endgame() {
 						/>
 					</>
 				)}
+				{!climbed && (
+					<div>
+						<FormCheckbox name='park' label='Parked?' />
+					</div>
+				)}
 			</CardContent>
 		</>
 	);

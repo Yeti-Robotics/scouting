@@ -20,6 +20,7 @@ const standFormSchema = new Schema<StandFormI>(
 		initiationLine: { type: Boolean, required: true },
 		climb: { type: Boolean, required: true },
 		spotlight: { type: Boolean, required: true },
+		park: { type: Boolean, required: true },
 		numberOnChain: { type: Number, required: true },
 		defense: { type: Number, required: true },
 		penalties: { type: Number, required: true },
@@ -51,6 +52,7 @@ export interface CreateStandForm {
 	climb: boolean;
 	spotlight: boolean;
 	numberOnChain: number;
+	park: boolean;
 	penalties: number;
 	defense: number;
 	approved: boolean;
@@ -82,6 +84,7 @@ export interface StandFormI {
 	climb: boolean;
 	spotlight: boolean;
 	numberOnChain: number;
+	park: boolean;
 	penalties: number;
 	defense: number;
 	approved: boolean;
