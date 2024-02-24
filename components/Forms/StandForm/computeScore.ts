@@ -20,8 +20,19 @@ export const computeScore = (form: CreateStandForm) => {
 	const keys = Object.keys(SCORES) as Array<keyof typeof SCORES>;
 	return keys.reduce((acc, key) => {
 		if (key === 'climb') {
-			return acc + 3 * (form.climb ? 1 : 0);
+			return acc + computeEndgameScore(form);
 		}
 		return acc + SCORES[key] * form[key];
 	}, 0);
 };
+
+/**
+ * Computes endgame score
+ * @param form scouting form
+ * @returns approx. contribution to endgame score
+ */
+export const computeEndgameScore = (form: CreateStandForm) =>{
+	const harmonyPoints = (2 * (form.numberOnChain - 1)) / form.numberOnChain;
+	const spotlightBonus = form.spotlight ? 1 : 0;
+	return SCORES.climb + harmonyPoints + spotlightBonus;
+}
