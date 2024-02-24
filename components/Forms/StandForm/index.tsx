@@ -79,8 +79,9 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 		},
 	});
 
+	const teamNumber = form?.watch('teamNumber');
+
 	const alliance = useMemo(() => {
-		const teamNumber = form?.watch('teamNumber');
 		if (
 			match?.blue1 === teamNumber ||
 			match?.blue2 === teamNumber ||
@@ -95,7 +96,7 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 			return 'red';
 		}
 		return '';
-	}, [form?.watch('teamNumber')]);
+	}, [teamNumber]);
 
 	useEffect(() => {
 		if (form.watch('climb')) {
