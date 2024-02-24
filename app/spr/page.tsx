@@ -24,15 +24,19 @@ const getData = async () => {
 	const data = await SPR.aggregate<AggregationScoutI>([
 		{
 			$group: {
-				_id: '$scouter',
-				avgSPR: { $avg: '$matchSPR' },
+				_id: {
+					$toObjectId: '$scouter',
+				},
+				avgSPR: {
+					$avg: '$matchSPR',
+				},
 			},
 		},
 		{
 			$lookup: {
 				from: 'users',
 				localField: '_id',
-				foreignField: 'username',
+				foreignField: '_id',
 				as: 'scouter',
 			},
 		},
