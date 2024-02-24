@@ -49,7 +49,11 @@ const getTeamsAsArr = (match: MatchI | null) =>
 		{ label: `Red 3 - ${match?.red3}`, value: match?.red3 },
 	].filter((team) => team.value !== undefined) as { label: string; value: number }[];
 
-export const ClimbContext = createContext<boolean>(false);
+export const ClimbContext = createContext<Record<'climb' | 'park', boolean>>({
+	climb: false,
+	park: false,
+});
+
 export const FormContext = createContext<UseFormReturn<CreateStandForm, any> | null>(null);
 interface StandFormProps {
 	create: boolean;
@@ -93,6 +97,15 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 		return '';
 	}, [form?.watch('teamNumber')]);
 
+	useEffect(() => {
+		if (form.watch('climb')) {
+			form.setValue('park', false);
+		}
+		if (form.watch('park')) {
+			form.setValue('climb', false);
+		}
+	}, [form.watch('climb'), form.watch('park')]);
+
 	if (isLoading) return <p>Loading...</p>;
 
 	return (
@@ -110,7 +123,12 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 						match={match}
 						setMatch={setMatch}
 					/>
-					<ClimbContext.Provider value={form.watch('climb')}>
+					<ClimbContext.Provider
+						value={{
+							climb: form.watch('climb'),
+							park: form.watch('park'),
+						}}
+					>
 						<FormTabs />
 					</ClimbContext.Provider>
 				</FormContext.Provider>

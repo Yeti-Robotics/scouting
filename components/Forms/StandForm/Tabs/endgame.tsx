@@ -9,7 +9,7 @@ import FormCheckbox from '../FormElements/Checkbox';
 
 export default function Endgame() {
 	const form = useContext(FormContext);
-	const climbed = useContext(ClimbContext);
+	const { climb, park } = useContext(ClimbContext);
 	if (!form) return null;
 
 	return (
@@ -25,7 +25,7 @@ export default function Endgame() {
 				<div className='flex items-center space-x-2 pt-4'>
 					<FormCheckbox name='climb' label='Climbed?' />
 				</div>
-				{climbed && (
+				{climb && (
 					<>
 						<FormCheckbox name='spotlight' label='Spotlit?' />
 						<NumericalInput
@@ -37,7 +37,7 @@ export default function Endgame() {
 						/>
 					</>
 				)}
-				{!climbed && (
+				{!climb && (
 					<div>
 						<FormCheckbox name='park' label='Parked?' />
 					</div>
