@@ -1,22 +1,22 @@
 import verifyAdmin from '@/middleware/app-router/verify-user';
 import { cookies } from 'next/headers';
-import RecomputeButton from './recomputeButton';
-import SPRLeaderboard from './sprLeaderboard';
+import RecomputeButton from '@/components/ScoutPowerRanking/RecomputeButton';
+import SPRLeaderboard from '@/components/ScoutPowerRanking/SPRLeaderboard';
 import { Suspense } from 'react';
 import { connectToDbB } from '@/middleware/connect-db';
 import SPR from '@/models/SPR';
 import { UserI } from '@/models/User';
 
 export interface ScoutI {
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
 	avgSPR: number;
 }
 
 interface AggregationScoutI {
 	_id: string;
 	avgSPR: number;
-	scouter: UserI[];
+	scouter: (UserI | undefined)[];
 }
 
 const getData = async () => {
@@ -42,8 +42,8 @@ const getData = async () => {
 		.filter((scout) => scout.scouter !== undefined)
 		.map((scout) => {
 			return {
-				firstName: scout.scouter[0].firstName,
-				lastName: scout.scouter[0].lastName,
+				firstName: scout.scouter[0]?.firstName || 'Unnamed',
+				lastName: scout.scouter[0]?.lastName || 'Unnamed',
 				avgSPR: scout.avgSPR,
 			};
 		});
@@ -56,13 +56,15 @@ export default async function SPRDashboard() {
 	const data = await getData();
 	if (isAdmin) {
 		return (
-			<main className='mx-auto flex max-w-[540px] flex-wrap items-center'>
-				<h1 className='text-yeti-blue my-0'>SPR Leaderboard</h1>
-				<div className='w-full'>
+			<main className='mx-4 mt-10 max-w-7xl'>
+				<header>
+					<h1 className='typography'>SPR Table</h1>
+				</header>
+				<section className='mt-6'>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SPRLeaderboard data={data} />
 					</Suspense>
-				</div>
+				</section>
 				<RecomputeButton />
 			</main>
 		); // Component for admin users

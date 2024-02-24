@@ -1,18 +1,20 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 
 function RecomputeButton() {
 	const router = useRouter();
 	return (
-		<button
-			className='rounded-lg bg-yeti-blue p-2 font-bold text-white transition-all duration-200 hover:bg-bubble-gum hover:shadow-xl'
+		<Button
+			className='mt-4 w-full'
+			variant='default'
 			onClick={() => {
 				fetch('/api/spr/recompute', { method: 'POST' }).then(() => router.refresh());
 			}}
 		>
 			RECOMPUTE SPR
-		</button>
+		</Button>
 	);
 }
 
