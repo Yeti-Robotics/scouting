@@ -12,7 +12,6 @@ type ScoutScoreMapT = Record<string, number>;
 
 interface AggregationSPRDataI {
 	_id: {
-		eventID: string;
 		matchNumber: number;
 		alliance: string;
 	};
@@ -24,7 +23,6 @@ interface AggregationSPRDataI {
 }
 
 interface updatedSPRSI {
-	eventKey: string;
 	matchNumber: number;
 	alliance: string;
 	scouter: string;
@@ -33,6 +31,23 @@ interface updatedSPRSI {
 
 async function recomputeSPR() {
 	await connectToDbB();
+	const eventKey = global.compKey.compKey;
+	const headers = new Headers();
+	headers.append('X-TBA-Auth-Key', String(process.env.TBA_SECRET));
+	headers.append('accept', 'application/json');
+	const apiRes: any[] = await fetch(
+		`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
+		{
+			headers,
+		},
+	)
+		.then((res) => res.json())
+		.then((res) =>
+			res
+				.filter(({ actual_time }: { actual_time: number }) => actual_time > 0)
+				.sort((a: any, b: any) => a.actual_time - b.actual_time),
+		)
+		.catch(() => []);
 	await SPR.deleteMany({});
 	const alliances = await StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
 	const teamScoutMap: TeamScoutMapT = {};
@@ -40,22 +55,34 @@ async function recomputeSPR() {
 	const updatedSPRS: updatedSPRSI[] = [];
 
 	alliances.forEach((alliance) => {
-		alliance.scoutScores.forEach((scout) => {
-			teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
-				? [...teamScoutMap[scout.teamScouted], scout.scoutID]
-				: [scout.scoutID];
-			scoutScoreMap[scout.scoutID] = scout.scoutScore;
-		});
-		const result = scoutExpectedContribution(scoutScoreMap, teamScoutMap, 42);
-		Object.keys(result).forEach((scoutID) =>
-			updatedSPRS.push({
-				eventKey: alliance._id.eventID,
-				matchNumber: alliance._id.matchNumber,
-				alliance: alliance._id.alliance,
-				scouter: scoutID,
-				matchSPR: result[scoutID],
-			}),
-		);
+		if (alliance.scoutScores.length === 6) {
+			const { matchNumber, alliance: color } = alliance._id;
+
+			if (apiRes[matchNumber - 1]?.post_result_time > 0) {
+				alliance.scoutScores.forEach((scout) => {
+					teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
+						? [...teamScoutMap[scout.teamScouted], scout.scoutID]
+						: [scout.scoutID];
+					scoutScoreMap[scout.scoutID] = scout.scoutScore;
+				});
+
+				const allianceBreakdown = apiRes[matchNumber - 1].score_breakdown[color];
+
+				const result = scoutExpectedContribution(
+					scoutScoreMap,
+					teamScoutMap,
+					allianceBreakdown.totalPoints - allianceBreakdown.foulPoints,
+				);
+				Object.keys(result).forEach((scoutID) =>
+					updatedSPRS.push({
+						matchNumber: alliance._id.matchNumber,
+						alliance: alliance._id.alliance,
+						scouter: scoutID,
+						matchSPR: result[scoutID],
+					}),
+				);
+			}
+		}
 	});
 	SPR.insertMany(updatedSPRS);
 }

@@ -10,14 +10,10 @@ const Teams = async () => {
 	if (!data) return <div>Could not fetch data</div>;
 
 	return (
-		<main className='mt-10 max-w-7xl mx-auto'>
+		<main className='mx-4 mt-10 max-w-7xl'>
 			<header>
-				<h1 className='typography'>
-					Team Data Table
-				</h1>
-				<p className='lead'>
-					Aggregated data for teams
-				</p>
+				<h1 className='typography'>Team Data Table</h1>
+				<p className='lead'>Aggregated data for teams</p>
 			</header>
 			<section className='mt-6'>
 				<Suspense fallback={<div>Loading...</div>}>

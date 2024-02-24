@@ -9,6 +9,7 @@ const SCORES = {
 	teleopAmplifiedSpeakerNotes: 5,
 	trapNotes: 5,
 	climb: 3,
+	initiationLine: 2,
 };
 
 /**
@@ -21,6 +22,8 @@ export const computeScore = (form: CreateStandForm) => {
 	return keys.reduce((acc, key) => {
 		if (key === 'climb') {
 			return acc + computeEndgameScore(form);
+		} else if (key === 'initiationLine') {
+			return acc + (form.initiationLine ? 2 : 0);
 		}
 		return acc + SCORES[key] * form[key];
 	}, 0);

@@ -4,7 +4,6 @@ export const sprDataAggregation: PipelineStage[] = [
 	{
 		$group: {
 			_id: {
-				eventID: '$eventID',
 				matchNumber: '$matchNumber',
 				alliance: '$alliance',
 			},
