@@ -1,73 +1,69 @@
-import { sprDataAggregation } from '@/models/aggregations/sprData';
+import SPR, { SPRI } from '@/models/SPR';
 import StandForm from '@/models/StandForm';
 import scoutExpectedContribution from '@/lib/analysis/sprCalculation';
-import SPR from '@/models/SPR';
-import { connectToDbB } from '@/middleware/connect-db';
 import verifyAdmin from '@/middleware/app-router/verify-user';
+import { AggregationSPRDataI, ScoutScore, sprDataAggregation } from '@/models/aggregations/sprData';
+import { connectToDbB } from '@/middleware/connect-db';
+import { getEventMatches } from '@/lib/fetch/tba';
 import { NextRequest, NextResponse } from 'next/server';
+import { TBAEventKey } from '@/lib/types/tba/utilTypes';
 
 type TeamScoutMapT = Record<string, string[]>;
-
 type ScoutScoreMapT = Record<string, number>;
 
-interface AggregationSPRDataI {
-	_id: {
-		matchNumber: number;
-		alliance: string;
-	};
-	scoutScores: {
-		scoutID: string;
-		teamScouted: number;
-		scoutScore: number;
-	}[];
-}
-
-interface updatedSPRSI {
-	matchNumber: number;
-	alliance: string;
-	scouter: string;
-	matchSPR: number;
-}
-
-async function recomputeSPR() {
+/**
+ * Retrieves event matches and scout alliances from the database.
+ * @returns A promise that resolves to an array containing the match fetch and alliances fetch.
+ */
+async function getMatchesAndScoutAlliances() {
 	await connectToDbB();
-	const eventKey = global.compKey.compKey;
-	const headers = new Headers();
-	headers.append('X-TBA-Auth-Key', String(process.env.TBA_SECRET));
-	headers.append('accept', 'application/json');
-	const apiRes: any[] = await fetch(
-		`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
-		{
-			headers,
-		},
-	)
-		.then((res) => res.json())
-		.then((res) =>
-			res
-				.filter(({ actual_time }: { actual_time: number }) => actual_time > 0)
-				.sort((a: any, b: any) => a.actual_time - b.actual_time),
-		)
-		.catch(() => []);
-	await SPR.deleteMany({});
-	const alliances = await StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
+	const eventKey = global.compKey.compKey as TBAEventKey;
+	const matchFetch = getEventMatches(eventKey, true);
+	const alliancesFetch = StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
+	return Promise.all([matchFetch, alliancesFetch]);
+}
+
+/**
+ * Builds the teamScoutMap and scoutScoreMap based on the scout scores in the alliance.
+ * @param alliance - The alliance object containing scout scores.
+ * @returns An object containing the teamScoutMap and scoutScoreMap.
+ */
+function buildScoutMaps(scoutScores: ScoutScore[]): {
+	teamScoutMap: TeamScoutMapT;
+	scoutScoreMap: ScoutScoreMapT;
+} {
 	const teamScoutMap: TeamScoutMapT = {};
 	const scoutScoreMap: ScoutScoreMapT = {};
-	const updatedSPRS: updatedSPRSI[] = [];
+	scoutScores.forEach((scout: any) => {
+		teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
+			? [...teamScoutMap[scout.teamScouted], scout.scoutID]
+			: [scout.scoutID];
+		scoutScoreMap[scout.scoutID] = scout.scoutScore;
+	});
 
+	return { teamScoutMap, scoutScoreMap };
+}
+
+/**
+ * Recomputes the SPR (Scout Performance Rating) by retrieving matches and scout alliances,
+ * calculating the expected contribution of each scout, and updating the SPR records.
+ *
+ * @returns A promise that resolves when the SPR recompute is completed.
+ */
+async function recomputeSPR() {
+	const [matches, alliances] = await getMatchesAndScoutAlliances();
+	if (matches.length === 0 || alliances.length === 0) {
+		return; // don't bother computing if TBA doesn't have data or we haven't submitted yet
+	}
+	const updatedSPRS: SPRI[] = [];
 	alliances.forEach((alliance) => {
+		// Verify we have 6 forms for the alliance, if not ignore.
 		if (alliance.scoutScores.length === 6) {
 			const { matchNumber, alliance: color } = alliance._id;
-
-			if (apiRes[matchNumber - 1]?.post_result_time > 0) {
-				alliance.scoutScores.forEach((scout) => {
-					teamScoutMap[scout.teamScouted] = teamScoutMap[scout.teamScouted]
-						? [...teamScoutMap[scout.teamScouted], scout.scoutID]
-						: [scout.scoutID];
-					scoutScoreMap[scout.scoutID] = scout.scoutScore;
-				});
-
-				const allianceBreakdown = apiRes[matchNumber - 1].score_breakdown[color];
-
+			const postResultTime = matches[matchNumber - 1]?.post_result_time;
+			if (postResultTime && postResultTime > 0) {
+				const { scoutScoreMap, teamScoutMap } = buildScoutMaps(alliance.scoutScores);
+				const allianceBreakdown = matches[matchNumber - 1].score_breakdown[color];
 				const result = scoutExpectedContribution(
 					scoutScoreMap,
 					teamScoutMap,
@@ -84,9 +80,19 @@ async function recomputeSPR() {
 			}
 		}
 	});
-	SPR.insertMany(updatedSPRS);
+	// If successfully completed--delete everything currently there and replace with new
+	await SPR.deleteMany({});
+	await SPR.insertMany(updatedSPRS);
 }
 
+/**
+ * Recomputes the SPR (Scout Performance Rating) by fetching matches and scout alliances,
+ * calculating the expected contribution of each scout, and updating the SPR collection in the database.
+ * This function is intended to be used as a POST request handler.
+ *
+ * @param req - The NextRequest object representing the incoming request.
+ * @returns A NextResponse object with a JSON response indicating the success of the operation.
+ */
 export async function POST(req: NextRequest) {
 	const access_token = req.cookies.get('access_token')?.value;
 	const isAdmin = verifyAdmin(access_token);
@@ -95,7 +101,10 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json({ message: 'Access Forbidden' }, { status: 403 });
 	}
 
-	await recomputeSPR();
-
-	return NextResponse.json({ message: 'success' });
+	try {
+		await recomputeSPR();
+		return NextResponse.json({ message: 'success' });
+	} catch (err) {
+		return NextResponse.json({ message: 'Error: could not recompute SPR' }, { status: 500 });
+	}
 }
