@@ -14,8 +14,8 @@ import { teamDataAggregation } from '@/models/aggregations/teamData';
 async function getTeamData(teamNumber: number) {
 	await connectToDbB();
 	const data: RawTeamData[] = await StandForm.aggregate<RawTeamData>([
-		...teamDataAggregation,
 		{ $match: { teamNumber: teamNumber } },
+		...teamDataAggregation,
 	]);
 	const standForms = await StandForm.aggregate(getPerMatchAggregation(teamNumber)).sort({
 		'_id.matchNumber': 1,
