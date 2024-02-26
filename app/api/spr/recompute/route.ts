@@ -4,7 +4,7 @@ import scoutExpectedContribution from '@/lib/analysis/sprCalculation';
 import verifyAdmin from '@/middleware/app-router/verify-user';
 import { AggregationSPRDataI, ScoutScore, sprDataAggregation } from '@/models/aggregations/sprData';
 import { connectToDbB } from '@/middleware/connect-db';
-import { getEventMatches } from '@/lib/fetch/tba';
+import { getEventMatches } from '@/lib/fetchers/tba';
 import { NextRequest, NextResponse } from 'next/server';
 import { TBAEventKey } from '@/lib/types/tba/utilTypes';
 
