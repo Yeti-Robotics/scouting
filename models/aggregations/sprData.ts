@@ -17,3 +17,17 @@ export const sprDataAggregation: PipelineStage[] = [
 		},
 	},
 ];
+
+export interface ScoutScore {
+	scoutId: string;
+	teamScouted: number;
+	scoutScore: number;
+}
+
+export interface AggregationSPRDataI {
+	_id: {
+		matchNumber: number;
+		alliance: 'blue' | 'red';
+	};
+	scoutScores: ScoutScore[];
+}

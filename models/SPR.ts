@@ -11,7 +11,7 @@ const SPRSchema = new Schema<SPRI>({
 export interface SPRI {
 	matchNumber: number;
 	alliance: string;
-	scouter: UserI;
+	scouter: string;
 	matchSPR: number;
 }
 
