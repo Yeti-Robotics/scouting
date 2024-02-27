@@ -1,6 +1,6 @@
+import { TBATeamSimple } from '@/lib/types/tba/team';
 import verifyAdmin from '@/middleware/app-router/verify-user';
 import { connectToDbB } from '@/middleware/connect-db';
-import CompKey from '@/models/CompKey';
 import PickList, { NewPicklistI, PickListI } from '@/models/PickList';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,16 +18,6 @@ export async function GET(req: NextRequest) {
 	return NextResponse.json(pickList);
 }
 
-interface TBATeamSimpleI {
-	key: string;
-	team_number: number;
-	nickname: string;
-	name: string;
-	city: string;
-	state_prov: string;
-	country: string;
-}
-
 export async function POST(req: NextRequest) {
 	const access_token = req.cookies.get('access_token')?.value;
 	const isAdmin = verifyAdmin(access_token);
@@ -41,6 +31,7 @@ export async function POST(req: NextRequest) {
 	const { compKey } = global.compKey;
 	if (!compKey)
 		return NextResponse.json({ message: 'Could not locate competition key' }, { status: 500 });
+
 	const teams = await fetch(
 		`https://www.thebluealliance.com/api/v3/event/${compKey}/teams/simple`,
 		{
@@ -51,12 +42,10 @@ export async function POST(req: NextRequest) {
 		},
 	)
 		.then((res) => {
-			console.log(res);
 			return res.json();
 		})
-		.then((res) => {
-			console.log(res);
-			return res.map((team: TBATeamSimpleI) => team.team_number);
+		.then((res: TBATeamSimple[]) => {
+			return res.map((team) => team.team_number);
 		})
 		.catch(() => undefined);
 
@@ -65,7 +54,10 @@ export async function POST(req: NextRequest) {
 		await np.save();
 		return NextResponse.json({ insert_id: np._id.toString() });
 	}
-	return NextResponse.json({ message: 'oops' }, { status: 500 });
+	return NextResponse.json(
+		{ message: 'Fetching team data from The Blue Alliance failed.' },
+		{ status: 500 },
+	);
 }
 
 export async function PATCH(req: NextRequest) {
