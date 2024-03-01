@@ -9,7 +9,7 @@ interface Alliance {
 }
 
 export default interface TBAMatch {
-	actual_time: number | null;
+	actual_time: number;
 	alliances: {
 		blue: Alliance;
 		red: Alliance;

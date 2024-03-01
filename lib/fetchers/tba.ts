@@ -8,6 +8,13 @@ function getHeaders() {
 	return headers;
 }
 
+const sortOrder = {
+	qm: 0,
+	qf: 1,
+	sf: 2,
+	f: 3,
+};
+
 export async function getEventMatches(
 	eventKey: TBAEventKey,
 	completedOnly: boolean = false,
@@ -19,11 +26,17 @@ export async function getEventMatches(
 		.then((res) => res.json())
 		.then((res: TBAMatch[]) => {
 			if (completedOnly) {
-				res.filter(({ actual_time }) => actual_time && actual_time > 0);
+				res = res.filter(({ actual_time }) => actual_time > 0);
 			}
-			res.sort((a: any, b: any) => a.actual_time - b.actual_time);
+			res.sort((a, b) => {
+				const [aSort, bSort] = [sortOrder[a.comp_level], sortOrder[b.comp_level]];
+				if (aSort === bSort) {
+					return a.match_number - b.match_number;
+				}
+				return aSort - bSort;
+			});
 			return res;
 		})
-		.catch(() => [] as TBAMatch[]);
+		.catch((): TBAMatch[] => []);
 	return apiRes;
 }
