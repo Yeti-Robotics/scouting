@@ -29,7 +29,7 @@ export default function NavBarButtons({ setMenuOpened, isLoggedIn }: NavBarButto
 			setMenuOpened,
 		},
 		{
-			href: '/records',
+			href: '/recordss',
 			text: 'Records',
 			Icon: <IconFile style={{ margin: 8 }} />,
 			setMenuOpened,

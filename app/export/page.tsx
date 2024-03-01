@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { MouseEvent } from 'react';
 
-
 const exporter = (route: string, fileName: string) => {
 	return async (e: MouseEvent) => {
 		e.preventDefault();
@@ -34,7 +33,7 @@ const Export = () => {
 	return (
 		<main className='mx-auto mt-12 max-w-[540px]'>
 			<h1 className='typography mb-6 ml-2'>Export</h1>
-			<div>
+			<div className='grid grid-cols-2 gap-1'>
 				<Button
 					variant='outline'
 					className='m-2'
@@ -42,11 +41,13 @@ const Export = () => {
 				>
 					Team Data
 				</Button>
-			</div>
-			<div>
-			<Button variant='outline' className='m-2' onClick={exporter('/api/export-stand-forms', 'stand-forms')}>
-				Stand Form Data
-			</Button>
+				<Button
+					variant='outline'
+					className='m-2'
+					onClick={exporter('/api/export-stand-forms', 'stand-forms')}
+				>
+					Stand Form Data
+				</Button>
 			</div>
 		</main>
 	);

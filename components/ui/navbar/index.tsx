@@ -37,7 +37,7 @@ export default function Navbar({
 			urls: [
 				{ href: '/matches', text: 'Matches' },
 				{ href: '/teams', text: 'Teams' },
-				{ href: '/records', text: 'Records' },
+				{ href: '/recordss', text: 'Records' },
 				{ href: '/export', text: 'Export' },
 			],
 		},
