@@ -2,10 +2,11 @@
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import NumericalInput from '../numerical-input';
 import { PersonIcon } from '@radix-ui/react-icons';
-import { MissedNote } from '@/components/icons';
+import { MissedNote, MissedNoteTeleop } from '@/components/icons';
 import Image from 'next/image';
 import { useContext } from 'react';
 import { FormContext } from '@/components/Forms/StandForm';
+import { IconRocket } from '@tabler/icons-react';
 
 export default function Teleop() {
 	const form = useContext(FormContext);
@@ -69,11 +70,22 @@ export default function Teleop() {
 				</div>
 				<div className='flexrow flex'>
 					<div className='mr-4 pt-4'>
-						<MissedNote />
+						<MissedNoteTeleop />
 					</div>
 					<NumericalInput
 						label='Notes Missed'
 						name='teleopNotesMissed'
+						control={form.control}
+						min={0}
+					/>
+				</div>
+				<div className='flexrow flex'>
+					<div className='mr-4 pt-4'>
+						<IconRocket className='h-12 w-12' />
+					</div>
+					<NumericalInput
+						label='Shuttle Notes'
+						name='shuttleNotes'
 						control={form.control}
 						min={0}
 					/>
