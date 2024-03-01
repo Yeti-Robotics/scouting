@@ -2,7 +2,11 @@ import SPR, { SPRI } from '@/models/SPR';
 import StandForm from '@/models/StandForm';
 import scoutExpectedContribution from '@/lib/analysis/sprCalculation';
 import verifyAdmin from '@/middleware/app-router/verify-user';
-import { AggregationSPRDataI, ScoutScore, sprDataAggregation } from '@/models/aggregations/sprData';
+import {
+	AllianceScoutScores,
+	ScoutScore,
+	allianceScoutScoresAggregation,
+} from '@/models/aggregations/averageScoutPerformanceRating';
 import { connectToDbB } from '@/middleware/connect-db';
 import { getEventMatches } from '@/lib/fetchers/tba';
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,9 +22,11 @@ type ScoutScoreMapT = Record<string, number>;
 async function getMatchesAndScoutAlliances() {
 	await connectToDbB();
 	const eventKey = global.compKey.compKey as TBAEventKey;
-	const matchFetch = getEventMatches(eventKey, true);
-	const alliancesFetch = StandForm.aggregate<AggregationSPRDataI>(sprDataAggregation);
-	return Promise.all([matchFetch, alliancesFetch]);
+	const matchFetch = getEventMatches(eventKey, false);
+	const scoutScoresByAlliance = StandForm.aggregate<AllianceScoutScores>(
+		allianceScoutScoresAggregation,
+	);
+	return Promise.all([matchFetch, scoutScoresByAlliance]);
 }
 
 /**
