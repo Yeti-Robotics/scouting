@@ -16,6 +16,7 @@ export const defaultValues: Partial<CreateStandForm> = {
 	teleopSpeakerNotes: 0,
 	teleopAmplifiedSpeakerNotes: 0,
 	teleopNotesMissed: 0,
+	shuttleNotes: 0,
 	trapAttempts: 0,
 	trapNotes: 0,
 	penalties: 0,

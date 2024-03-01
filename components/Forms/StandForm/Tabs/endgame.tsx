@@ -22,6 +22,19 @@ export default function Endgame() {
 				</div>
 			</CardHeader>
 			<CardContent className='w-full space-y-4'>
+				<NumericalInput
+					label='Trap Notes Attempted'
+					name='trapAttempts'
+					control={form.control}
+					min={0}
+				/>
+				<NumericalInput
+					label='Trap Notes Scored'
+					name='trapNotes'
+					control={form.control}
+					min={0}
+					max={3}
+				/>
 				<div className='flex items-center space-x-2 pt-4'>
 					<FormCheckbox name='climb' label='Climbed?' />
 				</div>
