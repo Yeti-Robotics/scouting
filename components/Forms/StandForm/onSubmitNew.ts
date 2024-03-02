@@ -60,7 +60,11 @@ export const onSubmit: StandFormOnSubmit = (
 		setSubmitting('fetching');
 		fetch('/api/forms/stand', {
 			method: 'PATCH',
-			body: JSON.stringify(data),
+			body: JSON.stringify({
+					...data,
+					scoutScore: computeScore(data),
+					alliance,
+			}),
 		}).then(() => setSubmitting('done'));
 	};
 
