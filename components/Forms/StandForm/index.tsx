@@ -158,9 +158,9 @@ function StandFormTopFields({ create, matches, match, setMatch }: StandFormTopFi
 	const matchNumber = form?.watch('matchNumber');
 
 	useEffect(() => {
-		if (!create || !matches) return;
+		if (!matches) return;
 		setMatch(matches.find((match) => match.matchNumber === Number(matchNumber)) || null);
-	}, [matchNumber]);
+	}, [matchNumber, matches]);
 
 	if (!form) return null;
 	return (
@@ -188,6 +188,14 @@ function StandFormTopFields({ create, matches, match, setMatch }: StandFormTopFi
 							</SelectTrigger>
 							<SelectContent>
 								<SelectGroup>
+									{match === null && (
+										<SelectItem
+											key={field.value}
+											value={field.value?.toString()}
+										>
+											{field.value}
+										</SelectItem>
+									)}
 									{getTeamsAsArr(match).map((team) => (
 										<SelectItem key={team.value} value={team.value.toString()}>
 											{team.label}
