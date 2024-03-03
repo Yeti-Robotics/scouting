@@ -123,6 +123,9 @@ export const teamDataAggregation: PipelineStage[] = [
 					],
 				},
 			},
+			epa: {
+				$avg: '$scoutScore',
+			},
 		},
 	},
 	{
@@ -155,6 +158,9 @@ export const teamDataAggregation: PipelineStage[] = [
 			avgTeleopScore: {
 				$round: ['$teleopScore', 1],
 			},
+			epa: {
+				$round: ['$epa', 1],
+			},
 		},
 	},
 	{
@@ -185,9 +191,6 @@ export const teamDataAggregation: PipelineStage[] = [
 	{
 		$addFields: {
 			teamName: '$team_name',
-			epa: {
-				$add: ['$avgAutoScore', '$avgTeleopScore'],
-			},
 		},
 	},
 	{
