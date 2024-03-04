@@ -13,5 +13,5 @@ export default async function verifyAdmin(access_token: string | undefined) {
 export async function verifyUser(access_token: string | undefined) {
 	await connectToDbB();
 	const user = await authToken(access_token);
-	return { _id: user?._id, isAdmin: user?.administrator };
+	return { _id: user?._id, isAdmin: user?.administrator, isBanned: user?.banned };
 }
