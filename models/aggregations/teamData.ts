@@ -8,16 +8,13 @@ export const teamDataAggregation: PipelineStage[] = [
 					{
 						$multiply: ['$autoSpeakerNotes', 5],
 					},
-					{
-						$multiply: ['$autoAmpNotes', 2],
-					},
+					{ $multiply: ['$autoAmpNotes', 2] },
+					{ $cond: ['$initiationLine', 2, 0] },
 				],
 			},
 			teleopScore: {
 				$add: [
-					{
-						$multiply: ['$teleopAmpNotes', 1],
-					},
+					{ $multiply: ['$teleopAmpNotes', 1] },
 					{
 						$multiply: ['$teleopSpeakerNotes', 2],
 					},
@@ -26,34 +23,47 @@ export const teamDataAggregation: PipelineStage[] = [
 					},
 				],
 			},
-			endScore: {
+			endgameScore: {
 				$add: [
 					{
 						$cond: {
 							if: '$climb',
 							then: {
 								$add: [
+									3,
 									{
-										$cond: ['$spotlight', 4, 3],
+										$cond: ['$spotlight', 1, 0],
 									},
 									{
-										$multiply: [{ $subtract: ['$numberOnChain', 1] }, 2],
+										$divide: [
+											{
+												$multiply: [
+													2,
+													{
+														$subtract: ['$numberOnChain', 1],
+													},
+												],
+											},
+											'$numberOnChain',
+										],
 									},
 								],
 							},
 							else: 0,
 						},
 					},
-					{
-						$multiply: ['$trapNotes', 5],
-					},
+					{ $multiply: ['$trapNotes', 5] },
+					{ $cond: ['$park', 1, 0] },
 				],
 			},
 		},
 	},
 	{
 		$group: {
-			_id: '$teamNumber',
+			_id: {
+				teamNumber: '$teamNumber',
+				matchNumber: '$matchNumber',
+			},
 			avgTeleopAmpNotes: {
 				$avg: '$teleopAmpNotes',
 			},
@@ -61,6 +71,9 @@ export const teamDataAggregation: PipelineStage[] = [
 				$avg: {
 					$add: ['$teleopSpeakerNotes', '$teleopAmplifiedSpeakerNotes'],
 				},
+			},
+			avgTeleopAmplifiedSpeakerNotes: {
+				$avg: '$teleopAmplifiedSpeakerNotes',
 			},
 			avgAutoAmpNotes: {
 				$avg: '$autoAmpNotes',
@@ -89,83 +102,145 @@ export const teamDataAggregation: PipelineStage[] = [
 			},
 			initiationLine: {
 				$avg: {
-					$multiply: [
-						{
-							$convert: {
-								input: '$initiationLine',
-								to: 'int',
-							},
-						},
-						100,
-					],
+					$cond: ['$initiationLine', 1, 0],
 				},
 			},
-			autoScore: {
-				$avg: '$autoScore',
-			},
-			teleopScore: {
-				$avg: '$teleopScore',
-			},
-			avgEndScore: {
-				$avg: '$endScore',
-			},
-			avgPenalties: {
-				$avg: '$penalties',
-			},
+			autoScore: { $avg: '$autoScore' },
+			teleopScore: { $avg: '$teleopScore' },
+			avgEndScore: { $avg: '$endgameScore' },
 			avgDefense: {
 				$avg: {
-					$cond: [
-						{
-							$ne: ['$defense', 0],
-						},
-						'$defense',
-						null,
-					],
+					$cond: [{ $ne: ['$defense', 0] }, '$defense', null],
 				},
 			},
-			epa: {
-				$avg: '$scoutScore',
-			},
+			avgPointsAdded: { $avg: '$scoutScore' },
 		},
 	},
 	{
-		$sort: {
-			_id: 1,
+		$group: {
+			_id: { teamNumber: '$_id.teamNumber' },
+			avgTeleopAmpNotes: {
+				$avg: '$avgTeleopAmpNotes',
+			},
+			avgTeleopSpeakerNotes: {
+				$avg: '$avgTeleopSpeakerNotes',
+			},
+			avgTeleopAmplifiedSpeakerNotes: {
+				$avg: '$avgTeleopAmplifiedSpeakerNotes',
+			},
+			avgAutoAmpNotes: {
+				$avg: '$avgAutoAmpNotes',
+			},
+			avgAutoSpeakerNotes: {
+				$avg: '$avgAutoSpeakerNotes',
+			},
+			avgAmpNotes: { $avg: '$avgAmpNotes' },
+			avgSpeakerNotes: {
+				$avg: '$avgSpeakerNotes',
+			},
+			avgNotesMissed: {
+				$avg: '$avgNotesMissed',
+			},
+			initiationLine: {
+				$avg: '$initiationLine',
+			},
+			autoScore: { $avg: '$autoScore' },
+			teleopScore: { $avg: '$teleopScore' },
+			avgEndScore: { $avg: '$avgEndScore' },
+			avgDefense: { $avg: '$avgDefense' },
+			epa: { $avg: '$avgPointsAdded' },
+			epaDev: {
+				$stdDevSamp: '$avgPointsAdded',
+			},
+			stdAutoScore: {
+				$stdDevSamp: '$autoScore',
+			},
 		},
 	},
 	{
 		$project: {
 			_id: 1,
 			initiationLine: {
-				$round: ['$initiationLine', 1],
+				$round: ['$initiationLine', 3],
 			},
-			avgTeleopAmpNotes: 1,
-			avgTeleopSpeakerNotes: 1,
-			avgTeleopAmplifiedSpeakerNotes: 1,
-			avgAutoAmpNotes: 1,
-			avgAutoSpeakerNotes: 1,
-			avgAmpNotes: 1,
-			avgSpeakerNotes: 1,
-			avgNotesMissed: 1,
-			avgPenalties: 1,
-			avgDefense: 1,
+			avgTeleopAmpNotes: {
+				$round: ['$avgTeleopAmpNotes', 3],
+			},
+			avgTeleopSpeakerNotes: {
+				$round: ['$avgTeleopSpeakerNotes', 3],
+			},
+			avgTeleopAmplifiedSpeakerNotes: {
+				$round: ['$avgTeleopAmplifiedSpeakerNotes', 3],
+			},
+			avgAutoAmpNotes: {
+				$round: ['$avgAutoAmpNotes', 3],
+			},
+			avgAutoSpeakerNotes: {
+				$round: ['$avgAutoSpeakerNotes', 3],
+			},
+			avgAmpNotes: {
+				$round: ['$avgAmpNotes', 3],
+			},
+			avgSpeakerNotes: {
+				$round: ['$avgSpeakerNotes', 3],
+			},
+			avgNotesMissed: {
+				$round: ['$avgNotesMissed', 3],
+			},
+			avgDefense: {
+				$round: ['$avgDefense', 3],
+			},
 			avgEndScore: {
-				$round: ['$avgEndScore', 1],
+				$round: ['$avgEndScore', 3],
 			},
 			avgAutoScore: {
-				$round: ['$autoScore', 1],
+				$round: ['$autoScore', 3],
 			},
 			avgTeleopScore: {
-				$round: ['$teleopScore', 1],
+				$round: ['$teleopScore', 3],
 			},
-			epa: {
-				$round: ['$epa', 1],
+			epa: { $round: ['$epa', 3] },
+			epaDev: { $round: ['$epaDev', 3] },
+			stdAutoScore: {
+				$round: ['$stdAutoScore', 3],
 			},
 		},
 	},
 	{
 		$addFields: {
-			teamNumber: '$_id',
+			teamNumber: '$_id.teamNumber',
+			epaConsistency: {
+				$round: [{ $divide: ['$epaDev', '$epa'] }, 3],
+			},
+			teleopSpeakerAmplifiedRatio: {
+				$round: [
+					{
+						$divide: [
+							'$avgTeleopAmplifiedSpeakerNotes',
+							{
+								$max: ['$avgTeleopSpeakerNotes', 1],
+							},
+						],
+					},
+					3,
+				],
+			},
+			autoWPA: {
+				$round: [
+					{
+						$min: [
+							{
+								$multiply: [1.95, '$avgAutoScore'],
+							},
+							100,
+						],
+					},
+					3,
+				],
+			},
+			autoConsistency: {
+				$divide: ['$stdAutoScore', { $max: ['$avgAutoScore', 1] }],
+			},
 		},
 	},
 	{
@@ -179,20 +254,11 @@ export const teamDataAggregation: PipelineStage[] = [
 	{
 		$replaceRoot: {
 			newRoot: {
-				$mergeObjects: [
-					{
-						$arrayElemAt: ['$team', 0],
-					},
-					'$$ROOT',
-				],
+				$mergeObjects: [{ $arrayElemAt: ['$team', 0] }, '$$ROOT'],
 			},
 		},
 	},
-	{
-		$addFields: {
-			teamName: '$team_name',
-		},
-	},
+	{ $addFields: { teamName: '$team_name' } },
 	{
 		$project: {
 			_id: 0,
@@ -221,6 +287,12 @@ export interface TeamData {
 	avgSpeakerNotes: number;
 	avgNotesMissed: number;
 	epa: number;
+	epaDev: number | null;
+	epaConsistency: number | null;
+	teleopSpeakerAmplifiedRatio: number | null;
+	autoWPA: number;
+	autoConsistency: number | null;
+	stdAutoScore: number | null;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
