@@ -3,6 +3,8 @@ import { CreateForm } from './crud-components';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import PickList, { PickListI } from '@/models/PickList';
+import { cookies } from 'next/headers';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 
 /**
  * Renders a card for a picklist with a link to the picklist's page.
@@ -52,14 +54,19 @@ function PicklistList({ picklists }: { picklists: PickListI[] }) {
  * @returns rendered PicklistPage component.
  */
 export default async function PicklistPage() {
+	const access_token = cookies().get('access_token')?.value;
+	const isAdmin = await verifyAdmin(access_token);
+	if (!isAdmin) {
+		return <div>Unauthorized</div>;
+	}
+
 	await connectToDbB();
 	const picklists = await PickList.find({});
+
 	return (
 		<main className='mx-auto mt-12 max-w-[540px] px-4'>
 			<h1 className='typography'>YETI Picklists</h1>
-			<p className='lead'>
-				Links to picklists
-			</p>
+			<p className='lead'>Links to picklists</p>
 			<div className='my-4'>
 				<CreateForm />
 			</div>

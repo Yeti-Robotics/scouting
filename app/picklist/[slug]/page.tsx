@@ -9,6 +9,8 @@ import { PickabilityWeightsI, TeamAvgsI, TeamDerivedStatsI } from '@/lib/types/P
 import { UpdateButton } from '../crud-components';
 import TeamAlliance from '@/models/TeamAlliance';
 import BestAvailable from './BestAvailable';
+import { cookies } from 'next/headers';
+import verifyAdmin from '@/middleware/app-router/verify-user';
 
 /**
  * Computes pickability using specified weights -- essentially computes a weighted sum
@@ -92,6 +94,11 @@ export async function generateStaticParams() {
  * @returns The rendered PicklistPage component.
  */
 export default async function PicklistPage({ params }: { params: { slug: string } }) {
+	const access_token = cookies().get('access_token')?.value;
+	const isAdmin = await verifyAdmin(access_token);
+	if (!isAdmin) {
+		return <div>Unauthorized</div>;
+	}
 	await connectToDbB();
 	// Retrieve the derived statistics and picklist
 	let derivedStatistics = await getDerivedStatistics();
