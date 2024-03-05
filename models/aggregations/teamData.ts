@@ -225,6 +225,19 @@ export const teamDataAggregation: PipelineStage[] = [
 					3,
 				],
 			},
+			WPA: {
+				$round: [
+					{
+						$min: [
+							{
+								$multiply: [1.41, '$epa'],
+							},
+							100,
+						],
+					},
+					3,
+				],
+			},
 			autoWPA: {
 				$round: [
 					{
@@ -239,7 +252,11 @@ export const teamDataAggregation: PipelineStage[] = [
 				],
 			},
 			autoConsistency: {
-				$divide: ['$stdAutoScore', { $max: ['$avgAutoScore', 1] }],
+				$cond: [
+					{ $gt: ['$avgAutoScore', 0] },
+					{ $divide: ['$stdAutoScore', '$avgAutoScore'] },
+					null,
+				],
 			},
 		},
 	},
@@ -290,6 +307,7 @@ export interface TeamData {
 	epaDev: number | null;
 	epaConsistency: number | null;
 	teleopSpeakerAmplifiedRatio: number | null;
+	WPA: number;
 	autoWPA: number;
 	autoConsistency: number | null;
 	stdAutoScore: number | null;
