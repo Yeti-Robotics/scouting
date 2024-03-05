@@ -43,6 +43,11 @@ function getQuickStats(teamData: RawTeamData) {
 			value: teamData.epa,
 			popoverContent: 'Expected Points Added',
 		},
+		{
+			label: 'WPA',
+			value: teamData.WPA,
+			popoverContent: 'Win Probability Added',
+		},
 	];
 }
 
@@ -57,7 +62,7 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 	const quickStats = getQuickStats(teamData.team);
 
 	return (
-		<main className='container my-8 w-full max-w-7xl space-y-4'>
+		<main className='container my-8 w-full max-w-5xl space-y-4 pb-16'>
 			<header>
 				<h1 className='typography break-words'>{teamData.team.teamName}</h1>
 				<p className='lead'>Team {teamData.team.teamNumber} </p>
@@ -68,13 +73,25 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 			<section className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
 				<Card>
 					<CardHeader className='p-6'>
+						<CardTitle>Points Scored</CardTitle>
+						<CardDescription>Points Scored by Match</CardDescription>
+					</CardHeader>
+					<CardContent className='p-6 pt-0'>
+						<Chart
+							data={teamData.standForms}
+							series={['epa', 'autoScore', 'teleopScore']}
+						/>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader className='p-6'>
 						<CardTitle>Amp Notes</CardTitle>
 						<CardDescription>Amp Notes Scored by Match</CardDescription>
 					</CardHeader>
 					<CardContent className='p-6 pt-0'>
 						<Chart
 							data={teamData.standForms}
-							series={['autoAmpNotes', 'teleopAmpNotes']}
+							series={['autoAmpNotes', 'teleopAmpNotes', 'totalAmpNotes']}
 						/>
 					</CardContent>
 				</Card>
@@ -90,6 +107,7 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 								'autoSpeakerNotes',
 								'teleopSpeakerNotes',
 								'teleopAmplifiedSpeakerNotes',
+								'totalSpeakerNotes',
 							]}
 						/>
 					</CardContent>
@@ -97,7 +115,59 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 			</section>
 			<section className='w-full'>
 				<h2 className='typography'>Advanced Metrics</h2>
-				<div className='mt-4'></div>
+				<div className='mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3'>
+					<Card>
+						<CardHeader className='p-6'>
+							<CardTitle>Win Probability Added (WPA)</CardTitle>
+						</CardHeader>
+						<CardContent className='p-6 pt-0'>
+							<h3 className='text-3xl font-bold'>{teamData.team.WPA}%</h3>
+						</CardContent>
+					</Card>
+					<Card>
+						<CardHeader className='p-6'>
+							<CardTitle>Auto WPA</CardTitle>
+						</CardHeader>
+						<CardContent className='p-6 pt-0'>
+							<h3 className='text-3xl font-bold'>{teamData.team.autoWPA}%</h3>
+						</CardContent>
+					</Card>
+					<Card>
+						<CardHeader className='p-6'>
+							<CardTitle>Auto %RSD</CardTitle>
+						</CardHeader>
+						<CardContent className='p-6 pt-0'>
+							<h3 className='text-3xl font-bold'>
+								{teamData.team.autoConsistency &&
+									Math.round(teamData.team.autoConsistency * 10000) / 100}
+								%
+							</h3>
+						</CardContent>
+					</Card>
+					<Card>
+						<CardHeader className='p-6'>
+							<CardTitle>Overall %RSD</CardTitle>
+						</CardHeader>
+						<CardContent className='p-6 pt-0'>
+							<h3 className='text-3xl font-bold'>
+								{teamData.team.epaDev &&
+									Math.round((teamData.team.epa / teamData.team.epaDev) * 10000) /
+										100}
+								%
+							</h3>
+						</CardContent>
+					</Card>
+					<Card>
+						<CardHeader className='p-6'>
+							<CardTitle>tASN/tSN</CardTitle>
+						</CardHeader>
+						<CardContent className='p-6 pt-0'>
+							<h3 className='text-3xl font-bold'>
+								{teamData.team.teleopSpeakerAmplifiedRatio}
+							</h3>
+						</CardContent>
+					</Card>
+				</div>
 			</section>
 			<section className='w-full'>
 				<h2 className='typography'>Pit Info</h2>

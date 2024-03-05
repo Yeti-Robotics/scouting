@@ -37,7 +37,7 @@ export const columns = [
 		id: 'ampNotes',
 		header: () => (
 			<div className=' flex h-full w-full items-center justify-center text-center font-bold'>
-				Avg Amp Notes
+				Amp Averages
 			</div>
 		),
 		maxSize: 460,
@@ -62,7 +62,7 @@ export const columns = [
 		id: 'speakerNotes',
 		header: () => (
 			<div className='  flex h-full w-full items-center justify-center text-center font-bold'>
-				Avg Speaker Notes
+				Speaker Averages
 			</div>
 		),
 		maxSize: 460,
@@ -81,6 +81,13 @@ export const columns = [
 					align: 'right',
 				},
 			}),
+			helper.accessor('avgTeleopAmplifiedSpeakerNotes', {
+				header: () => <div className='font-bold'>Teleop Amplified</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				meta: {
+					align: 'right',
+				},
+			}),
 		],
 	}),
 	helper.accessor('avgNotesMissed', {
@@ -91,22 +98,6 @@ export const columns = [
 		},
 		maxSize: 160,
 	}),
-	helper.accessor('epa', {
-		header: () => <div className='font-bold'>EPA</div>,
-		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
-		maxSize: 160,
-		meta: {
-			align: 'right',
-		},
-	}),
-	helper.accessor('avgPenalties', {
-		header: () => <div className='font-bold'>Avg. Penalties</div>,
-		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
-		maxSize: 160,
-		meta: {
-			align: 'right',
-		},
-	}),
 	helper.accessor('avgDefense', {
 		header: () => <div className='font-bold'>Defense</div>,
 		cell: (props) => <div className=''>{truncDecimals(props.getValue() ?? 0) || 'none'}</div>,
@@ -114,6 +105,84 @@ export const columns = [
 		meta: {
 			align: 'right',
 		},
+	}),
+	helper.group({
+		id: 'advanced',
+		header: () => (
+			<div className='flex h-full w-full items-center justify-center text-center font-bold'>
+				Advanced & Experimental
+			</div>
+		),
+		columns: [
+			helper.accessor('epa', {
+				header: () => <div className='font-bold'>EPA</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('avgAutoScore', {
+				header: () => <div className='font-bold'>aEPA</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('avgTeleopScore', {
+				header: () => <div className='font-bold'>tEPA</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('avgEndScore', {
+				header: () => <div className='font-bold'>eEPA</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('WPA', {
+				header: () => <div className='font-bold'>WPA</div>,
+				cell: (props) => <div className=''>{percentageFormatter(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('autoWPA', {
+				header: () => <div className='font-bold'>Auto WPA</div>,
+				cell: (props) => <div className=''>{percentageFormatter(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('autoConsistency', {
+				header: () => <div className='font-bold'>Auto %RSD</div>,
+				cell: (props) => (
+					<div className=''>
+						{props.getValue() === null ? '' : truncDecimals(props.getValue())}
+					</div>
+				),
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('teleopSpeakerAmplifiedRatio', {
+				header: () => <div className='font-bold'>tASN/tSN</div>,
+				cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+		],
 	}),
 	/*
 	helper.display({

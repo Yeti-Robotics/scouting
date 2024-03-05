@@ -42,6 +42,40 @@ export const getPerMatchAggregation = (teamNumber: number): PipelineStage[] => [
 			defense: {
 				$avg: '$defense',
 			},
+			totalSpeakerNotes: {
+				$avg: {
+					$add: [
+						'$autoSpeakerNotes',
+						'$teleopSpeakerNotes',
+						'$teleopAmplifiedSpeakerNotes',
+					],
+				},
+			},
+			totalAmpNotes: {
+				$avg: {
+					$add: ['$autoAmpNotes', '$teleopAmpNotes'],
+				},
+			},
+			autoScore: {
+				$avg: {
+					$add: [
+						{ $multiply: ['$autoAmpNotes', 2] },
+						{ $multiply: ['$autoSpeakerNotes', 5] },
+					],
+				},
+			},
+			teleopScore: {
+				$avg: {
+					$add: [
+						{ $multiply: ['$teleopAmpNotes', 1] },
+						{ $multiply: ['$teleopSpeakerNotes', 2] },
+						{ $multiply: ['$teleopAmplifiedSpeakerNotes', 5] },
+					],
+				},
+			},
+			epa: {
+				$avg: '$scoutScore',
+			},
 		},
 	},
 ];
