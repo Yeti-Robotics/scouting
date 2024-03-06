@@ -12,6 +12,7 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import { UserI } from '@/models/User';
+import { CheckCircledIcon, FileIcon, PersonIcon, TrashIcon } from '@radix-ui/react-icons';
 import useSWR from 'swr';
 import fetcher from '@/lib/fetch';
 import { Link } from '@/components/Link';
@@ -27,27 +28,40 @@ export default function Recordss() {
 				<h1 className='typography mb-6 ml-2'>Records</h1>
 			</header>
 			<div className='grid grid-cols-2 gap-1'>
-				<Button variant='outline' className='m-2' asChild>
-					<Link href='/records/stand-forms'>Stand Forms</Link>
+				<Button variant='outline' className='m-2 justify-start' asChild>
+					<Link href='/records/stand-forms'>
+						<FileIcon className='mr-2 h-4 w-4' />
+						Stand Forms
+					</Link>
 				</Button>
-				<Button variant='outline' className='m-2'>
-					<Link href='/records/pit-forms'>Pit Forms</Link>
+				<Button variant='outline' className='m-2 justify-start' asChild>
+					<Link href='/records/pit-forms'>
+						<FileIcon className='mr-2 h-4 w-4' />
+						Pit Forms
+					</Link>
 				</Button>
 			</div>
 			<div className='grid grid-cols-2 gap-1'>
 				{user?.administrator && (
-					<Button variant='outline' className='m-2'>
-						<Link href='/records/users'>Users</Link>
+					<Button variant='outline' className='m-2 justify-start' asChild>
+						<Link href='/records/users'>
+							<PersonIcon className='mr-2 h-4 w-4' />
+							Users
+						</Link>
 					</Button>
 				)}
-				<Button variant='outline' className='m-2'>
-					<Link href='/records/verify-forms'>Verify Match Forms</Link>
+				<Button variant='outline' className='m-2 justify-start' asChild>
+					<Link href='/records/verify-forms'>
+						<CheckCircledIcon className='mr-2 h-4 w-4' />
+						Verify Forms
+					</Link>
 				</Button>
 			</div>
 			<div className='grid grid-cols-2 gap-1'>
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant='outline' className='m-2'>
+						<Button variant='outline' className='m-2 justify-start'>
+							<TrashIcon className='mr-2 h-4 w-4' />
 							Clean DB
 						</Button>
 					</DialogTrigger>
@@ -75,8 +89,9 @@ export default function Recordss() {
 				</Dialog>
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant='outline' className='m-2'>
-							Approve Stand Forms
+						<Button variant='outline' className='m-2 justify-start'>
+							<CheckCircledIcon className='mr-2 h-4 w-4' />
+							Approve Forms
 						</Button>
 					</DialogTrigger>
 					<DialogContent className='sm:max-w-[425px]'>
