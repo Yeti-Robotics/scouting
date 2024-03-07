@@ -127,7 +127,13 @@ function AllianceStats({
 	);
 }
 
-export default function AllianceComparison({ teams }: { teams: TeamI[] }): JSX.Element {
+export default function AllianceComparison({
+	teams,
+	data,
+}: {
+	teams: { team_number: number; team_name: string }[];
+	data: TeamData[];
+}): JSX.Element {
 	const [allianceData, setAllianceData] = useState(defaultAlliances);
 
 	const handleAllianceMemberChange = async (
@@ -135,9 +141,7 @@ export default function AllianceComparison({ teams }: { teams: TeamI[] }): JSX.E
 		alliance: 'red' | 'blue',
 		position: keyof Alliance,
 	) => {
-		const newData = await fetch(`/api/team-data/${team}`)
-			.then((res) => res.json())
-			.then((res) => res.team);
+		const newData = data.find((d) => d.teamNumber === parseInt(team));
 
 		setAllianceData((prev) => {
 			return {

@@ -2,11 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Team, { TeamI } from '@/models/Team';
 import TeamSelect from './TeamSelect';
 import AllianceComparison from './AllianceComparison';
+import StandForm from '@/models/StandForm';
+import { teamDataAggregation } from '@/models/aggregations/teamData';
 
 export default async function WhatIfPage() {
-	const teams: TeamI[] = (await Team.find({}).sort({ team_number: 1 })).map(
-		({ _id, team_name, team_number }) => ({ _id: _id.toString(), team_name, team_number }),
-	);
+	const data = await StandForm.aggregate(teamDataAggregation);
+	const teams = data
+		.map((team) => ({ team_number: team.teamNumber, team_name: team.teamName }))
+		.sort((a, b) => a.team_number - b.team_number);
 
 	return (
 		<main className='mx-auto my-8 max-w-3xl px-4 pb-16'>
@@ -22,7 +25,7 @@ export default async function WhatIfPage() {
 			</header>
 
 			<section className='mt-4'>
-				<AllianceComparison teams={teams} />
+				<AllianceComparison teams={teams} data={data} />
 			</section>
 		</main>
 	);
