@@ -9,7 +9,10 @@ import {
 import { TeamI } from '@/models/Team';
 
 interface TeamSelectProps {
-	teams: TeamI[];
+	teams: {
+		team_number: number;
+		team_name: string;
+	}[];
 	value: string;
 	setValue: (value: string) => void;
 }
