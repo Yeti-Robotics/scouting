@@ -51,6 +51,7 @@
 		"ez-cookies": "0.1.0",
 		"formidable": "3.5.0",
 		"jsonwebtoken": "9.0.1",
+		"mathjs": "^12.4.0",
 		"mongoose": "7.4.2",
 		"next": "14.0.4",
 		"react": "18.2.0",
