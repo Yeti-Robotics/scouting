@@ -1,13 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectItem } from '@/components/ui/select';
-import Team from '@/models/Team';
-import { erf } from 'mathjs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Team, { TeamI } from '@/models/Team';
+import TeamSelect from './TeamSelect';
+import AllianceComparison from './AllianceComparison';
 
 export default async function WhatIfPage() {
-	const teams = await Team.find({}).sort({ teamNumber: 1 });
+	const teams: TeamI[] = (await Team.find({}).sort({ team_number: 1 })).map(
+		({ _id, team_name, team_number }) => ({ _id: _id.toString(), team_name, team_number }),
+	);
 
 	return (
-		<main className='mx-auto mt-8 max-w-5xl'>
+		<main className='mx-auto my-8 max-w-3xl px-4 pb-16'>
 			<header>
 				<h1 className='typography'>What If?</h1>
 				<p className='lead max-w-[60ch]'>
@@ -18,25 +20,9 @@ export default async function WhatIfPage() {
 					.
 				</p>
 			</header>
-			<section className='grid grid-cols-2'>
-				<form>
-					<Card>
-						<CardHeader>
-							<CardTitle>Red Alliance</CardTitle>
-						</CardHeader>
-					</Card>
-					<CardContent>
-						<Select name='red-1'>
-							{teams.map((team) => (
-								<SelectItem key={team.teamNumber} value={team.teamNumber}>
-									{team.teamNumber}
-								</SelectItem>
-							))}
-						</Select>
-						<Select name='red-2'></Select>
-						<Select name='red-3'></Select>
-					</CardContent>
-				</form>
+
+			<section className='mt-4'>
+				<AllianceComparison teams={teams} />
 			</section>
 		</main>
 	);
