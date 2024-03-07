@@ -96,7 +96,7 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 			return 'red';
 		}
 		return '';
-	}, [teamNumber]);
+	}, [teamNumber, match]);
 
 	useEffect(() => {
 		if (form.watch('climb')) {
