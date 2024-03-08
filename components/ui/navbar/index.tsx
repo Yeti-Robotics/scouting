@@ -1,5 +1,5 @@
-import { DesktopNav } from './desktop';
 import MobileNav from './mobile';
+import { DesktopNav } from './desktop';
 
 interface UrlI {
 	href: string;
@@ -35,6 +35,7 @@ export default function Navbar({
 			name: 'Data & Analysis',
 			desc: 'Links to data analysis pages.',
 			urls: [
+				{ href: '/what-if', text: 'What If?' },
 				{ href: '/matches', text: 'Matches' },
 				{ href: '/teams', text: 'Teams' },
 				{ href: '/records', text: 'Records' },
