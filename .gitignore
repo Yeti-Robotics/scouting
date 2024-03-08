@@ -38,3 +38,7 @@ yarn-error.log*
 
 # python
 __pycache__/
+
+sw.*
+workbox-*
+swe-worker-*
