@@ -1,14 +1,7 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import {
 	Cell,
@@ -19,9 +12,7 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { columns } from './columns';
-import { Button } from '../ui/button';
 import { CaretSortIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-import { IconArrowsUpDown } from '@tabler/icons-react';
 
 interface TableScrollAreaProps {
 	data: RawTeamData[];
@@ -57,52 +48,52 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	});
 
 	return (
-		<div className=' overflow-x-auto'>
-			<div className='rounded-md border'>
-				<Table>
-					<TableHeader>
-						{table.getHeaderGroups().map((headerGroup, i) => (
-							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map((header) => (
-									<TableHead
-										key={header.id}
-										colSpan={header.colSpan}
-										className={`px-0 ${header.column.getCanSort() ? 'cursor-pointer' : ''}`}
-										onClick={header.column.getToggleSortingHandler()}
-									>
-										{!header.isPlaceholder && (
-											<div
-												className={`flex h-full items-center border-x p-2 ${(header.column.columnDef.meta as any)?.align === 'left' ? 'justify-start' : 'justify-end'} whitespace-nowrap`}
-											>
-												{renderHeader(header)}
-												{header.column.getCanSort() &&
-													(sortSymbols[
-														header.column.getIsSorted() as string
-													] ??
-														null)}
-											</div>
-										)}
-									</TableHead>
-								))}
-							</TableRow>
-						))}
-					</TableHeader>
-					<TableBody className='c [&>*:nth-child(odd)]:bg-muted/25'>
-						{table.getRowModel().rows.map((row) => (
-							<TableRow key={row.id}>
-								{row.getVisibleCells().map((cell) => (
-									<TableCell
-										align={(cell.column.columnDef.meta as any)?.align}
-										key={cell.id}
-									>
-										{renderCell(cell)}
-									</TableCell>
-								))}
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</div>
+		<div className='max-h-[512px] overflow-y-auto rounded-md border'>
+			<table className='relative border-separate border'>
+				<TableHeader>
+					{table.getHeaderGroups().map((headerGroup, i) => (
+						<TableRow key={headerGroup.id}>
+							{headerGroup.headers.map((header, index) => (
+								<TableHead
+									key={header.id}
+									colSpan={header.colSpan}
+									style={{ top: `${i * 40}px` }}
+									className={`sticky z-30  bg-background px-0 ${header.column.getCanSort() ? 'cursor-pointer' : ''} ${(header.column.columnDef.meta as any)?.className ?? ''} ${index !== headerGroup.headers.length - 1 ? 'border-r' : ''}`}
+									onClick={header.column.getToggleSortingHandler()}
+								>
+									{!header.isPlaceholder && (
+										<div
+											className={`flex h-full items-center border-r p-2 last:border-none ${(header.column.columnDef.meta as any)?.align === 'left' ? 'justify-start' : 'justify-end'} whitespace-nowrap`}
+										>
+											{renderHeader(header)}
+											{header.column.getCanSort() &&
+												(sortSymbols[
+													header.column.getIsSorted() as string
+												] ??
+													null)}
+										</div>
+									)}
+								</TableHead>
+							))}
+						</TableRow>
+					))}
+				</TableHeader>
+				<TableBody>
+					{table.getRowModel().rows.map((row, index) => (
+						<TableRow key={row.id}>
+							{row.getVisibleCells().map((cell, cellIndex) => (
+								<TableCell
+									className={`bg-background ${(cell.column.columnDef.meta as any)?.className} z-0 `}
+									align={(cell.column.columnDef.meta as any)?.align}
+									key={cell.id}
+								>
+									{renderCell(cell)}
+								</TableCell>
+							))}
+						</TableRow>
+					))}
+				</TableBody>
+			</table>
 		</div>
 	);
 };
