@@ -48,8 +48,8 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 	});
 
 	return (
-		<div className='max-h-[512px] overflow-y-auto rounded-md border'>
-			<table className='relative border-separate border'>
+		<div className='max-h-screen overflow-auto rounded-md border'>
+			<table className='relative border-separate border-spacing-0 border'>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup, i) => (
 						<TableRow key={headerGroup.id}>
@@ -58,7 +58,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 									key={header.id}
 									colSpan={header.colSpan}
 									style={{ top: `${i * 40}px` }}
-									className={`sticky z-30  bg-background px-0 ${header.column.getCanSort() ? 'cursor-pointer' : ''} ${(header.column.columnDef.meta as any)?.className ?? ''} ${index !== headerGroup.headers.length - 1 ? 'border-r' : ''}`}
+									className={`sticky z-30 m-0 border-b border-r bg-background px-0 ${header.column.getCanSort() ? 'cursor-pointer' : ''} ${(header.column.columnDef.meta as any)?.className ?? ''} ${index === headerGroup.headers.length - 1 ? 'border-r-none' : ''}`}
 									onClick={header.column.getToggleSortingHandler()}
 								>
 									{!header.isPlaceholder && (
@@ -83,7 +83,7 @@ export const TeamDataTable = ({ data }: TableScrollAreaProps) => {
 						<TableRow key={row.id}>
 							{row.getVisibleCells().map((cell, cellIndex) => (
 								<TableCell
-									className={`bg-background ${(cell.column.columnDef.meta as any)?.className} z-0 `}
+									className={`border-b ${index % 2 !== 0 ? 'bg-background' : 'bg-[#ececec] dark:bg-[#131313] '}  ${(cell.column.columnDef.meta as any)?.className} z-0 `}
 									align={(cell.column.columnDef.meta as any)?.align}
 									key={cell.id}
 								>

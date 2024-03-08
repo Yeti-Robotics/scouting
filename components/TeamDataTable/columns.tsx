@@ -16,16 +16,19 @@ const helper = createColumnHelper<RawTeamData>();
 
 export const columns = [
 	helper.accessor('teamNumber', {
-		header: () => <div className=' font-bold'>Team #</div>,
+		header: () => <div className='font-bold'>Team #</div>,
 		cell: (props) => (
-			<Link className='hover: w-full text-primary' href={`/teams/${props.getValue()}`}>
+			<Link
+				className='w-full text-primary hover:underline'
+				href={`/teams/${props.getValue()}`}
+			>
 				{props.getValue()}
 			</Link>
 		),
 		// in px
 		meta: {
 			align: 'left',
-			className: 'sticky left-0 top-[40px] z-50',
+			className: 'sticky left-0 top-[40px] z-[39]',
 		},
 	}),
 	helper.accessor('teamName', {
