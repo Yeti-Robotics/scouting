@@ -1,11 +1,10 @@
 'use client';
 
+import TeamSelect from './TeamSelect';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useState } from 'react';
 import { erf } from 'mathjs';
 import { TeamData } from '@/models/aggregations/teamData';
-import TeamSelect from './TeamSelect';
-import { TeamI } from '@/models/Team';
 
 type AllianceMemberData = undefined | TeamData;
 type AllianceCardData = {
@@ -32,11 +31,11 @@ const scoreNumberFormat = new Intl.NumberFormat('en-US', {
 const allianceCardData: Record<'red' | 'blue', AllianceCardData> = {
 	red: {
 		title: 'Red Alliance',
-		color: 'bg-red-400',
+		color: 'before:bg-red-400',
 	},
 	blue: {
 		title: 'Blue Alliance',
-		color: 'bg-blue-400',
+		color: 'before:bg-blue-400',
 	},
 };
 
@@ -66,8 +65,6 @@ function AllianceStats({
 	winProb: number;
 	allianceData: Alliance;
 }) {
-	const beforeBG = 'before:' + allianceCardData.color;
-
 	const epa = Object.values(allianceData).reduce((acc, cur) => acc + (cur?.epa || 0), 0);
 	const autoScore = Object.values(allianceData).reduce(
 		(acc, cur) => acc + (cur?.avgAutoScore || 0),
@@ -86,7 +83,7 @@ function AllianceStats({
 		<Card>
 			<CardHeader className='p-6'>
 				<CardTitle
-					className={`flex items-center ${beforeBG} before:mr-1 before:inline-block before:h-4 before:w-4 before:rounded-sm before:content-[""]`}
+					className={`flex items-center ${allianceCardData.color} before:mr-1 before:inline-block before:h-4 before:w-4 before:rounded-sm before:content-[""]`}
 				>
 					{allianceCardData.title} Projections
 				</CardTitle>
@@ -179,12 +176,11 @@ export default function AllianceComparison({
 		<div>
 			<div className='grid grid-cols-1 gap-4'>
 				{Object.entries(allianceCardData).map(([alliance, data]) => {
-					const beforeBG = 'before:' + data.color;
 					return (
 						<Card key={alliance}>
 							<CardHeader className='p-6'>
 								<CardTitle
-									className={`flex items-center before:mr-1 before:inline-block before:h-4 before:w-4 before:rounded-sm ${beforeBG} before:content-[""]`}
+									className={`flex items-center before:mr-1 before:inline-block before:h-4 before:w-4 before:rounded-sm ${data.color}`}
 								>
 									{data.title}
 								</CardTitle>
