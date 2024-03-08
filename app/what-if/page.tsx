@@ -1,6 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import Team, { TeamI } from '@/models/Team';
-import TeamSelect from './TeamSelect';
 import AllianceComparison from './AllianceComparison';
 import StandForm from '@/models/StandForm';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
@@ -30,3 +27,5 @@ export default async function WhatIfPage() {
 		</main>
 	);
 }
+
+export const revalidate = 300; // revalidate cache every 5 minutes

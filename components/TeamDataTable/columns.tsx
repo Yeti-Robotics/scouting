@@ -1,9 +1,8 @@
 'use client';
 
 import { RawTeamData } from '@/models/aggregations/teamData';
-import { IconArrowsDiff, IconDots } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Link } from '../Link';
+import Link from 'next/link';
 
 const percentageFormatter = (v: any) =>
 	(Number(v) / 100).toLocaleString(undefined, {
@@ -18,11 +17,18 @@ const helper = createColumnHelper<RawTeamData>();
 export const columns = [
 	helper.accessor('teamNumber', {
 		header: () => <div className='font-bold'>Team #</div>,
-		cell: (props) => <Link href={`/teams/${props.getValue()}`}>{props.getValue()}</Link>,
+		cell: (props) => (
+			<Link
+				className='w-full text-primary hover:underline'
+				href={`/teams/${props.getValue()}`}
+			>
+				{props.getValue()}
+			</Link>
+		),
 		// in px
-		maxSize: 112,
 		meta: {
 			align: 'left',
+			className: 'sticky left-0 top-[40px] z-[39]',
 		},
 	}),
 	helper.accessor('teamName', {
@@ -40,7 +46,7 @@ export const columns = [
 				Amp Averages
 			</div>
 		),
-		maxSize: 460,
+		size: 200,
 		columns: [
 			helper.accessor('avgAutoAmpNotes', {
 				header: () => <div className='font-bold'>Auto</div>,
@@ -65,7 +71,7 @@ export const columns = [
 				Speaker Averages
 			</div>
 		),
-		maxSize: 460,
+		size: 260,
 		columns: [
 			helper.accessor('avgAutoSpeakerNotes', {
 				header: () => <div className='font-bold'>Auto</div>,
@@ -73,6 +79,7 @@ export const columns = [
 				meta: {
 					align: 'right',
 				},
+				size: 85,
 			}),
 			helper.accessor('avgTeleopSpeakerNotes', {
 				header: () => <div className='font-bold'>Teleop</div>,
