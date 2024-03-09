@@ -23,7 +23,6 @@ export default new RouteHandler<'api', WAuth>()
 		const savedMatch = new Match({
 			...match,
 			startTime: new Date(match.startTime).valueOf(),
-			bets: [],
 			bottomScorer: undefined,
 			topScorer: undefined,
 			open: true,

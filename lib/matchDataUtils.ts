@@ -54,22 +54,6 @@ export const getTitle = ({ auto, level }: { auto: boolean; level: 'speaker' | 'a
 	}
 };
 
-export const hasTeam = (match: MatchData | MatchI, team: number) => {
-	return match.bets
-		? match.blue1 === team ||
-				match.blue2 === team ||
-				match.blue3 === team ||
-				match.red1 === team ||
-				match.red2 === team ||
-				match.red3 === team
-		: match.blue1?.teamNumber === team ||
-				match.blue2?.teamNumber === team ||
-				match.blue3?.teamNumber === team ||
-				match.red1?.teamNumber === team ||
-				match.red2?.teamNumber === team ||
-				match.red3?.teamNumber === team;
-};
-
 export const getTeamColor = (match: MatchData, team?: StandFormWithName | number) => {
 	if (typeof team !== 'number') {
 		if (

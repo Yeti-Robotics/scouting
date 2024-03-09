@@ -95,47 +95,6 @@ export default new RouteHandler<'api', WAuth>()
 				(score) => score.score === mappedArr.sort((a, b) => b.score - a.score)[0].score,
 			).length > 1;
 
-		// paying out bets
-		const saves = await match.bets.map(async (bet) => {
-			const better = await User.findOne({ username: bet.username });
-			if (!better) return Promise.resolve();
-			if (bet.bottomScorer) {
-				console.log('bottom');
-				if (bet.bottomScorer.bet === match[bottomScorer] && !bottomScorerTie) {
-					better.coins = better.coins + bet.bottomScorer.amount * 2;
-					bet.bottomScorer.won = true;
-				} else {
-					bet.bottomScorer.won = false;
-				}
-			}
-			if (bet.topScorer) {
-				console.log('top');
-				if (bet.topScorer.bet === match[topScorer] && !topScorerTie) {
-					better.coins = better.coins + bet.topScorer.amount * 2;
-					bet.topScorer.won = true;
-				} else {
-					bet.topScorer.won = false;
-				}
-			}
-			if (bet.winner) {
-				console.log('win');
-				// I had to do it ts is wrong :pensive:
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				if (bet.winner.bet === match.winner && match.winner !== 'tie') {
-					better.coins = better.coins + bet.winner.amount * 1.5;
-					bet.winner.won = true;
-				} else {
-					bet.winner.won = false;
-				}
-			}
-
-			bet.paid = true;
-			better.validateSync();
-			return better.save();
-		});
-
-		await Promise.all(saves);
 		match.open = false;
 		await match.save();
 		return res.status(200).json({ message: 'Bets paid out for this match.' });

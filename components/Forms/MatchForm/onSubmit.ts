@@ -13,7 +13,7 @@ type MatchFormOnSubmit = (
 export const onSubmit: MatchFormOnSubmit = (create, user, router) => {
 	const onCreate: SubmitHandler<FormMatch> = (data) => {
 		if (!user || user.banned || !user.administrator) return;
-		const { bets, winner, ...filtered } = data;
+		const { winner, ...filtered } = data;
 		(filtered as any).startTime = new Date(data.startTime).valueOf();
 		fetch('/api/matches', {
 			method: 'POST',

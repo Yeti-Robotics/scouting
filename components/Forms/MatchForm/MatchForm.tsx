@@ -158,23 +158,6 @@ const MatchForm = ({ create, defaultMatch, canEdit, id }: Props) => {
 					/>
 				)}
 			</FormSection>
-			{!create && defaultMatch?.open && (
-				<Button
-					type='button'
-					variant='contained'
-					loading={closing === 'fetching'}
-					onClick={() => {
-						if (!winner) return;
-						setClosing('fetching');
-						fetch(`/api/matches/${id}/close?winner=${winner}`).then((res) => {
-							setClosing('done');
-							if (!res.ok) console.error('failed to close match.');
-						});
-					}}
-				>
-					Close Bets
-				</Button>
-			)}
 			<Button mt='md' fullWidth type='submit'>
 				{create ? 'Submit' : 'Update'}
 			</Button>
