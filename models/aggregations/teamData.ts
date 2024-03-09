@@ -44,7 +44,7 @@ export const teamDataAggregation: PipelineStage[] = [
 													},
 												],
 											},
-											'$numberOnChain',
+											{ $max: [1, '$numberOnChain'] },
 										],
 									},
 								],
@@ -210,7 +210,11 @@ export const teamDataAggregation: PipelineStage[] = [
 		$addFields: {
 			teamNumber: '$_id.teamNumber',
 			epaConsistency: {
-				$round: [{ $divide: ['$epaDev', '$epa'] }, 3],
+				$cond: [
+					{ $gt: ['$epa', 0] },
+					{ $round: [{ $divide: ['$epaDev', { $max: ['$epa', 1] }] }, 3] },
+					null,
+				],
 			},
 			teleopSpeakerAmplifiedRatio: {
 				$round: [
@@ -254,7 +258,7 @@ export const teamDataAggregation: PipelineStage[] = [
 			autoConsistency: {
 				$cond: [
 					{ $gt: ['$avgAutoScore', 0] },
-					{ $divide: ['$stdAutoScore', '$avgAutoScore'] },
+					{ $divide: ['$stdAutoScore', { $max: ['$avgAutoScore', 1] }] },
 					null,
 				],
 			},
