@@ -71,7 +71,8 @@ export default async function VerifyFormAccuracyPage() {
 	);
 
 	const mismatchedTeamMatches: { teamNumber: number; matchNumber: number }[] = [];
-	const mismatchedWithTBA: { teamNumber: number; matchNumber: number; _id: string }[] = [];
+	const mismatchedAutoLine: { teamNumber: number; matchNumber: number; _id: string }[] = [];
+	const mismatchedEndgameStatus: { teamNumber: number; matchNumber: number; _id: string }[] = [];
 	standFormGroups.forEach((standFormGroup) => {
 		if (standFormGroup.forms.length > 1) {
 			const reference = standFormGroup.forms[0];
@@ -101,12 +102,30 @@ export default async function VerifyFormAccuracyPage() {
 						| 'autoLineRobot2'
 						| 'autoLineRobot3'
 				];
+			const EndgameStatus =
+				tbaMatchData.score_breakdown[alliance][
+					('endGameRobot' + (position + 1)) as
+						| 'endGameRobot1'
+						| 'endGameRobot2'
+						| 'endGameRobot3'
+				];
 			standFormGroup.forms.forEach((form) => {
 				if (
 					(form.initiationLine && crossedAuto === 'No') ||
-					(!form.initiationLine && crossedAuto == 'Yes')
+					(!form.initiationLine && crossedAuto === 'Yes')
 				) {
-					mismatchedWithTBA.push({
+					mismatchedAutoLine.push({
+						_id: form._id,
+						matchNumber: standFormGroup._id.matchNumber,
+						teamNumber: standFormGroup._id.teamNumber,
+					});
+				}
+				if (
+					(form.climb && (EndgameStatus === 'Parked' || EndgameStatus === 'None')) ||
+					(form.park && (EndgameStatus !== 'Parked')) ||
+					((!form.park && !form.climb) && (EndgameStatus !== 'None'))
+				) {
+					mismatchedEndgameStatus.push({
 						_id: form._id,
 						matchNumber: standFormGroup._id.matchNumber,
 						teamNumber: standFormGroup._id.teamNumber,
@@ -116,7 +135,8 @@ export default async function VerifyFormAccuracyPage() {
 		}
 	});
 
-	mismatchedWithTBA.sort((a, b) => a.matchNumber - b.matchNumber);
+	mismatchedAutoLine.sort((a, b) => a.matchNumber - b.matchNumber);
+	mismatchedEndgameStatus.sort((a, b) => a.matchNumber - b.matchNumber);
 
 	return (
 		<main className='mx-auto mt-8 max-w-5xl px-4'>
@@ -136,9 +156,34 @@ export default async function VerifyFormAccuracyPage() {
 				</div>
 			</section>
 			<section className='mt-4'>
-				<h2 className='typography'>Mismatched with TBA</h2>
+				<h2 className='typography'>Mismatched Auto Line with TBA</h2>
 				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-					{mismatchedWithTBA.map((i) => {
+					{mismatchedAutoLine.map((i) => {
+						return (
+							<Card key={`${i.teamNumber} + ${i.matchNumber}`}>
+								<CardHeader className='p-6'>
+									<CardTitle>Match {i.matchNumber}</CardTitle>
+								</CardHeader>
+								<CardContent className='pt-0'>
+									Team {i.teamNumber}
+									<br />
+									<Link
+										className='text-primary hover:underline'
+										href={`/records/stand-forms/${i._id}`}
+										target='_blank'
+									>
+										View Form
+									</Link>
+								</CardContent>
+							</Card>
+						);
+					})}
+				</div>
+			</section>
+			<section className='mt-4'>
+				<h2 className='typography'>Mismatched Endgame Status with TBA</h2>
+				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+					{mismatchedEndgameStatus.map((i) => {
 						return (
 							<Card key={`${i.teamNumber} + ${i.matchNumber}`}>
 								<CardHeader className='p-6'>
