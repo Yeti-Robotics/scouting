@@ -19,10 +19,30 @@ const groupMatchesAgg = [
 	},
 ];
 
+const groupMatchesAllianceAgg = [
+	{
+		$group: {
+			_id: {
+				matchNumber: '$matchNumber',
+				alliance: '$alliance',
+			},
+			forms: { $push: '$$ROOT' },
+		},
+	},
+];
+
 interface GroupedForms {
 	_id: {
 		matchNumber: number;
 		teamNumber: number;
+	};
+	forms: StandFormI[];
+}
+
+interface GroupedAllianceForms {
+	_id: {
+		matchNumber: number;
+		alliance: string;
 	};
 	forms: StandFormI[];
 }
@@ -63,6 +83,23 @@ export default async function VerifyFormAccuracyPage() {
 	}
 
 	const standFormGroups = await StandForm.aggregate<GroupedForms>(groupMatchesAgg);
+	const allianceGroups = await StandForm.aggregate<GroupedAllianceForms>(groupMatchesAllianceAgg);
+	allianceGroups.forEach((allianceGroup) => {
+		if (allianceGroup.forms.length != 6) return;
+		const sortedAllianceGroups = allianceGroup.forms.sort(
+			(a, b) => a.teamNumber - b.teamNumber,
+		);
+		const standFormGroups2: GroupedForms[] = [];
+		for (let i = 0; i < 6; i += 2) {
+			standFormGroups2.push({
+				_id: {
+					matchNumber: allianceGroup._id.matchNumber,
+					teamNumber: sortedAllianceGroups[i].teamNumber,
+				},
+				forms: [sortedAllianceGroups[i], sortedAllianceGroups[i+1]],
+			});
+		}
+	});
 	// get completed tba matches
 
 	const tbaMatchesData = await getEventMatches(global.compKey.compKey as TBAEventKey, true);
@@ -84,6 +121,7 @@ export default async function VerifyFormAccuracyPage() {
 			});
 		}
 		const tbaMatchData = matchNumMap[standFormGroup._id.matchNumber];
+		if (!tbaMatchData.score_breakdown.blue || !tbaMatchData.score_breakdown.red) return;
 		if (tbaMatchData) {
 			let alliance: 'blue' | 'red' = 'blue';
 			let position = tbaMatchData.alliances.blue.team_keys.indexOf(
@@ -122,8 +160,8 @@ export default async function VerifyFormAccuracyPage() {
 				}
 				if (
 					(form.climb && (EndgameStatus === 'Parked' || EndgameStatus === 'None')) ||
-					(form.park && (EndgameStatus !== 'Parked')) ||
-					((!form.park && !form.climb) && (EndgameStatus !== 'None'))
+					(form.park && EndgameStatus !== 'Parked') ||
+					(!form.park && !form.climb && EndgameStatus !== 'None')
 				) {
 					mismatchedEndgameStatus.push({
 						_id: form._id,
