@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cookies } from 'next/headers';
 import { connectToDbB } from '@/middleware/connect-db';
 import { getEventMatches } from '@/lib/fetchers/tba';
-import { TBAEventKey, TBATeamKey } from '@/lib/types/tba/utilTypes';
+import { TBAEventKey } from '@/lib/types/tba/utilTypes';
 import {
 	MatchNumberToMatch,
 	findAllianceErrors,
@@ -64,11 +64,68 @@ export default async function VerifyFormAccuracyPage() {
 	alliancesWithMismatchedFields.sort((a, b) => a.matchNumber - b.matchNumber);
 	alliancesMissingTeams.sort((a, b) => a.matchNumber - b.matchNumber);
 
+	const individualFormScalar = 100 / individualFormErrors.length;
+	const allianceScalar = 100 / allianceTotals.length;
+	const errorStatistics = {
+		'Alliances Completed': alliancesMissingTeams.length * allianceScalar,
+		'Alliances Fully Correct': alliancesWithMismatchedFields.length * allianceScalar,
+		autoLine: 0,
+		endgameStatus: 0,
+		autoAmpNotes: 0,
+		autoSpeakerNotes: 0,
+		teleopAmpNotes: 0,
+		teleopSpeakerNotes: 0,
+		teleopAmplifiedSpeakerNotes: 0,
+		trapNotes: 0,
+	};
+
+	individualFormErrors.forEach((i) => {
+		i.errors.forEach((error) => {
+			errorStatistics[error]++;
+		});
+	});
+
+	alliancesWithMismatchedFields.forEach((i) => {
+		i.mismatchedFields.forEach((field) => {
+			errorStatistics[field]++;
+		});
+	});
+
+	errorStatistics.autoLine = individualFormScalar * errorStatistics.autoLine || 0;
+	errorStatistics.endgameStatus = individualFormScalar * errorStatistics.endgameStatus || 0;
+	errorStatistics.autoAmpNotes = allianceScalar * errorStatistics.autoAmpNotes;
+	errorStatistics.autoSpeakerNotes = allianceScalar * errorStatistics.autoSpeakerNotes;
+	errorStatistics.teleopAmpNotes = allianceScalar * errorStatistics.teleopAmpNotes;
+	errorStatistics.teleopSpeakerNotes = allianceScalar * errorStatistics.teleopSpeakerNotes;
+	errorStatistics.teleopAmplifiedSpeakerNotes =
+		allianceScalar * errorStatistics.teleopAmplifiedSpeakerNotes;
+	errorStatistics.trapNotes = allianceScalar * errorStatistics.trapNotes;
+
 	return (
 		<main className='mx-auto mt-8 max-w-5xl px-4 pb-16'>
-			<section>
+			<h1 className='typography'>Form Accuracy</h1>
+			<section className='mt-4'>
+				<h2 className='typography'>Accuracy by Statistic</h2>
+				<Card className='mt-4'>
+					<CardContent>
+						<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
+							{Object.entries(errorStatistics).map(([key, value]) => {
+								return (
+									<div key={key} className='flex flex-col'>
+										<p className='text-sm text-gray-500'>{key}</p>
+										<p className='text-2xl font-bold'>
+											{(100 - value).toFixed(2)}%
+										</p>
+									</div>
+								);
+							})}
+						</div>
+					</CardContent>
+				</Card>
+			</section>
+			<section className='mt-4'>
 				<h2 className='typography'>Mismatched Individual Forms</h2>
-				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
 					{mismatchedTeamMatches.map((i) => {
 						return (
 							<Card key={`${i.teamNumber} + ${i.matchNumber}`}>
@@ -100,7 +157,7 @@ export default async function VerifyFormAccuracyPage() {
 			</section>
 			<section className='mt-4'>
 				<h2 className='typography'>Individual Form Errors</h2>
-				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
 					{individualFormErrors.map((i) => {
 						return (
 							<Card key={`${i.teamNumber} + ${i.matchNumber}`}>
