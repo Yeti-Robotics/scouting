@@ -41,6 +41,7 @@ export default function Chart({ data, series }: ChartProps) {
 				/>
 				{series.map((s, i) => (
 					<Line
+						key={s}
 						type='monotone'
 						dataKey={s}
 						strokeWidth={3}
