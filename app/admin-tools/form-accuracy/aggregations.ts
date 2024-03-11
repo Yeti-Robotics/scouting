@@ -33,6 +33,9 @@ export const allianceReportedTotals: PipelineStage[] = [
 			teleopAmpNotes: {
 				$avg: '$teleopAmpNotes',
 			},
+			teleopSpeakerNotes: {
+				$avg: '$teleopSpeakerNotes',
+			},
 			teleopAmplifiedSpeakerNotes: {
 				$avg: '$teleopAmplifiedSpeakerNotes',
 			},
