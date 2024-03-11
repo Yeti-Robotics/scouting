@@ -97,6 +97,22 @@ export const columns = [
 			}),
 		],
 	}),
+	helper.accessor('avgShuttleNotes', {
+		header: () => <div className='font-bold'>Shuttle</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+		meta: {
+			align: 'right',
+		},
+		maxSize: 160,
+	}),
+	helper.accessor('avgTrapNotes', {
+		header: () => <div className='font-bold'>Trap</div>,
+		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
+		meta: {
+			align: 'right',
+		},
+		maxSize: 160,
+	}),
 	helper.accessor('avgNotesMissed', {
 		header: () => <div className='font-bold'>Avg. Notes Missed</div>,
 		cell: (props) => <div className=''>{truncDecimals(props.getValue())}</div>,
@@ -175,6 +191,16 @@ export const columns = [
 					<div className=''>
 						{props.getValue() === null ? '' : truncDecimals(props.getValue())}
 					</div>
+				),
+				maxSize: 160,
+				meta: {
+					align: 'right',
+				},
+			}),
+			helper.accessor('effectiveNotePercentage', {
+				header: () => <div className='font-bold'>eNote%</div>,
+				cell: (props) => (
+					<div className=''>{percentageFormatter(100 * props.getValue())}</div>
 				),
 				maxSize: 160,
 				meta: {

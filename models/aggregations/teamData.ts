@@ -100,6 +100,12 @@ export const teamDataAggregation: PipelineStage[] = [
 					$add: ['$teleopNotesMissed', '$autoNotesMissed'],
 				},
 			},
+			avgShuttleNotes: {
+				$avg: '$shuttleNotes',
+			},
+			avgTrapNotes: {
+				$avg: '$trapNotes',
+			},
 			initiationLine: {
 				$avg: {
 					$cond: ['$initiationLine', 1, 0],
@@ -144,6 +150,12 @@ export const teamDataAggregation: PipelineStage[] = [
 			initiationLine: {
 				$avg: '$initiationLine',
 			},
+			avgShuttleNotes: {
+				$avg: '$avgShuttleNotes',
+			},
+			avgTrapNotes: {
+				$avg: '$avgTrapNotes',
+			},
 			autoScore: { $avg: '$autoScore' },
 			teleopScore: { $avg: '$teleopScore' },
 			avgEndScore: { $avg: '$avgEndScore' },
@@ -186,6 +198,12 @@ export const teamDataAggregation: PipelineStage[] = [
 			},
 			avgNotesMissed: {
 				$round: ['$avgNotesMissed', 3],
+			},
+			avgShuttleNotes: {
+				$round: ['$avgShuttleNotes', 3],
+			},
+			avgTrapNotes: {
+				$round: ['$avgTrapNotes', 3],
 			},
 			avgDefense: {
 				$round: ['$avgDefense', 3],
@@ -262,6 +280,34 @@ export const teamDataAggregation: PipelineStage[] = [
 					null,
 				],
 			},
+			effectiveNotePercentage: {
+				$divide: [
+					{
+						$add: [
+							'$avgTeleopAmpNotes',
+							{ $multiply: ['$avgTeleopSpeakerNotes', 2] },
+							{ $multiply: ['$avgTeleopAmplifiedSpeakerNotes', 5] },
+							{ $multiply: ['$avgAutoAmpNotes', 2] },
+							{ $multiply: ['$avgAutoSpeakerNotes', 5] },
+						],
+					},
+					{
+						$max: [
+							{
+								$add: [
+									'$avgTeleopAmpNotes',
+									'$avgTeleopSpeakerNotes',
+									'$avgTeleopAmplifiedSpeakerNotes',
+									'$avgAutoAmpNotes',
+									'$avgAutoSpeakerNotes',
+									'$avgNotesMissed',
+								],
+							},
+							1,
+						],
+					},
+				],
+			},
 		},
 	},
 	{
@@ -307,6 +353,8 @@ export interface TeamData {
 	avgAmpNotes: number;
 	avgSpeakerNotes: number;
 	avgNotesMissed: number;
+	avgShuttleNotes: number;
+	avgTrapNotes: number;
 	epa: number;
 	epaDev: number | null;
 	epaConsistency: number | null;
@@ -315,6 +363,7 @@ export interface TeamData {
 	autoWPA: number;
 	autoConsistency: number | null;
 	stdAutoScore: number | null;
+	effectiveNotePercentage: number;
 }
 
 export interface RawTeamData extends Omit<TeamData, 'endPosition' | 'bestEndPosition'> {
