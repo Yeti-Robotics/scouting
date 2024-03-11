@@ -66,10 +66,10 @@ async function recomputeSPR() {
 		// Verify we have 6 forms for the alliance, if not ignore.
 		if (alliance.scoutScores.length === 6) {
 			const { matchNumber, alliance: color } = alliance._id;
-			const postResultTime = matches[matchNumber - 1]?.post_result_time;
-			if (postResultTime && postResultTime > 0) {
+			const breakdown = matches[matchNumber - 1]?.score_breakdown;
+			if (breakdown) {
 				const { scoutScoreMap, teamScoutMap } = buildScoutMaps(alliance.scoutScores);
-				const allianceBreakdown = matches[matchNumber - 1].score_breakdown[color];
+				const allianceBreakdown = breakdown[color];
 				const result = scoutExpectedContribution(
 					scoutScoreMap,
 					teamScoutMap,

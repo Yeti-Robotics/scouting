@@ -1,7 +1,7 @@
 type AutoLine = 'Yes' | 'No';
-type EndgameStatus = 'None' | 'Parked' | 'StageRight' | 'StageLeft' | 'CenterStage';
+export type EndgameStatus = 'None' | 'Parked' | 'StageRight' | 'StageLeft' | 'CenterStage';
 
-interface AllianceScoreBreakdown {
+export interface AllianceScoreBreakdown {
 	adjustPoints: number;
 	autoAmpNoteCount: number;
 	autoAmpNotePoints: number;

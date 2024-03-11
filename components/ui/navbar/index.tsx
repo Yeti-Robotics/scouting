@@ -48,6 +48,7 @@ export default function Navbar({
 			urls: [
 				{ href: '/picklist', text: 'Picklist' },
 				{ href: '/spr', text: 'SPR' },
+				{ href: '/admin-tools/form-accuracy', text: 'Form Accuracy' },
 			],
 			adminOnly: true,
 		},
