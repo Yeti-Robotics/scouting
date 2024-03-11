@@ -34,7 +34,9 @@ export default async function VerifyFormAccuracyPage() {
 	const [standFormsGroupedByTeamMatch, allianceTotals, tbaMatchesData] = await Promise.all([
 		StandForm.aggregate<TeamStandFormsByMatch>(teamStandFormsByMatch),
 		StandForm.aggregate<AllianceReportedTotals>(allianceReportedTotals),
-		getEventMatches(global.compKey.compKey as TBAEventKey, true),
+		getEventMatches(global.compKey.compKey as TBAEventKey, true).then((res) =>
+			res.filter((i) => i.comp_level === 'qm'),
+		),
 	]).catch(() => {
 		return [null, null, null];
 	});
