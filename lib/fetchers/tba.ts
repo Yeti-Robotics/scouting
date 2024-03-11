@@ -26,7 +26,7 @@ export async function getEventMatches(
 		.then((res) => res.json())
 		.then((res: TBAMatch[]) => {
 			if (completedOnly) {
-				res = res.filter(({ actual_time }) => actual_time > 0);
+				res = res.filter(({ score_breakdown }) => score_breakdown !== null);
 			}
 			res.sort((a, b) => {
 				const [aSort, bSort] = [sortOrder[a.comp_level], sortOrder[b.comp_level]];

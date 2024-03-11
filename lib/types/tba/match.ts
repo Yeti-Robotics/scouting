@@ -20,7 +20,7 @@ export default interface TBAMatch {
 	match_number: number;
 	post_result_time: number | null;
 	predicted_time: number;
-	score_breakdown: ScoreBreakdown;
+	score_breakdown: ScoreBreakdown | null;
 	set_number: number;
 	time: number;
 	videos: TBAVideo[];
