@@ -37,7 +37,7 @@ const BlockDisplay = ({ user, block }: { block: ScheduleBlockI; user: UserI }) =
 					<Divider />
 					<Text fw={600}>
 						Blue 2A:
-						<br /> {block.blue2a?.firstName} {block.blue2b?.lastName[0]}
+						<br /> {block.blue2a?.firstName} {block.blue2a?.lastName[0]}
 					</Text>
 					<Divider />
 					<Text fw={600}>
