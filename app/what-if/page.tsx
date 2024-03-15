@@ -1,8 +1,10 @@
+import { connectToDbB } from '@/middleware/connect-db';
 import AllianceComparison from './AllianceComparison';
 import StandForm from '@/models/StandForm';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
 
 export default async function WhatIfPage() {
+	await connectToDbB();
 	const data = await StandForm.aggregate(teamDataAggregation);
 	const teams = data
 		.map((team) => ({ team_number: team.teamNumber, team_name: team.teamName }))
