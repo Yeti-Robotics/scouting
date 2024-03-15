@@ -31,7 +31,7 @@ export function verifyFormEquality(reference: StandFormI, comparison: StandFormI
 	return true;
 }
 
-const keyPairings: [keyof AllianceScoreBreakdown, keyof AllianceReportedTotals][] = [
+const keyPairings: [keyof AllianceScoreBreakdown, MismatchedField][] = [
 	['autoAmpNoteCount', 'autoAmpNotes'],
 	['autoSpeakerNoteCount', 'autoSpeakerNotes'],
 	['teleopAmpNoteCount', 'teleopAmpNotes'],
@@ -47,7 +47,7 @@ function compareAllianceTotals(
 	tbaReported: AllianceScoreBreakdown,
 	scoutReported: AllianceReportedTotals,
 ) {
-	const mismatchedKeys: (keyof AllianceReportedTotals)[] = [];
+	const mismatchedKeys: MismatchedField[] = [];
 	for (let [tbaKey, scoutKey] of keyPairings) {
 		if (tbaReported[tbaKey] !== scoutReported[scoutKey]) {
 			mismatchedKeys.push(scoutKey);
@@ -64,8 +64,13 @@ interface AllianceReportedError {
 	alliance: 'red' | 'blue';
 }
 
+type MismatchedField = keyof Omit<
+	AllianceReportedTotals,
+	'matchNumber' | 'teamsReceived' | 'formsReceived' | 'alliance'
+>;
+
 interface MismatchedFields extends AllianceReportedError {
-	mismatchedFields: (keyof AllianceReportedTotals)[];
+	mismatchedFields: MismatchedField[];
 }
 
 export function findAllianceErrors(
@@ -132,10 +137,11 @@ function getTeamPosition(
 	return (teamKeys.indexOf(teamKey) + 1) as 1 | 2 | 3;
 }
 
+type IndividualFormErrorName = 'autoLine' | 'endgameStatus';
 interface IndividualFormError {
 	matchNumber: number;
 	teamNumber: number;
-	errors: string[];
+	errors: IndividualFormErrorName[];
 	_id: string;
 }
 
@@ -171,7 +177,7 @@ export function findIndividualFormErrors(
 			| 'endGameRobot2'
 			| 'endGameRobot3';
 		for (let form of groupedStandForm.forms) {
-			const errors: string[] = [];
+			const errors: IndividualFormErrorName[] = [];
 			if (
 				(form.initiationLine && allianceScoreBreakdown[autoLineKey] === 'No') ||
 				(!form.initiationLine && allianceScoreBreakdown[autoLineKey] === 'Yes')

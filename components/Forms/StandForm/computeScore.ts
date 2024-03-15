@@ -35,8 +35,9 @@ export const computeScore = (form: CreateStandForm) => {
  * @returns approx. contribution to endgame score
  */
 export const computeEndgameScore = (form: CreateStandForm) => {
-	if (form.park) return 1;
+	const trapNotePoints = form.trapNotes * 5;
+	if (form.park) return 1 + trapNotePoints;
 	const harmonyPoints = (2 * (form.numberOnChain - 1)) / form.numberOnChain;
 	const spotlightBonus = form.spotlight ? 1 : 0;
-	return form.climb ? SCORES.climb + harmonyPoints + spotlightBonus : 0;
+	return trapNotePoints + (form.climb ? SCORES.climb + harmonyPoints + spotlightBonus : 0);
 };
