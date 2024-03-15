@@ -1,5 +1,28 @@
 import { PipelineStage } from 'mongoose';
 
+export interface PerMatchStandFormGroup {
+	_id: {
+		teamNumber: number;
+		matchNumber: number;
+	};
+	autoAmpNotes: number;
+	autoSpeakerNotes: number;
+	autoNotesMissed: number;
+	teleopAmpNotes: number;
+	teleopSpeakerNotes: number;
+	teleopAmplifiedSpeakerNotes: number;
+	teleopNotesMissed: number;
+	trapAttempts: number;
+	trapNotes: number;
+	defense: number;
+	totalSpeakerNotes: number;
+	totalAmpNotes: number;
+	autoScore: number;
+	teleopScore: number;
+	epa: number;
+	notes: string[];
+}
+
 export const getPerMatchAggregation = (teamNumber: number): PipelineStage[] => [
 	{
 		$match: {
@@ -75,6 +98,9 @@ export const getPerMatchAggregation = (teamNumber: number): PipelineStage[] => [
 			},
 			epa: {
 				$avg: '$scoutScore',
+			},
+			notes: {
+				$push: '$notes',
 			},
 		},
 	},
