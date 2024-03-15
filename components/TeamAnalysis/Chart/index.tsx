@@ -1,5 +1,6 @@
 'use client';
 
+import { PerMatchStandFormGroup } from '@/models/aggregations/perMatchAverage';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import {
 	LineChart,
@@ -15,7 +16,7 @@ import {
 const COLORS = ['#54b6e5', '#8DE969', '#F1BBD7', '#6B769E'];
 
 interface ChartProps {
-	data: RawTeamData[];
+	data: PerMatchStandFormGroup[];
 	series: string[];
 }
 

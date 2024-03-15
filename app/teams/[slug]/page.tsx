@@ -6,7 +6,10 @@ import QuickStats from '@/components/TeamAnalysis/QuickStats';
 import StandForm from '@/models/StandForm';
 import { connectToDbB } from '@/middleware/connect-db';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getPerMatchAggregation } from '@/models/aggregations/perMatchAverage';
+import {
+	PerMatchStandFormGroup,
+	getPerMatchAggregation,
+} from '@/models/aggregations/perMatchAverage';
 import { toBase64 } from '@/lib/toBase64';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
@@ -17,7 +20,9 @@ async function getTeamData(teamNumber: number) {
 		{ $match: { teamNumber: teamNumber } },
 		...teamDataAggregation,
 	]);
-	const standForms = await StandForm.aggregate(getPerMatchAggregation(teamNumber)).sort({
+	const standForms = await StandForm.aggregate<PerMatchStandFormGroup>(
+		getPerMatchAggregation(teamNumber),
+	).sort({
 		'_id.matchNumber': 1,
 	});
 	const pitForms = await PitForm.find({ teamNumber: teamNumber });
@@ -167,6 +172,36 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 							</h3>
 						</CardContent>
 					</Card>
+				</div>
+			</section>
+			<section className='w-full'>
+				<h2 className='typography'>Comments</h2>
+				<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3'>
+					{teamData.standForms.map((form) => {
+						return (
+							<Card key={form._id.matchNumber}>
+								<CardHeader className='p-6'>
+									<CardTitle>Match {form._id.matchNumber}</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<ul className='mt-0'>
+										{form.notes.map((note, index) => {
+											return (
+												<li key={index}>
+													<blockquote
+														className='typography mb-4'
+														style={{ marginTop: 0 }}
+													>
+														"{note}"
+													</blockquote>
+												</li>
+											);
+										})}
+									</ul>
+								</CardContent>
+							</Card>
+						);
+					})}
 				</div>
 			</section>
 			<section className='w-full'>
