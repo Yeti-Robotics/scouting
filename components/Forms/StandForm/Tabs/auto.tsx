@@ -25,7 +25,7 @@ export default function Auto() {
 			<CardContent className='space-y-4'>
 				<div className='grid grid-cols-2'>
 					<FormCheckbox name='preload' label='Preloaded?' />
-					<FormCheckbox name='initiationLine' label='Moved off line?' />
+					<FormCheckbox name='initiationLine' label='Moved past black line?' />
 				</div>
 				<div className='flex'>
 					<Image
