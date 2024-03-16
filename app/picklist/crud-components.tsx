@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
-import { updatePicklist } from './[slug]/PicklistTable/actions';
+import { deletePicklist, updatePicklist } from './[slug]/PicklistTable/actions';
 
 interface CreateFormResponseI {
 	insert_id: string;
@@ -90,6 +90,26 @@ export function UpdateButton({ mongoId }: { mongoId: string }) {
 				}}
 			>
 				{isPending ? 'Saving...' : 'Save Picklist'}
+			</Button>
+		</>
+	);
+}
+
+export function DeleteButton({ mongoId }: { mongoId: string }) {
+	const [isPending, startTransition] = useTransition();
+	return (
+		<>
+			<Button
+				variant={'default'}
+				disabled={isPending}
+				className='w-32'
+				onClick={async () => {
+					startTransition(() => {
+						deletePicklist(mongoId);
+					});
+				}}
+			>
+				{isPending ? 'Deleting...' : 'Delete Picklist'}
 			</Button>
 		</>
 	);

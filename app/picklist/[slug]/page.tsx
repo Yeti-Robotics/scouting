@@ -6,7 +6,7 @@ import { avgDataPipeline } from '@/models/aggregations/averageData';
 import { connectToDbB } from '@/middleware/connect-db';
 import { firstPickWeights, secondPickWeights } from '@/lib/analysis/pickability-weights';
 import { PickabilityWeightsI, TeamAvgsI, TeamDerivedStatsI } from '@/lib/types/Pickability';
-import { UpdateButton } from '../crud-components';
+import { DeleteButton, UpdateButton } from '../crud-components';
 import TeamAlliance from '@/models/TeamAlliance';
 import BestAvailable from './BestAvailable';
 import { cookies } from 'next/headers';
@@ -144,6 +144,7 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 							<h1 className='typography'>{name}</h1>
 							<div className='w-full sm:w-min'>
 								<UpdateButton mongoId={params.slug} />
+								<DeleteButton mongoId={params.slug} />
 							</div>
 						</div>
 						<p className='lead'>Last Updated • {updatedAt.toDateString()}</p>

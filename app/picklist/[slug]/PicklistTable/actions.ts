@@ -47,3 +47,13 @@ export async function updatePicklist(items: number[], mongoId: string) {
 	}
 	revalidatePath(`/picklist/${mongoId}`);
 }
+
+export async function deletePicklist(mongoId: string) {
+	await connectToDbB();
+	try {
+		await PickList.findByIdAndDelete(mongoId);
+	} catch (err) {
+		console.log(err);
+	}
+	revalidatePath(`/picklist`);
+}
