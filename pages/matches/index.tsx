@@ -111,6 +111,9 @@ const MatchData = () => {
 					>
 						Populate
 					</Button>
+					<Button onClick={()=> fetch('/api/clear-matches')}>
+						Clear Matches
+					</Button>
 				</Stack>
 			)}
 			<Title order={2}>Filters</Title>
