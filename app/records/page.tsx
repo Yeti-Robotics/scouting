@@ -58,35 +58,37 @@ export default function Recordss() {
 				</Button>
 			</div>
 			<div className='grid grid-cols-2 gap-1'>
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button variant='outline' className='m-2 justify-start'>
-							<TrashIcon className='mr-2 h-4 w-4' />
-							Clean DB
-						</Button>
-					</DialogTrigger>
-					<DialogContent className='sm:max-w-[425px]'>
-						<DialogHeader>
-							<DialogTitle>Awe you shure? 🥺</DialogTitle>
-							<DialogDescription>Delete everything????!??! 😱</DialogDescription>
-						</DialogHeader>
-						<DialogFooter>
-							<DialogClose asChild>
-								<Button variant='default'>Go back 😭</Button>
-							</DialogClose>
-							<DialogClose>
-								<Button
-									variant='default'
-									onClick={() => {
-										fetch('/api/clean-db');
-									}}
-								>
-									Delete it all 😈
-								</Button>
-							</DialogClose>
-						</DialogFooter>
-					</DialogContent>
-				</Dialog>
+				{user?.administrator && (
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant='outline' className='m-2 justify-start'>
+								<TrashIcon className='mr-2 h-4 w-4' />
+								Clean DB
+							</Button>
+						</DialogTrigger>
+						<DialogContent className='sm:max-w-[425px]'>
+							<DialogHeader>
+								<DialogTitle>Awe you shure? 🥺</DialogTitle>
+								<DialogDescription>Delete everything????!??! 😱</DialogDescription>
+							</DialogHeader>
+							<DialogFooter>
+								<DialogClose asChild>
+									<Button variant='default'>Go back 😭</Button>
+								</DialogClose>
+								<DialogClose>
+									<Button
+										variant='default'
+										onClick={() => {
+											fetch('/api/clean-db');
+										}}
+									>
+										Delete it all 😈
+									</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
+				)}
 				<Dialog>
 					<DialogTrigger asChild>
 						<Button variant='outline' className='m-2 justify-start'>
