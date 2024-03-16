@@ -64,7 +64,7 @@ export default async function VerifyFormAccuracyPage() {
 	alliancesWithMismatchedFields.sort((a, b) => a.matchNumber - b.matchNumber);
 	alliancesMissingTeams.sort((a, b) => a.matchNumber - b.matchNumber);
 
-	const individualFormScalar = 100 / individualFormErrors.length;
+	const individualFormScalar = 100 / standFormsGroupedByTeamMatch.length;
 	const allianceScalar = 100 / allianceTotals.length;
 	const errorStatistics = {
 		'Alliances Completed': alliancesMissingTeams.length * allianceScalar,
