@@ -13,6 +13,7 @@ import {
 import { toBase64 } from '@/lib/toBase64';
 import { RawTeamData } from '@/models/aggregations/teamData';
 import { teamDataAggregation } from '@/models/aggregations/teamData';
+import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 
 async function getTeamData(teamNumber: number) {
 	await connectToDbB();
@@ -206,7 +207,178 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 			</section>
 			<section className='w-full'>
 				<h2 className='typography'>Pit Info</h2>
-				<div className='mt-4'></div>
+				{teamData.pitForms.map((form) => {
+					return (
+						<div key={form._id} className='mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5'>
+							<Card>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>Drivetrain</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<h5
+										className={
+											form.drivetrain === 'Swerve'
+												? ' font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Swerve
+									</h5>
+									<h5
+										className={
+											form.drivetrain === 'West Coast'
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										West Coast
+									</h5>
+									<h5
+										className={
+											form.drivetrain === 'Mechaunum'
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Mechaunum
+									</h5>
+								</CardContent>
+							</Card>
+							<Card>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>
+										Weight (lbs)
+									</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<h1 className='text-center text-6xl font-bold'>
+										{form.weight}
+									</h1>
+								</CardContent>
+							</Card>
+							<Card className='col-span-2'>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>
+										Length x Width (in)
+									</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<h1 className='text-center text-6xl font-bold'>
+										{form.length} x {form.width}
+									</h1>
+								</CardContent>
+							</Card>
+							<Card key={form._id}>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>
+										Where Score?
+									</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<h5
+										className={
+											form.whereScore[0] === 'Amp'
+												? ' font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Amp
+									</h5>
+									<h5
+										className={
+											form.whereScore[0] === 'Speaker' ||
+											form.whereScore[1] === 'Speaker'
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Speaker
+									</h5>
+									<h5
+										className={
+											form.whereScore.length === 0
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Neither
+									</h5>
+								</CardContent>
+							</Card>
+							<Card>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>Preference</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<h5
+										className={
+											form.priorityScore === 'Amp'
+												? ' font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Amp
+									</h5>
+									<h5
+										className={
+											form.priorityScore === 'Speaker'
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Speaker
+									</h5>
+									<h5
+										className={
+											form.priorityScore === 'None'
+												? 'font-bold'
+												: 'font-bold text-gray-400 text-opacity-50'
+										}
+									>
+										Neither
+									</h5>
+								</CardContent>
+							</Card>
+							<Card>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>Can Climb?</CardTitle>
+								</CardHeader>
+								<CardContent className='flex justify-center p-6 pt-0'>
+									{form.climb ? (
+										<CheckIcon className='size-20' />
+									) : (
+										<Cross2Icon className='size-20' />
+									)}
+								</CardContent>
+							</Card>
+							<Card>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>Can Trap?</CardTitle>
+								</CardHeader>
+								<CardContent className='flex justify-center p-6 pt-0'>
+									{form.trapScore ? (
+										<CheckIcon className='size-20' />
+									) : (
+										<Cross2Icon className='size-20' />
+									)}
+								</CardContent>
+							</Card>
+							<Card className='col-span-2'>
+								<CardHeader className='p-6 pb-4'>
+									<CardTitle className='text-md font-bold'>Notes</CardTitle>
+								</CardHeader>
+								<CardContent className='p-6 pt-0'>
+									<blockquote
+										className='typography mb-4'
+										style={{ marginTop: 0 }}
+									>
+										"{form.notes}"
+									</blockquote>
+								</CardContent>
+							</Card>
+						</div>
+					);
+				})}
 			</section>
 			<section className='w-full'>
 				<div>

@@ -42,7 +42,7 @@ export default function Endgame() {
 					<>
 						<FormCheckbox name='spotlight' label='Spotlit?' />
 						<NumericalInput
-							label='Number of Robots on *SAME* Chain'
+							label="Number of Robots on Your Robot's Chain (Including Your Robot)"
 							name='numberOnChain'
 							control={form.control}
 							min={0}
