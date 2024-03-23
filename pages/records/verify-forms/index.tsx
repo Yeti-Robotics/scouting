@@ -62,7 +62,7 @@ const VerifyForms = () => {
 					.filter(([, numForms]) =>
 						showGoodMatches
 							? true
-							: numForms.all.length !== 6 || numForms.unique.size !== 6,
+							: numForms.all.length !== 12 || numForms.unique.size !== 6,
 					)
 					.map(([matchNum, numForms]) => {
 						const match = matchNumMap[matchNum];
