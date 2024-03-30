@@ -15,7 +15,6 @@ const keysToCompare: (keyof StandFormI)[] = [
 	'shuttleNotes',
 	'trapNotes',
 	'trapAttempts',
-	'numberOnChain',
 ];
 
 export function verifyFormEquality(reference: StandFormI, comparison: StandFormI) {
