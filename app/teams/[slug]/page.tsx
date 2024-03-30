@@ -218,7 +218,7 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 									<h5
 										className={
 											form.drivetrain === 'Swerve'
-												? ' font-bold'
+												? 'font-bold'
 												: 'font-bold text-gray-400 text-opacity-50'
 										}
 									>

@@ -11,6 +11,15 @@ import TeamAlliance from '@/models/TeamAlliance';
 import BestAvailable from './BestAvailable';
 import { cookies } from 'next/headers';
 import verifyAdmin from '@/middleware/app-router/verify-user';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+interface AllianceTeamsI {
+	_id: {
+		compKey: string;
+		alliance: number;
+	};
+	teamNumbers: number[];
+}
 
 /**
  * Computes pickability using specified weights -- essentially computes a weighted sum
@@ -134,6 +143,20 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 	derivedStatistics = derivedStatistics
 		.filter((team) => ordering.indexOf(team._id) > -1)
 		.sort((a, b) => (indices.get(a._id) as number) - (indices.get(b._id) as number));
+
+	const allianceTeams = await TeamAlliance.aggregate<AllianceTeamsI>([
+		{
+			$group: {
+				_id: {
+					compKey: '$compKey',
+					alliance: '$alliance_number',
+				},
+				teamNumbers: {
+					$push: '$team_number',
+				},
+			},
+		},
+	]);
 	// Render the PicklistPage component
 	return (
 		<main className='container'>
@@ -148,6 +171,30 @@ export default async function PicklistPage({ params }: { params: { slug: string 
 						</div>
 						<p className='lead'>Last Updated • {updatedAt.toDateString()}</p>
 					</header>
+					<section className='mt-4 grid grid-cols-2 gap-4 sm:grid-cols-8'>
+						{allianceTeams
+							.sort((a, b) => a._id.alliance - b._id.alliance)
+							.map((alliance) => {
+								return (
+									<div key={alliance._id.alliance}>
+										<Card>
+											<CardHeader className='p-6 pb-2'>
+												<CardTitle className='text-md font-bold'>
+													Alliance {alliance._id.alliance}
+												</CardTitle>
+											</CardHeader>
+											<CardContent className='p-6 pt-0'>
+												{alliance.teamNumbers.map((teamNumber) => {
+													return (
+														<h5 key={teamNumber} className='font-bold'>{teamNumber}</h5>
+													);
+												})}
+											</CardContent>
+										</Card>
+									</div>
+								);
+							})}
+					</section>
 					<section>
 						<BestAvailable />
 					</section>
