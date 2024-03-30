@@ -36,6 +36,7 @@ export default function Navbar({
 			desc: 'Links to data analysis pages.',
 			urls: [
 				{ href: '/what-if', text: 'What If?' },
+				{ href: '/team-comparison', text: 'Team Comparison' },
 				{ href: '/matches', text: 'Matches' },
 				{ href: '/teams', text: 'Teams' },
 				{ href: '/records', text: 'Records' },
