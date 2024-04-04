@@ -6,16 +6,19 @@ import { Suspense } from 'react';
 import { connectToDbB } from '@/middleware/connect-db';
 import SPR from '@/models/SPR';
 import { UserI } from '@/models/User';
+import StandForm from '@/models/StandForm';
 
 export interface ScoutI {
 	firstName?: string;
 	lastName?: string;
 	avgSPR: number;
+	count: number;
 }
 
 interface AggregationScoutI {
 	_id: string;
 	avgSPR: number;
+	count: number;
 	scouter: (UserI | undefined)[];
 }
 
@@ -29,6 +32,9 @@ const getData = async () => {
 				},
 				avgSPR: {
 					$avg: '$matchSPR',
+				},
+				count: {
+					$count: {},
 				},
 			},
 		},
@@ -49,6 +55,7 @@ const getData = async () => {
 				firstName: scout.scouter[0]?.firstName || 'Unnamed',
 				lastName: scout.scouter[0]?.lastName || 'Unnamed',
 				avgSPR: scout.avgSPR,
+				count: scout.count,
 			};
 		});
 	return table;

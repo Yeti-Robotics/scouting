@@ -32,4 +32,12 @@ export const columns = [
 			align: 'left',
 		},
 	}),
+	helper.accessor('count', {
+		header: () => <div className='font-bold'>Count</div>,
+		cell: (props) => <>{props.getValue()}</>,
+		maxSize: 288,
+		meta: {
+			align: 'left',
+		},
+	}),
 ];
