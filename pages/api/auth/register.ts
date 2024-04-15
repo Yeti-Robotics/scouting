@@ -33,10 +33,21 @@ handler.use(connectDB).post(async (req, res) => {
 	if (!userServersRes.ok)
 		return res.status(401).json({ message: 'Something went wrong checking your servers.' });
 	const servers: any[] = await userServersRes.json();
-	if (!servers.some((server) => server.id === '408711970305474560'))
+	
+	if (
+		!servers.some(
+			(server) => server.id === '408711970305474560' || server.id === '1229119733694201927',
+		)
+	)
 		return res.status(401).json({ message: "You are not a part of yeti's Discord server." });
 
 	const savedUser = new User({ ...user, teamNumber: 3506, discordId: discUser.id });
+	
+	if (servers.some((server) => server.id === '1229119733694201927')) {
+		const savedUser = new User({ ...user, teamNumber: 3196, discordId: discUser.id });
+		await savedUser.save();
+	}
+
 	await savedUser.save();
 
 	const token = signJwt(res, savedUser.username);
