@@ -19,8 +19,6 @@ export default new RouteHandler<'api', WAuth>()
 
 		const deletes: any[] = [];
 		deletes.push(StandForm.deleteMany({}));
-		deletes.push(PitForm.deleteMany({}));
-		deletes.push(PitImage.deleteMany({}));
 		deletes.push(Match.deleteMany({}));
 
 		const users = await User.find({});
