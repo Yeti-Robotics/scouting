@@ -86,7 +86,7 @@ export default function DraggableRow({
 							<span className='ml-2'>Remove Alliance</span>
 						</DropdownMenuItem>
 					) : (
-						[1, 2, 3, 4, 5, 6, 7, 8].map((allianceNumber) => {
+						[1, 2, 3, 4, 5, 6, 7, 8, 9].map((allianceNumber) => {
 							return (
 								<DropdownMenuItem
 									key={allianceNumber}

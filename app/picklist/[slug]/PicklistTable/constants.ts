@@ -27,4 +27,5 @@ export const allianceBgColors = [
 	'bg-primary/30',
 	'bg-primary/20',
 	'bg-primary/10',
+	'bg-red-400'
 ];
