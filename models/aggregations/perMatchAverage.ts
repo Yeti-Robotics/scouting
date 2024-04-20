@@ -12,6 +12,7 @@ export interface PerMatchStandFormGroup {
 	teleopSpeakerNotes: number;
 	teleopAmplifiedSpeakerNotes: number;
 	teleopNotesMissed: number;
+	shuttleNotes: number;
 	trapAttempts: number;
 	trapNotes: number;
 	defense: number;
@@ -56,6 +57,9 @@ export const getPerMatchAggregation = (teamNumber: number): PipelineStage[] => [
 			teleopNotesMissed: {
 				$avg: '$teleopNotesMissed',
 			},
+			shuttleNotes: {
+				$avg: '$shuttleNotes',
+			},
 			trapAttempts: {
 				$avg: '$trapAttempts',
 			},
@@ -77,6 +81,18 @@ export const getPerMatchAggregation = (teamNumber: number): PipelineStage[] => [
 			totalAmpNotes: {
 				$avg: {
 					$add: ['$autoAmpNotes', '$teleopAmpNotes'],
+				},
+			},
+			totalNotes: {
+				$avg: {
+					$add: [
+						'$autoSpeakerNotes',
+						'$teleopSpeakerNotes',
+						'$teleopAmplifiedSpeakerNotes',
+						'$autoAmpNotes',
+						'$teleopAmpNotes',
+						'$shuttleNotes',
+					],
 				},
 			},
 			autoScore: {

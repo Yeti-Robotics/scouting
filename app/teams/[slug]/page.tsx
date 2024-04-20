@@ -118,6 +118,23 @@ export default async function TeamPage({ params }: { params: { slug: string } })
 						/>
 					</CardContent>
 				</Card>
+				<Card>
+					<CardHeader className='p-6'>
+						<CardTitle>Notes</CardTitle>
+						<CardDescription>Notes Scored or Shuttled by Match</CardDescription>
+					</CardHeader>
+					<CardContent className='p-6 pt-0'>
+						<Chart
+							data={teamData.standForms}
+							series={[
+								'totalSpeakerNotes',
+								'totalAmpNotes',
+								'shuttleNotes',
+								'totalNotes',
+							]}
+						/>
+					</CardContent>
+				</Card>
 			</section>
 			<section className='w-full'>
 				<h2 className='typography'>Advanced Metrics</h2>
