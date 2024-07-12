@@ -65,7 +65,6 @@ interface StandFormProps {
 export default function StandForm({ create, canEdit, id, defaultForm }: StandFormProps) {
 	const [submitting, setSubmitting] = useState<'' | 'fetching' | 'done'>('');
 	const [match, setMatch] = useState<MatchI | null>(null);
-	const { data: matches } = useSWR<MatchI[]>('/api/matches', fetcher);
 	const { data: user, isLoading } = useSWR<UserI>('/api/auth/decode', fetcher, {
 		refreshInterval: 5000,
 	});
@@ -118,12 +117,7 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 				)}
 			>
 				<FormContext.Provider value={form}>
-					<StandFormTopFields
-						create={create}
-						matches={matches}
-						match={match}
-						setMatch={setMatch}
-					/>
+					<StandFormTopFields />
 					<ClimbContext.Provider
 						value={{
 							climb: form.watch('climb'),
@@ -153,14 +147,8 @@ interface StandFormTopFieldsProps {
 	setMatch: Dispatch<SetStateAction<MatchI | null>>;
 }
 
-function StandFormTopFields({ create, matches, match, setMatch }: StandFormTopFieldsProps) {
+function StandFormTopFields() {
 	const form = useContext(FormContext);
-	const matchNumber = form?.watch('matchNumber');
-
-	useEffect(() => {
-		if (!matches) return;
-		setMatch(matches.find((match) => match.matchNumber === Number(matchNumber)) || null);
-	}, [matchNumber, matches]);
 
 	if (!form) return null;
 	return (
@@ -168,45 +156,27 @@ function StandFormTopFields({ create, matches, match, setMatch }: StandFormTopFi
 			<FormItem>
 				<FormLabel>Match Number</FormLabel>
 				<FormControl>
-					<Input type='number' placeholder='XX' {...form.register('matchNumber')} />
+					<Input
+						required
+						type='number'
+						placeholder='XXXX'
+						{...form.register('matchNumber')}
+					/>
 				</FormControl>
 				<FormMessage />
 			</FormItem>
-			<FormField
-				control={form.control}
-				name='teamNumber'
-				rules={{ required: 'Team Number is required' }}
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Team Number</FormLabel>
-						<Select
-							value={field.value?.toString() || ''}
-							onValueChange={(v) => field.onChange(Number(v))}
-						>
-							<SelectTrigger className='w-[180px]'>
-								<SelectValue placeholder='Team Number' />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									{match === null && (
-										<SelectItem
-											key={field.value}
-											value={field.value?.toString()}
-										>
-											{field.value}
-										</SelectItem>
-									)}
-									{getTeamsAsArr(match).map((team) => (
-										<SelectItem key={team.value} value={team.value.toString()}>
-											{team.label}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-					</FormItem>
-				)}
-			/>
+			<FormItem>
+				<FormLabel>Team Number</FormLabel>
+				<FormControl>
+					<Input
+						required
+						type='number'
+						placeholder='XXXX'
+						{...form.register('teamNumber')}
+					/>
+				</FormControl>
+				<FormMessage />
+			</FormItem>
 		</div>
 	);
 }
