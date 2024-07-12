@@ -22,7 +22,6 @@ export const onSubmit: StandFormOnSubmit = (
 	alliance,
 ) => {
 	const onCreate: SubmitHandler<CreateStandForm> = (data) => {
-		if (alliance === '') return;
 		if (data.climb === true) {
 			data.park = false;
 		}
@@ -35,7 +34,7 @@ export const onSubmit: StandFormOnSubmit = (
 					...data,
 					scouter: user._id,
 					scoutScore: computeScore(data),
-					alliance,
+					alliance: alliance === '' ? 'none' : alliance,
 				}),
 			}).then(async (res) => {
 				setSubmitting('done');
@@ -61,9 +60,9 @@ export const onSubmit: StandFormOnSubmit = (
 		fetch('/api/forms/stand', {
 			method: 'PATCH',
 			body: JSON.stringify({
-					...data,
-					scoutScore: computeScore(data),
-					alliance,
+				...data,
+				scoutScore: computeScore(data),
+				alliance,
 			}),
 		}).then(() => setSubmitting('done'));
 	};
