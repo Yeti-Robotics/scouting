@@ -168,45 +168,16 @@ function StandFormTopFields({ create, matches, match, setMatch }: StandFormTopFi
 			<FormItem>
 				<FormLabel>Match Number</FormLabel>
 				<FormControl>
-					<Input type='number' placeholder='XX' {...form.register('matchNumber')} />
+					<Input type='number' placeholder='XXXX' {...form.register('matchNumber')} />
 				</FormControl>
 				<FormMessage />
 			</FormItem>
-			<FormField
-				control={form.control}
-				name='teamNumber'
-				rules={{ required: 'Team Number is required' }}
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Team Number</FormLabel>
-						<Select
-							value={field.value?.toString() || ''}
-							onValueChange={(v) => field.onChange(Number(v))}
-						>
-							<SelectTrigger className='w-[180px]'>
-								<SelectValue placeholder='Team Number' />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									{match === null && (
-										<SelectItem
-											key={field.value}
-											value={field.value?.toString()}
-										>
-											{field.value}
-										</SelectItem>
-									)}
-									{getTeamsAsArr(match).map((team) => (
-										<SelectItem key={team.value} value={team.value.toString()}>
-											{team.label}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-					</FormItem>
-				)}
-			/>
+			<FormItem>
+				<FormLabel>Team Number</FormLabel>
+				<FormControl>
+				<Input type='number' placeholder='XXXX' {...form.register('teamNumber')} />
+				</FormControl>
+				<FormMessage />
+			</FormItem>
 		</div>
 	);
-}
