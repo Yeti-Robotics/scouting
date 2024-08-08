@@ -41,6 +41,7 @@ export const saveLocal = (data: CreateStandForm) => {
 
 export const deleteLocalSave = (matchNumber: number, teamNumber: number) => {
     const savedForms = getData();
+    console.log(savedForms);
     const index = getSaveIndex(matchNumber, teamNumber, savedForms);
 
     savedForms.splice(index, 1);

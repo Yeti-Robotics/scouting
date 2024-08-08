@@ -24,7 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { CreateStandForm } from '@/models/StandForm';
 import { Button } from '@/components/ui/button';
-import { defaultValues } from './defaultValues';
+import { defaultValues as blankValues } from './defaultValues';
 
 import { UserI } from '@/models/User';
 import { onSubmit } from './onSubmitNew';
@@ -38,6 +38,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { getLocalSave, saveLocal } from './saveLocal';
 
 const getTeamsAsArr = (match: MatchI | null) =>
 	[
@@ -71,12 +72,17 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 
 	const isOnline = useOnlineStatus();
 
+	const [defaultValues, setDefaultValues] = useState(blankValues);
+	const [loadedFromSave, setLoadedFromSave] = useState(false);
+
 	const form = useForm<CreateStandForm>({
 		defaultValues: {
 			...defaultValues,
 			...defaultForm,
 		},
 	});
+
+
 
 	const teamNumber = form?.watch('teamNumber');
 
@@ -106,6 +112,31 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 		}
 	}, [form.watch('climb'), form.watch('park')]);
 
+	useEffect(() => {
+		const matchNumber = form.getValues("matchNumber");
+		const teamNumber = form.getValues("teamNumber");
+		let timeout: NodeJS.Timeout;
+		
+console.log("update?")
+		if (matchNumber > 0 && teamNumber > 0 && !loadedFromSave) {
+			const saveData = getLocalSave(matchNumber, teamNumber);
+			if (saveData) {
+				timeout = setTimeout(() => {
+					const wantsToLoad = confirm(`You have a saved form for match ${matchNumber} and team ${teamNumber}. Would you like to load it?`);
+					if (wantsToLoad) {
+						for (const [key, value] of Object.entries(saveData)) {
+							form.setValue(key as keyof CreateStandForm, value);
+						}
+
+						setLoadedFromSave(true);
+					}
+				}, 400);
+			}
+		}
+
+		return () => clearTimeout(timeout);
+	}, [form.watch(["teamNumber", "matchNumber"])]);
+
 	if (isLoading) return <p>Loading...</p>;
 
 	return (
@@ -134,6 +165,18 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 					disabled={submitting === 'fetching'}
 				>
 					Submit
+				</Button>
+				<Button
+					className='mt-4 w-full'
+					type='submit'
+					variant='secondary'
+					disabled={submitting === 'fetching'}
+					onClick={() => {
+						setLoadedFromSave(true);
+						saveLocal(form.getValues());
+					}}
+				>
+					Save
 				</Button>
 			</form>
 		</Form>
