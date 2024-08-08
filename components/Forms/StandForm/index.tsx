@@ -24,7 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { CreateStandForm } from '@/models/StandForm';
 import { Button } from '@/components/ui/button';
-import { defaultValues as blankValues } from './defaultValues';
+import { defaultValues } from './defaultValues';
 
 import { UserI } from '@/models/User';
 import { onSubmit } from './onSubmitNew';
@@ -72,7 +72,6 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 
 	const isOnline = useOnlineStatus();
 
-	const [defaultValues, setDefaultValues] = useState(blankValues);
 	const [loadedFromSave, setLoadedFromSave] = useState(false);
 
 	const form = useForm<CreateStandForm>({
@@ -81,8 +80,6 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 			...defaultForm,
 		},
 	});
-
-
 
 	const teamNumber = form?.watch('teamNumber');
 
@@ -116,8 +113,7 @@ export default function StandForm({ create, canEdit, id, defaultForm }: StandFor
 		const matchNumber = form.getValues("matchNumber");
 		const teamNumber = form.getValues("teamNumber");
 		let timeout: NodeJS.Timeout;
-		
-console.log("update?")
+
 		if (matchNumber > 0 && teamNumber > 0 && !loadedFromSave) {
 			const saveData = getLocalSave(matchNumber, teamNumber);
 			if (saveData) {
@@ -135,7 +131,7 @@ console.log("update?")
 		}
 
 		return () => clearTimeout(timeout);
-	}, [form.watch(["teamNumber", "matchNumber"])]);
+	}, [teamNumber, form.watch('matchNumber'), loadedFromSave]);
 
 	if (isLoading) return <p>Loading...</p>;
 
